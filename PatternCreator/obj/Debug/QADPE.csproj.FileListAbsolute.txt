@@ -1,0 +1,16 @@
+C:\Programming\Projects\Sims 3\QADPE\obj\Debug\QuickPackageMaker.exe
+C:\Programming\Projects\Sims 3\QADPE\obj\Debug\QuickPackageMaker.pdb
+C:\Programming\Projects\Sims 3\QADPE\bin\Debug\QuickPackageMaker.exe
+C:\Programming\Projects\Sims 3\QADPE\bin\Debug\QuickPackageMaker.pdb
+C:\Programming\Projects\Sims 3\QADPE\bin\Debug\Gibbed.Helpers.dll
+C:\Programming\Projects\Sims 3\QADPE\bin\Debug\Gibbed.RefPack.dll
+C:\Programming\Projects\Sims 3\QADPE\bin\Debug\Gibbed.Sims3.FileFormats.dll
+C:\Programming\Projects\Sims 3\QADPE\bin\Debug\Gibbed.RefPack.pdb
+C:\Programming\Projects\Sims 3\QADPE\bin\Debug\Gibbed.Sims3.FileFormats.pdb
+C:\Programming\Projects\Sims 3\QADPE\bin\Debug\Gibbed.Helpers.pdb
+C:\Programming\Projects\Sims 3\QADPE\obj\Debug\ResolveAssemblyReference.cache
+C:\Programming\Projects\Sims 3\QADPE\obj\Debug\QuickPackageMaker.Form1.resources
+C:\Programming\Projects\Sims 3\QADPE\obj\Debug\QuickPackageMaker.Properties.Resources.resources
+C:\Programming\Projects\Sims 3\QADPE\obj\Debug\QADPE.csproj.GenerateResource.Cache
+C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\obj\Debug\QuickPackageMaker.exe
+C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\obj\Debug\QuickPackageMaker.pdb

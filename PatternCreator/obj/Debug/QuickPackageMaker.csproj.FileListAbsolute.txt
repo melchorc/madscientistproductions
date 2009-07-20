@@ -1,0 +1,10 @@
+C:\Programming\Projects\Sims 3\QuickPackageMaker\QuickPackageMaker\bin\Debug\QuickPackageMaker.exe
+C:\Programming\Projects\Sims 3\QuickPackageMaker\QuickPackageMaker\bin\Debug\QuickPackageMaker.pdb
+C:\Programming\Projects\Sims 3\QuickPackageMaker\QuickPackageMaker\obj\Debug\ResolveAssemblyReference.cache
+C:\Programming\Projects\Sims 3\QuickPackageMaker\QuickPackageMaker\obj\Debug\QuickPackageMaker.Form1.resources
+C:\Programming\Projects\Sims 3\QuickPackageMaker\QuickPackageMaker\obj\Debug\QuickPackageMaker.Properties.Resources.resources
+C:\Programming\Projects\Sims 3\QuickPackageMaker\QuickPackageMaker\obj\Debug\QuickPackageMaker.csproj.GenerateResource.Cache
+C:\Programming\Projects\Sims 3\QuickPackageMaker\QuickPackageMaker\obj\Debug\QuickPackageMaker.exe
+C:\Programming\Projects\Sims 3\QuickPackageMaker\QuickPackageMaker\obj\Debug\QuickPackageMaker.pdb
+C:\Programming\Projects\Sims 3\QADPE\obj\Debug\QuickPackageMaker.exe
+C:\Programming\Projects\Sims 3\QADPE\obj\Debug\QuickPackageMaker.pdb

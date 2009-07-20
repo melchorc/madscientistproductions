@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly manifestVersion="1.0" xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1">
+  <asmv1:assemblyIdentity version="1.0.0.0" name="PatternCreator.exe" publicKeyToken="2efd5dc52da2a48d" language="neutral" processorArchitecture="msil" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="PatternCreator" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="PatternCreator.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet class="System.Security.PermissionSet" version="1" Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!-- UAC Manifest Options
+            If you want to change the Windows User Account Control level replace the 
+            requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+            If you want to utilize File and Registry Virtualization for backward 
+            compatibility then delete the requestedExecutionLevel node.
+        -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="2.0.50727.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Core" version="3.5.0.0" publicKeyToken="b77a5c561934e089" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="WindowsBase" version="3.0.0.0" publicKeyToken="31bf3856ad364e35" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Gibbed.Helpers.dll" size="18432">
+      <assemblyIdentity name="Gibbed.Helpers" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>dx/RTDDzYoEQWJV/TC/0XBVxSjs=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Gibbed.RefPack.dll" size="9216">
+      <assemblyIdentity name="Gibbed.RefPack" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>bZY4bh1H3UIgrHF6sMgLdxSebmo=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Gibbed.Sims3.FileFormats.dll" size="18944">
+      <assemblyIdentity name="Gibbed.Sims3.FileFormats" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>nXJocY7oKeJcsNjUZFyqDq7XCds=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PatternCreator.exe" size="52224">
+      <assemblyIdentity name="PatternCreator" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>cORx8+fNPo6b+rDa3H5iMEXBj8M=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+<publisherIdentity name="CN=CHOBITS\Stuart" issuerKeyHash="5960105ac9ef2b1909781f47e1e7f4c416d37f67" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>pb2UqMI3m0i3W545COuLza5HNr8=</DigestValue></Reference></SignedInfo><SignatureValue>Dv4KywY38SQgd6uqsQ+fB92FZttG/7lJlYG7YF2mGDe5L6R1+h5UYSd/MV1Nk4+YDZc+NunlsLRkSHd18KeC3eBp+ICtMWE8UPV9N4fIP3iuHE+Yk1BwKTfCsLLxpBWEfStBJ3PU8Iv17OAKfq3Nkq29BJQr052hBei4uxpVXSw=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>wQ03HthVKToU0bGBQtbjbQg8+MNQ3vjVwsAJQp2U+CRfTw/WBlbXiqXX6ffLlkmtaKI9KQzRG/45gvGu93yx0fCxe8gq49eBSjBBg9nReGjPhexQFXYpVe4M8MtDTsYhTSd9i69DuBA3YyzORKfgi9ikHCjXW+PAtbm63GaFIuk=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="bf3647aecd8beb08399e5bb7489b37c2a894bda5" Description="" Url=""><as:assemblyIdentity version="1.0.0.0" name="PatternCreator.exe" publicKeyToken="2efd5dc52da2a48d" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=CHOBITS\Stuart</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>EYmpYNk+jUlPu0CVW7IuXKz+NXE=</DigestValue></Reference></SignedInfo><SignatureValue>oDcMLMNSkJmrZp+chwE+RIaHZWZgj2DTqEhGOAb58yJ9L9G7uJvEhZ/QpkrIgQMLaWdLcSBT9FpJRNOYnpfw4KkXG/NY03MbK13Ri3WJUK7dYIYLutYNMTfmH8/HnWbGFSnWtOogSSi29Juexfy4YgpUX+3oS/AqofPhndoE2L0=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>wQ03HthVKToU0bGBQtbjbQg8+MNQ3vjVwsAJQp2U+CRfTw/WBlbXiqXX6ffLlkmtaKI9KQzRG/45gvGu93yx0fCxe8gq49eBSjBBg9nReGjPhexQFXYpVe4M8MtDTsYhTSd9i69DuBA3YyzORKfgi9ikHCjXW+PAtbm63GaFIuk=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB0TCCATqgAwIBAgIQffCeCHTC875Japxj53sxLzANBgkqhkiG9w0BAQUFADAnMSUwIwYDVQQDHhwAQwBIAE8AQgBJAFQAUwBcAFMAdAB1AGEAcgB0MB4XDTA5MDYwMTIyMDkzOFoXDTEwMDYwMjA0MDkzOFowJzElMCMGA1UEAx4cAEMASABPAEIASQBUAFMAXABTAHQAdQBhAHIAdDCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAwQ03HthVKToU0bGBQtbjbQg8+MNQ3vjVwsAJQp2U+CRfTw/WBlbXiqXX6ffLlkmtaKI9KQzRG/45gvGu93yx0fCxe8gq49eBSjBBg9nReGjPhexQFXYpVe4M8MtDTsYhTSd9i69DuBA3YyzORKfgi9ikHCjXW+PAtbm63GaFIukCAwEAATANBgkqhkiG9w0BAQUFAAOBgQCTD26UZu0ooiMiQ/5eemm09gungFk1rYv3hbf7sNPERVzuGNy5GBLVSndAMYhi6giOsBs0IrJXuIs1JupXxG8n3prxmkVeFqenS5PF8cya/IfhOfwKJzjXtQumUnkq0NjTJePE0L4l4b4bot7m7L4Xf8zzMQezWHjEGixJbkqrQA==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
