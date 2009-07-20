@@ -4,12 +4,9 @@ C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\obj\Debug\PatternCr
 C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\obj\Debug\PatternCreator.csproj.GenerateResource.Cache
 C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\bin\Debug\Gibbed.Sims3.FileFormats.pdb
 C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\bin\Debug\Gibbed.Helpers.pdb
-C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\bin\Debug\Gibbed.RefPack.dll
 C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\obj\Debug\PatternCreator.Form2.resources
 C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\obj\Debug\PatternCreator.Form3.resources
 C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\bin\Debug\Gibbed.RefPack.pdb
-C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\bin\Debug\Gibbed.Helpers.dll
-C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\bin\Debug\Gibbed.Sims3.FileFormats.dll
 C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\bin\Debug\PatternPackager.exe.manifest
 C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\bin\Debug\PatternPackager.application
 C:\Programming\Projects\Sims 3\PatternCreator\PatternCreator\bin\Debug\PatternPackager.exe
