@@ -46,7 +46,6 @@
     <Compile Include="FrameRate.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="HiResTimer.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

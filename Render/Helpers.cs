@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Drawing;
 using System.IO;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
