@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<metaEntries>
+<metaEntry key="11720834" shortName="dds" longName="dds Image" />
+<metaEntry key="22681673" shortName="geom" longName="Geometry Scenegraph" />
+<metaEntry key="23462796" shortName="nmap" longName="Key Name Map" />
+<metaEntry key="11431015" shortName="skcon" longName="Skin Controller (Bones)" />
+<metaEntry key="54137909" shortName="txtc" longName="Texture Compositor property files" />
+<metaEntry key="54635721" shortname="txtf" longName="Texture Fabric property files" />
+<metaEntry key="55242443" shortName="caspart" longName="CAS Part Data xml" />
+
+<metaEntry key="16807867" longName="audio mp3" />
+<metaEntry key="16807876" longName="audio wav" />
+<metaEntry key="16807882" longName="audio xa" />
+<metaEntry key="23466547" shortName="modl" longName="Model MODL Scenegraph" />
+<metaEntry key="30467933" shortName="matd" longName="Material Definition MATD Scenegraph" />
+<metaEntry key="30478132" shortName="mlod" longName="MLOD Scenegraph" />
+<metaEntry key="33659250" shortName="mtst" longName="MTST Scenegraph" />
+<metaEntry key="35487372" longName="SpeedTree Data (spt2) TREE Scenegraph (SpeedTree)" />
+<metaEntry key="39620774" shortName="css" longName="css" />
+<metaEntry key="39622070" shortName="layout" longName="UI Layout" />
+<metaEntry key="39769844" shortName="xml" longName="Sim Outfit" />
+<metaEntry key="43922235" longName="audio voice (controllers)" />
+<metaEntry key="46788594" longName="audio submix (mixers)" />
+<metaEntry key="47570707" longName="State Machine (.Jazz Data) (Interactions)" />
+<metaEntry key="47985727" shortName="objk" longName="Object Key (Actual Object File)" />
+<metaEntry key="53633251" longName="Track Mask (TkMk) Scenegraph" />
+<metaEntry key="53690476" shortName="xml" longName="XML" />
+<metaEntry key="55959718" shortName="" longName="Bone Delta Pose (SLOT adjustors)" />
+<metaEntry key="56144010" longName="Facial Blend (Face Parts)" />
+<metaEntry key="62078431" shortName="mod" longName="Interaction Tuning xml" />
+<metaEntry key="62178845" shortName="lite" longName="Lighting Data Scenegraph" />
+<metaEntry key="64515748" longName="Details (world)" />
+<metaEntry key="68746794" longName="Catalog Fences" />
+<metaEntry key="72016144" shortName="xml" longName="Complate Preset" />
+<metaEntry key="77374669" longName="Catalog Stairs" />
+<metaEntry key="77912401" longName="World Detail" />
+<metaEntry key="78405011" longName="Catalog Proxy Products" />
+<metaEntry key="78841449" longName="Catalog Terrain Tools" />
+<metaEntry key="80052483" longName="Catalog Railings" />
+<metaEntry key="82660274" longName="Catalog Terrain Paint" />
+<metaEntry key="83086337" longName="Catalog Fireplaces" />
+<metaEntry key="83169331" longName="Sim Bin Outfit (new binary data xml for clothing/mask" />
+<metaEntry key="85848797" longName="Compound Blend (Face Piece Preset)" />
+<metaEntry key="92316340" shortName="png" longName="png thumb" />
+<metaEntry key="92316341" shortName="png" longName="png thumb" />
+<metaEntry key="92316342" shortName="png" longName="png thumb" />
+<metaEntry key="92316366" shortName="png" longName="snapshot (png) (small)" />
+<metaEntry key="92316367" shortName="png" longName="snapshot (png) (large)" />
+<metaEntry key="92920900" shortName="png" longName="png thumb" />
+<metaEntry key="92920901" shortName="png" longName="png thumb" />
+<metaEntry key="92920902" shortName="png" longName="png thumb" />
+<metaEntry key="95516312" shortName="png" longName="png thumb" />
+<metaEntry key="95516313" shortName="png" longName="png thumb" />
+<metaEntry key="95516314" shortName="png" longName="png thumb" />
+<metaEntry key="95532324" shortName="png" longName="png thumb" />
+<metaEntry key="95532325" shortName="png" longName="png thumb" />
+<metaEntry key="95532326" shortName="png" longName="png thumb" />
+<metaEntry key="92316365" shortName="png" longName="Unknown PNG" />
+<metaEntry key="99422758" longName="Reference Store file" />
+<metaEntry key="100969434" shortName="xml" longName="Dreams and Promises Tress (.dreamtree)" />
+<metaEntry key="101398796" longName="Catalog Water" />
+<metaEntry key="103580164" shortName="bblend" longName="Body Blend (outfit parts)" />
+<metaEntry key="103718624" longName="ttf font" />
+<metaEntry key="103965203" longName="Object Colour Info (xml file links, plus a bit" />
+<metaEntry key="107542056" longName="World Description Details" />
+<metaEntry key="107542073" longName="World Description Image Path" />
+<metaEntry key="108833297" shortName="bgeo" longName="Blend Geometry" />
+<metaEntry key="439484877" longName="Tuning Override (mod) xml" />
+<metaEntry key="529034925" longName="ini" />
+<metaEntry key="570775514" shortName="stbl" longName="STBL String Table (Languages)" />
+<metaEntry key="643032008" shortName="png" longName="png thumb" />
+<metaEntry key="643032009" shortName="png" longName="png thumb" />
+<metaEntry key="643032010" shortName="png" longName="png thumb" />
+<metaEntry key="759334128" shortName="png" longName="png thumb" />
+<metaEntry key="759334129" shortName="png" longName="png thumb" />
+<metaEntry key="759334130" shortName="png" longName="png thumb" />
+<metaEntry key="779470692" shortName="png" longName="png icon" />
+<metaEntry key="779470693" shortName="png" longName="png icon" />
+<metaEntry key="779470694" shortName="png" longName="png icon" />
+<metaEntry key="796721154" shortName="jpg" longName="jpeg" />
+<metaEntry key="796721156" shortName="png" longName="png" />
+<metaEntry key="796721158" longName="tga" />
+<metaEntry key="796721160" longName="UI Texture UV" />
+<metaEntry key="832458525" shortName="objd" longName="CT Product Object (Catalog Object Definition)" />
+<metaEntry key="1365025997" longName="Catalog Walls" />
+<metaEntry key="1575607200" shortName="png" longName="png thumb" />
+<metaEntry key="1575607201" shortName="png" longName="png thumb" />
+<metaEntry key="1575607202" shortName="png" longName="png thumb" />
+<metaEntry key="1651466444" shortName="png" longName="png cas thumb" />
+<metaEntry key="1651466445" shortName="png" longName="png cas thumb" />
+<metaEntry key="1651466446" shortName="png" longName="png cas thumb" />
+<metaEntry key="1671642791" shortName="anim" longName="ANIM Scenegraph (Animated Texture)" />
+<metaEntry key="107542069" longName="World Description Image (png)" />
+<metaEntry key="1802339197" shortName="png" longName="snapshot (png)" />
+<metaEntry key="1802339198" shortName="png" longName="snapshot (png)" />
+<metaEntry key="1802339199" shortName="png" longName="snapshot (png)" />
+<metaEntry key="1936229617" shortName="vpxy" longName="Visual Proxy Scenegraph" />
+<metaEntry key="1944665835" shortName="xml" longName="package manifest" />
+<metaEntry key="2154832445" longName="Audio Tuners" />
+<metaEntry key="2415624438" shortName="dds" longName="DDS image (InGame Ad Textures)" />
+<metaEntry key="2438063804" longName="Catalog Wall Styles" />
+<metaEntry key="2448276798" longName="Catalog Roof Styles" />
+<metaEntry key="2982943478" longName="Vp6/SCxI Movies" />
+<metaEntry key="3039776853" longName="Blend Unit (Face Part Linker)" />
+<metaEntry key="3496170587" longName="Lot Descriptor" />
+<metaEntry key="3540272417" shortName="rslt" longName="Object Slot Scenegraphs" />
+<metaEntry key="3548561239" shortName="ftpt" longName="FTPT Scenegraph" />
+<metaEntry key="3571055589" shortName="xml" longName="Pattern List" />
+<metaEntry key="3629023173" shortName="png" longName="png icon house small" />
+<metaEntry key="3629023174" shortName="png" longName="png icon house medium" />
+<metaEntry key="3629023175" shortName="png" longName="png icon house large" />
+<metaEntry key="3653044489" longName="World Description Name" />
+<metaEntry key="4043265432" shortName="cam" longName="triggers" />
+<metaEntry key="4058889606" longName="Catalog Roof Materials" />
+<metaEntry key="2393838558" shortName="rig" longName="Rig" />
+<metaEntry key="1797309683" longName="clip [references .ma] Animation files (a2o etc) (SoundEntry type" />
+<metaEntry key="121612807" shortName="script" longName="Signed Assembly" />
+<metaEntry key="11883242" longName="Speed Tree (.spt) (Plant Splines and Data)" />
+<metaEntry key="27600859" longName="audio snr (voice/aud) (sound route?) (16bit le pcm?)" />
+<metaEntry key="32437818" longName="audio sns (fx/music) (sound send?) (16bit le pcm?)" />
+<metaEntry key="83396964" longName="Sim Export (Townie Data?)" />
+<metaEntry key="103306152" longName="Family Data" />
+<metaEntry key="112820717" longName="OBJS (world)" />
+<metaEntry key="1293571465" longName="OBJN (world)" />
+<metaEntry key="2422433293" longName="World Texture Map" />
+<metaEntry key="3034411371" longName="Inventory (Person Data?)" />
+<metaEntry key="3931183280" longName="swb Effect Resource Tree" />
+<metaEntry key="2192848260" longName="Checksum" />
+<metaEntry key="103817841" longName="Colour Info" />
+<metaEntry key="64504770" longName="Compositor Cache Entry (objectcache)" />
+<metaEntry key="81276304" longName="Compositor Cache MRU (objectcache)" />
+<metaEntry key="103965146" longName="Hair Colour Info" />
+<metaEntry key="55925672" longName="Hair Tone" />
+<metaEntry key="979742505" longName="Makeup Colour Info" />
+<metaEntry key="3482995406" shortName="mldr" longName="Modular Object" />
+<metaEntry key="4087579504" longName="Name Guid Map" />
+<metaEntry key="204973493" longName="Resource Lookup Table (links to 034aeecb files and has" />
+<metaEntry key="2495992138" longName="Signature Resource" />
+<metaEntry key="1919433749" longName="Skin Tone Preset (Short file references 0354796a)" />
+<metaEntry key="55867754" longName="Skin Tone (only several of these. contain image links)" />
+<metaEntry key="899890729" longName="World Description Hash (world)" />
+<metaEntry key="36402540" longName="World Description Name Hash (guid file from neighbourhoods)" />
+<metaEntry key="107542064" longName="World Description Num Lots (world)" />
+<metaEntry key="114182148" longName="World Meta Data (world)" />
+<metaEntry key="4127849824" longName="World Package Id (world)" />
+<metaEntry key="106821697" longName="CAS Part Cache" />
+<metaEntry key="1318566616" longName="OBJS (Object Script)" />
+<metaEntry key="54209382" longName="(file from neighbourhoods)" />
+<metaEntry key="71775709" longName="(world)" />
+<metaEntry key="74084917" longName="(world)" />
+<metaEntry key="76158573" longName="(6 byte short file. first 4 are a version)" />
+<metaEntry key="77632131" longName="(world)" />
+<metaEntry key="82733755" longName="(16 Byte short file)" />
+<metaEntry key="83258316" longName="(a short file in 3 sizes)" />
+<metaEntry key="89203285" longName="(another short file type)" />
+<metaEntry key="89385684" longName="" />
+<metaEntry key="90411422" longName="" />
+<metaEntry key="97340339" longName="(world)" />
+<metaEntry key="98208502" longName="(world)" />
+<metaEntry key="98892535" longName="(5 byte file with a value of 5)" />
+<metaEntry key="100611401" longName="" />
+<metaEntry key="100625316" longName="(Giant 2d array of floats (version, x, y, -begin" />
+<metaEntry key="101586982" longName="" />
+<metaEntry key="101822695" longName="(Bunch of 8 byte segments (count, -repeat 8 byte" />
+<metaEntry key="104415069" longName="(another short file)" />
+<metaEntry key="106662712" longName="(4 byte file, value 6)" />
+<metaEntry key="106691756" longName="(world)" />
+<metaEntry key="106691757" longName="(world)" />
+<metaEntry key="106691758" longName="(world)" />
+<metaEntry key="114733330" longName="(contains data linking to 034aeecb files)" />
+<metaEntry key="115115134" longName="" />
+<metaEntry key="300099734" longName="" />
+<metaEntry key="718378482" longName="(world)" />
+<metaEntry key="825128261" longName="" />
+<metaEntry key="875002279" longName="(world)" />
+<metaEntry key="887432316" longName="" />
+<metaEntry key="1032205008" longName="(world)" />
+<metaEntry key="2422341632" longName="(world)" />
+<metaEntry key="2422361115" longName="(world)" />
+<metaEntry key="2422433294" longName="(world)" />
+<metaEntry key="2436071922" longName="" />
+<metaEntry key="2498513748" longName="" />
+<metaEntry key="2784624152" longName="null file" />
+<metaEntry key="2922985887" longName="(world)" />
+<metaEntry key="2960436454" longName="(world)" />
+<metaEntry key="2972013370" longName="(big 3d array of shorts?)" />
+<metaEntry key="2973903217" longName="" />
+<metaEntry key="4033034633" longName="(world)" />
+<metaEntry key="4046347794" longName="" />
+<metaEntry key="24503757" longName="script (unused?)" />
+<metaEntry key="24503769" longName="scriptsym (unused?)" />
+<metaEntry key="25276626" longName="audio abk" />
+<metaEntry key="45741666" longName="audio prop" />
+<metaEntry key="3579804847" longName="lightrigs" />
+<metaEntry key="297949376" longName="ctriggers" />
+<metaEntry key="1312748" longName="Audio" />
+<metaEntry key="5314651" longName="EffectsBinary" />
+</metaEntries>

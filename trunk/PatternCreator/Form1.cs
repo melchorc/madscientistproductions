@@ -56,72 +56,50 @@ namespace PatternCreator
 
         private void lblBackgroundColour_Click(object sender, EventArgs e)
         {
-            colorDialog1.AllowFullOpen = true;
-            colorDialog1.AnyColor = true;
-            colorDialog1.FullOpen = true;
-            colorDialog1.SolidColorOnly = true;
-            colorDialog1.Color = lblBackgroundColour.BackColor;
-            if (colorDialog1.ShowDialog() != DialogResult.Cancel)
-            {
-                lblBackgroundColour.BackColor = colorDialog1.Color;
-            }
+            ColorPicker.ColorPickerDialog cpd = new ColorPicker.ColorPickerDialog();
+            cpd.Color = lblBackgroundColour.BackColor;
+            cpd.ShowDialog();
+
+            lblPalette1.BackColor = cpd.Color;
         }
 
         private void lblPalette1_Click(object sender, EventArgs e)
         {
-            colorDialog1.AllowFullOpen = true;
-            colorDialog1.AnyColor = true;
-            colorDialog1.FullOpen = true;
-            colorDialog1.SolidColorOnly = true;
-            colorDialog1.Color = lblPalette1.BackColor;
-            if (colorDialog1.ShowDialog() != DialogResult.Cancel)
-            {
-                lblPalette1.BackColor = colorDialog1.Color;
-            }
+
+            ColorPicker.ColorPickerDialog cpd = new ColorPicker.ColorPickerDialog();
+            cpd.Color = lblPalette1.BackColor;
+            cpd.ShowDialog();
+
+            lblPalette1.BackColor = cpd.Color;
 
         }
 
         private void lblPalette2_Click(object sender, EventArgs e)
         {
-            colorDialog1.AllowFullOpen = true;
-            colorDialog1.AnyColor = true;
-            colorDialog1.FullOpen = true;
-            colorDialog1.SolidColorOnly = true;
-            colorDialog1.Color = lblPalette2.BackColor;
-            if (colorDialog1.ShowDialog() != DialogResult.Cancel)
-            {
-                lblPalette2.BackColor = colorDialog1.Color;
-            }
+            ColorPicker.ColorPickerDialog cpd = new ColorPicker.ColorPickerDialog();
+            cpd.Color = lblPalette2.BackColor;
+            cpd.ShowDialog();
 
+            lblPalette2.BackColor = cpd.Color;
 
         }
 
         private void lblPalette3_Click(object sender, EventArgs e)
         {
-            colorDialog1.AllowFullOpen = true;
-            colorDialog1.AnyColor = true;
-            colorDialog1.FullOpen = true;
-            colorDialog1.SolidColorOnly = true;
-            colorDialog1.Color = lblPalette3.BackColor;
-            if (colorDialog1.ShowDialog() != DialogResult.Cancel)
-            {
-                lblPalette3.BackColor = colorDialog1.Color;
-            }
+            ColorPicker.ColorPickerDialog cpd = new ColorPicker.ColorPickerDialog();
+            cpd.Color = lblPalette3.BackColor;
+            cpd.ShowDialog();
 
+            lblPalette3.BackColor = cpd.Color;
         }
 
         private void lblPalette4_Click(object sender, EventArgs e)
         {
-            colorDialog1.AllowFullOpen = true;
-            colorDialog1.AnyColor = true;
-            colorDialog1.FullOpen = true;
-            colorDialog1.SolidColorOnly = true;
-            colorDialog1.Color = lblPalette4.BackColor;
-            if (colorDialog1.ShowDialog() != DialogResult.Cancel)
-            {
-                lblPalette4.BackColor = colorDialog1.Color;
-            }
+            ColorPicker.ColorPickerDialog cpd = new ColorPicker.ColorPickerDialog();
+            cpd.Color = lblPalette4.BackColor;
+            cpd.ShowDialog();
 
+            lblPalette4.BackColor = cpd.Color;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -341,13 +319,13 @@ namespace PatternCreator
 
                 if (isPreviewImage)
                 {
-                    pictureBox1.Image = imagePreview(ddsFile.Image(chkShowRed.Checked, chkShowGreen.Checked, chkShowBlue.Checked, chkShowAlpha.Checked));
+                    pictureBox1.Image = imagePreview(ddsFile.Image(chkShowRed.Checked, chkShowGreen.Checked, chkShowBlue.Checked, chkShowAlpha.Checked, false));
                     //pictureBox1.Image = ddsFile.PreviewImage(chkShowRed.Checked, lblPalette1.BackColor, chkShowGreen.Checked, lblPalette2.BackColor, chkShowBlue.Checked, lblPalette3.BackColor, chkShowAlpha.Checked, lblPalette4.BackColor);
 
                 }
                 else
                 {
-                    pictureBox1.Image = ddsFile.Image(chkShowRed.Checked, chkShowGreen.Checked, chkShowBlue.Checked, chkShowAlpha.Checked);
+                    pictureBox1.Image = ddsFile.Image(chkShowRed.Checked, chkShowGreen.Checked, chkShowBlue.Checked, chkShowAlpha.Checked, true);
                 }
 
                 input.Close();
@@ -544,8 +522,8 @@ namespace PatternCreator
 
                 string pName = "DPP_" + sanitiseString(txtCreatorName.Text.Trim()) + "_" + fName + "_" + sanitiseString(dateTimePicker1.Value.ToString());
 
-                ulong instanceId = Gibbed.Helpers.StringHelpers.FNV64(pName);
-                ulong specInstanceId = Gibbed.Helpers.StringHelpers.FNV64(pName + "_spec");
+                ulong instanceId = Gibbed.Helpers.StringHelpers.HashFNV64(pName);
+                ulong specInstanceId = Gibbed.Helpers.StringHelpers.HashFNV64(pName + "_spec");
 
                 //uint groupId = 33554432;
                 uint groupId = 0;
@@ -602,10 +580,7 @@ namespace PatternCreator
                     sb.AppendLine("      <step type=\"ColorFill\" color=\"($Color 3)\" enableBlending=\"" + chkPalette1Blend.Checked.ToString().ToLower() + "\" srcBlend=\"DestAlpha\" dstBlend=\"InvDestAlpha\" sourceRect=\"0,0,1,1\" />");
                 }
 
-                if (chkUseDefaultSpecular.Checked)
-                {
-                    sb.AppendLine("      <step type=\"ChannelSelect\" texture=\"($specmap)\" select=\"1.0,0.0,0.0,0.0\" colorWrite=\"Alpha\" />");
-                }
+                sb.AppendLine("      <step type=\"ChannelSelect\" texture=\"($specmap)\" select=\"1.0,0.0,0.0,0.0\" colorWrite=\"Alpha\" />");
                 sb.AppendLine("    </destination>");
                 sb.AppendLine("  </texturePart>");
 
@@ -818,11 +793,11 @@ namespace PatternCreator
 
                     Stream sims3pack = File.Open(savePath + saveName + ".Sims3Pack", FileMode.Create, FileAccess.ReadWrite);
 
-                    Gibbed.Helpers.StreamHelpers.WriteU32(sims3pack, 7);
-                    Gibbed.Helpers.StreamHelpers.WriteASCII(sims3pack, "TS3Pack");
-                    Gibbed.Helpers.StreamHelpers.WriteU16(sims3pack, 257);
-                    Gibbed.Helpers.StreamHelpers.WriteU32(sims3pack, (uint)s3p_xml.Length);
-                    Gibbed.Helpers.StreamHelpers.WriteUTF8(sims3pack, s3p_xml);
+                    Gibbed.Helpers.StreamHelpers.WriteValueU32(sims3pack, 7);
+                    Gibbed.Helpers.StreamHelpers.WriteStringASCII(sims3pack, "TS3Pack");
+                    Gibbed.Helpers.StreamHelpers.WriteValueU16(sims3pack, 257);
+                    Gibbed.Helpers.StreamHelpers.WriteValueU32(sims3pack, (uint)s3p_xml.Length);
+                    Gibbed.Helpers.StreamHelpers.WriteStringUTF8(sims3pack, s3p_xml);
 
                     ReadWriteStream(output, sims3pack, true);
                     //ReadWriteStream(pngFile, sims3pack, true);
