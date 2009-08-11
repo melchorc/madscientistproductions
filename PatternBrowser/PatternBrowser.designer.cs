@@ -39,12 +39,17 @@
             this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnLoadCustom = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button3 = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(394, 11);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button1.Location = new System.Drawing.Point(250, 394);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -72,10 +77,11 @@
             "Plastic_Rubber",
             "Rock_Stone",
             "Masonry",
-            "Miscellaneous"});
+            "Miscellaneous",
+            "* Custom"});
             this.comboBox1.Location = new System.Drawing.Point(88, 9);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(153, 21);
+            this.comboBox1.Size = new System.Drawing.Size(214, 21);
             this.comboBox1.TabIndex = 3;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
@@ -90,10 +96,11 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(248, 9);
+            this.label2.Location = new System.Drawing.Point(308, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(221, 18);
+            this.label2.Size = new System.Drawing.Size(250, 21);
             this.label2.TabIndex = 5;
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // statusStrip1
             // 
@@ -102,9 +109,9 @@
             this.toolStripStatusLabel2,
             this.toolStripStatusLabel3,
             this.toolStripStatusLabel4});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 420);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 422);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(562, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(558, 22);
             this.statusStrip1.TabIndex = 9;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -116,7 +123,7 @@
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(547, 17);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(543, 17);
             this.toolStripStatusLabel2.Spring = true;
             // 
             // toolStripStatusLabel3
@@ -137,15 +144,16 @@
             this.panel1.AutoScroll = true;
             this.panel1.Location = new System.Drawing.Point(0, 53);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(562, 364);
+            this.panel1.Size = new System.Drawing.Size(558, 337);
             this.panel1.TabIndex = 10;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.Resize += new System.EventHandler(this.panel1_Resize);
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(475, 11);
+            this.button2.Location = new System.Drawing.Point(483, 394);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 11;
@@ -153,12 +161,51 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(533, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Click on a pattern thumbnail in the view below to select it, then click OK to sen" +
+                "d it back to CTU for interrogation.";
+            // 
+            // btnLoadCustom
+            // 
+            this.btnLoadCustom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnLoadCustom.Location = new System.Drawing.Point(0, 394);
+            this.btnLoadCustom.Name = "btnLoadCustom";
+            this.btnLoadCustom.Size = new System.Drawing.Size(134, 23);
+            this.btnLoadCustom.TabIndex = 13;
+            this.btnLoadCustom.Text = "Import Custom Pattern";
+            this.btnLoadCustom.UseVisualStyleBackColor = true;
+            this.btnLoadCustom.Click += new System.EventHandler(this.btnLoadCustom_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.Title = "Select a custom pattern";
+            // 
+            // button3
+            // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button3.Location = new System.Drawing.Point(140, 394);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(104, 23);
+            this.button3.TabIndex = 14;
+            this.button3.Text = "Clear Custom List";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // PatternBrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(562, 442);
+            this.ClientSize = new System.Drawing.Size(558, 444);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.btnLoadCustom);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
@@ -189,6 +236,10 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnLoadCustom;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button button3;
     }
 }
 

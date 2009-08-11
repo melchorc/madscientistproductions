@@ -54,17 +54,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ColorPicker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CASPartEditor\bin\Debug\ColorPicker.dll</HintPath>
+    </Reference>
     <Reference Include="Gibbed.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Gibbed.Sims3.FileFormats\bin\Debug\Gibbed.Helpers.dll</HintPath>
+      <HintPath>..\..\CASPartEditor\bin\Debug\Gibbed.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="Gibbed.RefPack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Gibbed.Sims3.FileFormats\bin\Debug\Gibbed.RefPack.dll</HintPath>
+      <HintPath>..\..\CASPartEditor\bin\Debug\Gibbed.RefPack.dll</HintPath>
     </Reference>
     <Reference Include="Gibbed.Sims3.FileFormats, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Gibbed.Sims3.FileFormats\bin\Debug\Gibbed.Sims3.FileFormats.dll</HintPath>
+      <HintPath>..\..\CASPartEditor\bin\Debug\Gibbed.Sims3.FileFormats.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

@@ -58,7 +58,6 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.button4 = new System.Windows.Forms.Button();
             this.lblSpecularCustom = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.chkPalette4Blend = new System.Windows.Forms.CheckBox();
             this.chkPalette3Blend = new System.Windows.Forms.CheckBox();
             this.chkPalette2Blend = new System.Windows.Forms.CheckBox();
@@ -132,7 +131,7 @@
             // newPatternToolStripMenuItem
             // 
             this.newPatternToolStripMenuItem.Name = "newPatternToolStripMenuItem";
-            this.newPatternToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newPatternToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.newPatternToolStripMenuItem.Text = "New Pattern";
             this.newPatternToolStripMenuItem.Click += new System.EventHandler(this.newPatternToolStripMenuItem_Click);
             // 
@@ -140,38 +139,38 @@
             // 
             this.loadPatternToolStripMenuItem.Enabled = false;
             this.loadPatternToolStripMenuItem.Name = "loadPatternToolStripMenuItem";
-            this.loadPatternToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loadPatternToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.loadPatternToolStripMenuItem.Text = "Load Pattern";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(133, 6);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Enabled = false;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(133, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -377,7 +376,6 @@
             // 
             this.groupBox6.Controls.Add(this.button4);
             this.groupBox6.Controls.Add(this.lblSpecularCustom);
-            this.groupBox6.Controls.Add(this.button1);
             this.groupBox6.Controls.Add(this.chkPalette4Blend);
             this.groupBox6.Controls.Add(this.chkPalette3Blend);
             this.groupBox6.Controls.Add(this.chkPalette2Blend);
@@ -428,17 +426,6 @@
             this.lblSpecularCustom.Name = "lblSpecularCustom";
             this.lblSpecularCustom.Size = new System.Drawing.Size(0, 13);
             this.lblSpecularCustom.TabIndex = 78;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(330, 148);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(133, 24);
-            this.button1.TabIndex = 26;
-            this.button1.Text = "Edit Advanced XML";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // chkPalette4Blend
             // 
@@ -895,7 +882,6 @@
         private System.Windows.Forms.CheckBox chkPalette2Blend;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtCreatorHomepage;
         private System.Windows.Forms.Label label2;

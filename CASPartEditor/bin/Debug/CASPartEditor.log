@@ -1,0 +1,584 @@
+11/08/2009 02:30:07: Initialising PatternBrowser.
+11/08/2009 02:30:07: Loading patternList.xml.
+11/08/2009 02:30:08: 657 patterns found.
+11/08/2009 02:30:08: Loading customPatterns.xml.
+11/08/2009 02:30:08: 657 patterns found.
+11/08/2009 02:30:08: Initialising CTU main form.
+11/08/2009 02:30:08: Setting icon.
+11/08/2009 02:30:08: Checking license.
+11/08/2009 02:30:08: Setting version number.
+11/08/2009 02:30:08: Checking debug mode.
+11/08/2009 02:30:08: LookupTypes.
+11/08/2009 02:30:08: lookupList length: 1561.
+11/08/2009 02:30:08: LookupTypes done.
+11/08/2009 02:30:08: Populating types list.
+11/08/2009 02:30:08: Finished Initialisation.
+11/08/2009 02:30:16: Mesh Name: afTopBlouseOffShoulder.
+11/08/2009 02:30:16: Clothing Order: 1400.
+11/08/2009 02:30:16: CAS Part Type: 5 (0x00000005).
+11/08/2009 02:30:16: Type: 8 (0x00000008).
+11/08/2009 02:30:16: Age/Gender: 73776 (0x00012030).
+11/08/2009 02:30:16: Clothing Category: 2097158 (0x00200006).
+11/08/2009 02:30:16: Unk String: bare.
+11/08/2009 02:30:16: Unk2: 0.
+11/08/2009 02:30:16: TGI Index Body Part 1: 12.
+11/08/2009 02:30:16: TGI Index Body Part 2: 12.
+11/08/2009 02:30:16: TGI Index Blend Info Fat: 13.
+11/08/2009 02:30:16: TGI Index Blend Info Fit: 14.
+11/08/2009 02:30:16: TGI Index Blend Info Thin: 15.
+11/08/2009 02:30:16: TGI Index Blend Info Special: 16.
+11/08/2009 02:30:16: Unk5: 7.
+11/08/2009 02:30:16: VPXY: 17.
+11/08/2009 02:30:16: Count 2: 3.
+11/08/2009 02:30:16: #0: unkNum : 1.
+11/08/2009 02:30:16: #0: unk2: 8.
+11/08/2009 02:30:16: #0: unkRepeatInner: 1.
+11/08/2009 02:30:16: #0.0: One: 0.
+11/08/2009 02:30:16: #0.0: Two: 8192.
+11/08/2009 02:30:16: #0.0: Three: 32768.
+11/08/2009 02:30:16: #1: unkNum : 2.
+11/08/2009 02:30:16: #1: unk2: 31.
+11/08/2009 02:30:16: #1: unkRepeatInner: 1.
+11/08/2009 02:30:16: #1.0: One: 0.
+11/08/2009 02:30:16: #1.0: Two: 8192.
+11/08/2009 02:30:16: #1.0: Three: 32768.
+11/08/2009 02:30:16: #2: unkNum : 3.
+11/08/2009 02:30:16: #2: unk2: 31.
+11/08/2009 02:30:16: #2: unkRepeatInner: 1.
+11/08/2009 02:30:16: #2.0: One: 0.
+11/08/2009 02:30:16: #2.0: Two: 8192.
+11/08/2009 02:30:16: #2.0: Three: 32768.
+11/08/2009 02:30:16: TGI Index Diffuse: 18.
+11/08/2009 02:30:16: TGI Index Specular: 19.
+11/08/2009 02:30:16: Diffuse Links: 0.
+11/08/2009 02:30:16: Specular Links: 0.
+11/08/2009 02:30:16: Count 5: 5.
+11/08/2009 02:30:16: #0: 20.
+11/08/2009 02:30:16: #1: 21.
+11/08/2009 02:30:16: #2: 22.
+11/08/2009 02:30:16: #3: 23.
+11/08/2009 02:30:16: #4: 24.
+11/08/2009 02:30:16: TGI #0 dds: key:00B2D882:00000000:B5683B98CA67ECFC.
+11/08/2009 02:30:16: TGI #1 dds: key:00B2D882:00000000:646B487723D17864.
+11/08/2009 02:30:16: TGI #2 dds: key:00B2D882:00000000:B5683B98CA67ECFE.
+11/08/2009 02:30:16: TGI #3 dds: key:00B2D882:00000000:75F8F21E0F143CAC.
+11/08/2009 02:30:16: TGI #4 dds: key:00B2D882:00000000:B4CDC208D8D51BEE.
+11/08/2009 02:30:16: TGI #5 dds: key:00B2D882:00000000:B4CDC208D8D51BFC.
+11/08/2009 02:30:16: TGI #6 dds: key:00B2D882:00000000:B5683B98CA67ECE0.
+11/08/2009 02:30:16: TGI #7 dds: key:00B2D882:00000000:90DE6DB90E35FEB7.
+11/08/2009 02:30:16: TGI #8 dds: key:00B2D882:00000000:7FF3C2CE4435EAA1.
+11/08/2009 02:30:16: TGI #9 xml: key:0333406C:00000000:71D5EFB6C391BC17.
+11/08/2009 02:30:16: TGI #10 xml: key:0333406C:00000000:BE63187EBBDBBC3B.
+11/08/2009 02:30:16: TGI #11 xml: key:0333406C:00000000:52E8BE209C703561.
+11/08/2009 02:30:16: TGI #12 : key:00000000:00000000:0000000000000000.
+11/08/2009 02:30:16: TGI #13 bblend: key:062C8204:00000000:210418C26BABFA5E.
+11/08/2009 02:30:16: TGI #14 bblend: key:062C8204:00000000:210410C26BABECE6.
+11/08/2009 02:30:16: TGI #15 bblend: key:062C8204:00000000:4E7D3F5CB215FB54.
+11/08/2009 02:30:16: TGI #16 bblend: key:062C8204:00000000:7B078C7439C0EBAE.
+11/08/2009 02:30:16: TGI #17 vpxy: key:736884F1:00000001:0000000000BEF569.
+11/08/2009 02:30:16: TGI #18 txtc: key:033A1435:00BEF569:8F8C95267431DF7A.
+11/08/2009 02:30:16: TGI #19 txtc: key:033A1435:00BEF569:BE274C6E3844567B.
+11/08/2009 02:30:16: TGI #20 : key:0355E0A6:00000001:00000000911DB2FF.
+11/08/2009 02:30:16: TGI #21 : key:0355E0A6:00000001:0000000044690C1F.
+11/08/2009 02:30:16: TGI #22 : key:0355E0A6:00000001:000000003C68FFA7.
+11/08/2009 02:30:16: TGI #23 : key:0355E0A6:00000001:00000000BF48E6DF.
+11/08/2009 02:30:16: TGI #24 : key:0355E0A6:00000001:00000000C12A3D8F.
+11/08/2009 02:30:16: <preset><complate name="CasRgbMask" reskey="key:0333406C:00000000:52E8BE209C703561"><value key="assetRoot" value="X:" />
+<value key="daeFileName" value="afTopBlouseOffShoulder" />
+<value key="age" value="A" />
+<value key="gender" value="F" />
+<value key="bodyType" value="Top" />
+<value key="partType" value="Body" />
+<value key="filename" value="CasRgbMask" />
+<value key="Overlay" value="key:00B2D882:00000000:B5683B98CA67ECFC" />
+<value key="Mask" value="key:00B2D882:00000000:646B487723D17864" />
+<value key="Multiplier" value="key:00B2D882:00000000:B5683B98CA67ECFE" />
+<value key="Stencil A" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil B" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil C" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil D" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil E" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil F" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Pattern A" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Pattern A Enabled" value="True" />
+<value key="Pattern A Linked" value="false" />
+<value key="Pattern A Tiling" value="4.0000,4.0000" />
+<value key="Pattern B" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Pattern B Enabled" value="False" />
+<value key="Pattern B Linked" value="false" />
+<value key="Pattern B Tiling" value="4.0000,4.0000" />
+<value key="Pattern C" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Pattern C Enabled" value="False" />
+<value key="Pattern C Linked" value="false" />
+<value key="Pattern C Tiling" value="4.0000,4.0000" />
+<value key="Stencil A Tiling" value="1.0000,1.0000" />
+<value key="Stencil B Tiling" value="1.0000,1.0000" />
+<value key="Stencil C Tiling" value="1.0000,1.0000" />
+<value key="Stencil D Tiling" value="1.0000,1.0000" />
+<value key="Stencil E Tiling" value="1.0000,1.0000" />
+<value key="Stencil F Tiling" value="1.0000,1.0000" />
+<value key="Stencil A Rotation" value="0" />
+<value key="Stencil B Rotation" value="0" />
+<value key="Stencil C Rotation" value="0" />
+<value key="Stencil D Rotation" value="0" />
+<value key="Stencil E Rotation" value="0" />
+<value key="Stencil F Rotation" value="0" />
+<value key="Stencil A Enabled" value="False" />
+<value key="Stencil B Enabled" value="False" />
+<value key="Stencil C Enabled" value="False" />
+<value key="Stencil D Enabled" value="False" />
+<value key="Stencil E Enabled" value="False" />
+<value key="Stencil F Enabled" value="False" />
+<value key="IsNaked" value="False" />
+<value key="IsNotNaked" value="True" />
+<value key="Skin Specular" value="key:00B2D882:00000000:B4CDC208D8D51BEE" />
+<value key="Skin Ambient" value="key:00B2D882:00000000:B4CDC208D8D51BFC" />
+<value key="Clothing Specular" value="key:00B2D882:00000000:B5683B98CA67ECE0" />
+<value key="Clothing Ambient" value="key:00B2D882:00000000:90DE6DB90E35FEB7" />
+<value key="Rotation" value="0" />
+<value key="Logo UpperLeft" value="0.30000,0.17000" />
+<value key="Logo LowerRight" value="0.43000,0.30000" />
+<value key="Logo Enabled" value="false" />
+<value key="Logo" value="Logos\None" />
+<value key="Part Mask" value="key:00B2D882:00000000:7FF3C2CE4435EAA1" />
+<pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern A"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.8409,0.8465,0.8111,1.0000" />
+</pattern><pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern B"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.35,0.35,0.52,1.0000" />
+</pattern><pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern C"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.35,0.35,0.52,1.0000" />
+</pattern><pattern name="None" reskey="key:0333406C:00000000:BE63187EBBDBBC3B" variable="Logo"><value key="assetRoot" value="X:" />
+<value key="filename" value="Logos\None" />
+</pattern></complate></preset>.
+11/08/2009 02:30:16: <preset><complate name="CasRgbMask" reskey="key:0333406C:00000000:52E8BE209C703561"><value key="Pattern C Linked" value="false" />
+<value key="Stencil B Rotation" value="0.0000" />
+<value key="Pattern B Enabled" value="False" />
+<value key="Stencil B Tiling" value="1.0000,1.0000" />
+<value key="Logo" value="Logos\None" />
+<value key="Stencil B Enabled" value="false" />
+<value key="Stencil E Enabled" value="false" />
+<value key="Stencil A" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Mask" value="key:00B2D882:00000000:646B487723D17864" />
+<value key="Stencil B" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil C" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Skin Ambient" value="key:00B2D882:00000000:B4CDC208D8D51BFC" />
+<value key="Stencil D" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Pattern A Tiling" value="4.0000,4.0000" />
+<value key="Clothing Ambient" value="key:00B2D882:00000000:90DE6DB90E35FEB7" />
+<value key="Rotation" value="0.0000" />
+<value key="Stencil E" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil F" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Logo UpperLeft" value="0.3000,0.1700" />
+<value key="partType" value="Body" />
+<value key="Stencil C Tiling" value="1.0000,1.0000" />
+<value key="age" value="A" />
+<value key="Stencil D Rotation" value="0.0000" />
+<value key="Skin Specular" value="key:00B2D882:00000000:B4CDC208D8D51BEE" />
+<value key="Pattern B Tiling" value="4.0000,4.0000" />
+<value key="Stencil A Rotation" value="0.0000" />
+<value key="gender" value="F" />
+<value key="Pattern C Enabled" value="False" />
+<value key="Stencil D Tiling" value="1.0000,1.0000" />
+<value key="Stencil C Enabled" value="false" />
+<value key="Stencil F Enabled" value="false" />
+<value key="assetRoot" value="X:" />
+<value key="Pattern C Tiling" value="4.0000,4.0000" />
+<value key="Clothing Specular" value="key:00B2D882:00000000:B5683B98CA67ECE0" />
+<value key="Stencil E Tiling" value="1.0000,1.0000" />
+<value key="Stencil F Rotation" value="0.0000" />
+<value key="Stencil C Rotation" value="0.0000" />
+<value key="IsNaked" value="false" />
+<value key="Pattern A Linked" value="false" />
+<value key="bodyType" value="Top" />
+<value key="Pattern A Enabled" value="True" />
+<value key="Stencil A Enabled" value="false" />
+<value key="daeFileName" value="afTopBlouseOffShoulder" />
+<value key="Stencil F Tiling" value="1.0000,1.0000" />
+<value key="IsNotNaked" value="true" />
+<value key="Stencil D Enabled" value="false" />
+<value key="Logo LowerRight" value="0.4300,0.3000" />
+<value key="Pattern A" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Pattern B" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Pattern B Linked" value="false" />
+<value key="Pattern C" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Logo Enabled" value="false" />
+<value key="Multiplier" value="key:00B2D882:00000000:B5683B98CA67ECFE" />
+<value key="Stencil A Tiling" value="1.0000,1.0000" />
+<value key="filename" value="CasRgbMask" />
+<value key="Overlay" value="key:00B2D882:00000000:B5683B98CA67ECFC" />
+<value key="Stencil E Rotation" value="0.0000" />
+<value key="Part Mask" value="key:00B2D882:00000000:7FF3C2CE4435EAA1" />
+<pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern A"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.8470588,0.7372549,0.5529412,1.0" />
+</pattern><pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern B"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.8470588,0.7372549,0.5529412,1.0" />
+</pattern><pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern C"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.8470588,0.7372549,0.5529412,1.0" />
+</pattern><pattern name="None" reskey="key:0333406C:00000000:BE63187EBBDBBC3B" variable="Logo"><value key="assetRoot" value="X:" />
+<value key="filename" value="Logos\None" />
+</pattern></complate></preset>.
+11/08/2009 02:30:16: <preset><complate name="CasRgbMask" reskey="key:0333406C:00000000:52E8BE209C703561"><value key="Pattern C Linked" value="false" />
+<value key="Stencil B Rotation" value="0.0000" />
+<value key="Pattern B Enabled" value="False" />
+<value key="Stencil B Tiling" value="1.0000,1.0000" />
+<value key="Logo" value="Logos\None" />
+<value key="Stencil B Enabled" value="false" />
+<value key="Stencil E Enabled" value="false" />
+<value key="Stencil A" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Mask" value="key:00B2D882:00000000:646B487723D17864" />
+<value key="Stencil B" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil C" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Skin Ambient" value="key:00B2D882:00000000:B4CDC208D8D51BFC" />
+<value key="Stencil D" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Pattern A Tiling" value="4.0000,4.0000" />
+<value key="Clothing Ambient" value="key:00B2D882:00000000:90DE6DB90E35FEB7" />
+<value key="Rotation" value="0.0000" />
+<value key="Stencil E" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil F" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Logo UpperLeft" value="0.3000,0.1700" />
+<value key="partType" value="Body" />
+<value key="Stencil C Tiling" value="1.0000,1.0000" />
+<value key="age" value="A" />
+<value key="Stencil D Rotation" value="0.0000" />
+<value key="Skin Specular" value="key:00B2D882:00000000:B4CDC208D8D51BEE" />
+<value key="Pattern B Tiling" value="4.0000,4.0000" />
+<value key="Stencil A Rotation" value="0.0000" />
+<value key="gender" value="F" />
+<value key="Pattern C Enabled" value="False" />
+<value key="Stencil D Tiling" value="1.0000,1.0000" />
+<value key="Stencil C Enabled" value="false" />
+<value key="Stencil F Enabled" value="false" />
+<value key="assetRoot" value="X:" />
+<value key="Pattern C Tiling" value="4.0000,4.0000" />
+<value key="Clothing Specular" value="key:00B2D882:00000000:B5683B98CA67ECE0" />
+<value key="Stencil E Tiling" value="1.0000,1.0000" />
+<value key="Stencil F Rotation" value="0.0000" />
+<value key="Stencil C Rotation" value="0.0000" />
+<value key="IsNaked" value="false" />
+<value key="Pattern A Linked" value="false" />
+<value key="bodyType" value="Top" />
+<value key="Pattern A Enabled" value="True" />
+<value key="Stencil A Enabled" value="false" />
+<value key="daeFileName" value="afTopBlouseOffShoulder" />
+<value key="Stencil F Tiling" value="1.0000,1.0000" />
+<value key="IsNotNaked" value="true" />
+<value key="Stencil D Enabled" value="false" />
+<value key="Logo LowerRight" value="0.4300,0.3000" />
+<value key="Pattern A" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Pattern B" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Pattern B Linked" value="false" />
+<value key="Pattern C" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Logo Enabled" value="false" />
+<value key="Multiplier" value="key:00B2D882:00000000:B5683B98CA67ECFE" />
+<value key="Stencil A Tiling" value="1.0000,1.0000" />
+<value key="filename" value="CasRgbMask" />
+<value key="Overlay" value="key:00B2D882:00000000:B5683B98CA67ECFC" />
+<value key="Stencil E Rotation" value="0.0000" />
+<value key="Part Mask" value="key:00B2D882:00000000:7FF3C2CE4435EAA1" />
+<pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern A"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.6901961,0.8352941,0.8431373,1.0" />
+</pattern><pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern B"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.6901961,0.8352941,0.8431373,1.0" />
+</pattern><pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern C"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.6901961,0.8352941,0.8431373,1.0" />
+</pattern><pattern name="None" reskey="key:0333406C:00000000:BE63187EBBDBBC3B" variable="Logo"><value key="assetRoot" value="X:" />
+<value key="filename" value="Logos\None" />
+</pattern></complate></preset>.
+11/08/2009 02:30:18: Mesh Name: afTopShirt34SleeveBoatNeck_necklace.
+11/08/2009 02:30:18: Clothing Order: 1900.
+11/08/2009 02:30:18: CAS Part Type: 5 (0x00000005).
+11/08/2009 02:30:18: Type: 8 (0x00000008).
+11/08/2009 02:30:18: Age/Gender: 73776 (0x00012030).
+11/08/2009 02:30:18: Clothing Category: 2097410 (0x00200102).
+11/08/2009 02:30:18: Unk String: bare.
+11/08/2009 02:30:18: Unk2: 0.
+11/08/2009 02:30:18: TGI Index Body Part 1: 14.
+11/08/2009 02:30:18: TGI Index Body Part 2: 14.
+11/08/2009 02:30:18: TGI Index Blend Info Fat: 15.
+11/08/2009 02:30:18: TGI Index Blend Info Fit: 16.
+11/08/2009 02:30:18: TGI Index Blend Info Thin: 17.
+11/08/2009 02:30:18: TGI Index Blend Info Special: 18.
+11/08/2009 02:30:18: Unk5: 7.
+11/08/2009 02:30:18: VPXY: 19.
+11/08/2009 02:30:18: Count 2: 3.
+11/08/2009 02:30:18: #0: unkNum : 1.
+11/08/2009 02:30:18: #0: unk2: 8.
+11/08/2009 02:30:18: #0: unkRepeatInner: 1.
+11/08/2009 02:30:18: #0.0: One: 0.
+11/08/2009 02:30:18: #0.0: Two: 8192.
+11/08/2009 02:30:18: #0.0: Three: 32768.
+11/08/2009 02:30:19: #1: unkNum : 2.
+11/08/2009 02:30:19: #1: unk2: 31.
+11/08/2009 02:30:19: #1: unkRepeatInner: 1.
+11/08/2009 02:30:19: #1.0: One: 0.
+11/08/2009 02:30:19: #1.0: Two: 8192.
+11/08/2009 02:30:19: #1.0: Three: 32768.
+11/08/2009 02:30:19: #2: unkNum : 3.
+11/08/2009 02:30:19: #2: unk2: 31.
+11/08/2009 02:30:19: #2: unkRepeatInner: 1.
+11/08/2009 02:30:19: #2.0: One: 0.
+11/08/2009 02:30:19: #2.0: Two: 8192.
+11/08/2009 02:30:19: #2.0: Three: 32768.
+11/08/2009 02:30:19: TGI Index Diffuse: 20.
+11/08/2009 02:30:19: TGI Index Specular: 21.
+11/08/2009 02:30:19: Diffuse Links: 0.
+11/08/2009 02:30:19: Specular Links: 0.
+11/08/2009 02:30:19: Count 5: 5.
+11/08/2009 02:30:19: #0: 22.
+11/08/2009 02:30:19: #1: 23.
+11/08/2009 02:30:19: #2: 24.
+11/08/2009 02:30:19: #3: 25.
+11/08/2009 02:30:19: #4: 26.
+11/08/2009 02:30:19: TGI #0 dds: key:00B2D882:00000000:75F8F21E0F143CAC.
+11/08/2009 02:30:19: TGI #1 dds: key:00B2D882:00000000:D4C17CDD859BA7A3.
+11/08/2009 02:30:19: TGI #2 dds: key:00B2D882:00000000:B4CDC208D8D51BFC.
+11/08/2009 02:30:19: TGI #3 dds: key:00B2D882:00000000:90DE6DB90E35FEB7.
+11/08/2009 02:30:19: TGI #4 dds: key:00B2D882:00000000:B4CDC208D8D51BEE.
+11/08/2009 02:30:19: TGI #5 dds: key:00B2D882:00000000:F6C593E77167C6C6.
+11/08/2009 02:30:19: TGI #6 dds: key:00B2D882:00000000:F6C593E77167C6D8.
+11/08/2009 02:30:19: TGI #7 dds: key:00B2D882:00000000:F6C593E77167C6DA.
+11/08/2009 02:30:19: TGI #8 dds: key:00B2D882:00000000:7FF3C2CE4435EAA1.
+11/08/2009 02:30:19: TGI #9 dds: key:00B2D882:00000000:58C811751DFBCE89.
+11/08/2009 02:30:19: TGI #10 xml: key:0333406C:00000000:58C811751DFBCE89.
+11/08/2009 02:30:19: TGI #11 xml: key:0333406C:00000000:71D5EFB6C391BC17.
+11/08/2009 02:30:19: TGI #12 xml: key:0333406C:00000000:BE63187EBBDBBC3B.
+11/08/2009 02:30:19: TGI #13 xml: key:0333406C:00000000:52E8BE209C703561.
+11/08/2009 02:30:19: TGI #14 : key:00000000:00000000:0000000000000000.
+11/08/2009 02:30:19: TGI #15 bblend: key:062C8204:00000000:8D4B3D6FBC92924C.
+11/08/2009 02:30:19: TGI #16 bblend: key:062C8204:00000000:8D4B356FBC9284D4.
+11/08/2009 02:30:19: TGI #17 bblend: key:062C8204:00000000:0B12B3DD12AD93F6.
+11/08/2009 02:30:19: TGI #18 bblend: key:062C8204:00000000:706EF6D3A42E9A40.
+11/08/2009 02:30:19: TGI #19 vpxy: key:736884F1:00000001:00000000007DF6BA.
+11/08/2009 02:30:19: TGI #20 txtc: key:033A1435:007DF6BA:379F607A890C26E4.
+11/08/2009 02:30:19: TGI #21 txtc: key:033A1435:007DF6BA:EC1DB03B517B57E9.
+11/08/2009 02:30:19: TGI #22 : key:0355E0A6:00000001:00000000AB7161C9.
+11/08/2009 02:30:19: TGI #23 : key:0355E0A6:00000001:0000000085885205.
+11/08/2009 02:30:19: TGI #24 : key:0355E0A6:00000001:000000007D8845AD.
+11/08/2009 02:30:19: TGI #25 : key:0355E0A6:00000001:000000004A492F09.
+11/08/2009 02:30:19: TGI #26 : key:0355E0A6:00000001:000000008F33E001.
+11/08/2009 02:30:19: <preset><complate name="CasRgbMask" reskey="key:0333406C:00000000:52E8BE209C703561"><value key="Pattern C Linked" value="false" />
+<value key="Stencil B Rotation" value="0" />
+<value key="Pattern B Enabled" value="true" />
+<value key="Stencil B Tiling" value="1.0000,1.0000" />
+<value key="Logo" value="Logos\None" />
+<value key="Stencil B Enabled" value="False" />
+<value key="Stencil E Enabled" value="False" />
+<value key="Stencil A" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Mask" value="key:00B2D882:00000000:D4C17CDD859BA7A3" />
+<value key="Stencil B" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil C" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Skin Ambient" value="key:00B2D882:00000000:B4CDC208D8D51BFC" />
+<value key="Stencil D" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Pattern A Tiling" value="4.0000,4.0000" />
+<value key="Clothing Ambient" value="key:00B2D882:00000000:90DE6DB90E35FEB7" />
+<value key="Rotation" value="0" />
+<value key="Stencil E" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil F" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Logo UpperLeft" value="0.30000,0.17000" />
+<value key="partType" value="Body" />
+<value key="Stencil C Tiling" value="1.0000,1.0000" />
+<value key="age" value="A" />
+<value key="Stencil D Rotation" value="0" />
+<value key="Skin Specular" value="key:00B2D882:00000000:B4CDC208D8D51BEE" />
+<value key="Pattern B Tiling" value="4.0000,4.0000" />
+<value key="Stencil A Rotation" value="0" />
+<value key="gender" value="F" />
+<value key="Pattern C Enabled" value="False" />
+<value key="Stencil D Tiling" value="1.0000,1.0000" />
+<value key="Stencil C Enabled" value="False" />
+<value key="Stencil F Enabled" value="False" />
+<value key="assetRoot" value="X:" />
+<value key="Pattern C Tiling" value="4.0000,4.0000" />
+<value key="Clothing Specular" value="key:00B2D882:00000000:F6C593E77167C6C6" />
+<value key="Stencil E Tiling" value="1.0000,1.0000" />
+<value key="Stencil F Rotation" value="0" />
+<value key="Stencil C Rotation" value="0" />
+<value key="IsNaked" value="False" />
+<value key="Pattern A Linked" value="false" />
+<value key="bodyType" value="Top" />
+<value key="Pattern A Enabled" value="true" />
+<value key="Stencil A Enabled" value="False" />
+<value key="daeFileName" value="afTopShirt34SleeveBoatNeck_necklace" />
+<value key="Stencil F Tiling" value="1.0000,1.0000" />
+<value key="IsNotNaked" value="True" />
+<value key="Stencil D Enabled" value="False" />
+<value key="Logo LowerRight" value="0.43000,0.30000" />
+<value key="Pattern A" value="Materials\Geometric\Stripe\stripesHor03Med_3" />
+<value key="Pattern B" value="Materials\Geometric\Stripe\stripesHor03Med_3" />
+<value key="Pattern B Linked" value="false" />
+<value key="Pattern C" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Logo Enabled" value="false" />
+<value key="Multiplier" value="key:00B2D882:00000000:F6C593E77167C6D8" />
+<value key="Stencil A Tiling" value="1.0000,1.0000" />
+<value key="filename" value="CasRgbMask" />
+<value key="Overlay" value="key:00B2D882:00000000:F6C593E77167C6DA" />
+<value key="Stencil E Rotation" value="0" />
+<value key="Part Mask" value="key:00B2D882:00000000:7FF3C2CE4435EAA1" />
+<pattern name="stripesHor03Med_3" reskey="key:0333406C:00000000:58C811751DFBCE89" variable="Pattern A"><value key="assetRoot" value="X:" />
+<value key="Color 1" value="0.5019608,0.2941177,0.4705883,1.0" />
+<value key="Color 2" value="0.6078432,0.5271753,0.5916382,1.0" />
+<value key="Color 3" value="0.8392157,0.800429,0.800429,1.0" />
+<value key="rgbmask" value="key:00B2D882:00000000:58C811751DFBCE89" />
+<value key="filename" value="Materials\Geometric\Stripe\stripesHor03Med_3" />
+</pattern><pattern name="stripesHor03Med_3" reskey="key:0333406C:00000000:58C811751DFBCE89" variable="Pattern B"><value key="assetRoot" value="X:" />
+<value key="Color 1" value="0.5019608,0.2941177,0.4705883,1.0" />
+<value key="Color 2" value="0.6078432,0.5271753,0.5916382,1.0" />
+<value key="Color 3" value="0.8392157,0.800429,0.800429,1.0" />
+<value key="rgbmask" value="key:00B2D882:00000000:58C811751DFBCE89" />
+<value key="filename" value="Materials\Geometric\Stripe\stripesHor03Med_3" />
+</pattern><pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern C"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.35,0.35,0.52,1.0000" />
+</pattern><pattern name="None" reskey="key:0333406C:00000000:BE63187EBBDBBC3B" variable="Logo"><value key="assetRoot" value="X:" />
+<value key="filename" value="Logos\None" />
+</pattern></complate></preset>.
+11/08/2009 02:30:19: <preset><complate name="CasRgbMask" reskey="key:0333406C:00000000:52E8BE209C703561"><value key="Pattern C Linked" value="false" />
+<value key="Stencil B Rotation" value="0" />
+<value key="Pattern B Enabled" value="true" />
+<value key="Stencil B Tiling" value="1.0000,1.0000" />
+<value key="Logo" value="Logos\None" />
+<value key="Stencil B Enabled" value="False" />
+<value key="Stencil E Enabled" value="False" />
+<value key="Stencil A" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Mask" value="key:00B2D882:00000000:D4C17CDD859BA7A3" />
+<value key="Stencil B" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil C" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Skin Ambient" value="key:00B2D882:00000000:B4CDC208D8D51BFC" />
+<value key="Stencil D" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Pattern A Tiling" value="4.0000,4.0000" />
+<value key="Clothing Ambient" value="key:00B2D882:00000000:90DE6DB90E35FEB7" />
+<value key="Rotation" value="0" />
+<value key="Stencil E" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil F" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Logo UpperLeft" value="0.30000,0.17000" />
+<value key="partType" value="Body" />
+<value key="Stencil C Tiling" value="1.0000,1.0000" />
+<value key="age" value="A" />
+<value key="Stencil D Rotation" value="0" />
+<value key="Skin Specular" value="key:00B2D882:00000000:B4CDC208D8D51BEE" />
+<value key="Pattern B Tiling" value="4.0000,4.0000" />
+<value key="Stencil A Rotation" value="0" />
+<value key="gender" value="F" />
+<value key="Pattern C Enabled" value="False" />
+<value key="Stencil D Tiling" value="1.0000,1.0000" />
+<value key="Stencil C Enabled" value="False" />
+<value key="Stencil F Enabled" value="False" />
+<value key="assetRoot" value="X:" />
+<value key="Pattern C Tiling" value="4.0000,4.0000" />
+<value key="Clothing Specular" value="key:00B2D882:00000000:F6C593E77167C6C6" />
+<value key="Stencil E Tiling" value="1.0000,1.0000" />
+<value key="Stencil F Rotation" value="0" />
+<value key="Stencil C Rotation" value="0" />
+<value key="IsNaked" value="False" />
+<value key="Pattern A Linked" value="false" />
+<value key="bodyType" value="Top" />
+<value key="Pattern A Enabled" value="true" />
+<value key="Stencil A Enabled" value="False" />
+<value key="daeFileName" value="afTopShirt34SleeveBoatNeck_necklace" />
+<value key="Stencil F Tiling" value="1.0000,1.0000" />
+<value key="IsNotNaked" value="True" />
+<value key="Stencil D Enabled" value="False" />
+<value key="Logo LowerRight" value="0.43000,0.30000" />
+<value key="Pattern A" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Pattern B" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Pattern B Linked" value="false" />
+<value key="Pattern C" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Logo Enabled" value="false" />
+<value key="Multiplier" value="key:00B2D882:00000000:F6C593E77167C6D8" />
+<value key="Stencil A Tiling" value="1.0000,1.0000" />
+<value key="filename" value="CasRgbMask" />
+<value key="Overlay" value="key:00B2D882:00000000:F6C593E77167C6DA" />
+<value key="Stencil E Rotation" value="0" />
+<value key="Part Mask" value="key:00B2D882:00000000:7FF3C2CE4435EAA1" />
+<pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern A"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.8392157,0.9882353,0.7019608,1.0" />
+</pattern><pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern B"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.8392157,0.9882353,0.7019608,1.0" />
+</pattern><pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern C"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.35,0.35,0.52,1.0000" />
+</pattern><pattern name="None" reskey="key:0333406C:00000000:BE63187EBBDBBC3B" variable="Logo"><value key="assetRoot" value="X:" />
+<value key="filename" value="Logos\None" />
+</pattern></complate></preset>.
+11/08/2009 02:30:19: <preset><complate name="CasRgbMask" reskey="key:0333406C:00000000:52E8BE209C703561"><value key="Pattern C Linked" value="false" />
+<value key="Stencil B Rotation" value="0.0000" />
+<value key="Pattern B Enabled" value="true" />
+<value key="Stencil B Tiling" value="1.0000,1.0000" />
+<value key="Logo" value="Logos\None" />
+<value key="Stencil B Enabled" value="false" />
+<value key="Stencil E Enabled" value="false" />
+<value key="Stencil A" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Mask" value="key:00B2D882:00000000:D4C17CDD859BA7A3" />
+<value key="Stencil B" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil C" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Skin Ambient" value="key:00B2D882:00000000:B4CDC208D8D51BFC" />
+<value key="Stencil D" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Pattern A Tiling" value="4.0000,4.0000" />
+<value key="Clothing Ambient" value="key:00B2D882:00000000:90DE6DB90E35FEB7" />
+<value key="Rotation" value="0.0000" />
+<value key="Stencil E" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Stencil F" value="key:00B2D882:00000000:75F8F21E0F143CAC" />
+<value key="Logo UpperLeft" value="0.3000,0.1700" />
+<value key="partType" value="Body" />
+<value key="Stencil C Tiling" value="1.0000,1.0000" />
+<value key="age" value="A" />
+<value key="Stencil D Rotation" value="0.0000" />
+<value key="Skin Specular" value="key:00B2D882:00000000:B4CDC208D8D51BEE" />
+<value key="Pattern B Tiling" value="4.0000,4.0000" />
+<value key="Stencil A Rotation" value="0.0000" />
+<value key="gender" value="F" />
+<value key="Pattern C Enabled" value="false" />
+<value key="Stencil D Tiling" value="1.0000,1.0000" />
+<value key="Stencil C Enabled" value="false" />
+<value key="Stencil F Enabled" value="false" />
+<value key="assetRoot" value="X:" />
+<value key="Pattern C Tiling" value="4.0000,4.0000" />
+<value key="Clothing Specular" value="key:00B2D882:00000000:F6C593E77167C6C6" />
+<value key="Stencil E Tiling" value="1.0000,1.0000" />
+<value key="Stencil F Rotation" value="0.0000" />
+<value key="Stencil C Rotation" value="0.0000" />
+<value key="IsNaked" value="false" />
+<value key="Pattern A Linked" value="false" />
+<value key="bodyType" value="Top" />
+<value key="Pattern A Enabled" value="true" />
+<value key="Stencil A Enabled" value="false" />
+<value key="daeFileName" value="afTopShirt34SleeveBoatNeck_necklace" />
+<value key="Stencil F Tiling" value="1.0000,1.0000" />
+<value key="IsNotNaked" value="true" />
+<value key="Stencil D Enabled" value="false" />
+<value key="Logo LowerRight" value="0.4300,0.3000" />
+<value key="Pattern A" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Pattern B" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Pattern B Linked" value="false" />
+<value key="Pattern C" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Logo Enabled" value="false" />
+<value key="Multiplier" value="key:00B2D882:00000000:F6C593E77167C6D8" />
+<value key="Stencil A Tiling" value="1.0000,1.0000" />
+<value key="filename" value="CasRgbMask" />
+<value key="Overlay" value="key:00B2D882:00000000:F6C593E77167C6DA" />
+<value key="Stencil E Rotation" value="0.0000" />
+<value key="Part Mask" value="key:00B2D882:00000000:7FF3C2CE4435EAA1" />
+<pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern A"><value key="assetRoot" value="X:" />
+<value key="Color" value="0.9843137,0.945098,0.945098,1.0" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+</pattern><pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern B"><value key="assetRoot" value="X:" />
+<value key="Color" value="0.9843137,0.945098,0.945098,1.0" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+</pattern><pattern name="solidColor_1" reskey="key:0333406C:00000000:71D5EFB6C391BC17" variable="Pattern C"><value key="assetRoot" value="X:" />
+<value key="filename" value="Materials\Miscellaneous\solidColor_1" />
+<value key="Color" value="0.3490,0.3490,0.5216,1.0000" />
+</pattern><pattern name="None" reskey="key:0333406C:00000000:BE63187EBBDBBC3B" variable="Logo"><value key="assetRoot" value="X:" />
+<value key="filename" value="Logos\None" />
+</pattern></complate></preset>.
+11/08/2009 02:30:29: The given key was not present in the dictionary..

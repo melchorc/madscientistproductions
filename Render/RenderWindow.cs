@@ -1,92 +1,219 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 
 namespace MadScience.Render
 {
-
-    public class DX9Form : System.Windows.Forms.Form
+    public partial class RenderWindow : UserControl
     {
+        public RenderWindow()
+        {
+            this.ClientSize = new Size(640, 480);
+            //this.Text = "Direct3D (DX9/C#) - Indexed Geometry";
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque, true);
+            logMessageToFile("Initialising components");
+            InitializeComponent();
+        }
+
+        private Color backgroundColour = new Color();
+        [System.ComponentModel.Browsable(false)]
+        public Color BackgroundColour
+        {
+            get
+            {
+                return backgroundColour;
+            }
+            set
+            {
+                backgroundColour = value;
+            }
+        }
+        private Color wireframeColour = new Color();
+        [System.ComponentModel.Browsable(false)]
+        public Color WireframeColour
+        {
+            get
+            {
+                return wireframeColour;
+            }
+            set
+            {
+                wireframeColour = value;
+            }
+        }
+
+
+        private bool renderEnabled;
+        [System.ComponentModel.Browsable(false)]
+        public bool RenderEnabled
+        {
+            get
+            {
+                return renderEnabled;
+            }
+            set
+            {
+                renderEnabled = value;
+                if (renderEnabled)
+                    Invalidate();
+            }
+        }
+
         private Device d3dDevice = null;
 
-        private int  mousing = 0;
+        private int mousing = 0;
         private Point ptLastMousePosit;
         private Point ptCurrentMousePosit;
+        private bool bMouseDragged = false;
 
-        private int spinX;
+        private int spinX = 180;
         private int spinY;
         private float spinZ;
         private float height;
 
-        private MatrixStack matrixStack;
-
         MadScience.Render.modelInfo model = new modelInfo();
 
+        private VertexDeclaration vertexDeclaration = null;
         private VertexBuffer vertexBuffer = null;
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem toolsToolStripMenuItem;
-        private ToolStripMenuItem renderModeToolStripMenuItem;
-        private ToolStripMenuItem solidToolStripMenuItem;
-        private ToolStripMenuItem wireframeToolStripMenuItem;
-        private PictureBox pictureBox1;
-        private ToolStripMenuItem resetViewToolStripMenuItem;
         private IndexBuffer indexBuffer = null;
 
+        private Texture skinTexture;
+        private Texture skinSpecular;
+        private Texture normalMapTexture;
+        private ContextMenuStrip contextMenuStrip1;
+        private System.ComponentModel.IContainer components;
+        private ToolStripMenuItem renderModeToolStripMenuItem;
+        private ToolStripMenuItem wireframeToolStripMenuItem;
+        private ToolStripMenuItem solidToolStripMenuItem;
+        private ToolStripMenuItem solidWireframeToolStripMenuItem;
+        //private System.ComponentModel.IContainer components;
 
-        public DX9Form()
+        private int fillMode = 1;
+        [System.ComponentModel.Browsable(false)]
+        public int CurrentFillMode
         {
-            this.ClientSize = new Size(640, 480);
-            this.Text = "Direct3D (DX9/C#) - Indexed Geometry";
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque, true);
-            InitializeComponent();
+            get
+            {
+                return fillMode;
+            }
+            set
+            {
+                fillMode = value;
+                if (d3dDevice != null)
+                {
+                    if (fillMode == 0) { d3dDevice.RenderState.FillMode = FillMode.WireFrame; }
+                    if (fillMode == 1) { d3dDevice.RenderState.FillMode = FillMode.Solid; }
+                    if (fillMode == 2) { d3dDevice.RenderState.FillMode = FillMode.Solid; }
+                }
+                Invalidate();
+            }
+        }
+        private FillMode getFillMode()
+        {
+            if (fillMode == 0) return FillMode.WireFrame;
+            if (fillMode == 1) return FillMode.Solid;
+            if (fillMode == 2) return FillMode.Solid;
+            return FillMode.Solid;
         }
 
-        public void loadModel(modelInfo newModel)
+        private Effect shader;
+        private Effect wireframe;
+
+        private void logMessageToFile(string message)
         {
+            System.IO.StreamWriter sw = System.IO.File.AppendText(Application.StartupPath + "\\renderWindow.log");
+            try
+            {
+                string logLine = System.String.Format(
+                    "{0:G}: {1}.", System.DateTime.Now, message);
+                sw.WriteLine(logLine);
+            }
+            finally
+            {
+                sw.Close();
+            }
+        }
+
+        public void setModel(modelInfo newModel)
+        {
+            logMessageToFile("Set model");
             this.model = newModel;
             if (d3dDevice == null) Init();
-            OnResetDevice(d3dDevice, null);
+
+            height = model.bounds.mid.Y / 1.35f;
+
+            Console.WriteLine("mid Y: " + model.bounds.mid.Y.ToString());
+            Console.WriteLine("camera height: " + height.ToString());
+
+            //else
+            //    OnResetDevice(d3dDevice, null);
         }
 
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
-            this.Render();
-            this.Invalidate();
+            base.OnPaint(e);
+
+            // Force render enabled to be set explicitly so it doesn't try to render into the designer window
+            if (renderEnabled)
+            {
+                this.Render();
+                if (mousing > 0)
+                    this.Invalidate();
+            }
+            else
+            {
+                e.Graphics.FillRectangle(new SolidBrush(this.BackColor), e.ClipRectangle);
+            }
         }
 
         protected override void Dispose(bool disposing)
         {
+            logMessageToFile("Disposing components");
+
             base.Dispose(disposing);
-        }
 
-        static void Main()
-        {
-            using (DX9Form frm = new DX9Form())
+            // Clean up directx resources
+
+            if (vertexDeclaration != null)
+                vertexDeclaration.Dispose();
+            vertexDeclaration = null;
+            if (vertexBuffer != null)
+                vertexBuffer.Dispose();
+            vertexBuffer = null;
+            if (indexBuffer != null)
+                indexBuffer.Dispose();
+            indexBuffer = null;
+            if (shader != null)
+                shader.Dispose();
+            shader = null;
+            if (skinTexture != null)
+                skinTexture.Dispose();
+            skinTexture = null;
+            if (skinSpecular != null)
+                skinSpecular.Dispose();
+            skinSpecular = null;
+            if (normalMapTexture != null)
+                normalMapTexture.Dispose();
+            normalMapTexture = null;
+            if (model != null)
             {
-                frm.Init();
-                Application.Run(frm);
-
+                if (model.textures.ambientTexture != null)
+                    model.textures.ambientTexture.Dispose();
+                model.textures.ambientTexture = null;
+                if (model.textures.baseTexture != null)
+                    model.textures.baseTexture.Dispose();
+                model.textures.baseTexture = null;
+                if (model.textures.curStencil != null)
+                    model.textures.curStencil.Dispose();
+                model.textures.curStencil = null;
+                if (model.textures.specularTexture != null)
+                    model.textures.specularTexture.Dispose();
+                model.textures.specularTexture = null;
+                model = null;
             }
-        }
-
-        private Material material;
-        private void SetupLights()
-        {
-
-            material = new Material();
-
-            material.Diffuse = Color.White;
-            material.Specular = Color.White;
-            material.SpecularSharpness = 15.0F;
-            material.Ambient = Color.White;
-
-            d3dDevice.Material = material;
-
-            //d3dDevice.RenderState.Ambient = System.Drawing.Color.White;
-
         }
 
         /// <summary>
@@ -94,12 +221,17 @@ namespace MadScience.Render
         /// anything else that doens't need to be recreated after a device 
         /// reset.
         /// </summary>
+        /// 
+
         private void Init()
         {
 
-            //InitializeComponent();
+            logMessageToFile("Initialise 3d");
 
-            this.Invalidate();
+            solidToolStripMenuItem_Click(null, null);
+
+            backgroundColour = Color.SlateBlue;
+            wireframeColour = Color.FromArgb(127, 127, 127);
 
             //
             // Do we support hardware vertex processing? If so, use it. 
@@ -115,8 +247,6 @@ namespace MadScience.Render
             else
                 flags = CreateFlags.SoftwareVertexProcessing;
 
-            Console.WriteLine(caps.MaxTextureBlendStages.ToString());
-
             //
             // Everything checks out - create a simple, windowed device.
             //
@@ -129,12 +259,51 @@ namespace MadScience.Render
             d3dpp.EnableAutoDepthStencil = true;
             d3dpp.AutoDepthStencilFormat = DepthFormat.D16;
             d3dpp.PresentationInterval = PresentInterval.Default;
-
-            d3dDevice = new Device(0, DeviceType.Hardware, pictureBox1, flags, d3dpp);
+            
+            d3dDevice = new Device(0, DeviceType.Hardware, this, flags, d3dpp);
 
             // Register an event-handler for DeviceReset and call it to continue
             // our setup.
             d3dDevice.DeviceReset += new System.EventHandler(this.OnResetDevice);
+
+            //OnResetDevice(d3dDevice, null);
+        }
+
+        private void setupShaders()
+        {
+            logMessageToFile("Setup shaders");
+            // Load and initialize shader effect
+            string error;
+            shader = Effect.FromFile(d3dDevice, Path.Combine(Application.StartupPath, "BodyShader.fx"), null, ShaderFlags.None, null, out error);
+            if (shader == null)
+            {
+                MessageBox.Show(error);
+            }
+            else
+            {
+                shader.SetValue(EffectHandle.FromString("gSkinTexture"), skinTexture);
+                shader.SetValue(EffectHandle.FromString("gSkinSpecular"), skinSpecular);
+                shader.SetValue(EffectHandle.FromString("gMultiplyTexture"), model.textures.baseTexture);
+                shader.SetValue(EffectHandle.FromString("gStencilTexture"), model.textures.curStencil);
+                if (model.textures.curStencil != null) shader.SetValue(EffectHandle.FromString("gUseStencil"), true);
+                shader.SetValue(EffectHandle.FromString("gSpecularTexture"), model.textures.specularTexture);
+                shader.SetValue(EffectHandle.FromString("gReliefTexture"), normalMapTexture);
+                shader.SetValue(EffectHandle.FromString("gTileCount"), 1.0f);
+                shader.SetValue(EffectHandle.FromString("gAmbiColor"), new ColorValue(0.6f, 0.6f, 0.6f));
+                shader.SetValue(EffectHandle.FromString("gLamp0Pos"), new Vector4(-10f, 10f, -10f, 1.0f));
+                shader.SetValue(EffectHandle.FromString("gPhongExp"), 10.0f);
+                shader.SetValue(EffectHandle.FromString("gPhongExp"), 10.0f);
+                shader.SetValue(EffectHandle.FromString("gSpecColor"), new ColorValue(0.2f, 0.2f, 0.2f));
+                shader.SetValue(EffectHandle.FromString("gSurfaceColor"), new ColorValue(0.5f, 0.5f, 0.5f));
+                shader.Technique = shader.GetTechnique("normal_mapping");
+            }
+            wireframe = Effect.FromFile(d3dDevice, Path.Combine(Application.StartupPath, "Wireframe.fx"), null, ShaderFlags.None, null, out error);
+            wireframe.SetValue(EffectHandle.FromString("gColor"), new ColorValue((int)wireframeColour.R, (int)wireframeColour.G, (int)wireframeColour.B));
+            wireframe.Technique = wireframe.GetTechnique("wireframe");
+        }
+
+        public void resetDevice()
+        {
             OnResetDevice(d3dDevice, null);
         }
 
@@ -145,35 +314,17 @@ namespace MadScience.Render
         /// </summary>
         public void OnResetDevice(object sender, EventArgs e)
         {
+            logMessageToFile("Reset device");
+
             Device device = (Device)sender;
 
             if (device == null) return;
 
             this.Invalidate();
 
-            if (wireframeToolStripMenuItem.Checked)
-            {
-                device.RenderState.FillMode = FillMode.WireFrame;
-            }
-            else
-            {
-                device.RenderState.FillMode = FillMode.Solid;
-            }
+            device.RenderState.FillMode = getFillMode();
 
-            device.Transform.Projection =
-                Matrix.PerspectiveFovLH(Geometry.DegreeToRadian(45.0f),
-                (float)this.pictureBox1.Width / this.pictureBox1.Height,
-                0.1f, 100.0f);
-
-            device.RenderState.ZBufferEnable = true;
-            device.RenderState.Lighting = false;
-            device.RenderState.CullMode = Cull.None;
-
-            //Enable alpha blending in the device
-
-            //device.RenderState.SourceBlend = Blend.SourceAlpha;
-            //device.RenderState.DestinationBlend = Blend.InvSourceAlpha;
-            //device.RenderState.AlphaBlendEnable = true;
+            setupShaders();
 
             //
             // Create a vertex buffer...
@@ -182,14 +333,13 @@ namespace MadScience.Render
             if (model.numVertices > 0)
             {
 
-                height = model.bounds.mid.Y / 1.5f;
-                spinX = 180;
-
                 Console.WriteLine(model.bounds.mid.X.ToString() + " : " + model.bounds.mid.Y.ToString() + " : " + model.bounds.mid.Z.ToString());
                 Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + spinZ.ToString() + " : " + height.ToString());
                 Console.WriteLine("num vertices: " + model.numVertices.ToString());
 
 
+                vertexDeclaration = new VertexDeclaration(device,
+                    MadScience.Render.vertex.Elements);
                 vertexBuffer = new VertexBuffer(typeof(MadScience.Render.vertex),
                                                  (int)model.numVertices, device,
                                                  Usage.Dynamic | Usage.WriteOnly,
@@ -216,19 +366,8 @@ namespace MadScience.Render
                 gStream.Write(model.faceData.ToArray());
 
                 indexBuffer.Unlock();
-
-                SetupLights();
-
-                matrixStack = new MatrixStack();
             }
-
-            this.Invalidate();
-            this.Refresh();
-
-
         }
-
-        private double deltaTime;
 
         /// <summary>
         /// This method is dedicated completely to rendering our 3D scene and is
@@ -236,234 +375,182 @@ namespace MadScience.Render
         /// </summary>
         private void Render()
         {
+            if (d3dDevice == null || shader == null)
+                return;
 
-            if (d3dDevice == null) return;
+            // Display the frame rate in the title bar of the form - not anymore since this is no longer the main form
+            //this.Text = string.Format("Mesh Previewer ({0} fps)", FrameRate.CalculateFrameRate());
 
-            deltaTime = HiResTimer.GetElapsedTime();
-
-            // Display the frame rate in the title bar of the form
-            this.Text = string.Format("Mesh Previewer ({0} fps)", FrameRate.CalculateFrameRate());
-            HiResTimer.Start();
-
-            d3dDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.SteelBlue, 1.0f, 0);
+            d3dDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, backgroundColour, 1.0f, 0);
 
             d3dDevice.BeginScene();
 
-            d3dDevice.RenderState.Ambient = System.Drawing.Color.White;
+            // Load the values for the transformation matrices
+            // View moves the virtual camera around the 3d model (Lighting moves with the model)
+            // World moves the 3d model - (Lighting stays in place as the model rotates, illuminating different parts)
+            Matrix viewx = Matrix.Identity;
+            Matrix worldx = Matrix.RotationYawPitchRoll(Geometry.DegreeToRadian(spinX),
+                    Geometry.DegreeToRadian(0f), 0.0f) *
+                    Matrix.Translation(0f, -height, spinZ + 2f);
+            // Projection matrix - typically can be left alone unless the viewport needs to be adjusted
+            Matrix projx = Matrix.PerspectiveFovLH(Geometry.DegreeToRadian(45.0f),
+                (float)Width / Height,
+                0.1f, 100.0f);
 
-
+            // World transform
+            shader.SetValue("gWorldXf", worldx);
+            // Inverse transpose world transform
+            shader.SetValueTranspose("gWorldITXf", Matrix.Invert(worldx));
+            // World/view/projection transform
+            shader.SetValue("gWvpXf", worldx * viewx * projx);
+            if (fillMode == 2)
+            {
+                wireframe.SetValue("gWvpXf", worldx * viewx * projx);
+            }
+            // View inverse transform
+            shader.SetValue("gViewIXf", Matrix.Invert(viewx));
+            // View transform
+            shader.SetValue("gViewXf", viewx);
+            // World/view transform
+            shader.SetValue("gWorldViewXf", worldx * viewx);
 
             if (model.numVertices > 0 && indexBuffer != null && vertexBuffer != null)
             {
 
-                d3dDevice.RenderState.AlphaBlendEnable = true;
-                d3dDevice.RenderState.AlphaSourceBlend = Blend.SourceAlpha;
-                d3dDevice.RenderState.AlphaDestinationBlend = Blend.InvSourceAlpha;
-                d3dDevice.VertexFormat = MadScience.Render.vertex.FVF_Flags;
+                int passes = shader.Begin(FX.DoNotSaveState);
+                for (int loop = 0; loop < passes; loop++)
+                {
+                    shader.BeginPass(loop);
+                    d3dDevice.SetStreamSource(0, vertexBuffer, 0);
+                    d3dDevice.Indices = indexBuffer;
+                    d3dDevice.VertexDeclaration = vertexDeclaration;
 
-                d3dDevice.SetTexture(0, model.textures.baseTexture);
-                d3dDevice.SetTexture(1, model.textures.curStencil);
+                    d3dDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (int)model.numVertices, 0, (int)model.numPolygons);
+                    shader.EndPass();
+                }
+                shader.End();
+                if (fillMode == 2)
+                {
+                    passes = wireframe.Begin(FX.None);
+                    for (int loop = 0; loop < passes; loop++)
+                    {
+                        wireframe.BeginPass(loop);
+                        d3dDevice.SetStreamSource(0, vertexBuffer, 0);
+                        d3dDevice.Indices = indexBuffer;
+                        d3dDevice.VertexDeclaration = vertexDeclaration;
 
-                d3dDevice.SetSamplerState(0, SamplerStageStates.MinFilter, 1);
-                d3dDevice.SetSamplerState(0, SamplerStageStates.MagFilter, 1);
+                        d3dDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (int)model.numVertices, 0, (int)model.numPolygons);
+                        wireframe.EndPass();
+                    }
+                    wireframe.End();
+                }
 
-                d3dDevice.SetTextureStageState(0, TextureStageStates.TextureCoordinateIndex, 0);
-                d3dDevice.SetTextureStageState(0, TextureStageStates.ColorOperation, (int)TextureOperation.BlendTextureAlpha);
-                //d3dDevice.SetTextureStageState(0, TextureStageStates.ColorArgument1, (int)TextureArgument.TextureColor);
-                //d3dDevice.SetTextureStageState(0, TextureStageStates.ColorArgument2, (int)TextureArgument.TextureColor );
-
-                //d3dDevice.SetTextureStageState(0, TextureStageStates.AlphaOperation, (int)TextureOperation.BlendTextureAlpha );
-                //d3dDevice.SetTextureStageState(0, TextureStageStates.AlphaArgument1, (int)TextureArgument.TextureColor );
-                
-
-
-                //d3dDevice.SetTextureStageState(0, TextureStageStates.TextureCoordinateIndex, 0);
-
-                //d3dDevice.SetTextureStageState(0, TextureStageStates.ColorArgument2, 0);
-
-                d3dDevice.SetSamplerState(1, SamplerStageStates.MinFilter, 1);
-                d3dDevice.SetSamplerState(1, SamplerStageStates.MagFilter, 1);
-                d3dDevice.SetTextureStageState(1, TextureStageStates.TextureCoordinateIndex, 1);
-                d3dDevice.SetTextureStageState(1, TextureStageStates.ColorOperation, (int)TextureOperation.BlendTextureAlpha);
-                //d3dDevice.SetTextureStageState(1, TextureStageStates.AlphaOperation, (int)TextureOperation.MultiplyAdd);
-                //d3dDevice.SetTextureStageState(1, TextureStageStates.ColorArgument1, (int)TextureArgument.TextureColor );
-                //d3dDevice.SetTextureStageState(1, TextureStageStates.ColorArgument2, (int)TextureArgument.Diffuse );
-
-                //d3dDevice.Material = material;
-
-                d3dDevice.SetStreamSource(0, vertexBuffer, 0);
-                d3dDevice.Indices = indexBuffer;
-
-                d3dDevice.Transform.World =
-                    Matrix.RotationYawPitchRoll(Geometry.DegreeToRadian(spinX),
-                    Geometry.DegreeToRadian(0f), 0.0f) *
-                    Matrix.Translation(0f, -height, spinZ + 2f);
-
-                d3dDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (int)model.numVertices, 0, (int)model.numPolygons);
             }
             d3dDevice.EndScene();
 
             d3dDevice.Present();
 
-            HiResTimer.Reset();
-
             //Application.DoEvents();
         }
 
-        private void InitializeComponent()
+        public void loadTexture(Stream textureInput, string outputTexture)
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.renderModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.solidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.wireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.resetViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.SuspendLayout();
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.Menu;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolsToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip1.Size = new System.Drawing.Size(753, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.renderModeToolStripMenuItem,
-            this.resetViewToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
-            this.toolsToolStripMenuItem.Text = "View";
-            this.toolsToolStripMenuItem.Click += new System.EventHandler(this.toolsToolStripMenuItem_Click);
-            // 
-            // renderModeToolStripMenuItem
-            // 
-            this.renderModeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.solidToolStripMenuItem,
-            this.wireframeToolStripMenuItem});
-            this.renderModeToolStripMenuItem.Name = "renderModeToolStripMenuItem";
-            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.renderModeToolStripMenuItem.Text = "Render Mode";
-            // 
-            // solidToolStripMenuItem
-            // 
-            this.solidToolStripMenuItem.Checked = true;
-            this.solidToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.solidToolStripMenuItem.Name = "solidToolStripMenuItem";
-            this.solidToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.solidToolStripMenuItem.Text = "Solid";
-            this.solidToolStripMenuItem.Click += new System.EventHandler(this.solidToolStripMenuItem_Click);
-            // 
-            // wireframeToolStripMenuItem
-            // 
-            this.wireframeToolStripMenuItem.Name = "wireframeToolStripMenuItem";
-            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.wireframeToolStripMenuItem.Text = "Wireframe";
-            this.wireframeToolStripMenuItem.Click += new System.EventHandler(this.wireframeToolStripMenuItem_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 24);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(753, 533);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
-            // 
-            // resetViewToolStripMenuItem
-            // 
-            this.resetViewToolStripMenuItem.Name = "resetViewToolStripMenuItem";
-            this.resetViewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.resetViewToolStripMenuItem.Text = "Reset View";
-            this.resetViewToolStripMenuItem.Click += new System.EventHandler(this.resetViewToolStripMenuItem_Click);
-            // 
-            // DX9Form
-            // 
-            this.ClientSize = new System.Drawing.Size(753, 557);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "DX9Form";
-            this.Load += new System.EventHandler(this.DX9Form_Load);
-            this.Shown += new System.EventHandler(this.DX9Form_Shown);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            if (textureInput != null && d3dDevice != null)
+            {
+                logMessageToFile("Load texture");
+                switch (outputTexture)
+                {
+                    case "ambientTexture":
+                        this.model.textures.ambientTexture = TextureLoader.FromStream(d3dDevice, textureInput);
+                        break;
+                    case "baseTexture":
+                        this.model.textures.baseTexture = TextureLoader.FromStream(d3dDevice, textureInput);
+                        break;
+                    case "specularTexture":
+                        this.model.textures.specularTexture = TextureLoader.FromStream(d3dDevice, textureInput);
+                        break;
+                    case "stencilA":
+                        this.model.textures.curStencil = TextureLoader.FromStream(d3dDevice, textureInput);
+                        break;
+                }
 
+            }
         }
 
-        private void loadModel()
+        public void loadTextureFromBitmap(Bitmap textureInput, string outputTexture)
         {
-            //Stream input = File.OpenRead(@"C:\Programming\Projects\Sims 3\MadScience\Render\bin\Debug\#00000000F9818729.simgeom");
-            Stream input = File.OpenRead(@"P:\Stuart\Desktop\afTopShirtTee_crew_lod1_0x0000000031AFB84E.simgeom");
+            if (textureInput != null && d3dDevice != null)
+            {
+                logMessageToFile("Load texture");
+                switch (outputTexture)
+                {
+                    case "ambientTexture":
+                        this.model.textures.ambientTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        break;
+                    case "baseTexture":
+                        this.model.textures.baseTexture = Texture.FromBitmap(d3dDevice, textureInput , Usage.AutoGenerateMipMap, Pool.Managed);
+                        break;
+                    case "specularTexture":
+                        this.model.textures.specularTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        break;
+                    case "stencilA":
+                        this.model.textures.curStencil = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        break;
+                }
 
-            this.model = MadScience.Render.Helpers.geomToModel(input);
-            this.model.name = "Meep";
-
-            input.Close();
-
-            //Stream baseTexture = File.OpenRead(@"P:\Stuart\Desktop\flatWhite_0x90de6db90e35feb7.dds");
-            Stream baseTexture = File.OpenRead(@"P:\Stuart\Desktop\afTopShirtTee_crew__0x94e9f715e099bcbd.dds");
-            model.textures.baseTexture = TextureLoader.FromStream(d3dDevice, baseTexture);
-            baseTexture.Close();
-
-            Stream stencilTexture = File.OpenRead(@"P:\Stuart\Desktop\afTopShirtTee_crew__0xb4ce3fdcc42907f6.dds");
-            model.textures.curStencil = TextureLoader.FromStream(d3dDevice, stencilTexture);
-            stencilTexture.Close();
-
-            //Stream baseTexture = File.OpenRead(@"P:\Stuart\Desktop\afTopBlouseOffShoul_0xb5683b98ca67ecfe.dds");
-            //this.model.textures.curStencil = Texture.FromStream(d3dDevice, baseTexture, Usage.None, Pool.Managed);
-            //baseTexture.Close();
-            //d3dDevice.SetSamplerState(0, SamplerStageStates.MinFilter, true);
-
-            OnResetDevice(d3dDevice, null);
+            }
         }
 
-        private void DX9Form_Load(object sender, EventArgs e)
+        public void loadDefaultTextures()
         {
 
+            if (d3dDevice == null) Init();
+            //else
+            //    OnResetDevice(d3dDevice, null);
+
+            logMessageToFile("Load default skintone");
+
+            Stream skinTextureFile = File.OpenRead(Path.Combine(Application.StartupPath, "afBody_m_0xb4cdc208d8d51bf0_0x00B2D882-0x00000000-0xB4CDC208D8D51BF0.dds"));
+            skinTexture = TextureLoader.FromStream(d3dDevice, skinTextureFile);
+            skinTextureFile.Close();
+
+            logMessageToFile("Load default skintone specular");
+
+            Stream skinSpecularFile = File.OpenRead(Path.Combine(Application.StartupPath, "S3_00B2D882_00000000_B4CDC208D8D51BEE_afBody_s_0xb4cdc208d8d51bee%%+_IMG.dds"));
+            skinSpecular = TextureLoader.FromStream(d3dDevice, skinSpecularFile);
+            skinSpecularFile.Close();
+
+            logMessageToFile("Load default skintone normal map");
+
+            Stream normalMapTextureFile = File.OpenRead(Path.Combine(Application.StartupPath, "S3_00B2D882_00000000_B4CDC208D8D51BF3_afBody_n_0xb4cdc208d8d51bf3%%+_IMG.dds"));
+            normalMapTexture = TextureLoader.FromStream(d3dDevice, normalMapTextureFile);
+            normalMapTextureFile.Close();
+
+            //OnResetDevice(d3dDevice, null);
         }
 
-        private void DX9Form_Shown(object sender, EventArgs e)
+        protected override void OnEnter(EventArgs e)
         {
-            loadModel();
-            Refresh();
+            base.OnEnter(e);
+
+            if (d3dDevice == null)
+            {
+                Init();
+                loadDefaultTextures();
+                Refresh();
+            }
         }
 
-        private void solidToolStripMenuItem_Click(object sender, EventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
-            d3dDevice.RenderState.FillMode = FillMode.Solid;
-            solidToolStripMenuItem.Checked = true;
-            wireframeToolStripMenuItem.Checked = false;
-        }
+            base.OnMouseMove(e);
 
-        private void wireframeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            d3dDevice.RenderState.FillMode = FillMode.WireFrame;
-            solidToolStripMenuItem.Checked = false;
-            wireframeToolStripMenuItem.Checked = true;
-        }
-
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
-        {
             ptCurrentMousePosit = PointToScreen(new Point(e.X, e.Y));
 
             if (mousing > 0)
             {
+                bMouseDragged = true;
+
                 spinX -= (ptCurrentMousePosit.X - ptLastMousePosit.X);
                 if (mousing == 1)
                 {
@@ -471,11 +558,11 @@ namespace MadScience.Render
                 }
                 if (mousing == 2)
                 {
-                    spinZ += ((Single)(ptCurrentMousePosit.Y - ptLastMousePosit.Y) / 5);
+                    spinZ += ((Single)(ptCurrentMousePosit.Y - ptLastMousePosit.Y) / 40);
                 }
                 if (mousing == 3)
                 {
-                    height -= ((Single)(ptCurrentMousePosit.Y - ptLastMousePosit.Y) / 10);
+                    height -= ((Single)(ptCurrentMousePosit.Y - ptLastMousePosit.Y) / 40);
                 }
 
                 if (spinX < 0) spinX = 359;
@@ -483,14 +570,40 @@ namespace MadScience.Render
                 if (spinX > 359) spinX = 0;
                 if (spinY > 359) spinY = 0;
 
-                Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + spinZ.ToString() + " : " + height.ToString() );
+                //Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + spinZ.ToString() + " : " + height.ToString());
             }
 
             ptLastMousePosit = ptCurrentMousePosit;
         }
 
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        protected override void OnMouseWheel(MouseEventArgs e)
         {
+            base.OnMouseWheel(e);
+
+            if (e.Delta > 0)
+            {
+                // Towards object
+                spinZ += -0.25f;
+            }
+            else
+            {
+                // Away from object
+                spinZ += 0.25f;
+            }
+
+            Invalidate();
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+             base.OnKeyDown(e);
+             //Console.WriteLine(e.Alt.ToString());
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+
             ptLastMousePosit = ptCurrentMousePosit = PointToScreen(new Point(e.X, e.Y));
             if (e.Button == MouseButtons.Middle)
             {
@@ -504,25 +617,119 @@ namespace MadScience.Render
             {
                 mousing = 2;
             }
+            Invalidate();
         }
 
-        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        protected override void OnMouseUp(MouseEventArgs e)
         {
+            base.OnMouseUp(e);
+
+            bMouseDragged = false;
+
             mousing = 0;
+            Invalidate();
         }
 
-        private void toolsToolStripMenuItem_Click(object sender, EventArgs e)
+        protected override void OnMouseClick(MouseEventArgs e)
         {
+            base.OnMouseClick(e);
 
+            if (e.Button == MouseButtons.Right && !bMouseDragged)
+            {
+                this.contextMenuStrip1.Show(PointToScreen(new Point(e.X, e.Y)));
+            }
         }
 
-        private void resetViewToolStripMenuItem_Click(object sender, EventArgs e)
+        public void ResetView()
         {
-            height = model.bounds.mid.Y / 2;
-            spinX = 0;
+            height = model.bounds.mid.Y / 1.35f;
+            spinX = 180;
             spinY = 0;
             spinZ = 0;
         }
-    }
 
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.renderModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.solidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.solidWireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.renderModeToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 26);
+            // 
+            // renderModeToolStripMenuItem
+            // 
+            this.renderModeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.wireframeToolStripMenuItem,
+            this.solidToolStripMenuItem,
+            this.solidWireframeToolStripMenuItem});
+            this.renderModeToolStripMenuItem.Name = "renderModeToolStripMenuItem";
+            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.renderModeToolStripMenuItem.Text = "Render Mode";
+            // 
+            // wireframeToolStripMenuItem
+            // 
+            this.wireframeToolStripMenuItem.Name = "wireframeToolStripMenuItem";
+            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.wireframeToolStripMenuItem.Text = "Wireframe";
+            this.wireframeToolStripMenuItem.Click += new System.EventHandler(this.wireframeToolStripMenuItem_Click);
+            // 
+            // solidToolStripMenuItem
+            // 
+            this.solidToolStripMenuItem.Name = "solidToolStripMenuItem";
+            this.solidToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.solidToolStripMenuItem.Text = "Solid";
+            this.solidToolStripMenuItem.Click += new System.EventHandler(this.solidToolStripMenuItem_Click);
+            // 
+            // solidWireframeToolStripMenuItem
+            // 
+            this.solidWireframeToolStripMenuItem.Name = "solidWireframeToolStripMenuItem";
+            this.solidWireframeToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.solidWireframeToolStripMenuItem.Text = "Solid+Wireframe";
+            this.solidWireframeToolStripMenuItem.Click += new System.EventHandler(this.solidWireframeToolStripMenuItem_Click);
+            // 
+            // RenderWindow
+            // 
+            //this.ContextMenuStrip = this.contextMenuStrip1;
+            this.Name = "RenderWindow";
+            this.contextMenuStrip1.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        private void solidToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CurrentFillMode = 1;
+            solidToolStripMenuItem.Checked = true;
+            wireframeToolStripMenuItem.Checked = false;
+            solidWireframeToolStripMenuItem.Checked = false;
+        }
+
+        private void wireframeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CurrentFillMode = 0;
+            solidToolStripMenuItem.Checked = false;
+            wireframeToolStripMenuItem.Checked = true;
+            solidWireframeToolStripMenuItem.Checked = false;
+        }
+
+        private void solidWireframeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CurrentFillMode = 2;
+            solidToolStripMenuItem.Checked = false;
+            wireframeToolStripMenuItem.Checked = false;
+            solidWireframeToolStripMenuItem.Checked = true;
+        }
+
+    }
 }

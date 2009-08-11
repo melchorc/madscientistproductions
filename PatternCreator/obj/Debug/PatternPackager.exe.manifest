@@ -3,7 +3,7 @@
   <asmv1:assemblyIdentity version="1.0.0.1" name="PatternPackager.exe" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="PatternPackager" version="1.3.0.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="PatternPackager" version="1.3.2.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="PatternPackager.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -51,50 +51,62 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Gibbed.Helpers.dll" size="18944">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ColorPicker.dll" size="75776">
+      <assemblyIdentity name="ColorPicker" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>aR5+lzHNr/nQTk7WG55krY47jiM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Gibbed.Helpers.dll" size="20992">
       <assemblyIdentity name="Gibbed.Helpers" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Y8HrIav6ZxHZnekOKYgVet2wlZo=</dsig:DigestValue>
+        <dsig:DigestValue>Tp7knkYN7ue/21R+gaI3bm9Lf58=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Gibbed.RefPack.dll" size="7680">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Gibbed.RefPack.dll" size="10240">
       <assemblyIdentity name="Gibbed.RefPack" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>kRZTC6xd6E4KFanucLKwySgg7MY=</dsig:DigestValue>
+        <dsig:DigestValue>BkDYzH/xtcbpx0vAzx9+V8DKnEM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Gibbed.Sims3.FileFormats.dll" size="18944">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Gibbed.Sims3.FileFormats.dll" size="40960">
       <assemblyIdentity name="Gibbed.Sims3.FileFormats" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>dbk1sVv1it0v+tq3gwKkdU/+lwg=</dsig:DigestValue>
+        <dsig:DigestValue>VTdavziOtZfLKJoYCSW2iWXeFbo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PatternPackager.exe" size="63488">
-      <assemblyIdentity name="PatternPackager" version="1.3.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PatternPackager.exe" size="62976">
+      <assemblyIdentity name="PatternPackager" version="1.3.2.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>hZzewcu7KAA5liw+Za2Lo1froVU=</dsig:DigestValue>
+        <dsig:DigestValue>aOd04mYfbBOE+bOGqPtkH7/MbLI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

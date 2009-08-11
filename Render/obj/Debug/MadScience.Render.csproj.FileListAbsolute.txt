@@ -1,0 +1,20 @@
+C:\tools\CORRECTRender\Render\bin\Debug\BodyShader.fx
+C:\tools\CORRECTRender\Render\bin\Debug\MadScience.Render.exe
+C:\tools\CORRECTRender\Render\bin\Debug\MadScience.Render.pdb
+C:\tools\CORRECTRender\Render\obj\Debug\ResolveAssemblyReference.cache
+C:\tools\CORRECTRender\Render\obj\Debug\MadScience.Render.Properties.Resources.resources
+C:\tools\CORRECTRender\Render\obj\Debug\MadScience.Render.Render.resources
+C:\tools\CORRECTRender\Render\obj\Debug\MadScience.Render.csproj.GenerateResource.Cache
+C:\tools\CORRECTRender\Render\obj\Debug\MadScience.Render.exe
+C:\tools\CORRECTRender\Render\obj\Debug\MadScience.Render.pdb
+C:\Programming\Projects\Sims 3\madscientistproductions\Render\obj\Debug\ResolveAssemblyReference.cache
+C:\Programming\Projects\Sims 3\madscientistproductions\Render\obj\Debug\MadScience.Render.Properties.Resources.resources
+C:\Programming\Projects\Sims 3\madscientistproductions\Render\obj\Debug\MadScience.Render.Render.resources
+C:\Programming\Projects\Sims 3\madscientistproductions\Render\obj\Debug\MadScience.Render.csproj.GenerateResource.Cache
+C:\Programming\Projects\Sims 3\madscientistproductions\Render\bin\Debug\BodyShader.fx
+C:\Programming\Projects\Sims 3\madscientistproductions\Render\bin\Debug\MadScience.Render.pdb
+C:\Programming\Projects\Sims 3\madscientistproductions\Render\obj\Debug\MadScience.Render.pdb
+C:\Programming\Projects\Sims 3\madscientistproductions\Render\bin\Debug\MadScience.Render.exe
+C:\Programming\Projects\Sims 3\madscientistproductions\Render\obj\Debug\MadScience.Render.exe
+C:\Programming\Projects\Sims 3\madscientistproductions\Render\bin\Debug\Wireframe.fx
+C:\Programming\Projects\Sims 3\madscientistproductions\Render\obj\Debug\MadScience.Render.RenderWindow.resources

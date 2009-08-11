@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CASPartEditor", "CASPartEditor.csproj", "{73078060-AB22-467A-BA1A-FC40E2F4DF64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternBrowser", "..\PatternBrowser\PatternBrowser.csproj", "{94FF1D12-494E-46D1-A4F8-E45EB11B9CF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternBrowserTest", "..\PatternBrowserTest\PatternBrowserTest.csproj", "{6F63DA0A-2486-44F6-A004-7E866AE7D032}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadScience.Render", "..\Render\MadScience.Render.csproj", "{BD032CD5-7E08-4982-87B9-FB90B6F190D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadScience.Helpers", "..\Helpers.cs\MadScience.Helpers.csproj", "{EA40DDB1-1C28-4323-90B3-5B99071F0B78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorPicker", "..\ColorPicker\ColorPicker.csproj", "{0F72CF0B-90B5-4A5F-97F0-0CF8E2D5AB0A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73078060-AB22-467A-BA1A-FC40E2F4DF64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73078060-AB22-467A-BA1A-FC40E2F4DF64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73078060-AB22-467A-BA1A-FC40E2F4DF64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73078060-AB22-467A-BA1A-FC40E2F4DF64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94FF1D12-494E-46D1-A4F8-E45EB11B9CF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94FF1D12-494E-46D1-A4F8-E45EB11B9CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94FF1D12-494E-46D1-A4F8-E45EB11B9CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94FF1D12-494E-46D1-A4F8-E45EB11B9CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F63DA0A-2486-44F6-A004-7E866AE7D032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F63DA0A-2486-44F6-A004-7E866AE7D032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F63DA0A-2486-44F6-A004-7E866AE7D032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F63DA0A-2486-44F6-A004-7E866AE7D032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD032CD5-7E08-4982-87B9-FB90B6F190D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD032CD5-7E08-4982-87B9-FB90B6F190D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD032CD5-7E08-4982-87B9-FB90B6F190D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD032CD5-7E08-4982-87B9-FB90B6F190D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA40DDB1-1C28-4323-90B3-5B99071F0B78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA40DDB1-1C28-4323-90B3-5B99071F0B78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA40DDB1-1C28-4323-90B3-5B99071F0B78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA40DDB1-1C28-4323-90B3-5B99071F0B78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F72CF0B-90B5-4A5F-97F0-0CF8E2D5AB0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F72CF0B-90B5-4A5F-97F0-0CF8E2D5AB0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F72CF0B-90B5-4A5F-97F0-0CF8E2D5AB0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F72CF0B-90B5-4A5F-97F0-0CF8E2D5AB0A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

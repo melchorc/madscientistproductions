@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
+using System.Text;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 
@@ -138,6 +138,7 @@ namespace MadScience.Render
                             z = reader.ReadSingle();
                             y = reader.ReadSingle();
                             sb.AppendLine("  Tangent Normal: " + x.ToString() + " " + y.ToString() + " " + z.ToString());
+                            model.vertexTangentList.Add(new Vector3(x, y, z));
                             break;
                         case 7:
                             sb.AppendLine("  TagVal: " + reader.ReadUInt32().ToString());
@@ -154,7 +155,7 @@ namespace MadScience.Render
             for (int i = 0; i < model.numVertices; i++)
             {
                 //model.vertexData.Add(new vertex(model.vertexList[i].X, model.vertexList[i].X, model.vertexList[i].X, model.textureVertex[i].u, model.textureVertex[i].v, model.vertexNormal[i].X, model.vertexNormal[i].Y, model.vertexNormal[i].Z));
-                model.vertexData.Add(new vertex(-model.vertexList[i].X, model.vertexList[i].Y, model.vertexList[i].Z, model.textureVertex[i].u, model.textureVertex[i].v));
+                model.vertexData.Add(new vertex(-model.vertexList[i].X, model.vertexList[i].Y, model.vertexList[i].Z, model.textureVertex[i].u, model.textureVertex[i].v, -model.vertexNormal[i].X, model.vertexNormal[i].Y, model.vertexNormal[i].Z, -model.vertexTangentList[i].X, model.vertexTangentList[i].Y, model.vertexTangentList[i].Z));
             }
 
             // Go through the vertex lists again, this time normalising the values
@@ -203,314 +204,62 @@ namespace MadScience.Render
         public byte bytesPerElement;
     }
 
-    public class CameraNew
-    {
-
-        Microsoft.DirectX.Direct3D.Device _device;
-        Matrix _viewMatrix;
-        Matrix _projectionMatrix;
-        Vector3 _position;
-        Vector3 _direction;
-        Vector3 _upDirection;
-
-        float _fieldOfView;
-        float _aspectRatio;
-        float _nearPlane;
-        float _farPlane;
-
-        public float InputTranslationScale
-        {
-            get
-            {
-                return 450f; //(float)((NearPlane + FarPlane) / 2.0 * 300);
-            }
-        }
-
-        public float InputRotationScale
-        {
-            get
-            {
-                return 100f; //(float)((NearPlane + FarPlane) / 2.0 * 100);
-            }
-        }
-
-        public float InputScaleScale
-        {
-            get
-            {
-                return 100f; //(float)((NearPlane + FarPlane) / 2.0 * 100);
-            }
-        }
-
-        public CameraNew(Microsoft.DirectX.Direct3D.Device device)
-        {
-
-            if (device == null)
-            {
-                throw new Exception("Device must not be null");
-            }
-
-            _device = device;
-            Initialize();
-        }
-
-        void Initialize()
-        {
-
-            _viewMatrix = Matrix.Identity;
-            _projectionMatrix = Matrix.Identity;
-
-            //			_position = new Vector3(0, 0, 0);
-            //			_direction = new Vector3(0, 0, 0);
-            //			_upDirection = new Vector3(0, 1, 0);
-            //UpdateView();
-
-            //			_fieldOfView = 0.75f;
-            //			_aspectRatio = 1.0f;
-            //			_nearPlane = 0.5f;
-            //			_farPlane = 500.0f;
-            //UpdateProjection();
-
-            Reset();
-        }
-
-        public void Render()
-        {
-            //_position = new Vector3(this._x, this._y, this._z);
-            UpdateView();
-            UpdateProjection();
-        }
-
-        public Microsoft.DirectX.Direct3D.Device Device
-        {
-
-            get { return _device; }
-        }
-
-        public Matrix View
-        {
-
-            get { return _viewMatrix; }
-        }
-
-        public Matrix Projection
-        {
-
-            get { return _projectionMatrix; }
-        }
-
-        public float FieldOfView
-        {
-
-            get { return _fieldOfView; }
-            set { _fieldOfView = value; }
-        }
-
-        public float AspectRatio
-        {
-
-            get { return _aspectRatio; }
-            set { _aspectRatio = value; }
-        }
-
-        public Vector3 Position
-        {
-
-            get { return _position; }
-            set { _position = value; }
-        }
-
-        public Vector3 Direction
-        {
-
-            get { return _direction; }
-            set { _direction = value; }
-        }
-
-        public Vector3 UpDirection
-        {
-
-            get { return _upDirection; }
-            set { _upDirection = value; }
-        }
-
-        float angx, angy, angz, scale;
-        Vector3 campos, camtarget, camup, pos, center;
-        float fov, aspect, near, far;
-
-
-        /// <summary>
-        /// Reset the Parameters
-        /// </summary>
-        public void Reset()
-        {
-            angx = angy = angz = 0;
-            pos = new Vector3(0, 0, 0);
-            center = new Vector3(0, 0, 0);
-            scale = 1;
-
-            fov = (float)(Math.PI / 4);
-            aspect = 1;
-            near = 1;
-            far = 100;
-
-            campos = new Vector3(0.0f, 3.0f, 5.0f);
-            camtarget = new Vector3(0.0f, 0.0f, 0.0f);
-            camup = new Vector3(0.0f, 1.0f, 0.0f);
-        }
-
-        public Vector3 CameraUpVector
-        {
-            get { return camup; }
-            set { camup = value; }
-        }
-
-        public Vector3 CameraTarget
-        {
-            get { return camtarget; }
-            set { camtarget = value; }
-        }
-
-        public Vector3 CameraPosition
-        {
-            get { return campos; }
-            set { campos = value; }
-        }
-
-        public Vector3 ObjectCenter
-        {
-            get { return center; }
-            set { center = value; }
-        }
-
-        public float NearPlane
-        {
-            get { return near; }
-            set { near = value; }
-        }
-
-        public float FarPlane
-        {
-            get { return far; }
-            set { far = value; }
-        }
-
-        public float Aspect
-        {
-            get { return aspect; }
-            set { aspect = value; }
-        }
-
-        public float FoV
-        {
-            get { return fov; }
-            set { fov = value; }
-        }
-
-        public float AngelX
-        {
-            get { return angx; }
-            set { angx = value; }
-        }
-
-        public float AngelZ
-        {
-            get { return angz; }
-            set { angz = value; }
-        }
-
-        public float AngelY
-        {
-            get { return angy; }
-            set { angy = value; }
-        }
-
-        public float X
-        {
-            get { return pos.X; }
-            set { pos.X = value; }
-        }
-
-        public float Y
-        {
-            get { return pos.Y; }
-            set { pos.Y = value; }
-        }
-
-        public float Z
-        {
-            get { return pos.Z; }
-            set { pos.Z = value; }
-        }
-
-        public float Scale
-        {
-            get { return scale; }
-            set { scale = value; }
-        }
-
-        void UpdateView()
-        {
-
-            _viewMatrix = Matrix.LookAtLH(_position, _direction, _upDirection);
-            _device.SetTransform(TransformType.View, _viewMatrix);
-        }
-
-        void UpdateProjection()
-        {
-
-            _projectionMatrix = Matrix.PerspectiveFovLH(_fieldOfView, _aspectRatio, _nearPlane, _farPlane);
-            _device.SetTransform(TransformType.Projection, _projectionMatrix);
-        }
-
-        float ConvertDegreesToRadians(float degree)
-        {
-            return degree * (float)(Math.PI / 180);
-        }
-    }
-
     public struct vertex
     {
         public float x;
         public float y;
         public float z;
 
-        //public float nx;
-        //public float ny;
-        //public float nz;
-
         public float tu;
         public float tv;
-        public float tu2;
-        public float tv2;
+
+        public float bnx;
+        public float bny;
+        public float bnz;
+
+        public float tx;
+        public float ty;
+        public float tz;
+
+        public float nx;
+        public float ny;
+        public float nz;
 
         public vertex(float newx, float newy, float newz)
         {
             x = newx;
             y = newy;
             z = newz;
-            //nx = 0;
-            //ny = 0;
-            //nz = 0;
+            nx = 0;
+            ny = 1;
+            nz = 0;
             tu = 0;
             tv = 0;
-            tu2 = 0;
-            tv2 = 0;
+            bnx = 0;
+            bny = 0;
+            bnz = 1;
+            tx = 1;
+            ty = 0;
+            tz = 1;
         }
         public vertex(float newx, float newy, float newz, float nu, float nv)
         {
             x = newx;
             y = newy;
             z = newz;
-            //nx = 0;
-            //ny = 0;
-            //nz = 0;
+            nx = 0;
+            ny = 1;
+            nz = 0;
             tu = nu;
             tv = nv;
-            tu2 = nu;
-            tv2 = nv;
+            bnx = 0;
+            bny = 0;
+            bnz = 1;
+            tx = 1;
+            ty = 0;
+            tz = 1;
         }
-        /*
+
         public vertex(float newx, float newy, float newz, float nu, float nv, float nnx, float nny, float nnz)
         {
             x = newx;
@@ -521,11 +270,45 @@ namespace MadScience.Render
             nz = nnz;
             tu = nu;
             tv = nv;
-            tu2 = nu;
-            tv2 = nv;
+            bnx = 0;
+            bny = 0;
+            bnz = 1;
+            tx = 1;
+            ty = 0;
+            tz = 1;
         }
-        */
-        public static readonly VertexFormats FVF_Flags = VertexFormats.Position | VertexFormats.Texture2 ;
+
+        public vertex(float newx, float newy, float newz, float nu, float nv, float nnx, float nny, float nnz, float tnx, float tny, float tnz)
+        {
+            x = newx;
+            y = newy;
+            z = newz;
+            nx = nnx;
+            ny = nny;
+            nz = nnz;
+            tu = nu;
+            tv = nv;
+            tx = tnx;
+            ty = tny;
+            tz = tnz;
+            // Calculate binormal based on the cross product of the normal and tangent
+            // Should really be saving the sign of the cross product here
+            Vector3 binormal = Vector3.Normalize(Vector3.Cross(new Vector3(nx, ny, nz), new Vector3(tx, ty, tz)));
+            bnx = binormal.X;
+            bny = binormal.Y;
+            bnz = binormal.Z;
+        }
+
+        public static readonly VertexFormats FVF_Flags = VertexFormats.Position | VertexFormats.Texture1;
+        public static readonly VertexElement[] Elements = new VertexElement[] {
+            new VertexElement(0, 0, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Position, 0),
+            new VertexElement(0, 12, DeclarationType.Float2, DeclarationMethod.Default, DeclarationUsage.TextureCoordinate, 0),
+            new VertexElement(0, 20, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.BiNormal, 0),
+            new VertexElement(0, 32, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Tangent, 0),
+            new VertexElement(0, 44, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Normal, 0),
+            VertexElement.VertexDeclarationEnd
+        };
+        public static readonly int SizeInBytes = 56;
     };
 
     public class polygon
@@ -565,6 +348,8 @@ namespace MadScience.Render
     {
         public Texture baseTexture;
         public Texture curStencil;
+        public Texture specularTexture;
+        public Texture ambientTexture;
     }
 
     public class boundingBoxes
@@ -588,6 +373,8 @@ namespace MadScience.Render
         //public vertex[] vertexList;
         public uint numVertexNormals = 0;
         public List<Vector3> vertexNormal = new List<Vector3>();
+        public List<Vector3> vertexTangentList = new List<Vector3>();
+        public List<Vector3> vertexBiNormalList = new List<Vector3>();
         //public vertex[] vertexNormal;
         public uint numUVs = 0;
         public List<uvcoord> textureVertex = new List<uvcoord>();

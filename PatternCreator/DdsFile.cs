@@ -330,22 +330,22 @@ namespace DdsFileTypePlugin
 
         public Image Image()
         {
-            return this.Image(true, true, true, false);
+            return this.Image(true, true, true, false, true);
         }
         public Image Image(bool red)
         {
-            return this.Image(true, false, false, false);
+            return this.Image(true, false, false, false, true);
         }
         public Image Image(bool red, bool green)
         {
-            return this.Image(true, true, false, false);
+            return this.Image(true, true, false, false, true);
         }
         public Image Image(bool red, bool green, bool blue)
         {
-            return this.Image(true, true, true, false);
+            return this.Image(true, true, true, false, true);
         }
 
-        public Image Image(bool red, bool green, bool blue, bool alpha)
+        public Image Image(bool red, bool green, bool blue, bool alpha, bool invAlpha)
         {
             Bitmap bitmap = new Bitmap(this.GetWidth(), this.GetHeight());
 
@@ -368,7 +368,7 @@ namespace DdsFileTypePlugin
                     if (alpha) { 
                         calpha = readPixelData[readPixelOffset + 3];
                         // Inverse the alpha
-                        calpha = (255 - calpha);
+                        if (invAlpha) calpha = (255 - calpha);
                     }
 
                     if (alpha)
