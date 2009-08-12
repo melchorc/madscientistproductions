@@ -21,6 +21,13 @@ namespace PatternBrowser
                 Helpers.logMessageToFile("Initialising PatternBrowser");
 
                 InitializeComponent();
+
+                Helpers.logMessageToFile("Creating cache folder");
+                if (!Directory.Exists(Application.StartupPath + "\\patterncache\\"))
+                {
+                    Directory.CreateDirectory(Application.StartupPath + "\\patterncache\\");
+                }
+
                 loadPatternList();
 
             }
@@ -793,11 +800,11 @@ namespace PatternBrowser
 
             if (_selectedPattern.isCustom == false)
             {
-                this.selectedPattern = Helpers.parsePatternComplate(Helpers.searchForKey(reskey, 0));
+                this.selectedPattern = Helpers.parsePatternComplate(KeyUtils.searchForKey(reskey, 0));
             }
             else
             {
-                this.selectedPattern = Helpers.parsePatternComplate(Helpers.searchForKey(reskey, _selectedPattern.subcategory));
+                this.selectedPattern = Helpers.parsePatternComplate(KeyUtils.searchForKey(reskey, _selectedPattern.subcategory));
             }
             this.selectedPattern.key = reskey;
 
