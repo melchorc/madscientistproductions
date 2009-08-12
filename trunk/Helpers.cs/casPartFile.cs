@@ -32,7 +32,7 @@ namespace MadScience
 
         private void addLine(casPart casP, string keyName, string value, bool addToKeylist)
         {
-            if (value != "")
+            if (!String.IsNullOrEmpty(value))
             {
                 Console.WriteLine("Adding " + keyName);
                 if (addToKeylist) addToTGI(casP, keyToTGI64(value));
@@ -132,7 +132,7 @@ namespace MadScience
 
             for (int i = 0; i < 4; i++)
             {
-                if (chunk.pattern[i].name != "")
+                if (!String.IsNullOrEmpty(chunk.pattern[i].name))
                 {
                     string patternName = "";
                     string charName = "";
@@ -223,35 +223,35 @@ namespace MadScience
                     }
                     if (chunk.pattern[i].type == "HSV")
                     {
-                        if (chunk.pattern[i].BackgroundImage != "")
+                        if (!String.IsNullOrEmpty(chunk.pattern[i].BackgroundImage))
                         {
                             casP.tgi64list.Add(keyToTGI64(chunk.pattern[i].BackgroundImage));
                             avSBL("Background Image", chunk.pattern[i].BackgroundImage);
                         }
-                        if (chunk.pattern[i].HBg != "") avSBL("H Bg", chunk.pattern[i].HBg);
-                        if (chunk.pattern[i].SBg != "") avSBL("S Bg", chunk.pattern[i].SBg);
-                        if (chunk.pattern[i].VBg != "") avSBL("V Bg", chunk.pattern[i].VBg);
-                        if (chunk.pattern[i].BaseHBg != "") avSBL("Base H Bg", chunk.pattern[i].BaseHBg);
-                        if (chunk.pattern[i].BaseSBg != "") avSBL("Base S Bg", chunk.pattern[i].BaseSBg);
-                        if (chunk.pattern[i].BaseVBg != "") avSBL("Base V Bg", chunk.pattern[i].BaseVBg);
-                        if (chunk.pattern[i].HSVShiftBg != "") avSBL("HSVShift Bg", chunk.pattern[i].HSVShiftBg);
+                        if (!String.IsNullOrEmpty(chunk.pattern[i].HBg)) avSBL("H Bg", chunk.pattern[i].HBg);
+                        if (!String.IsNullOrEmpty(chunk.pattern[i].SBg)) avSBL("S Bg", chunk.pattern[i].SBg);
+                        if (!String.IsNullOrEmpty(chunk.pattern[i].VBg)) avSBL("V Bg", chunk.pattern[i].VBg);
+                        if (!String.IsNullOrEmpty(chunk.pattern[i].BaseHBg)) avSBL("Base H Bg", chunk.pattern[i].BaseHBg);
+                        if (!String.IsNullOrEmpty(chunk.pattern[i].BaseSBg)) avSBL("Base S Bg", chunk.pattern[i].BaseSBg);
+                        if (!String.IsNullOrEmpty(chunk.pattern[i].BaseVBg)) avSBL("Base V Bg", chunk.pattern[i].BaseVBg);
+                        if (!String.IsNullOrEmpty(chunk.pattern[i].HSVShiftBg)) avSBL("HSVShift Bg", chunk.pattern[i].HSVShiftBg);
                     }
                     if (chunk.pattern[i].type == "Coloured")
                     {
                         for (int j = 0; j < 5; j++)
                         {
-                            if (chunk.pattern[i].ColorP[j] != "") avSBL("Color " + j.ToString(), chunk.pattern[i].ColorP[j]);
+                            if (!String.IsNullOrEmpty(chunk.pattern[i].ColorP[j])) avSBL("Color " + j.ToString(), chunk.pattern[i].ColorP[j]);
                         }
                     }
 
-                    if (chunk.pattern[i].rgbmask != "") avSBL("rgbmask", chunk.pattern[i].rgbmask);
-                    if (chunk.pattern[i].specmap != "") avSBL("specmap", chunk.pattern[i].specmap);
+                    if (!String.IsNullOrEmpty(chunk.pattern[i].rgbmask)) avSBL("rgbmask", chunk.pattern[i].rgbmask);
+                    if (!String.IsNullOrEmpty(chunk.pattern[i].specmap)) avSBL("specmap", chunk.pattern[i].specmap);
                     avSBL("filename", chunk.pattern[i].filename);
                     sb.AppendLine("</pattern>");
                 }
             }
 
-            if (chunk.logo.name != "")
+            if (!String.IsNullOrEmpty(chunk.logo.name))
             {
                 sb.Append("<pattern name=\"" + chunk.logo.name + "\" reskey=\"" + chunk.logo.key + "\" variable=\"Logo\">");
                 casP.tgi64list.Add(new keyName(chunk.logo.key).ToTGI());

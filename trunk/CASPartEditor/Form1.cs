@@ -1950,7 +1950,7 @@ namespace CASPartEditor
 
             string meshName = txtMeshName.Text;
 
-            if (String.IsNullOrEmpty(txtMeshLod1.Text) == false)
+            if (!String.IsNullOrEmpty(txtMeshLod1.Text))
             {
                 uint customGroup = Gibbed.Helpers.StringHelpers.HashFNV24(meshName);
                 keyName meshLod1 = new keyName(0x015A1849, customGroup, (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(meshName + "_lod1"), meshName + "_lod1");
@@ -2467,7 +2467,7 @@ namespace CASPartEditor
 
                 patternDetails temp = commitPatternDetails();
 
-                picPatternThumb.Image = this.pBrowser.makePatternThumb(temp.key, false, pBrowser.pDetailsTopFile(temp));
+                picPatternThumb.Image = this.pBrowser.makePatternThumb(pBrowser.findPattern(temp.key), false, pBrowser.pDetailsTopFile(temp));
                 picPatternThumb.Visible = true;
             }
 
@@ -2578,66 +2578,25 @@ namespace CASPartEditor
             txtPatternATiling.Text = pDetails.Tiling;
             picPatternSolidColour.BackColor = MadScience.Helpers.convertColour(pDetails.Color);
 
-            Color temp;
-            temp = MadScience.Helpers.convertColour(pDetails.ColorP[0], true);
-            picPatternColourBg.BackColor = temp;
-            if (temp == Color.Empty) { 
-                picPatternColourBg.Tag = "empty";
-                picPatternColourBg.Visible = false;
-            } else { 
-                picPatternColourBg.Tag = "color";
-                picPatternColourBg.Visible = true;
-            }
-
-            temp = MadScience.Helpers.convertColour(pDetails.ColorP[1], true);
-            picPatternColour1.BackColor = temp;
-            if (temp == Color.Empty) { 
-                picPatternColour1.Tag = "empty";
-                picPatternColour1.Visible = false;
-            } else { 
-                picPatternColour1.Tag = "color";
-                picPatternColour1.Visible = true;
-            }
-
-            temp = MadScience.Helpers.convertColour(pDetails.ColorP[2], true);
-            picPatternColour2.BackColor = temp;
-            if (temp == Color.Empty) { 
-                picPatternColour2.Tag = "empty";
-                picPatternColour2.Visible = false;
-            } else { 
-                picPatternColour2.Tag = "color";
-                picPatternColour2.Visible = true;
-            }
-
-            temp = MadScience.Helpers.convertColour(pDetails.ColorP[3], true);
-            picPatternColour3.BackColor = temp;
-            if (temp == Color.Empty) { 
-                picPatternColour3.Tag = "empty";
-                picPatternColour3.Visible = false;
-            } else { 
-                picPatternColour3.Tag = "color";
-                picPatternColour3.Visible = true;
-            }
-
-            temp = MadScience.Helpers.convertColour(pDetails.ColorP[4], true);
-            picPatternColour4.BackColor = temp;
-            if (temp == Color.Empty) { 
-                picPatternColour4.Tag = "empty";
-                picPatternColour4.Visible = false;
-            } else { 
-                picPatternColour4.Tag = "color";
-                picPatternColour4.Visible = true;
-            }
-
-
             grpPatternA.Enabled = true;
 
             if (pDetails.type == "Coloured")
             {
-                picPatternThumb.Image = this.pBrowser.makePatternThumb(pDetails.key, false, pBrowser.pDetailsTopFile(pDetails));
+                PatternBrowser.patternsFile pFile = pBrowser.pDetailsTopFile(pDetails);
+                PatternBrowser.patternsFile pattern = pBrowser.findPattern(pDetails.key);
+
+                // Check if pFile has the correct colours
+                if (String.IsNullOrEmpty(pattern.color0)) { pFile.color0 = ""; pDetails.ColorP[0] = null; }
+                if (String.IsNullOrEmpty(pattern.color1)) { pFile.color1 = ""; pDetails.ColorP[1] = null; }
+                if (String.IsNullOrEmpty(pattern.color2)) { pFile.color2 = ""; pDetails.ColorP[2] = null; }
+                if (String.IsNullOrEmpty(pattern.color3)) { pFile.color3 = ""; pDetails.ColorP[3] = null; }
+                if (String.IsNullOrEmpty(pattern.color4)) { pFile.color4 = ""; pDetails.ColorP[4] = null; }
+
+                picPatternThumb.Image = this.pBrowser.makePatternThumb(pattern, false, pFile);
                 picPatternThumb.Visible = true;
             }
-            else
+            
+            if (pDetails.type == "HSV")
             {
                 if (File.Exists(Application.StartupPath + "\\patterncache\\" + pDetails.name + ".png"))
                 {
@@ -2653,19 +2612,72 @@ namespace CASPartEditor
                 }
             }
 
-            /*
-            if (File.Exists(Application.StartupPath + "\\patterncache\\" + pDetails.name + ".dds"))
+            Color temp;
+            temp = MadScience.Helpers.convertColour(pDetails.ColorP[0], true);
+            picPatternColourBg.BackColor = temp;
+            if (temp == Color.Empty)
             {
-                Stream ddsThumb = File.OpenRead(Application.StartupPath + "\\patterncache\\" + pDetails.name + ".dds");
-                DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
-                ddsP.Load(ddsThumb);
-                ddsThumb.Close();
-                picPatternThumbDDS.Image = ddsP.Image(true, true, true, true);
-                ddsP = null;
-
+                picPatternColourBg.Tag = "empty";
+                picPatternColourBg.Visible = false;
             }
-            */
-            
+            else
+            {
+                picPatternColourBg.Tag = "color";
+                picPatternColourBg.Visible = true;
+            }
+
+            temp = MadScience.Helpers.convertColour(pDetails.ColorP[1], true);
+            picPatternColour1.BackColor = temp;
+            if (temp == Color.Empty)
+            {
+                picPatternColour1.Tag = "empty";
+                picPatternColour1.Visible = false;
+            }
+            else
+            {
+                picPatternColour1.Tag = "color";
+                picPatternColour1.Visible = true;
+            }
+
+            temp = MadScience.Helpers.convertColour(pDetails.ColorP[2], true);
+            picPatternColour2.BackColor = temp;
+            if (temp == Color.Empty)
+            {
+                picPatternColour2.Tag = "empty";
+                picPatternColour2.Visible = false;
+            }
+            else
+            {
+                picPatternColour2.Tag = "color";
+                picPatternColour2.Visible = true;
+            }
+
+            temp = MadScience.Helpers.convertColour(pDetails.ColorP[3], true);
+            picPatternColour3.BackColor = temp;
+            if (temp == Color.Empty)
+            {
+                picPatternColour3.Tag = "empty";
+                picPatternColour3.Visible = false;
+            }
+            else
+            {
+                picPatternColour3.Tag = "color";
+                picPatternColour3.Visible = true;
+            }
+
+            temp = MadScience.Helpers.convertColour(pDetails.ColorP[4], true);
+            picPatternColour4.BackColor = temp;
+            if (temp == Color.Empty)
+            {
+                picPatternColour4.Tag = "empty";
+                picPatternColour4.Visible = false;
+            }
+            else
+            {
+                picPatternColour4.Tag = "color";
+                picPatternColour4.Visible = true;
+            }
+
         }
 
         private void picLstOtherColour_Click(object sender, EventArgs e)
@@ -3922,38 +3934,6 @@ namespace CASPartEditor
                 colors[3] = MadScience.Helpers.convertColour(pDetail.ColorP[3], true);
                 colors[4] = MadScience.Helpers.convertColour(pDetail.ColorP[4], true);
 
-                /*
-                if (pDetail.filename.EndsWith("1"))
-                {
-                    colors = new Color[2];
-                    colors[0] = MadScience.Helpers.convertColour(pDetail.ColorP[0]);
-                    colors[1] = MadScience.Helpers.convertColour(pDetail.ColorP[1]);
-                }
-                else if (pDetail.filename.EndsWith("2"))
-                {
-                    colors = new Color[3];
-                    colors[0] = MadScience.Helpers.convertColour(pDetail.ColorP[0]);
-                    colors[1] = MadScience.Helpers.convertColour(pDetail.ColorP[1]);
-                    colors[2] = MadScience.Helpers.convertColour(pDetail.ColorP[2]);
-                }
-                else if (pDetail.filename.EndsWith("3"))
-                {
-                    colors = new Color[4];
-                    colors[0] = MadScience.Helpers.convertColour(pDetail.ColorP[0]);
-                    colors[1] = MadScience.Helpers.convertColour(pDetail.ColorP[1]);
-                    colors[2] = MadScience.Helpers.convertColour(pDetail.ColorP[2]);
-                    colors[3] = MadScience.Helpers.convertColour(pDetail.ColorP[3]);
-                }
-                else
-                {
-                    colors = new Color[5];
-                    colors[0] = MadScience.Helpers.convertColour(pDetail.ColorP[0]);
-                    colors[1] = MadScience.Helpers.convertColour(pDetail.ColorP[1]);
-                    colors[2] = MadScience.Helpers.convertColour(pDetail.ColorP[2]);
-                    colors[3] = MadScience.Helpers.convertColour(pDetail.ColorP[3]);
-                    colors[4] = MadScience.Helpers.convertColour(pDetail.ColorP[4]);
-                }
-                */
             }
             return colors;
         }
