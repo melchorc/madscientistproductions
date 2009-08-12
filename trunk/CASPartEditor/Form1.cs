@@ -4065,7 +4065,15 @@ namespace CASPartEditor
             }
             if (pDetail.type == "Coloured")
             {
-                if (pDetail.ColorP[4] == null)
+                //need a better way to figure out the number of colors
+                if (pDetail.filename.EndsWith("2"))
+                {
+                    colors = new Color[3];
+                    colors[0] = MadScience.Helpers.convertColour(pDetail.ColorP[0]);
+                    colors[1] = MadScience.Helpers.convertColour(pDetail.ColorP[1]);
+                    colors[2] = MadScience.Helpers.convertColour(pDetail.ColorP[2]);
+                }
+                else if (pDetail.filename.EndsWith("3"))
                 {
                     colors = new Color[4];
                     colors[0] = MadScience.Helpers.convertColour(pDetail.ColorP[0]);

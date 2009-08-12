@@ -55,17 +55,19 @@ namespace CASPartEditor
             Stream Multiplier = textures[0];
             Console.WriteLine("Multiplier length: " + Multiplier.Length.ToString());
             //If there is no multiplier return empty image
+            DateTime startTime = DateTime.Now;
             if (Multiplier.Length == 0)
             {
-                output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
-                return output;
+                _Multiplier = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
             }
+            else
+            {
 
-            DateTime startTime = DateTime.Now;
-            //Load multiplier
-            d.Load(Multiplier);
-            _Multiplier = (Bitmap)d.Image(true, true, true, true);
-            Multiplier.Close();
+                //Load multiplier
+                d.Load(Multiplier);
+                _Multiplier = (Bitmap)d.Image(true, true, true, true);
+                Multiplier.Close();
+            }
             DateTime stopTime = DateTime.Now;
             TimeSpan duration = stopTime - startTime;
             Console.WriteLine("Multiplier generation time: " + duration.TotalMilliseconds);
@@ -270,26 +272,27 @@ namespace CASPartEditor
 
                         for (int x = 0; x < 1024; x++)
                         {
+
                             int pixelLocation = x * pixelSize;
 
                             Color multiplierColor = Color.FromArgb(multiplierRow[pixelLocation + 3], multiplierRow[pixelLocation + 2], multiplierRow[pixelLocation + 1], multiplierRow[pixelLocation]);
-                            Color maskColor = Color.FromArgb(maskRow[pixelLocation + 3], maskRow[pixelLocation + 2], maskRow[pixelLocation + 1], maskRow[pixelLocation]);
-
-                            int xs = x % 256;
-                            int pixelLocation2 = xs * pixelSize;
-
-                            Color pattern1Color = Color.Empty;
-                            Color pattern2Color = Color.Empty;
-                            Color pattern3Color = Color.Empty;
-                            Color pattern4Color = Color.Empty;
-
-                            if (Pattern1Enabled) pattern1Color = Color.FromArgb(pattern1Row[pixelLocation2 + 3], pattern1Row[pixelLocation2 + 2], pattern1Row[pixelLocation2 + 1], pattern1Row[pixelLocation2]);
-                            if (Pattern2Enabled) pattern2Color = Color.FromArgb(pattern2Row[pixelLocation2 + 3], pattern2Row[pixelLocation2 + 2], pattern2Row[pixelLocation2 + 1], pattern2Row[pixelLocation2]);
-                            if (Pattern3Enabled) pattern3Color = Color.FromArgb(pattern3Row[pixelLocation2 + 3], pattern3Row[pixelLocation2 + 2], pattern3Row[pixelLocation2 + 1], pattern3Row[pixelLocation2]);
-                            if (RGBA && Pattern4Enabled) pattern4Color = Color.FromArgb(pattern4Row[pixelLocation2 + 3], pattern4Row[pixelLocation2 + 2], pattern4Row[pixelLocation2 + 1], pattern4Row[pixelLocation2]);
-
                             if (multiplierColor.A != 0)
                             {
+                                Color maskColor = Color.FromArgb(maskRow[pixelLocation + 3], maskRow[pixelLocation + 2], maskRow[pixelLocation + 1], maskRow[pixelLocation]);
+
+                                int xs = x % 256;
+                                int pixelLocation2 = xs * pixelSize;
+
+                                Color pattern1Color = Color.Empty;
+                                Color pattern2Color = Color.Empty;
+                                Color pattern3Color = Color.Empty;
+                                Color pattern4Color = Color.Empty;
+
+                                if (Pattern1Enabled) pattern1Color = Color.FromArgb(pattern1Row[pixelLocation2 + 3], pattern1Row[pixelLocation2 + 2], pattern1Row[pixelLocation2 + 1], pattern1Row[pixelLocation2]);
+                                if (Pattern2Enabled) pattern2Color = Color.FromArgb(pattern2Row[pixelLocation2 + 3], pattern2Row[pixelLocation2 + 2], pattern2Row[pixelLocation2 + 1], pattern2Row[pixelLocation2]);
+                                if (Pattern3Enabled) pattern3Color = Color.FromArgb(pattern3Row[pixelLocation2 + 3], pattern3Row[pixelLocation2 + 2], pattern3Row[pixelLocation2 + 1], pattern3Row[pixelLocation2]);
+                                if (RGBA && Pattern4Enabled) pattern4Color = Color.FromArgb(pattern4Row[pixelLocation2 + 3], pattern4Row[pixelLocation2 + 2], pattern4Row[pixelLocation2 + 1], pattern4Row[pixelLocation2]);
+
                                 if (RGBA)
                                 {
                                     multiplierColor = ProcessPixelRGBA(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color, pattern4Color, Pattern1Colors, Pattern2Colors, Pattern3Colors, Pattern4Colors);
@@ -348,26 +351,6 @@ namespace CASPartEditor
 
         }
 
-        public static Bitmap ProcessPattern(Stream PatternMask, Color[] Colors, bool RGBA)
-        {
-            Bitmap _PatternMask;
-            Bitmap output;
-            var d = new DdsFileTypePlugin.DdsFile();
-            d.Load(PatternMask);
-            _PatternMask = (Bitmap)d.Image(true, true, true, true);
-            PatternMask.Close();
-            output = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
-            int x, y;
-            for (x = 0; x <= 255; x++)
-            {
-                for (y = 0; y <= 255; y++)
-                {
-                    output.SetPixel(x, y, ColorFromPattern(_PatternMask.GetPixel(x, y), Colors));
-                }
-            }
-            return output;
-        }
-
         private static Color ProcessPixelRGB(Color multiplier, Color mask, Color pattern1mask, Color pattern2mask, Color pattern3mask,  Color[] colors1, Color[] colors2, Color[] colors3)
         {
             Color output;
@@ -405,22 +388,16 @@ namespace CASPartEditor
             if (colors.Length > 1)
             {
                 output = ColorOverlay(mask.R, output, colors[1]);
-                output = ColorOverlay(mask.G, output, colors[2]);
-                output = ColorOverlay(mask.B, output, colors[3]);
-                if (colors.Length > 4)
-                    output = ColorOverlay(mask.A, output, colors[4]);
-            }
-            return output;
-        }
-
-        private static Color ColorFromPatternRGB(Color mask, Color[] colors)
-        {
-            Color output = colors[0];
-            if (colors.Length > 1)
-            {
-                output = ColorOverlay(mask.R, output, colors[1]);
-                output = ColorOverlay(mask.G, output, colors[2]);
-                output = ColorOverlay(mask.B, output, colors[3]);
+                if (colors.Length > 2)
+                {
+                    output = ColorOverlay(mask.G, output, colors[2]);
+                    if (colors.Length > 3)
+                    {
+                        output = ColorOverlay(mask.B, output, colors[3]);
+                        if (colors.Length > 4)
+                            output = ColorOverlay(mask.A, output, colors[4]);
+                    }
+                }
             }
             return output;
         }
