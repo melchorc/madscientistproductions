@@ -5,7 +5,7 @@ namespace MadScience
 {
     public class vpxyFile
     {
-        public MemoryStream New(keyName inputKey)
+        public static MemoryStream New(keyName inputKey)
         {
             // builds a new vpxy 
             MemoryStream output = new MemoryStream();

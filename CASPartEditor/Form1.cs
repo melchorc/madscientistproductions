@@ -1872,11 +1872,23 @@ namespace CASPartEditor
             }
             */
             // TGI list
-            uint numTGI = (uint)keynames.Count;
-            writer.Write(numTGI);
-            reader.ReadUInt32();
+            uint numOrig = reader.ReadUInt32();
+            writer.Write(numOrig);
 
-            for (int i = 0; i < numTGI; i++)
+            // How many does the original mesh have? - Some meshes (Accessories) have only 3 TGI links.  Some have 4, some have 5.
+            // If 3 then chop off first two
+            // If 4 then chop off first one
+            // If 5 then save all
+
+            if (numOrig == 3) { 
+                keynames.RemoveAt(0); 
+                keynames.RemoveAt(1); 
+            }
+            if (numOrig == 4) { 
+                keynames.RemoveAt(0); 
+            }
+
+            for (int i = 0; i < numOrig; i++)
             {
                 if (keynames[i].ToString() != keynames[i].Blank)
                 {
@@ -1896,29 +1908,35 @@ namespace CASPartEditor
             Console.WriteLine("Done saving mesh...");
         }
 
-        private keyName makeKeyName(string keyString, string meshName)
+        private MemoryStream makeBlendFile(keyName proxy)
         {
-            keyName temp = new keyName();
-            keyString = keyString.Trim();
-            if (keyString != "")
-            {
-                if (keyString.StartsWith("key:"))
-                {
-                    temp = new keyName(keyString);
-                }
-                else
-                {
-                    if (keyString.Length == 16)
-                    {
-                        temp = new keyName("key:00B2D882:00000000:" + keyString);
-                    }
-                    else
-                    {
-                        temp = new keyName(0x00B2D882, 0x0, meshName);
-                    }
-                }
-            }
-            return temp;
+            MemoryStream output = new MemoryStream();
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 7);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 0);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 20);
+            Gibbed.Helpers.StreamHelpers.WriteValueU8(output, (byte)(proxy.name.Length * 2));
+            Gibbed.Helpers.StreamHelpers.WriteStringUTF16(output, false, proxy.name);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 2);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 1);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 1024);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 1);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 77951);
+            Gibbed.Helpers.StreamHelpers.WriteValueU16(output, 0);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 16256);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 0);
+            Gibbed.Helpers.StreamHelpers.WriteValueU16(output, 0);
+            uint position = (uint)output.Position;
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 1);
+            //Gibbed.Helpers.StreamHelpers.WriteValueU64(output, 6231196913);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, proxy.typeId);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, proxy.groupId);
+            Gibbed.Helpers.StreamHelpers.WriteValueU64(output, proxy.instanceId);
+
+            output.Seek(4, SeekOrigin.Begin);
+            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, (position - 8));
+
+            // Should be 101 bytes long at this point
+            return output;
         }
 
         private void saveToDBPF(Database db, ulong instanceId, bool newInstance)
@@ -1946,6 +1964,16 @@ namespace CASPartEditor
                 Stream vpxyStream = KeyUtils.findKey(oldVpxyKey.ToString(), 0);
                 if (vpxyStream != null)
                 {
+
+                    keyName proxyFit = new keyName(0x736884F1, 0x00000001, meshName + "_fit");
+                    keyName proxyFat = new keyName(0x736884F1, 0x00000001, meshName + "_fat");
+                    keyName proxyThin = new keyName(0x736884F1, 0x00000001, meshName + "_thin");
+                    keyName proxySpecial = new keyName(0x736884F1, 0x00000001, meshName + "_special");
+                    keyName bodyBlendFat = new keyName(0x062C8204, 0x0, meshName + "_fat");
+                    keyName bodyBlendFit = new keyName(0x062C8204, 0x0, meshName + "_fit");
+                    keyName bodyBlendThin = new keyName(0x062C8204, 0x0, meshName + "_thin");
+                    keyName bodyBlendSpecial = new keyName(0x062C8204, 0x0, meshName + "_special");
+
                     vpxyStream.Seek(0x14, SeekOrigin.Begin);
                     Gibbed.Helpers.StreamHelpers.WriteValueU64(vpxyStream, vpxyKey.instanceId);
                     Gibbed.Helpers.StreamHelpers.WriteValueU32(vpxyStream, vpxyKey.typeId);
@@ -1962,10 +1990,31 @@ namespace CASPartEditor
                     Gibbed.Helpers.StreamHelpers.WriteValueU32(vpxyStream, meshLod3.groupId);
                     Gibbed.Helpers.StreamHelpers.WriteValueU64(vpxyStream, meshLod3.instanceId);
 
+                    MemoryStream proxyFitFile = vpxyFile.New(proxyFit);
+                    MemoryStream proxyFatFile = vpxyFile.New(proxyFat);
+                    MemoryStream proxyThinFile = vpxyFile.New(proxyThin);
+                    MemoryStream proxySpecialFile = vpxyFile.New(proxySpecial);
+                    MemoryStream bodyBlendFitFile = makeBlendFile(proxyFit);
+                    MemoryStream bodyBlendFatFile = makeBlendFile(proxyFat);
+                    MemoryStream bodyBlendThinFile = makeBlendFile(proxyThin);
+                    MemoryStream bodyBlendSpecialFile = makeBlendFile(proxySpecial);
+
                     db.SetResourceStream(vpxyKey.ToResourceKey(), vpxyStream);
+                    db.SetResourceStream(proxyFit.ToResourceKey(), proxyFitFile);
+                    db.SetResourceStream(proxyFat.ToResourceKey(), proxyFatFile);
+                    db.SetResourceStream(proxyThin.ToResourceKey(), proxyThinFile);
+                    db.SetResourceStream(proxySpecial.ToResourceKey(), proxySpecialFile);
+                    db.SetResourceStream(bodyBlendFit.ToResourceKey(), bodyBlendFitFile);
+                    db.SetResourceStream(bodyBlendFat.ToResourceKey(), bodyBlendFatFile);
+                    db.SetResourceStream(bodyBlendThin.ToResourceKey(), bodyBlendThinFile);
+                    db.SetResourceStream(bodyBlendSpecial.ToResourceKey(), bodyBlendSpecialFile);
 
                     // Update the CAS part TGI links with the new VPXY
                     casPartNew.tgi64list[casPartNew.tgiIndexVPXY] = vpxyKey.ToTGI();
+                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFat] = proxyFat.ToTGI();
+                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFit] = proxyFit.ToTGI();
+                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoThin] = proxyThin.ToTGI();
+                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoSpecial] = proxySpecial.ToTGI();
 
 
                     // Modify the meshes if they need a replacement bump map
@@ -1975,7 +2024,7 @@ namespace CASPartEditor
                     kNames.Add(new keyName());
                     if (String.IsNullOrEmpty(txtOtherBumpMap.Text) == false)
                     {
-                        keyName bumpMapKey = makeKeyName(txtOtherBumpMap.Text, meshName + "_n");
+                        keyName bumpMapKey = new keyName(txtOtherBumpMap.Text, meshName + "_n");
                         kNames.Add(bumpMapKey);
                         if (txtOtherBumpMap.Text != "" && !txtOtherBumpMap.Text.StartsWith("key:")) db.SetResourceStream(bumpMapKey.ToResourceKey(), File.OpenRead(txtOtherBumpMap.Text));                        
                     }
