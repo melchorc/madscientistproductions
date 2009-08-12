@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="DdsSquish.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="keyUtils.cs" />
     <Compile Include="licenseForm.cs">
       <SubType>Form</SubType>
     </Compile>
