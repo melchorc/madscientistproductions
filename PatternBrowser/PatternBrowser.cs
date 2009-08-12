@@ -216,18 +216,11 @@ namespace PatternBrowser
             if (this.customPatterns == null) this.customPatterns = new patterns();
         }
 
-        public Image makePatternThumb(string resKey)
+        public patternsFile findPattern(string resKey)
         {
-            return makePatternThumb(resKey, true, null);
-        }
-        public Image makePatternThumb(string resKey, bool saveImage, patternsFile pOverride)
-        {
+            // Get pattern details from XML
             keyName patternXML = new keyName(resKey);
-
-            PictureBox picBox = new PictureBox();
-            picBox.BackColor = System.Drawing.Color.White;
-            picBox.Size = new System.Drawing.Size(this.imageWidth, this.imageHeight);
-            picBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            patternsFile temp = new patternsFile();
 
             bool hasMatch = false;
 
@@ -238,62 +231,116 @@ namespace PatternBrowser
                 if (Gibbed.Helpers.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && Gibbed.Helpers.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && Gibbed.Helpers.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
                 {
                     hasMatch = true;
-                    if (File.Exists(pattern.subcategory))
-                    {
-                        Stream cast = File.Open(pattern.subcategory, FileMode.Open, FileAccess.Read, FileShare.Read);
-                        Gibbed.Sims3.FileFormats.Database castdb = new Gibbed.Sims3.FileFormats.Database(cast, true);
-
-                        keyName temp = new keyName(pattern.texturename);
-                        Stream patternThumb = null;
-
-                        try
-                        {
-                            patternThumb = castdb.GetResourceStream(temp.ToResourceKey());
-                        }
-                        catch (System.Collections.Generic.KeyNotFoundException ex)
-                        {
-                        }
-                        catch (Exception ex)
-                        {
-                            Helpers.logMessageToFile(ex.Message);
-                        }
-
-                        if (patternThumb != null)
-                        {
-                            if (pOverride != null)
-                            {
-                                // Only use the pattern colours
-                                pattern.color0 = pOverride.color0;
-                                pattern.color1 = pOverride.color1;
-                                pattern.color2 = pOverride.color2;
-                                pattern.color3 = pOverride.color3;
-                                pattern.color4 = pOverride.color4;
-                                pattern.HBg = pOverride.HBg;
-                                pattern.SBg = pOverride.SBg;
-                                pattern.VBg = pOverride.VBg;
-                            }
-
-
-                            picBox.Image = makePatternThumb(patternThumb, pattern);
-                            if (saveImage)
-                            {
-                                try
-                                {
-                                    picBox.Image.Save(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png", System.Drawing.Imaging.ImageFormat.Png);
-                                }
-                                catch (Exception ex)
-                                {
-                                }
-                            }
-                        }
-
-                        cast.Close();
-                    }
+                    temp = pattern;
                     break;
                 }
             }
 
             if (!hasMatch)
+            {
+                for (int i = 0; i < this.patterns.Items.Count; i++)
+                {
+                    patternsFile pattern = this.patterns.Items[i];
+                    if (pattern.typeid == null || pattern.groupid == null || pattern.instanceid == null)
+                    {
+                        Console.WriteLine("Oops");
+                    }
+
+                    if (Gibbed.Helpers.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && Gibbed.Helpers.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && Gibbed.Helpers.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
+                    {
+                        hasMatch = true;
+                        temp = pattern;
+                        break;
+                    }
+                }
+            }
+
+            return temp;
+        }
+
+        public Image makePatternThumb(string resKey)
+        {
+            return makePatternThumb(findPattern(resKey), true, null);
+        }
+        public Image makePatternThumb(patternsFile pattern, bool saveImage, patternsFile pOverride)
+        {
+            //keyName patternXML = new keyName(resKey);
+
+            PictureBox picBox = new PictureBox();
+            picBox.BackColor = System.Drawing.Color.White;
+            picBox.Size = new System.Drawing.Size(this.imageWidth, this.imageHeight);
+            picBox.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            if (pattern.isCustom)
+            {
+                /*
+                            bool hasMatch = false;
+
+                            for (int i = 0; i < this.customPatterns.Items.Count; i++)
+                            {
+                                patternsFile pattern = this.customPatterns.Items[i];
+
+                                if (Gibbed.Helpers.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && Gibbed.Helpers.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && Gibbed.Helpers.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
+                                {
+                                    hasMatch = true;
+                 */
+                if (File.Exists(pattern.subcategory))
+                {
+                    Stream cast = File.Open(pattern.subcategory, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    Gibbed.Sims3.FileFormats.Database castdb = new Gibbed.Sims3.FileFormats.Database(cast, true);
+
+                    keyName temp = new keyName(pattern.texturename);
+                    Stream patternThumb = null;
+
+                    try
+                    {
+                        patternThumb = castdb.GetResourceStream(temp.ToResourceKey());
+                    }
+                    catch (System.Collections.Generic.KeyNotFoundException ex)
+                    {
+                    }
+                    catch (Exception ex)
+                    {
+                        Helpers.logMessageToFile(ex.Message);
+                    }
+
+                    if (patternThumb != null)
+                    {
+                        if (pOverride != null)
+                        {
+                            // Only use the pattern colours
+                            pattern.color0 = pOverride.color0;
+                            pattern.color1 = pOverride.color1;
+                            pattern.color2 = pOverride.color2;
+                            pattern.color3 = pOverride.color3;
+                            pattern.color4 = pOverride.color4;
+                            pattern.HBg = pOverride.HBg;
+                            pattern.SBg = pOverride.SBg;
+                            pattern.VBg = pOverride.VBg;
+                        }
+
+
+                        picBox.Image = makePatternThumb(patternThumb, pattern);
+                        if (saveImage)
+                        {
+                            try
+                            {
+                                picBox.Image.Save(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                            }
+                            catch (Exception ex)
+                            {
+                            }
+                        }
+                    }
+
+                    cast.Close();
+                }
+                /*
+                    break;
+                }
+                 */
+            }
+            else 
             {
                 string s3root = MadScience.Helpers.findSims3Root();
                 string thumbnailPackage = @"\GameData\Shared\Packages\FullBuild2.package";
@@ -303,6 +350,7 @@ namespace PatternBrowser
                 Stream cast2 = File.Open(s3root + thumbnailPackage, FileMode.Open, FileAccess.Read, FileShare.Read);
                 Gibbed.Sims3.FileFormats.Database castdb2 = new Gibbed.Sims3.FileFormats.Database(cast2);
 
+                /*
                 for (int i = 0; i < this.patterns.Items.Count; i++)
                 {
                     patternsFile pattern = this.patterns.Items[i];
@@ -310,7 +358,7 @@ namespace PatternBrowser
                     if (Gibbed.Helpers.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && Gibbed.Helpers.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && Gibbed.Helpers.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
                     {
                         hasMatch = true;
-
+                */
                         ulong instanceid = Gibbed.Helpers.StringHelpers.HashFNV64(pattern.casPart);
                         keyName temp = new keyName(0x00B2D882, 0x00000000, instanceid);
                         Stream patternThumb = null;
@@ -366,10 +414,12 @@ namespace PatternBrowser
                                 }
                             }
                         }
+                /*
                         break;
                     }
 
                 }
+                 */
             }
 
             return picBox.Image;
