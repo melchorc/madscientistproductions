@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -8,103 +9,13 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Linq;
 using System.IO;
-using Gibbed.Sims3.FileFormats;
 using Gibbed.Helpers;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace MadScience
 {
-    public class keyName
-    {
-        public uint typeId = 0;
-        public uint groupId = 0;
-        public ulong instanceId = 0;
-        public string name = "";
-
-        public keyName()
-        {
-        }
-
-        public string Blank = "key:00000000:00000000:0000000000000000";
-
-        public keyName(tgi64 tgi)
-        {
-            this.typeId = tgi.typeid;
-            this.groupId = tgi.groupid;
-            this.instanceId = tgi.instanceid;
-        }
-
-        public keyName(string keyString)
-        {
-            keyString = keyString.Replace("key:", "");
-            string[] temp = keyString.Split(":".ToCharArray());
-
-            this.typeId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[0]);
-            this.groupId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[1]);
-            this.instanceId = Gibbed.Helpers.StringHelpers.ParseHex64("0x" + temp[2]);
-
-        }
-
-        public keyName(uint typeId, uint groupId, ulong iId, string kName)
-        {
-            this.typeId = typeId;
-            this.groupId = groupId;
-            this.instanceId = iId;
-            this.name = kName;
-        }
-
-        public keyName(uint typeId, uint groupId, ulong iId)
-        {
-            this.typeId = typeId;
-            this.groupId = groupId;
-            this.instanceId = iId;
-        }
-
-        public keyName(uint typeId, ulong iId, string kName)
-        {
-            this.typeId = typeId;
-            this.instanceId = iId;
-            this.name = kName;
-        }
-
-        public keyName(ulong iId, string kName)
-        {
-            this.instanceId = iId;
-            this.name = kName;
-        }
-
-        public keyName(uint typeId, uint groupId, string kName)
-        {
-            this.typeId = typeId;
-            this.groupId = groupId;
-            this.name = kName;
-            this.instanceId = StringHelpers.HashFNV64(kName);
-        }
-
-        public override string ToString()
-        {
-            return "key:" + this.typeId.ToString("X8") + ":" + this.groupId.ToString("X8") + ":" + this.instanceId.ToString("X16");
-        }
-
-        public tgi64 ToTGI()
-        {
-            tgi64 temp = new tgi64();
-            temp.typeid = this.typeId;
-            temp.groupid = this.groupId;
-            temp.instanceid = this.instanceId;
-            return temp;
-        }
-
-        public ResourceKey ToResourceKey()
-        {
-            ResourceKey temp = new ResourceKey();
-            temp.TypeId = this.typeId;
-            temp.GroupId = this.groupId;
-            temp.InstanceId = this.instanceId;
-            return temp;
-        }
-    }
 
     [System.Xml.Serialization.XmlRootAttribute()]
     public class metaEntries
@@ -129,6 +40,9 @@ namespace MadScience
 
     public class Helpers
     {
+
+        public static Hashtable localFiles = new Hashtable();
+        public static string currentPackageFile = "";
 
         public static metaEntries metaEntryList;
 
@@ -157,12 +71,14 @@ namespace MadScience
             }
         }
 
-        public static string productName = "";
+        //public static string productName = "";
+
+        #region Registry Values Save / Load
 
         public static string getRegistryValue(string keyName)
         {
             string temp = "";
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Mad Scientist Productions\\" + productName, false);
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Mad Scientist Productions\\" + Application.ProductName, false);
             if (key != null)
             {
                 if (key.GetValue(keyName) != null)
@@ -189,10 +105,10 @@ namespace MadScience
 
         public static void saveRegistryValue(string keyName, string value)
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Mad Scientist Productions\\" + productName, true);
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Mad Scientist Productions\\" + Application.ProductName, true);
             if (key == null)
             {
-                key = Registry.CurrentUser.CreateSubKey("Software\\Mad Scientist Productions\\" + productName);
+                key = Registry.CurrentUser.CreateSubKey("Software\\Mad Scientist Productions\\" + Application.ProductName);
             }
             key.SetValue(keyName, value);
             key.Close();
@@ -210,7 +126,169 @@ namespace MadScience
             key.Close();
 
         }
+        public static string findMyDocs()
+        {
+            string myDocuments = "";
 
+            string path32 = @"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders";
+            string path64 = @"Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders";
+
+            try
+            {
+                RegistryKey key;
+                key = Registry.CurrentUser.OpenSubKey(path32, false);
+                if (key == null)
+                {
+                    // No Key exists... check 64 bit location
+                    key = Registry.CurrentUser.OpenSubKey(path64, false);
+                    if (key == null)
+                    {
+                        key.Close();
+                        return "";
+                    }
+                }
+                myDocuments = key.GetValue("Personal").ToString();
+                key.Close();
+            }
+            catch (Exception e)
+            {
+                //MessageBox.Show(e.Message);
+            }
+
+            return myDocuments;
+        }
+
+        public static void setSims3Root()
+        {
+            System.Windows.Forms.FolderBrowserDialog fBrowse = new System.Windows.Forms.FolderBrowserDialog();
+            fBrowse.Description = @"Please find your Sims 3 root (usually C:\Program Files\Electronic Arts\The Sims 3\)";
+            if (fBrowse.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                if (fBrowse.SelectedPath != "")
+                {
+                    Helpers.saveCommonRegistryValue("sims3root", fBrowse.SelectedPath);
+                    if (File.Exists(fBrowse.SelectedPath + "\\GameData\\Shared\\Packages\\FullBuild0.package"))
+                    {
+                        sims3root = fBrowse.SelectedPath;
+                        //return fBrowse.SelectedPath;
+                    }
+                    else
+                    {
+                        //return "";
+                    }
+
+                }
+
+            }
+        }
+
+        private static string sims3root = "";
+        public static string findSims3Root()
+        {
+            //string path32 = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
+            //string path64 = "Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}"
+
+            if (sims3root != "")
+            {
+                return sims3root;
+            }
+
+            string installLocation = "";
+            try
+            {
+
+                installLocation = Helpers.getCommonRegistryValue("sims3root");
+                if (installLocation != "") return installLocation;
+
+                string path32 = "Software\\Sims\\The Sims 3";
+                string path64 = "Software\\Wow6432Node\\Sims\\The Sims 3";
+
+                string path32Alt = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
+                string path64Alt = "Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
+
+                RegistryKey key;
+                key = Registry.LocalMachine.OpenSubKey(path32, false);
+                if (key == null)
+                {
+                    // No Key exists... check 64 bit location
+                    key = Registry.LocalMachine.OpenSubKey(path64, false);
+                    if (key == null)
+                    {
+
+                        // Try Alt location
+                        key = Registry.LocalMachine.OpenSubKey(path32Alt, false);
+                        if (key == null)
+                        {
+                            key = Registry.LocalMachine.OpenSubKey(path64Alt, false);
+                            if (key == null)
+                            {
+                                // Can't find Sims 3 root - uh oh!
+                                key.Close();
+                                return "";
+                            }
+                        }
+                    }
+                }
+                installLocation = key.GetValue("Install Dir").ToString();
+                key.Close();
+            }
+            catch (Exception e)
+            {
+                //MessageBox.Show(e.Message);
+            }
+
+            // Check to see if FullBuild0.package exists within this root
+            bool getManualPath = false;
+            if (installLocation != "")
+            {
+                if (File.Exists(installLocation + "\\GameData\\Shared\\Packages\\FullBuild0.package"))
+                {
+                    sims3root = installLocation;
+                    return installLocation;
+                }
+                else
+                {
+                    // No FullBuild0 found, have to get a manual path
+                    getManualPath = true;
+                }
+            }
+            else
+            {
+                getManualPath = true;
+            }
+
+            if (getManualPath)
+            {
+                System.Windows.Forms.FolderBrowserDialog fBrowse = new System.Windows.Forms.FolderBrowserDialog();
+                fBrowse.Description = @"Please find your Sims 3 root (usually C:\Program Files\Electronic Arts\The Sims 3\)";
+                if (fBrowse.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    if (fBrowse.SelectedPath != "")
+                    {
+                        Helpers.saveCommonRegistryValue("sims3root", fBrowse.SelectedPath);
+                        if (File.Exists(fBrowse.SelectedPath + "\\GameData\\Shared\\Packages\\FullBuild0.package"))
+                        {
+                            sims3root = fBrowse.SelectedPath;
+                            return fBrowse.SelectedPath;
+                        }
+                        else
+                        {
+                            return "";
+                        }
+
+                    }
+
+                }
+
+            }
+
+            sims3root = installLocation;
+            return installLocation;
+        }
+
+        #endregion
+
+        #region License and other functions
         public static void checkAndShowLicense(string productName)
         {
             // Check for registry key
@@ -230,6 +308,24 @@ namespace MadScience
             key.Close();
         }
 
+        public static Dictionary<ulong, string> getKeyNames(Stream input)
+        {
+            Dictionary<ulong, string> temp = new Dictionary<ulong, string>();
+
+            input.ReadValueU32();
+            int count = input.ReadValueS32();
+            for (int i = 0; i < count; i++)
+            {
+                ulong instanceId = input.ReadValueU64();
+                uint nLength = input.ReadValueU32();
+                temp.Add(instanceId, input.ReadStringASCII(nLength));
+            }
+
+            return temp;
+        }
+        #endregion
+
+        #region Colour Conversions and functions
         public static string convertColour(Color color)
         {
             // Converts a colour dialog box colour into a 0 to 1 style colour
@@ -272,22 +368,6 @@ namespace MadScience
             return Color.FromArgb(0xff, red, green, blue);
         }
 
-        public static Dictionary<ulong, string> getKeyNames(Stream input)
-        {
-            Dictionary<ulong, string> temp = new Dictionary<ulong, string>();
-
-            input.ReadValueU32();
-            int count = input.ReadValueS32();
-            for (int i = 0; i < count; i++)
-            {
-                ulong instanceId = input.ReadValueU64();
-                uint nLength = input.ReadValueU32();
-                temp.Add(instanceId, input.ReadStringASCII(nLength));
-            }
-
-            return temp;
-        }
-
         public static Color convertColour(string colourString)
         {
             return convertColour(colourString, false);
@@ -324,6 +404,125 @@ namespace MadScience
             return newC;
         }
 
+        /// <summary>
+        /// Convert HSV to RGB
+        /// h is from 0-360
+        /// s,v values are 0-1
+        /// r,g,b values are 0-255
+        /// Based upon http://ilab.usc.edu/wiki/index.php/HSV_And_H2SV_Color_Space#HSV_Transformation_C_.2F_C.2B.2B_Code_2
+        /// </summary>
+        public static Color HsvToRgb(double h, double S, double V)
+        {
+            Color temp = new Color();
+
+            // ######################################################################
+            // T. Nathan Mundhenk
+            // mundhenk@usc.edu
+            // C/C++ Macro HSV to RGB
+
+            double H = h;
+            while (H < 0) { H += 360; };
+            while (H >= 360) { H -= 360; };
+            double R, G, B;
+            if (V <= 0)
+            { R = G = B = 0; }
+            else if (S <= 0)
+            {
+                R = G = B = V;
+            }
+            else
+            {
+                double hf = H / 60.0;
+                int i = (int)Math.Floor(hf);
+                double f = hf - i;
+                double pv = V * (1 - S);
+                double qv = V * (1 - S * f);
+                double tv = V * (1 - S * (1 - f));
+                switch (i)
+                {
+
+                    // Red is the dominant color
+
+                    case 0:
+                        R = V;
+                        G = tv;
+                        B = pv;
+                        break;
+
+                    // Green is the dominant color
+
+                    case 1:
+                        R = qv;
+                        G = V;
+                        B = pv;
+                        break;
+                    case 2:
+                        R = pv;
+                        G = V;
+                        B = tv;
+                        break;
+
+                    // Blue is the dominant color
+
+                    case 3:
+                        R = pv;
+                        G = qv;
+                        B = V;
+                        break;
+                    case 4:
+                        R = tv;
+                        G = pv;
+                        B = V;
+                        break;
+
+                    // Red is the dominant color
+
+                    case 5:
+                        R = V;
+                        G = pv;
+                        B = qv;
+                        break;
+
+                    // Just in case we overshoot on our math by a little, we put these here. Since its a switch it won't slow us down at all to put these here.
+
+                    case 6:
+                        R = V;
+                        G = tv;
+                        B = pv;
+                        break;
+                    case -1:
+                        R = V;
+                        G = pv;
+                        B = qv;
+                        break;
+
+                    // The color is not defined, we should throw an error.
+
+                    default:
+                        //LFATAL("i Value error in Pixel conversion, Value is %d", i);
+                        R = G = B = V; // Just pretend its black/white
+                        break;
+                }
+            }
+
+            temp = Color.FromArgb(Clamp((int)(R * 255.0)), Clamp((int)(G * 255.0)), Clamp((int)(B * 255.0)));
+
+            return temp;
+        }
+
+        /// <summary>
+        /// Clamp a value to 0-255
+        /// </summary>
+        private static int Clamp(int i)
+        {
+            if (i < 0) return 0;
+            if (i > 255) return 255;
+            return i;
+        }
+
+        #endregion
+
+        #region Logging functions
         private static string _logPath = "";
         public static string logPath()
         {
@@ -357,7 +556,9 @@ namespace MadScience
                 sw.Close();
             }
         }
+        #endregion
 
+        #region Image functions
         public static Image previewImage2(Image sourceImage, Color background, Color c1, Color c2, Color c3, Color c4)
         {
             unsafe {
@@ -634,8 +835,9 @@ namespace MadScience
 
             return destImage;
         }
+        #endregion
 
-
+        #region Stream functions
         public static void CopyStream(Stream readStream, Stream writeStream)
         {
             CopyStream(readStream, writeStream, false);
@@ -658,156 +860,15 @@ namespace MadScience
                 bytesRead = readStream.Read(buffer, 0, Length);
             }
         }
+        #endregion
 
+        #region String functions
         public static string sanitiseString(string input)
         {
             var s = from ch in input where char.IsLetterOrDigit(ch) select ch;
             return UnicodeEncoding.ASCII.GetString(UnicodeEncoding.ASCII.GetBytes(s.ToArray()));
         }
-
-        public static string findMyDocs()
-        {
-            string myDocuments = "";
-
-            string path32 = @"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders";
-            string path64 = @"Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders";
-
-            try {
-                RegistryKey key;
-                key = Registry.CurrentUser.OpenSubKey(path32, false);
-                if (key == null)
-                {
-                    // No Key exists... check 64 bit location
-                    key = Registry.CurrentUser.OpenSubKey(path64, false);
-                    if (key == null)
-                    {
-                        key.Close();
-                        return "";
-                    }
-                }
-                myDocuments = key.GetValue("Personal").ToString();
-                key.Close();
-            }
-            catch (Exception e)
-            {
-                //MessageBox.Show(e.Message);
-            }
-
-            return myDocuments;
-        }
-
-        public static bool validateKey(string keyString)
-        {
-            return validateKey(keyString, true);
-        }
-
-        public static bool validateKey(string keyString, bool showMessage)
-        {
-            bool retVal = true;
-
-            if (keyString.Trim() == "")
-            {
-                return false;
-            }
-            if (!keyString.StartsWith("key:")) retVal = false;
-            if (!keyString.Contains(":")) retVal = false;
-            string[] temp = keyString.Split(":".ToCharArray());
-            if (temp.Length < 4) retVal = false;
-
-            if (!retVal) {
-                if (showMessage) { System.Windows.Forms.MessageBox.Show("Key is not in the correct format!"); }
-                return false; 
-            }
-            else { 
-                return true; 
-            }
-        }
-
-        public static Stream searchForKey(string keyString)
-        {
-            return searchForKey(keyString, 2);
-        }
-
-        public static Stream searchForKey(string keyString, int fullBuild)
-        {
-
-            // Validate keystring
-            if (validateKey(keyString) == false)
-            {
-                return null;
-            }
-
-            string sims3root = MadScience.Helpers.findSims3Root();
-            if (sims3root == "")
-            {
-                return null;
-            }
-
-            // Split the input key
-            keyName tKey = new keyName(keyString);
-            Stream tStream = null;
-
-            Stream input = File.OpenRead(sims3root + "\\GameData\\Shared\\Packages\\FullBuild" + fullBuild.ToString() + ".package");
-            Database db = new Database(input, true);
-
-            try
-            {
-
-                tStream = db.GetResourceStream(tKey.ToResourceKey());
-            }
-            catch (System.Collections.Generic.KeyNotFoundException ex)
-            {
-                Helpers.logMessageToFile(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Helpers.logMessageToFile(ex.Message);
-            }
-
-            input.Close();
-
-            return tStream;
-        }
-
-        public static Stream searchForKey(string keyString, string filename)
-        {
-
-            // Validate keystring
-            if (validateKey(keyString) == false)
-            {
-                return null;
-            }
-
-            if (!File.Exists(filename))
-            {
-                return null;
-            }
-
-            keyName tKey = new keyName(keyString);
-            Stream tStream = null;
-
-            Stream input = File.OpenRead(filename);
-            Database db = new Database(input, true);
-
-            try
-            {
-
-                tStream = db.GetResourceStream(tKey.ToResourceKey());
-            }
-            catch (System.Collections.Generic.KeyNotFoundException ex)
-            {
-                Helpers.logMessageToFile(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Helpers.logMessageToFile(ex.Message);
-            }
-
-            input.Close();
-
-            return tStream;
-        }
-
+        #endregion
 
         public static patternDetails parsePatternComplate(Stream xmlStream)
         {
@@ -1129,7 +1190,7 @@ namespace MadScience
             {
                 //Console.WriteLine(lookupList.Items[i].fullCasPartname);
 
-                if (!validateKey(patternTexture, false))
+                if (!MadScience.KeyUtils.validateKey(patternTexture, false))
                 {
                     patternTexture = patternTexture.Replace(@"($assetRoot)\InGame\Complates\", "");
                     patternTexture = patternTexture.Replace(@".tga", "");
@@ -1144,18 +1205,18 @@ namespace MadScience
                 pDetail.filename = patternTexture;
             }
 
-            if (!String.IsNullOrEmpty(pDetail.rgbmask) && !validateKey(pDetail.rgbmask, false))
+            if (!String.IsNullOrEmpty(pDetail.rgbmask) && !MadScience.KeyUtils.validateKey(pDetail.rgbmask, false))
             {
                 // Need to change rgbmask to key format
                 pDetail.rgbmask = "key:00B2D882:00000000:" + Gibbed.Helpers.StringHelpers.HashFNV64(pDetail.rgbmask.Substring(pDetail.rgbmask.LastIndexOf("\\") + 1).Replace(@".tga", "").Replace(@".dds", "")).ToString("X16");
             }
-            if (!String.IsNullOrEmpty(pDetail.specmap) && !validateKey(pDetail.specmap, false))
+            if (!String.IsNullOrEmpty(pDetail.specmap) && !MadScience.KeyUtils.validateKey(pDetail.specmap, false))
             {
                 // Need to change rgbmask to key format
                 pDetail.specmap = "key:00B2D882:00000000:" + Gibbed.Helpers.StringHelpers.HashFNV64(pDetail.specmap.Substring(pDetail.specmap.LastIndexOf("\\") + 1).Replace(@".tga", "").Replace(@".dds", "")).ToString("X16");
             }
 
-            if (!String.IsNullOrEmpty(pDetail.BackgroundImage) && !validateKey(pDetail.BackgroundImage, false))
+            if (!String.IsNullOrEmpty(pDetail.BackgroundImage) && !MadScience.KeyUtils.validateKey(pDetail.BackgroundImage, false))
             {
                 pDetail.BackgroundImage = "key:00B2D882:00000000:" + Gibbed.Helpers.StringHelpers.HashFNV64(pDetail.BackgroundImage.Substring(pDetail.BackgroundImage.LastIndexOf("\\") + 1).Replace(@".tga", "").Replace(@".dds", "")).ToString("X16");
             }
@@ -1183,249 +1244,6 @@ namespace MadScience
             return pDetail;
         }
 
-        /// <summary>
-        /// Convert HSV to RGB
-        /// h is from 0-360
-        /// s,v values are 0-1
-        /// r,g,b values are 0-255
-        /// Based upon http://ilab.usc.edu/wiki/index.php/HSV_And_H2SV_Color_Space#HSV_Transformation_C_.2F_C.2B.2B_Code_2
-        /// </summary>
-        public static Color HsvToRgb(double h, double S, double V)
-        {
-            Color temp = new Color();
-
-            // ######################################################################
-            // T. Nathan Mundhenk
-            // mundhenk@usc.edu
-            // C/C++ Macro HSV to RGB
-
-            double H = h;
-            while (H < 0) { H += 360; };
-            while (H >= 360) { H -= 360; };
-            double R, G, B;
-            if (V <= 0)
-            { R = G = B = 0; }
-            else if (S <= 0)
-            {
-                R = G = B = V;
-            }
-            else
-            {
-                double hf = H / 60.0;
-                int i = (int)Math.Floor(hf);
-                double f = hf - i;
-                double pv = V * (1 - S);
-                double qv = V * (1 - S * f);
-                double tv = V * (1 - S * (1 - f));
-                switch (i)
-                {
-
-                    // Red is the dominant color
-
-                    case 0:
-                        R = V;
-                        G = tv;
-                        B = pv;
-                        break;
-
-                    // Green is the dominant color
-
-                    case 1:
-                        R = qv;
-                        G = V;
-                        B = pv;
-                        break;
-                    case 2:
-                        R = pv;
-                        G = V;
-                        B = tv;
-                        break;
-
-                    // Blue is the dominant color
-
-                    case 3:
-                        R = pv;
-                        G = qv;
-                        B = V;
-                        break;
-                    case 4:
-                        R = tv;
-                        G = pv;
-                        B = V;
-                        break;
-
-                    // Red is the dominant color
-
-                    case 5:
-                        R = V;
-                        G = pv;
-                        B = qv;
-                        break;
-
-                    // Just in case we overshoot on our math by a little, we put these here. Since its a switch it won't slow us down at all to put these here.
-
-                    case 6:
-                        R = V;
-                        G = tv;
-                        B = pv;
-                        break;
-                    case -1:
-                        R = V;
-                        G = pv;
-                        B = qv;
-                        break;
-
-                    // The color is not defined, we should throw an error.
-
-                    default:
-                        //LFATAL("i Value error in Pixel conversion, Value is %d", i);
-                        R = G = B = V; // Just pretend its black/white
-                        break;
-                }
-            }
-
-            temp = Color.FromArgb(Clamp((int)(R * 255.0)), Clamp((int)(G * 255.0)), Clamp((int)(B * 255.0)));
-
-            return temp;
-        }
-
-        /// <summary>
-        /// Clamp a value to 0-255
-        /// </summary>
-        private static int Clamp(int i)
-        {
-            if (i < 0) return 0;
-            if (i > 255) return 255;
-            return i;
-        }
-
-        public static void setSims3Root()
-        {
-            System.Windows.Forms.FolderBrowserDialog fBrowse = new System.Windows.Forms.FolderBrowserDialog();
-            fBrowse.Description = @"Please find your Sims 3 root (usually C:\Program Files\Electronic Arts\The Sims 3\)";
-            if (fBrowse.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                if (fBrowse.SelectedPath != "")
-                {
-                    Helpers.saveCommonRegistryValue("sims3root", fBrowse.SelectedPath);
-                    if (File.Exists(fBrowse.SelectedPath + "\\GameData\\Shared\\Packages\\FullBuild0.package"))
-                    {
-                        sims3root = fBrowse.SelectedPath;
-                        //return fBrowse.SelectedPath;
-                    }
-                    else
-                    {
-                        //return "";
-                    }
-
-                }
-
-            }
-        }
-
-        private static string sims3root = "";
-        public static string findSims3Root()
-        {
-            //string path32 = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
-            //string path64 = "Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}"
-
-            if (sims3root != "")
-            {
-                return sims3root;
-            }
-
-            string installLocation = "";
-            try
-            {
-
-                installLocation = Helpers.getCommonRegistryValue("sims3root");
-                if (installLocation != "") return installLocation;
-                
-                string path32 = "Software\\Sims\\The Sims 3";
-                string path64 = "Software\\Wow6432Node\\Sims\\The Sims 3";
-
-                string path32Alt = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
-                string path64Alt = "Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
-
-                RegistryKey key;
-                key = Registry.LocalMachine.OpenSubKey(path32, false);
-                if (key == null)
-                {
-                    // No Key exists... check 64 bit location
-                    key = Registry.LocalMachine.OpenSubKey(path64, false);
-                    if (key == null)
-                    {
-
-                        // Try Alt location
-                        key = Registry.LocalMachine.OpenSubKey(path32Alt, false);
-                        if (key == null) 
-                        {
-                            key = Registry.LocalMachine.OpenSubKey(path64Alt, false);
-                            if (key == null) 
-                            {
-                                // Can't find Sims 3 root - uh oh!
-                                key.Close();
-                                return "";
-                            }
-                        }
-                    }
-                }
-                installLocation = key.GetValue("Install Dir").ToString();
-                key.Close();
-            }
-            catch (Exception e)
-            {
-                //MessageBox.Show(e.Message);
-            }
-
-            // Check to see if FullBuild0.package exists within this root
-            bool getManualPath = false;
-            if (installLocation != "")
-            {
-                if (File.Exists(installLocation + "\\GameData\\Shared\\Packages\\FullBuild0.package"))
-                {
-                    sims3root = installLocation;
-                    return installLocation;
-                }
-                else
-                {
-                    // No FullBuild0 found, have to get a manual path
-                    getManualPath = true;
-                }
-            }
-            else
-            {
-                getManualPath = true;
-            }
-
-            if (getManualPath)
-            {
-                System.Windows.Forms.FolderBrowserDialog fBrowse = new System.Windows.Forms.FolderBrowserDialog();
-                fBrowse.Description = @"Please find your Sims 3 root (usually C:\Program Files\Electronic Arts\The Sims 3\)";
-                if (fBrowse.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    if (fBrowse.SelectedPath != "")
-                    {
-                        Helpers.saveCommonRegistryValue("sims3root", fBrowse.SelectedPath);
-                        if (File.Exists(fBrowse.SelectedPath + "\\GameData\\Shared\\Packages\\FullBuild0.package"))
-                        {
-                            sims3root = fBrowse.SelectedPath;
-                            return fBrowse.SelectedPath;
-                        }
-                        else
-                        {
-                            return "";
-                        }
-
-                    }
-
-                }
-
-            }
-
-            sims3root = installLocation;
-            return installLocation;
-        }
     }
 
     internal class FastPixel
