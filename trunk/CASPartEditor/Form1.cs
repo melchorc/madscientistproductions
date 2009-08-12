@@ -25,7 +25,7 @@ namespace CASPartEditor
             Helpers.logMessageToFile("Setting icon");
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
 
-            MadScience.Helpers.productName = Application.ProductName;
+            //MadScience.Helpers.productName = Application.ProductName;
 
             Helpers.logMessageToFile("Checking license");
             MadScience.Helpers.checkAndShowLicense(Application.ProductName);
@@ -62,9 +62,9 @@ namespace CASPartEditor
         //private int patternBrowserCategory = 0;
         PatternBrowser.PatternBrowser pBrowser = new PatternBrowser.PatternBrowser();
 
-        public string filename;
+        //public string filename;
 
-        public Hashtable newDDSFiles = new Hashtable();
+        //public Hashtable newDDSFiles = new Hashtable();
         public Hashtable newVPXYFiles = new Hashtable();
         public Hashtable newGEOMFiles = new Hashtable();
         public Dictionary<int, string> newPNGfiles = new Dictionary<int, string>();
@@ -264,7 +264,7 @@ namespace CASPartEditor
                         inputCasPart.Close();
                         this.isNew = false;
                         this.fromPackage = true;
-                        this.filename = f.FullName;
+                        Helpers.currentPackageFile = f.FullName;
                         this.stencilPool.Clear();
                         //this.stencilPool.TrimExcess();
 
@@ -1167,8 +1167,11 @@ namespace CASPartEditor
             saveToolStripMenuItem.Enabled = false;
             this.isNew = true;
             this.fromPackage = false;
-            this.filename = "";
-            this.newDDSFiles.Clear();
+            Helpers.currentPackageFile = "";
+
+            Helpers.localFiles.Clear();
+            //this.newDDSFiles.Clear();
+
             this.stencilPool.Clear();
             this.stencilPool.TrimExcess();
 
@@ -1477,7 +1480,7 @@ namespace CASPartEditor
                     keyName tgi = new keyName((tgi64)casPartSrc.tgi64list[j]);
                     if (tgi.typeId == (int)0x00B2D882)
                     {
-                        Stream textureStream = Helpers.searchForKey(tgi.ToString(), 2);
+                        Stream textureStream = KeyUtils.searchForKey(tgi.ToString(), 2);
                         if (textureStream != null)
                         {
                             string fileNameToSave = "";
@@ -1919,7 +1922,7 @@ namespace CASPartEditor
 
                 // Load in the VPXY - we need to modify it.
                 keyName oldVpxyKey = new keyName((tgi64)casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY]);
-                Stream vpxyStream = findKey(oldVpxyKey.ToString(), 0);
+                Stream vpxyStream = KeyUtils.findKey(oldVpxyKey.ToString(), 0);
                 if (vpxyStream != null)
                 {
                     vpxyStream.Seek(0x14, SeekOrigin.Begin);
@@ -2138,13 +2141,13 @@ namespace CASPartEditor
             if (keyName.Trim() == "") return;
             //if (!validateKey(keyName)) return;
 
-            if (newDDSFiles.ContainsKey(keyName))
+            if (Helpers.localFiles.ContainsKey(keyName))
             {
                 string[] temp = keyName.Replace("key:", "").Split(":".ToCharArray());
                 key.TypeId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[0]);
                 key.GroupId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[1]);
                 key.InstanceId = Gibbed.Helpers.StringHelpers.ParseHex64("0x" + temp[2]);
-                Stream newDDS = File.Open((string)newDDSFiles[keyName], FileMode.Open, FileAccess.Read, FileShare.Read);
+                Stream newDDS = File.Open((string)Helpers.localFiles[keyName], FileMode.Open, FileAccess.Read, FileShare.Read);
                 db.SetResourceStream(key, newDDS);
                 newDDS.Close();
             }
@@ -2156,185 +2159,19 @@ namespace CASPartEditor
             listFindOrReplace(lstOtherDetails, true);
         }
 
-        private Stream findKey(string keyName)
-        {
-            return findKey(keyName, 2);
-        }
-
-        private Stream findKey(string keyName, int fullBuildNum)
-        {
-            Stream tempChunk = new MemoryStream();
-
-            bool hasMatch = false;
-
-            // Check local files first
-            if (newDDSFiles.Count > 0)
-            {
-                //DDSPreview ddsP = new DDSPreview();
-
-                //for (int i = 0; i < newDDSFiles.Count; i++)
-                //{
-                if (Helpers.validateKey(keyName) == true && newDDSFiles.ContainsKey(keyName))
-                {
-                    Stream blah = File.OpenRead((string)newDDSFiles[keyName]);
-                    Helpers.CopyStream(blah, tempChunk);
-                    tempChunk.Seek(0, SeekOrigin.Begin);
-                    blah.Close();
-                    hasMatch = true;
-                    //break;
-                }
-
-            }
-
-            if (!hasMatch)
-            {
-                if (Helpers.validateKey(keyName) == true)
-                {
-                    tempChunk = searchInPackage(this.filename, keyName);
-                    if (tempChunk == null)
-                    {
-                        // Check fullbuild2
-
-                        toolStripStatusLabel1.Text = "Searching... please wait";
-
-                        tempChunk = Helpers.searchForKey(keyName, fullBuildNum);
-
-                        //if (tempChunk != null)
-                        //{
-                        //DDSPreview ddsP = new DDSPreview();
-                        //ddsP.loadDDS(tempStream);
-                        //ddsP.ShowDialog();
-                        //}
-
-                        toolStripStatusLabel1.Text = "";
-
-                    }
-                    else
-                    {
-                        //DDSPreview ddsP = new DDSPreview();
-                        //ddsP.loadDDS(foundChunk);
-                        //ddsP.ShowDialog();
-
-                    }
-                }
-            }
-            
-            return tempChunk;
-        }
-
-        private List<Stream> findKey(List<string> keyNames, int fullBuildNum)
-        {
-            List<Stream> tempChunks = new List<Stream>();
-
-            // Add one Stream per keyName, even if null
-            for (int i = 0; i < keyNames.Count; i++)
-            {
-                tempChunks.Add(new MemoryStream());
-            }
-
-            // Check local files first
-            if (newDDSFiles.Count > 0)
-            {
-                //DDSPreview ddsP = new DDSPreview();
-
-                //for (int i = 0; i < newDDSFiles.Count; i++)
-                //{
-
-                for (int i = 0; i < keyNames.Count; i++)
-                {
-                    if (Helpers.validateKey(keyNames[i]) == true && newDDSFiles.ContainsKey(keyNames[i]))
-                    {
-                        Stream blah = File.OpenRead((string)newDDSFiles[keyNames[i]]);
-                        Helpers.CopyStream(blah, tempChunks[i]);
-                        tempChunks[i].Seek(0, SeekOrigin.Begin);
-                        blah.Close();
-                        //break;
-                    }
-                }
-
-            }
-
-
-            if (!String.IsNullOrEmpty(this.filename))
-            {
-                Stream localPackage = File.Open(this.filename, FileMode.Open, FileAccess.Read, FileShare.Read);
-                Gibbed.Sims3.FileFormats.Database localDb = new Gibbed.Sims3.FileFormats.Database(localPackage, true);
-
-                for (int i = 0; i < keyNames.Count; i++)
-                {
-                    if (Helpers.validateKey(keyNames[i]) == true && tempChunks[i].Length == 0)
-                    {
-                        //tempChunks[i] = searchInPackage(this.filename, keyNames[i]);
-                        try
-                        {
-                            tempChunks[i] = localDb.GetResourceStream(new keyName(keyNames[i]).ToResourceKey());
-                        }
-                        catch (System.Collections.Generic.KeyNotFoundException ex)
-                        {
-                            //Helpers.logMessageToFile(ex.Message);
-                        }
-                        catch (Exception ex)
-                        {
-                            //Helpers.logMessageToFile(ex.Message);
-                        }
-                    }
-                }
-            }
-
-            Stream input = File.OpenRead(Helpers.findSims3Root() + "\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package");
-            Database db = new Database(input, true);
-
-            for (int i = 0; i < keyNames.Count; i++)
-            {
-                if (Helpers.validateKey(keyNames[i]) == true && tempChunks[i].Length == 0)
-                {
-
-                    keyName tKey = new keyName(keyNames[i]);
-                    try
-                    {
-                        tempChunks[i] = db.GetResourceStream(tKey.ToResourceKey());
-                    }
-                    catch (System.Collections.Generic.KeyNotFoundException ex)
-                    {
-                        //Helpers.logMessageToFile(ex.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        //Helpers.logMessageToFile(ex.Message);
-                    }
-                }
-            }
-            input.Close();
-
-
-            return tempChunks;
-        }
-
-        private void findAndShowKey(string keyName)
-        {
-
-            Stream foundChunk = findKey(keyName);
-            if (foundChunk != null && foundChunk.Length != 0)
-            {
-                DDSPreview ddsP = new DDSPreview();
-                ddsP.loadDDS(foundChunk);
-                ddsP.ShowDialog();
-            }
-        }
-
         private void btnPatternAFindBGImage_Click(object sender, EventArgs e)
         {
-            findAndShowKey(txtPatternBGImage.Text);
+            KeyUtils.findAndShowImage(txtPatternBGImage.Text);
         }
 
         private void btnPatternAFindRGBMask_Click(object sender, EventArgs e)
         {
-            findAndShowKey(txtPatternARGBMask.Text);
+            KeyUtils.findAndShowImage(txtPatternARGBMask.Text);
         }
 
         private void btnPatternAFindSpec_Click(object sender, EventArgs e)
         {
-            findAndShowKey(txtPatternASpecular.Text);
+            KeyUtils.findAndShowImage(txtPatternASpecular.Text);
         }
 
         private void btnPatternAReplaceSpec_Click(object sender, EventArgs e)
@@ -2367,7 +2204,7 @@ namespace CASPartEditor
 
                     newKey = "key:" + temp[0] + ":" + temp[1] + ":" + instanceID;
                 }
-                newDDSFiles.Add(newKey, f.FullName);
+                Helpers.localFiles.Add(newKey, f.FullName);
                 return newKey;
 
             }
@@ -2515,7 +2352,7 @@ namespace CASPartEditor
 
         private void btnPatternChannelTextureFind_Click(object sender, EventArgs e)
         {
-            findAndShowKey(txtPatternChannelTexture.Text);
+            KeyUtils.findAndShowImage(txtPatternChannelTexture.Text);
         }
 
         private void btnPatternChannelTextureReplace_Click(object sender, EventArgs e)
@@ -2913,7 +2750,7 @@ namespace CASPartEditor
         {
             if (cmbPatternStencil1.SelectedIndex > 0 && listView1.SelectedItems.Count == 1)
             {
-                findAndShowKey(stencilPool[cmbPatternStencil1.SelectedIndex - 1].key);
+                KeyUtils.findAndShowImage(stencilPool[cmbPatternStencil1.SelectedIndex - 1].key);
             }
         }
 
@@ -2931,7 +2768,7 @@ namespace CASPartEditor
         {
             if (cmbPatternStencil2.SelectedIndex > 0 && listView1.SelectedItems.Count == 1)
             {
-                findAndShowKey(stencilPool[cmbPatternStencil2.SelectedIndex - 1].key);
+                KeyUtils.findAndShowImage(stencilPool[cmbPatternStencil2.SelectedIndex - 1].key);
             }
         }
 
@@ -2939,7 +2776,7 @@ namespace CASPartEditor
         {
             if (cmbPatternStencil3.SelectedIndex > 0 && listView1.SelectedItems.Count == 1)
             {
-                findAndShowKey(stencilPool[cmbPatternStencil3.SelectedIndex - 1].key);
+                KeyUtils.findAndShowImage(stencilPool[cmbPatternStencil3.SelectedIndex - 1].key);
             }
 
         }
@@ -2948,7 +2785,7 @@ namespace CASPartEditor
         {
             if (cmbPatternStencil4.SelectedIndex > 0 && listView1.SelectedItems.Count == 1)
             {
-                findAndShowKey(stencilPool[cmbPatternStencil4.SelectedIndex - 1].key);
+                KeyUtils.findAndShowImage(stencilPool[cmbPatternStencil4.SelectedIndex - 1].key);
             }
 
         }
@@ -2957,7 +2794,7 @@ namespace CASPartEditor
         {
             if (cmbPatternStencil5.SelectedIndex > 0 && listView1.SelectedItems.Count == 1)
             {
-                findAndShowKey(stencilPool[cmbPatternStencil5.SelectedIndex - 1].key);
+                KeyUtils.findAndShowImage(stencilPool[cmbPatternStencil5.SelectedIndex - 1].key);
             }
 
         }
@@ -2966,7 +2803,7 @@ namespace CASPartEditor
         {
             if (cmbPatternStencil6.SelectedIndex > 0 && listView1.SelectedItems.Count == 1)
             {
-                findAndShowKey(stencilPool[cmbPatternStencil6.SelectedIndex - 1].key);
+                KeyUtils.findAndShowImage(stencilPool[cmbPatternStencil6.SelectedIndex - 1].key);
             }
 
         }
@@ -3318,15 +3155,15 @@ namespace CASPartEditor
         {
             //saveFileDialog1.FileName = "";
             //saveFileDialog1.Filter = "Sims 3 Packages|*.package|CASPart|*.caspart";
-            if (this.filename != "")
+            if (Helpers.currentPackageFile != "")
             {
 
-                FileInfo f = new FileInfo(this.filename);
+                FileInfo f = new FileInfo(Helpers.currentPackageFile);
 
                 if (f.Extension == ".package")
                 {
 
-                    Stream saveFile = File.Open(this.filename, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+                    Stream saveFile = File.Open(Helpers.currentPackageFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
 
                     //ulong instanceId = Gibbed.Helpers.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
                     ulong instanceId = Gibbed.Helpers.StringHelpers.HashFNV64(casPartNew.meshName);
@@ -3483,7 +3320,7 @@ namespace CASPartEditor
                     case "texture":
                         if (isFind)
                         {
-                            findAndShowKey(item.SubItems[0].Text);
+                            KeyUtils.findAndShowImage(item.SubItems[0].Text);
                         }
                         else
                         {
@@ -3897,8 +3734,8 @@ namespace CASPartEditor
                 toolStripStatusLabel1.Text = "Reloading 3d view... please wait...";
                 statusStrip1.Refresh();
                 
-                renderWindow1.loadTexture(findKey(details.ClothingAmbient), "ambientTexture");
-                renderWindow1.loadTexture(findKey(details.ClothingSpecular), "specularTexture");
+                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
+                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
                 renderWindow1.loadTextureFromBitmap(composeMultiplier(details, details.filename != "CasRgbMask"), "baseTexture");
                 /*
                 if (details.stencil.A.Enabled == "True")
@@ -3938,16 +3775,16 @@ namespace CASPartEditor
                     uint groupId = Gibbed.Helpers.StringHelpers.HashFNV24(txtMeshName.Text);
                     keyName lod0 = new keyName(0x15a1849, groupId, (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(txtMeshName.Text + "_lod0"));
                     Console.WriteLine("Checking for lod0: " + lod0.ToString());
-                    Stream meshStream = searchInPackage(this.filename, lod0.ToString());
+                    Stream meshStream = searchInPackage(Helpers.currentPackageFile, lod0.ToString());
                     if (meshStream == null)
                     {
-                        meshStream = Helpers.searchForKey(lod0.ToString(), 0);
+                        meshStream = KeyUtils.searchForKey(lod0.ToString(), 0);
                     }
                     if (meshStream == null)
                     {
                         keyName lod1 = new keyName(0x15a1849, groupId, (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(txtMeshName.Text + "_lod1"));
                         Console.WriteLine("Checking for lod1: " + lod1.ToString());
-                        meshStream = Helpers.searchForKey(lod1.ToString(), 0);
+                        meshStream = KeyUtils.searchForKey(lod1.ToString(), 0);
                     }
 
                     if (meshStream != null)
@@ -3959,8 +3796,8 @@ namespace CASPartEditor
                         renderWindow1.loadDefaultTextures();
                         renderWindow1.setModel(newModel);
 
-                        renderWindow1.loadTexture(findKey(details.ClothingAmbient), "ambientTexture");
-                        renderWindow1.loadTexture(findKey(details.ClothingSpecular), "specularTexture");
+                        renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
+                        renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
                         //renderWindow1.loadTexture(findKey(details.Multiplier), "baseTexture");
                         renderWindow1.loadTextureFromBitmap(composeMultiplier(details,details.filename != "CasRgbMask"), "baseTexture");
                         /*
@@ -4000,12 +3837,12 @@ namespace CASPartEditor
             List<Stream> stencils = new List<Stream>();
 
             //Stream[] stencils = new Stream[6];
-            if (details.stencil.A.Enabled == "True") stencils.Add(findKey(details.stencil.A.key));
-            if (details.stencil.B.Enabled == "True") stencils.Add(findKey(details.stencil.B.key));
-            if (details.stencil.C.Enabled == "True") stencils.Add(findKey(details.stencil.C.key));
-            if (details.stencil.D.Enabled == "True") stencils.Add(findKey(details.stencil.D.key));
-            if (details.stencil.E.Enabled == "True") stencils.Add(findKey(details.stencil.E.key));
-            if (details.stencil.F.Enabled == "True") stencils.Add(findKey(details.stencil.F.key));
+            if (details.stencil.A.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.A.key));
+            if (details.stencil.B.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.B.key));
+            if (details.stencil.C.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.C.key));
+            if (details.stencil.D.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.D.key));
+            if (details.stencil.E.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.E.key));
+            if (details.stencil.F.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.F.key));
 
             DateTime startTime2 = DateTime.Now;
             List<string> tempList = new List<string>();
@@ -4017,7 +3854,7 @@ namespace CASPartEditor
             tempList.Add(details.pattern[2].rgbmask);
             tempList.Add(details.pattern[3].rgbmask);
 
-            List<Stream> textures = findKey(tempList, 2);
+            List<Stream> textures = KeyUtils.findKey(tempList, 2);
             DateTime stopTime2 = DateTime.Now;
             TimeSpan duration2 = stopTime2 - startTime2;
             Console.WriteLine("Key search time: " + duration2.TotalMilliseconds);
@@ -4090,7 +3927,7 @@ namespace CASPartEditor
 
         private void button2_Click(object sender, EventArgs e)
         {
-            findAndShowKey("key:00B2D882:00000000:75F8F21E0F143CAC");
+            KeyUtils.findAndShowImage("key:00B2D882:00000000:75F8F21E0F143CAC");
         }
 
         private void updateLists(string searchText, string replaceValue)
@@ -4180,7 +4017,7 @@ namespace CASPartEditor
 
         private void button33_Click(object sender, EventArgs e)
         {
-            findAndShowKey(txtOtherBumpMap.Text);
+            KeyUtils.findAndShowImage(txtOtherBumpMap.Text);
         }
 
         private void checkedListType_SelectedIndexChanged(object sender, EventArgs e)
