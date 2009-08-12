@@ -241,10 +241,6 @@ namespace PatternBrowser
                 for (int i = 0; i < this.patterns.Items.Count; i++)
                 {
                     patternsFile pattern = this.patterns.Items[i];
-                    if (pattern.typeid == null || pattern.groupid == null || pattern.instanceid == null)
-                    {
-                        Console.WriteLine("Oops");
-                    }
 
                     if (Gibbed.Helpers.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && Gibbed.Helpers.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && Gibbed.Helpers.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
                     {
