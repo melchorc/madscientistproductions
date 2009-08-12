@@ -35,6 +35,39 @@ namespace MadScience
 
         }
 
+        public keyName(string keyString, string meshName)
+        {
+            keyString = keyString.Trim();
+            if (keyString != "")
+            {
+                if (keyString.StartsWith("key:"))
+                {
+                    keyString = keyString.Replace("key:", "");
+                    string[] temp = keyString.Split(":".ToCharArray());
+
+                    this.typeId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[0]);
+                    this.groupId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[1]);
+                    this.instanceId = Gibbed.Helpers.StringHelpers.ParseHex64("0x" + temp[2]);
+                }
+                else
+                {
+                    if (keyString.Length == 16)
+                    {
+                        this.typeId = 0x00B2D882;
+                        this.groupId = 0x0;
+                        this.instanceId = Gibbed.Helpers.StringHelpers.ParseHex64("0x" + keyString);
+                    }
+                    else
+                    {
+                        this.typeId = 0x00B2D882;
+                        this.groupId = 0x0;
+                        this.name = meshName;
+                        this.instanceId = Gibbed.Helpers.StringHelpers.HashFNV64(meshName);
+                    }
+                }
+            }
+        }
+
         public keyName(uint typeId, uint groupId, ulong iId, string kName)
         {
             this.typeId = typeId;
