@@ -387,7 +387,11 @@ namespace CASPartEditor
             Color output = colors[0];
             if (colors.Length > 1)
             {
-                output = ColorOverlay(mask.R, output, colors[1]);
+                if (colors[1] != Color.Empty) { output = ColorOverlay(mask.R, output, colors[1]); }
+                if (colors[2] != Color.Empty) { output = ColorOverlay(mask.G, output, colors[2]); }
+                if (colors[3] != Color.Empty) { output = ColorOverlay(mask.B, output, colors[3]); }
+                if (colors[4] != Color.Empty) { output = ColorOverlay(mask.A, output, colors[4]); }
+                /*
                 if (colors.Length > 2)
                 {
                     output = ColorOverlay(mask.G, output, colors[2]);
@@ -398,6 +402,7 @@ namespace CASPartEditor
                             output = ColorOverlay(mask.A, output, colors[4]);
                     }
                 }
+                */
             }
             return output;
         }
