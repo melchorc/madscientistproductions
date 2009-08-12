@@ -40,6 +40,12 @@ namespace CASPartEditor
                 debugModeToolStripMenuItem.Checked = true;
             }
 
+            Helpers.logMessageToFile("Creating cache folder");
+            if (!Directory.Exists(Application.StartupPath + "\\cache\\"))
+            {
+                Directory.CreateDirectory(Application.StartupPath + "\\cache\\");
+            }
+
             lookupTypes();
 
             Helpers.logMessageToFile("Populating types list");
