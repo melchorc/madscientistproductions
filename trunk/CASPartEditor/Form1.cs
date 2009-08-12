@@ -2226,8 +2226,6 @@ namespace CASPartEditor
         {
             List<Stream> tempChunks = new List<Stream>();
 
-            bool hasMatch = false;
-
             // Add one Stream per keyName, even if null
             for (int i = 0; i < keyNames.Count; i++)
             {
@@ -2250,58 +2248,26 @@ namespace CASPartEditor
                         Helpers.CopyStream(blah, tempChunks[i]);
                         tempChunks[i].Seek(0, SeekOrigin.Begin);
                         blah.Close();
-                        hasMatch = true;
                         //break;
                     }
                 }
 
             }
 
-            if (!hasMatch)
-            {
-                if (!String.IsNullOrEmpty(this.filename))
-                {
-                    Stream localPackage = File.Open(this.filename, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    Gibbed.Sims3.FileFormats.Database localDb = new Gibbed.Sims3.FileFormats.Database(localPackage, true);
 
-                    for (int i = 0; i < keyNames.Count; i++)
-                    {
-                        if (Helpers.validateKey(keyNames[i]) == true)
-                        {
-                            //tempChunks[i] = searchInPackage(this.filename, keyNames[i]);
-                            try
-                            {
-                                tempChunks[i] = localDb.GetResourceStream(new keyName(keyNames[i]).ToResourceKey());
-                            }
-                            catch (System.Collections.Generic.KeyNotFoundException ex)
-                            {
-                                //Helpers.logMessageToFile(ex.Message);
-                            }
-                            catch (Exception ex)
-                            {
-                                //Helpers.logMessageToFile(ex.Message);
-                            }
-
-                            if (tempChunks[i] != null) hasMatch = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (!hasMatch)
+            if (!String.IsNullOrEmpty(this.filename))
             {
-                Stream input = File.OpenRead(Helpers.findSims3Root() + "\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package");
-                Database db = new Database(input, true);
+                Stream localPackage = File.Open(this.filename, FileMode.Open, FileAccess.Read, FileShare.Read);
+                Gibbed.Sims3.FileFormats.Database localDb = new Gibbed.Sims3.FileFormats.Database(localPackage, true);
 
                 for (int i = 0; i < keyNames.Count; i++)
                 {
-                    if (Helpers.validateKey(keyNames[i]) == true)
+                    if (Helpers.validateKey(keyNames[i]) == true && tempChunks[i].Length == 0)
                     {
-
-                        keyName tKey = new keyName(keyNames[i]);
+                        //tempChunks[i] = searchInPackage(this.filename, keyNames[i]);
                         try
                         {
-                            tempChunks[i] = db.GetResourceStream(tKey.ToResourceKey());
+                            tempChunks[i] = localDb.GetResourceStream(new keyName(keyNames[i]).ToResourceKey());
                         }
                         catch (System.Collections.Generic.KeyNotFoundException ex)
                         {
@@ -2311,13 +2277,36 @@ namespace CASPartEditor
                         {
                             //Helpers.logMessageToFile(ex.Message);
                         }
-
-
                     }
                 }
-                input.Close();
-
             }
+
+            Stream input = File.OpenRead(Helpers.findSims3Root() + "\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package");
+            Database db = new Database(input, true);
+
+            for (int i = 0; i < keyNames.Count; i++)
+            {
+                if (Helpers.validateKey(keyNames[i]) == true && tempChunks[i].Length == 0)
+                {
+
+                    keyName tKey = new keyName(keyNames[i]);
+                    try
+                    {
+                        tempChunks[i] = db.GetResourceStream(tKey.ToResourceKey());
+                    }
+                    catch (System.Collections.Generic.KeyNotFoundException ex)
+                    {
+                        //Helpers.logMessageToFile(ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        //Helpers.logMessageToFile(ex.Message);
+                    }
+                }
+            }
+            input.Close();
+
+
             return tempChunks;
         }
 

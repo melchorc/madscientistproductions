@@ -301,11 +301,11 @@ namespace CASPartEditor
                                 {
                                     multiplierColor = ProcessPixelRGB(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color, Pattern1Colors, Pattern2Colors, Pattern3Colors);
                                 }
+                                outputRow[pixelLocation] = (byte)multiplierColor.B;
+                                outputRow[pixelLocation + 1] = (byte)multiplierColor.G;
+                                outputRow[pixelLocation + 2] = (byte)multiplierColor.R;
+                                outputRow[pixelLocation + 3] = (byte)multiplierColor.A;
                             }
-                            outputRow[pixelLocation] = (byte)multiplierColor.B;
-                            outputRow[pixelLocation + 1] = (byte)multiplierColor.G;
-                            outputRow[pixelLocation + 2] = (byte)multiplierColor.R;
-                            outputRow[pixelLocation + 3] = (byte)multiplierColor.A;
                         }
                     }
                 
