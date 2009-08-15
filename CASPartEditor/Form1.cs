@@ -23,7 +23,7 @@ namespace CASPartEditor
             InitializeComponent();
 
             Helpers.logMessageToFile("Setting icon");
-            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+            //this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
 
             //MadScience.Helpers.productName = Application.ProductName;
 

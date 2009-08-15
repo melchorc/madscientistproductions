@@ -148,6 +148,14 @@ namespace MadScience.Wrappers
             this.instanceId = instance;
         }
 
+        public ResourceKey(ulong instance, uint type, uint group)
+        {
+            this.order = (uint)ResourceKeyOrder.ITG;
+            this.typeId = type;
+            this.groupId = group;
+            this.instanceId = instance;
+        }
+
         public ResourceKey(uint type, uint group, ulong instance, uint order)
         {
             this.order = order;

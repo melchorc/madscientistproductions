@@ -87,12 +87,6 @@
     <Compile Include="ColorWheelCtrl.Designer.cs">
       <DependentUpon>ColorWheelCtrl.cs</DependentUpon>
     </Compile>
-    <Compile Include="DropdownContainerControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="EyedropColorPicker.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="ColorPickerDialog.cs">
       <SubType>Form</SubType>
     </Compile>

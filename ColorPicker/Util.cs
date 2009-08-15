@@ -138,7 +138,10 @@ namespace ColorPicker
 			}
 		}
 	}
-
+    /*
+     * Only used by DropDownContainer 
+    */
+    /*
 	class WinUtil
 	{
 		public const int WM_KEYDOWN = 0x0100;
@@ -150,12 +153,12 @@ namespace ColorPicker
 		public const int SWP_NOZORDER = 0x0004;
 		public const int SWP_NOREDRAW = 0x0008;
 		public const int SWP_NOACTIVATE = 0x0010;
-		public const int SWP_FRAMECHANGED = 0x0020;  /* The frame changed: send WM_NCCALCSIZE */
+		public const int SWP_FRAMECHANGED = 0x0020;  // The frame changed: send WM_NCCALCSIZE 
 		public const int SWP_SHOWWINDOW = 0x0040;
 		public const int SWP_HIDEWINDOW = 0x0080;
 		public const int SWP_NOCOPYBITS = 0x0100;
-		public const int SWP_NOOWNERZORDER = 0x0200;  /* Don't do owner Z ordering */
-		public const int SWP_NOSENDCHANGING = 0x0400;  /* Don't send WM_WINDOWPOSCHANGING */
+		public const int SWP_NOOWNERZORDER = 0x0200;  // Don't do owner Z ordering
+		public const int SWP_NOSENDCHANGING = 0x0400;  // Don't send WM_WINDOWPOSCHANGING
 
 		[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
 		public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int flags);
@@ -163,7 +166,7 @@ namespace ColorPicker
 		public const uint WS_OVERLAPPED   =    WS_BORDER | WS_CAPTION;
 		public const uint WS_CLIPSIBLINGS =    0x04000000;
 		public const uint WS_CLIPCHILDREN =    0x02000000;
-		public const uint WS_CAPTION      =    0x00C00000;     /* WS_BORDER | WS_DLGFRAME  */
+		public const uint WS_CAPTION      =    0x00C00000;     // WS_BORDER | WS_DLGFRAME  
 		public const uint WS_BORDER       =    0x00800000;
 		public const uint WS_DLGFRAME     =    0x00400000;
 		public const uint WS_VSCROLL      =    0x00200000;
@@ -246,8 +249,9 @@ namespace ColorPicker
             public int dwExtraInfo;
         }
 	}
+    */
 
-
+    /*
 	/// http://support.microsoft.com/kb/318804
 	/// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/windowsuserinterface/windowing/hooks/hookreference/hookfunctions/setwindowshookex.asp
     /// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/windowsuserinterface/windowing/hooks/hookreference/hookstructures/cwpstruct.asp
@@ -312,4 +316,5 @@ namespace ColorPicker
 			}
 		}
 	}
+     */
 }
