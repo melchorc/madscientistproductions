@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Windows.Forms;
 using System.IO;
-using System.Xml;
 using System.Text;
-using System.Xml.Serialization;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using Gibbed.Sims3.FileFormats;
+//using System.Linq;
+//using Gibbed.Sims3.FileFormats;
+
+using MadScience.Wrappers;
+
 using Microsoft.Win32;
-using System.Globalization;
-using System.Runtime.InteropServices;
 
 namespace PatternCreator
 {
@@ -21,29 +18,23 @@ namespace PatternCreator
         {
             InitializeComponent();
 
-            // Check for registry key
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Mad Scientist Productions\\" + Application.ProductName, true);
-            if (key == null)
-            {
-                key = Registry.CurrentUser.CreateSubKey("Software\\Mad Scientist Productions\\" + Application.ProductName);
-            }
-            if (key.GetValue("acceptLicense") == null || key.GetValue("acceptLicense").ToString() == "false")
-            {
-                Form2 frm = new Form2();
-                frm.ShowDialog();
-                frm = null;
-            }
+            MadScience.Helpers.logMessageToFile("Starting " + Application.ProductName + " " + Application.ProductVersion);
 
-            key.Close();
+            MadScience.Helpers.checkAndShowLicense(Application.ProductName);
 
             this.Text = this.Text + " v" + Application.ProductVersion.ToString();
+
+            MadScience.Helpers.logMessageToFile("Finished initialising");
         }
 
-        public metaEntry.typesToMeta lookupList;
-        private ArrayList indexEntries = new ArrayList();
+        //public metaEntry.typesToMeta lookupList;
+
+        //private ArrayList indexEntries = new ArrayList();
+
         private bool lockImage = false;
         private bool isPreviewImage = false;
 
+        /*
         private void lookupTypes()
         {
             TextReader r = new StreamReader(Application.StartupPath + "\\metaTypes.xml");
@@ -52,7 +43,7 @@ namespace PatternCreator
             r.Close();
 
         }
-
+        */
 
         private void lblBackgroundColour_Click(object sender, EventArgs e)
         {
@@ -60,7 +51,10 @@ namespace PatternCreator
             cpd.Color = lblBackgroundColour.BackColor;
             cpd.ShowDialog();
 
-            lblPalette1.BackColor = cpd.Color;
+            lblBackgroundColour.BackColor = cpd.Color;
+
+            isPreviewImage = true;
+            showDDSChannels();
         }
 
         private void lblPalette1_Click(object sender, EventArgs e)
@@ -72,6 +66,9 @@ namespace PatternCreator
 
             lblPalette1.BackColor = cpd.Color;
 
+            isPreviewImage = true;
+            showDDSChannels();
+
         }
 
         private void lblPalette2_Click(object sender, EventArgs e)
@@ -82,6 +79,9 @@ namespace PatternCreator
 
             lblPalette2.BackColor = cpd.Color;
 
+            isPreviewImage = true;
+            showDDSChannels();
+
         }
 
         private void lblPalette3_Click(object sender, EventArgs e)
@@ -91,6 +91,10 @@ namespace PatternCreator
             cpd.ShowDialog();
 
             lblPalette3.BackColor = cpd.Color;
+
+            isPreviewImage = true;
+            showDDSChannels();
+
         }
 
         private void lblPalette4_Click(object sender, EventArgs e)
@@ -100,11 +104,15 @@ namespace PatternCreator
             cpd.ShowDialog();
 
             lblPalette4.BackColor = cpd.Color;
+
+            isPreviewImage = true;
+            showDDSChannels();
+
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            
+
             openFileDialog1.FileName = "";
             openFileDialog1.Filter = "DDS files|*.dds";
             openFileDialog1.ShowDialog();
@@ -140,7 +148,7 @@ namespace PatternCreator
                 chkUseDefaultSpecular.Enabled = true;
                 button4.Enabled = true;
 
-            } 
+            }
         }
 
         private void toggleColourPalettes(bool bg, bool p1, bool p2, bool p3, bool p4)
@@ -220,6 +228,7 @@ namespace PatternCreator
             }
         }
 
+        /*
         private static void colourFill(Image mask, Image dst, Color c2, uint channel, bool blend)
         {
             FastPixel pixel = new FastPixel(mask as Bitmap);
@@ -268,7 +277,8 @@ namespace PatternCreator
             pixel.Unlock(false);
             pixel2.Unlock(true);
         }
-
+        */
+        /*
         private Image imagePreview(Image sourceImage)
         {
             Image destImage = new Bitmap(256, 256);
@@ -306,12 +316,13 @@ namespace PatternCreator
 
             return destImage;
         }
+        */
 
         private void showDDSChannels()
         {
             if (!this.lockImage && txtSourceDDS.Text.Trim() != "")
             {
-                
+
                 Stream input = File.Open(txtSourceDDS.Text, FileMode.Open);
 
                 DdsFileTypePlugin.DdsFile ddsFile = new DdsFileTypePlugin.DdsFile();
@@ -319,7 +330,18 @@ namespace PatternCreator
 
                 if (isPreviewImage)
                 {
-                    pictureBox1.Image = imagePreview(ddsFile.Image(chkShowRed.Checked, chkShowGreen.Checked, chkShowBlue.Checked, chkShowAlpha.Checked, false));
+                    //pictureBox1.Image = imagePreview(ddsFile.Image(chkShowRed.Checked, chkShowGreen.Checked, chkShowBlue.Checked, chkShowAlpha.Checked, false));
+                    Color colorbg = Color.Empty;
+                    Color color1 = Color.Empty;
+                    Color color2 = Color.Empty;
+                    Color color3 = Color.Empty;
+                    Color color4 = Color.Empty;
+                    if (chkShowRed.Checked) color1 = lblPalette1.BackColor;
+                    if (chkShowGreen.Checked) color2 = lblPalette2.BackColor;
+                    if (chkShowBlue.Checked) color3 = lblPalette3.BackColor;
+                    if (chkShowAlpha.Checked) color4 = lblPalette4.BackColor;
+
+                    pictureBox1.Image = ddsFile.Image(colorbg, color1, color2, color3, color4);
                     //pictureBox1.Image = ddsFile.PreviewImage(chkShowRed.Checked, lblPalette1.BackColor, chkShowGreen.Checked, lblPalette2.BackColor, chkShowBlue.Checked, lblPalette3.BackColor, chkShowAlpha.Checked, lblPalette4.BackColor);
 
                 }
@@ -425,24 +447,24 @@ namespace PatternCreator
             Application.Exit();
         }
 
-        private string sanitiseString(string input)
-        {
-            var s = from ch in input where char.IsLetterOrDigit(ch) select ch;
-            return UnicodeEncoding.ASCII.GetString(UnicodeEncoding.ASCII.GetBytes(s.ToArray()));
-        }
+        //        private string sanitiseString(string input)
+        //{
+        //var s = from ch in input where char.IsLetterOrDigit(ch) select ch;
+        //return UnicodeEncoding.ASCII.GetString(UnicodeEncoding.ASCII.GetBytes(s.ToArray()));
+        //}
 
         private void button3_Click_1(object sender, EventArgs e)
         {
 
-            MessageBox.Show(sanitiseString(dateTimePicker1.Value.ToString()));
+            MessageBox.Show(MadScience.Helpers.sanitiseString(dateTimePicker1.Value.ToString()));
         }
 
         private bool validateFields()
         {
-            if (sanitiseString(txtCreatorName.Text.Trim()) == "") { return false; }
+            if (MadScience.Helpers.sanitiseString(txtCreatorName.Text.Trim()) == "") { return false; }
             if (txtCreatorHomepage.Text.Trim() == "") { return false; }
-            if (sanitiseString(txtPatternTitle.Text.Trim()) == "") { return false; }
-            if (sanitiseString(txtPatternDesc.Text.Trim()) == "") { return false; }
+            if (MadScience.Helpers.sanitiseString(txtPatternTitle.Text.Trim()) == "") { return false; }
+            if (MadScience.Helpers.sanitiseString(txtPatternDesc.Text.Trim()) == "") { return false; }
             if (cmbCategory.Text.Trim() == "") { return false; }
             if (cmbSurfaceMat.Text.Trim() == "") { return false; }
             if (txtSourceDDS.Text.Trim() == "") { return false; }
@@ -462,6 +484,7 @@ namespace PatternCreator
             return 0;
         }
 
+        /*
         private string convertColour(Color color)
         {
             // Converts a colour dialog box colour into a 0 to 1 style colour
@@ -480,10 +503,11 @@ namespace PatternCreator
             return red + "," + green + "," + blue + "," + alpha.ToString();
 
         }
+        */
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (validateFields() == false) 
+            if (validateFields() == false)
             {
                 MessageBox.Show("You have a missing or invalid field!  Please double check everything and try again.");
                 return;
@@ -518,12 +542,12 @@ namespace PatternCreator
                 this.Refresh();
 
                 // Construct name for XML
-                string fName = sanitiseString(saveName);
+                string fName = MadScience.Helpers.sanitiseString(saveName);
 
-                string pName = "DPP_" + sanitiseString(txtCreatorName.Text.Trim()) + "_" + fName + "_" + sanitiseString(dateTimePicker1.Value.ToString());
+                string pName = "DPP_" + MadScience.Helpers.sanitiseString(txtCreatorName.Text.Trim()) + "_" + fName + "_" + MadScience.Helpers.sanitiseString(dateTimePicker1.Value.ToString());
 
-                ulong instanceId = Gibbed.Helpers.StringHelpers.HashFNV64(pName);
-                ulong specInstanceId = Gibbed.Helpers.StringHelpers.HashFNV64(pName + "_spec");
+                ulong instanceId = MadScience.StringHelpers.HashFNV64(pName);
+                ulong specInstanceId = MadScience.StringHelpers.HashFNV64(pName + "_spec");
 
                 //uint groupId = 33554432;
                 uint groupId = 0;
@@ -536,10 +560,10 @@ namespace PatternCreator
                 sb.AppendLine("  <variables>");
 
                 // Convert color boxes into 0 to 1 style colours
-                if (numChans >= 1) { sb.AppendLine("    <param type=\"color\" name=\"Color 0\" default=\"" + convertColour(lblPalette1.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
-                if (numChans >= 2) { sb.AppendLine("    <param type=\"color\" name=\"Color 1\" default=\"" + convertColour(lblPalette2.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
-                if (numChans >= 3) { sb.AppendLine("    <param type=\"color\" name=\"Color 2\" default=\"" + convertColour(lblPalette3.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
-                if (numChans == 4) { sb.AppendLine("    <param type=\"color\" name=\"Color 3\" default=\"" + convertColour(lblPalette4.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
+                if (numChans >= 1) { sb.AppendLine("    <param type=\"color\" name=\"Color 0\" default=\"" + MadScience.Helpers.convertColour(lblPalette1.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
+                if (numChans >= 2) { sb.AppendLine("    <param type=\"color\" name=\"Color 1\" default=\"" + MadScience.Helpers.convertColour(lblPalette2.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
+                if (numChans >= 3) { sb.AppendLine("    <param type=\"color\" name=\"Color 2\" default=\"" + MadScience.Helpers.convertColour(lblPalette3.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
+                if (numChans == 4) { sb.AppendLine("    <param type=\"color\" name=\"Color 3\" default=\"" + MadScience.Helpers.convertColour(lblPalette4.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
 
                 sb.AppendLine("    <param type=\"texture\" name=\"rgbmask\" uiVisible=\"false\" default=\"key:00b2d882:" + groupId.ToString("X8").ToLower() + ":" + instanceId.ToString("X16").ToLower() + "\" />");
                 if (chkUseDefaultSpecular.Checked)
@@ -556,7 +580,7 @@ namespace PatternCreator
                 sb.AppendLine("    <destination>");
                 if (!chkAllowDecal.Checked)
                 {
-                    sb.AppendLine("      <step type=\"ColorFill\" color=\"" + convertColour(lblBackgroundColour.BackColor) + "\" />");
+                    sb.AppendLine("      <step type=\"ColorFill\" color=\"" + MadScience.Helpers.convertColour(lblBackgroundColour.BackColor) + "\" />");
                 }
                 // 2 lines per channel
                 if (numChans >= 1)
@@ -649,7 +673,7 @@ namespace PatternCreator
                 sb.Append("<communityCustomContentManifest>");
                 sb.Append("<installTo>{CCROOT}/installTo>");
                 sb.Append("<contentType>Pattern</contentType>");
-                sb.Append("<creatorName><![CDATA[" + sanitiseString(txtCreatorName.Text.Trim()) + "]]></creatorName>");
+                sb.Append("<creatorName><![CDATA[" + MadScience.Helpers.sanitiseString(txtCreatorName.Text.Trim()) + "]]></creatorName>");
                 sb.Append("<homePage><![CDATA[" + txtCreatorHomepage.Text.Trim() + "]]></homePage>");
                 sb.Append("<toolName>DelphysPatternCreator</toolName>");
                 sb.Append("</communityCustomContentManifest>");
@@ -670,32 +694,32 @@ namespace PatternCreator
                 Database db = new Database(output, false);
                 ResourceKey rkey;
 
-                rkey = new ResourceKey((ulong)0xcafebabeb000b135, (uint)0xDEADBEEF, (uint)0xDEADBEEF);
+                rkey = new ResourceKey((uint)0xDEADBEEF, (uint)0xDEADBEEF, (ulong)0xcafebabeb000b135);
                 db.SetResource(rkey, Encoding.UTF8.GetBytes(xmlCommunityCustomContentPackage));
 
                 // 0x73e93eeb
-                rkey = new ResourceKey(0, 1944665835, 0);
+                rkey = new ResourceKey(1944665835, 0, (ulong)0);
                 db.SetResource(rkey, Encoding.UTF8.GetBytes(xml73e93eeb));
 
                 // 0x0333406
-                rkey = new ResourceKey(instanceId, 53690476, groupId);
+                rkey = new ResourceKey(53690476, groupId, instanceId);
                 db.SetResource(rkey, Encoding.UTF8.GetBytes(xml033406c));
 
                 // 0xd4d9fbe5
-                rkey = new ResourceKey(instanceId, 3571055589, groupId);
+                rkey = new ResourceKey(3571055589, groupId, instanceId);
                 db.SetResource(rkey, Encoding.UTF8.GetBytes(xmld4d9fbe));
 
                 // 0x00B2D882
                 Stream ddsImage = File.Open(txtSourceDDS.Text, FileMode.Open);
-                rkey = new ResourceKey(instanceId, 11720834, groupId);
+                rkey = new ResourceKey(11720834, groupId, instanceId);
                 db.SetResourceStream(rkey, ddsImage);
                 ddsImage.Close();
-                
+
                 if (chkUseDefaultSpecular.Checked == false)
                 {
                     // 0x00B2D882
                     Stream ddsImageSpec = File.Open(lblSpecularCustom.Text, FileMode.Open);
-                    rkey = new ResourceKey(specInstanceId, 11720834, groupId);
+                    rkey = new ResourceKey(11720834, groupId, specInstanceId);
                     db.SetResourceStream(rkey, ddsImageSpec);
                     ddsImageSpec.Close();
 
@@ -727,7 +751,7 @@ namespace PatternCreator
                 db.SetResourceStream(rkey, pngFile);
 
                 db.Commit(true);
-                  
+
                 //output.Close();
 
                 //FileInfo fi = new FileInfo(saveFileDialog1.FileName);
@@ -793,17 +817,17 @@ namespace PatternCreator
 
                     Stream sims3pack = File.Open(savePath + saveName + ".Sims3Pack", FileMode.Create, FileAccess.ReadWrite);
 
-                    Gibbed.Helpers.StreamHelpers.WriteValueU32(sims3pack, 7);
-                    Gibbed.Helpers.StreamHelpers.WriteStringASCII(sims3pack, "TS3Pack");
-                    Gibbed.Helpers.StreamHelpers.WriteValueU16(sims3pack, 257);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU32(sims3pack, (uint)s3p_xml.Length);
-                    Gibbed.Helpers.StreamHelpers.WriteStringUTF8(sims3pack, s3p_xml);
+                    MadScience.StreamHelpers.WriteValueU32(sims3pack, 7);
+                    MadScience.StreamHelpers.WriteStringASCII(sims3pack, "TS3Pack");
+                    MadScience.StreamHelpers.WriteValueU16(sims3pack, 257);
+                    MadScience.StreamHelpers.WriteValueU32(sims3pack, (uint)s3p_xml.Length);
+                    MadScience.StreamHelpers.WriteStringUTF8(sims3pack, s3p_xml);
 
-                    ReadWriteStream(output, sims3pack, true);
+                    MadScience.Helpers.CopyStream(output, sims3pack, true);
                     //ReadWriteStream(pngFile, sims3pack, true);
 
                     sims3pack.Close();
-                    
+
 
                 }
                 pngFile.Close();
@@ -816,6 +840,7 @@ namespace PatternCreator
 
         }
 
+        /*
         private void ReadWriteStream(Stream readStream, Stream writeStream, bool fromStart)
         {
             if (fromStart)
@@ -833,6 +858,7 @@ namespace PatternCreator
                 bytesRead = readStream.Read(buffer, 0, Length);
             }
         }
+        */
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -845,7 +871,7 @@ namespace PatternCreator
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            newPatternToolStripMenuItem_Click(null, null);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -882,256 +908,4 @@ namespace PatternCreator
         }
 
     }
-
-
-    public class metaEntry
-    {
-        [XmlAttribute("key")]
-        public uint key;
-
-        [XmlElement("shortName")]
-        public string shortName;
-
-        [XmlElement("longName")]
-        public string longName;
-
-        public metaEntry()
-        {
-        }
-
-        [XmlRoot("typesToMeta")]
-        public class typesToMeta
-        {
-
-            private ArrayList metaTypes;
-            private Hashtable metaTypes2;
-
-            public typesToMeta()
-            {
-                metaTypes = new ArrayList();
-                metaTypes2 = new Hashtable();
-            }
-
-            public metaEntry lookup(uint typeID)
-            {
-                return (metaEntry)metaTypes2[typeID];
-            }
-
-            [XmlElement("entry")]
-            public metaEntry[] Entries
-            {
-                get
-                {
-                    metaEntry[] entries = new metaEntry[metaTypes.Count];
-                    metaTypes.CopyTo(entries);
-                    return entries;
-                }
-                set
-                {
-                    if (value == null) return;
-
-                    metaEntry[] entries = (metaEntry[])value;
-                    metaTypes2.Clear();
-                    foreach (metaEntry entry in entries)
-                    {
-                        metaTypes2.Add(entry.key, entry);
-                    }
-
-
-                }
-            }
-            /*
-            public int AddItem(metaEntry entry)
-            {
-                return metaTypes.Add(entry);
-            }
-            */
-        }
-
-        public metaEntry(string ShortName, string LongName)
-        {
-            shortName = ShortName;
-            longName = LongName;
-        }
-    }
-
-    internal class FastPixel
-    {
-        // Fields
-        private Bitmap _bitmap;
-        private int _height;
-        private bool _isAlpha;
-        private int _width;
-        private BitmapData bmpData;
-        private IntPtr bmpPtr;
-        private bool locked;
-        private byte[] rgbValues;
-
-        // Methods
-        public FastPixel(Bitmap bitmap)
-        {
-            if (bitmap.PixelFormat == (bitmap.PixelFormat | PixelFormat.Indexed))
-            {
-                throw new Exception("Cannot lock an Indexed image.");
-            }
-            this._bitmap = bitmap;
-            this._isAlpha = this.Bitmap.PixelFormat == (this.Bitmap.PixelFormat | PixelFormat.Alpha);
-            this._width = bitmap.Width;
-            this._height = bitmap.Height;
-        }
-
-        public void Clear(Color colour)
-        {
-            if (!this.locked)
-            {
-                throw new Exception("Bitmap not locked.");
-            }
-            if (this.IsAlphaBitmap)
-            {
-                for (int i = 0; i < this.rgbValues.Length; i += 4)
-                {
-                    this.rgbValues[i] = colour.B;
-                    this.rgbValues[i + 1] = colour.G;
-                    this.rgbValues[i + 2] = colour.R;
-                    this.rgbValues[i + 3] = colour.A;
-                }
-            }
-            else
-            {
-                for (int j = 0; j < this.rgbValues.Length; j += 3)
-                {
-                    this.rgbValues[j] = colour.B;
-                    this.rgbValues[j + 1] = colour.G;
-                    this.rgbValues[j + 2] = colour.R;
-                }
-            }
-        }
-
-        public Color GetPixel(Point location)
-        {
-            return this.GetPixel(location.X, location.Y);
-        }
-
-        public Color GetPixel(int x, int y)
-        {
-            if (!this.locked)
-            {
-                throw new Exception("Bitmap not locked.");
-            }
-            if (this.IsAlphaBitmap)
-            {
-                int num = ((y * this.Width) + x) * 4;
-                int num2 = this.rgbValues[num];
-                int num3 = this.rgbValues[num + 1];
-                int num4 = this.rgbValues[num + 2];
-                int alpha = this.rgbValues[num + 3];
-                return Color.FromArgb(alpha, num4, num3, num2);
-            }
-            int index = ((y * this.Width) + x) * 3;
-            int blue = this.rgbValues[index];
-            int green = this.rgbValues[index + 1];
-            int red = this.rgbValues[index + 2];
-            return Color.FromArgb(red, green, blue);
-        }
-
-        public void Lock()
-        {
-            if (this.locked)
-            {
-                throw new Exception("Bitmap already locked.");
-            }
-            Rectangle rect = new Rectangle(0, 0, this.Width, this.Height);
-            this.bmpData = this.Bitmap.LockBits(rect, ImageLockMode.ReadWrite, this.Bitmap.PixelFormat);
-            this.bmpPtr = this.bmpData.Scan0;
-            if (this.IsAlphaBitmap)
-            {
-                int num = (this.Width * this.Height) * 4;
-                this.rgbValues = new byte[num];
-                Marshal.Copy(this.bmpPtr, this.rgbValues, 0, this.rgbValues.Length);
-            }
-            else
-            {
-                int num2 = (this.Width * this.Height) * 3;
-                this.rgbValues = new byte[num2];
-                Marshal.Copy(this.bmpPtr, this.rgbValues, 0, this.rgbValues.Length);
-            }
-            this.locked = true;
-        }
-
-        public void SetPixel(Point location, Color colour)
-        {
-            this.SetPixel(location.X, location.Y, colour);
-        }
-
-        public void SetPixel(int x, int y, Color colour)
-        {
-            if (!this.locked)
-            {
-                throw new Exception("Bitmap not locked.");
-            }
-            if (this.IsAlphaBitmap)
-            {
-                int index = ((y * this.Width) + x) * 4;
-                this.rgbValues[index] = colour.B;
-                this.rgbValues[index + 1] = colour.G;
-                this.rgbValues[index + 2] = colour.R;
-                this.rgbValues[index + 3] = colour.A;
-            }
-            else
-            {
-                int num2 = ((y * this.Width) + x) * 3;
-                this.rgbValues[num2] = colour.B;
-                this.rgbValues[num2 + 1] = colour.G;
-                this.rgbValues[num2 + 2] = colour.R;
-            }
-        }
-
-        public void Unlock(bool setPixels)
-        {
-            if (!this.locked)
-            {
-                throw new Exception("Bitmap not locked.");
-            }
-            if (setPixels)
-            {
-                Marshal.Copy(this.rgbValues, 0, this.bmpPtr, this.rgbValues.Length);
-            }
-            this.Bitmap.UnlockBits(this.bmpData);
-            this.locked = false;
-        }
-
-        // Properties
-        public Bitmap Bitmap
-        {
-            get
-            {
-                return this._bitmap;
-            }
-        }
-
-        public int Height
-        {
-            get
-            {
-                return this._height;
-            }
-        }
-
-        public bool IsAlphaBitmap
-        {
-            get
-            {
-                return this._isAlpha;
-            }
-        }
-
-        public int Width
-        {
-            get
-            {
-                return this._width;
-            }
-        }
-    }
-
 }

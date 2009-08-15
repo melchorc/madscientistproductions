@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newPatternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -206,9 +207,9 @@
             "metal",
             "plas",
             "wood"});
-            this.cmbSurfaceMat.Location = new System.Drawing.Point(128, 98);
+            this.cmbSurfaceMat.Location = new System.Drawing.Point(341, 71);
             this.cmbSurfaceMat.Name = "cmbSurfaceMat";
-            this.cmbSurfaceMat.Size = new System.Drawing.Size(187, 21);
+            this.cmbSurfaceMat.Size = new System.Drawing.Size(122, 21);
             this.cmbSurfaceMat.TabIndex = 5;
             // 
             // cmbCategory
@@ -234,7 +235,7 @@
             "Miscellaneous"});
             this.cmbCategory.Location = new System.Drawing.Point(128, 71);
             this.cmbCategory.Name = "cmbCategory";
-            this.cmbCategory.Size = new System.Drawing.Size(187, 21);
+            this.cmbCategory.Size = new System.Drawing.Size(116, 21);
             this.cmbCategory.TabIndex = 4;
             // 
             // groupBox4
@@ -315,7 +316,7 @@
             this.groupBox5.Controls.Add(this.label9);
             this.groupBox5.Location = new System.Drawing.Point(13, 102);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(476, 130);
+            this.groupBox5.Size = new System.Drawing.Size(476, 102);
             this.groupBox5.TabIndex = 8;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Pattern Details:";
@@ -323,7 +324,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(48, 101);
+            this.label12.Location = new System.Drawing.Point(258, 74);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(74, 13);
             this.label12.TabIndex = 8;
@@ -400,9 +401,9 @@
             this.groupBox6.Controls.Add(this.label13);
             this.groupBox6.Controls.Add(this.txtSourceDDS);
             this.groupBox6.Controls.Add(this.btnBrowseDDS);
-            this.groupBox6.Location = new System.Drawing.Point(13, 238);
+            this.groupBox6.Location = new System.Drawing.Point(13, 210);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(476, 186);
+            this.groupBox6.Size = new System.Drawing.Size(476, 213);
             this.groupBox6.TabIndex = 9;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Image Details:";
@@ -411,7 +412,7 @@
             // button4
             // 
             this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(160, 139);
+            this.button4.Location = new System.Drawing.Point(155, 187);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(25, 19);
             this.button4.TabIndex = 79;
@@ -422,7 +423,7 @@
             // lblSpecularCustom
             // 
             this.lblSpecularCustom.AutoSize = true;
-            this.lblSpecularCustom.Location = new System.Drawing.Point(16, 160);
+            this.lblSpecularCustom.Location = new System.Drawing.Point(186, 190);
             this.lblSpecularCustom.Name = "lblSpecularCustom";
             this.lblSpecularCustom.Size = new System.Drawing.Size(0, 13);
             this.lblSpecularCustom.TabIndex = 78;
@@ -433,7 +434,7 @@
             this.chkPalette4Blend.Checked = true;
             this.chkPalette4Blend.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPalette4Blend.Enabled = false;
-            this.chkPalette4Blend.Location = new System.Drawing.Point(392, 115);
+            this.chkPalette4Blend.Location = new System.Drawing.Point(250, 157);
             this.chkPalette4Blend.Name = "chkPalette4Blend";
             this.chkPalette4Blend.Size = new System.Drawing.Size(67, 17);
             this.chkPalette4Blend.TabIndex = 25;
@@ -446,7 +447,7 @@
             this.chkPalette3Blend.Checked = true;
             this.chkPalette3Blend.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPalette3Blend.Enabled = false;
-            this.chkPalette3Blend.Location = new System.Drawing.Point(392, 91);
+            this.chkPalette3Blend.Location = new System.Drawing.Point(250, 111);
             this.chkPalette3Blend.Name = "chkPalette3Blend";
             this.chkPalette3Blend.Size = new System.Drawing.Size(67, 17);
             this.chkPalette3Blend.TabIndex = 24;
@@ -459,7 +460,7 @@
             this.chkPalette2Blend.Checked = true;
             this.chkPalette2Blend.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPalette2Blend.Enabled = false;
-            this.chkPalette2Blend.Location = new System.Drawing.Point(159, 116);
+            this.chkPalette2Blend.Location = new System.Drawing.Point(17, 157);
             this.chkPalette2Blend.Name = "chkPalette2Blend";
             this.chkPalette2Blend.Size = new System.Drawing.Size(67, 17);
             this.chkPalette2Blend.TabIndex = 23;
@@ -472,7 +473,7 @@
             this.chkPalette1Blend.Checked = true;
             this.chkPalette1Blend.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPalette1Blend.Enabled = false;
-            this.chkPalette1Blend.Location = new System.Drawing.Point(160, 94);
+            this.chkPalette1Blend.Location = new System.Drawing.Point(17, 111);
             this.chkPalette1Blend.Name = "chkPalette1Blend";
             this.chkPalette1Blend.Size = new System.Drawing.Size(67, 17);
             this.chkPalette1Blend.TabIndex = 22;
@@ -497,7 +498,7 @@
             this.chkUseDefaultSpecular.Checked = true;
             this.chkUseDefaultSpecular.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUseDefaultSpecular.Enabled = false;
-            this.chkUseDefaultSpecular.Location = new System.Drawing.Point(14, 139);
+            this.chkUseDefaultSpecular.Location = new System.Drawing.Point(9, 187);
             this.chkUseDefaultSpecular.Name = "chkUseDefaultSpecular";
             this.chkUseDefaultSpecular.Size = new System.Drawing.Size(146, 17);
             this.chkUseDefaultSpecular.TabIndex = 20;
@@ -519,9 +520,9 @@
             // 
             this.lblPalette4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPalette4.Enabled = false;
-            this.lblPalette4.Location = new System.Drawing.Point(311, 114);
+            this.lblPalette4.Location = new System.Drawing.Point(323, 141);
             this.lblPalette4.Name = "lblPalette4";
-            this.lblPalette4.Size = new System.Drawing.Size(75, 15);
+            this.lblPalette4.Size = new System.Drawing.Size(121, 40);
             this.lblPalette4.TabIndex = 18;
             this.lblPalette4.Click += new System.EventHandler(this.lblPalette4_Click);
             // 
@@ -529,9 +530,9 @@
             // 
             this.lblPalette3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPalette3.Enabled = false;
-            this.lblPalette3.Location = new System.Drawing.Point(311, 93);
+            this.lblPalette3.Location = new System.Drawing.Point(323, 91);
             this.lblPalette3.Name = "lblPalette3";
-            this.lblPalette3.Size = new System.Drawing.Size(75, 15);
+            this.lblPalette3.Size = new System.Drawing.Size(121, 40);
             this.lblPalette3.TabIndex = 17;
             this.lblPalette3.Click += new System.EventHandler(this.lblPalette3_Click);
             // 
@@ -539,9 +540,9 @@
             // 
             this.lblPalette2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPalette2.Enabled = false;
-            this.lblPalette2.Location = new System.Drawing.Point(78, 114);
+            this.lblPalette2.Location = new System.Drawing.Point(87, 140);
             this.lblPalette2.Name = "lblPalette2";
-            this.lblPalette2.Size = new System.Drawing.Size(75, 15);
+            this.lblPalette2.Size = new System.Drawing.Size(121, 40);
             this.lblPalette2.TabIndex = 16;
             this.lblPalette2.Click += new System.EventHandler(this.lblPalette2_Click);
             // 
@@ -549,9 +550,9 @@
             // 
             this.lblPalette1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPalette1.Enabled = false;
-            this.lblPalette1.Location = new System.Drawing.Point(79, 94);
+            this.lblPalette1.Location = new System.Drawing.Point(87, 94);
             this.lblPalette1.Name = "lblPalette1";
-            this.lblPalette1.Size = new System.Drawing.Size(75, 15);
+            this.lblPalette1.Size = new System.Drawing.Size(121, 40);
             this.lblPalette1.TabIndex = 15;
             this.lblPalette1.Click += new System.EventHandler(this.lblPalette1_Click);
             // 
@@ -560,7 +561,7 @@
             this.label19.AutoSize = true;
             this.label19.Enabled = false;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(247, 117);
+            this.label19.Location = new System.Drawing.Point(247, 141);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(62, 13);
             this.label19.TabIndex = 14;
@@ -582,7 +583,7 @@
             this.label17.AutoSize = true;
             this.label17.Enabled = false;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(14, 116);
+            this.label17.Location = new System.Drawing.Point(14, 141);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(62, 13);
             this.label17.TabIndex = 12;
@@ -805,6 +806,7 @@
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Delphy\'s Pattern Packager";
