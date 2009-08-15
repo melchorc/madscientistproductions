@@ -325,12 +325,12 @@ namespace CASPartEditor
 
 
 
-            foreach (string keyString in db._Entries.Keys) 
+            foreach (MadScience.Wrappers.ResourceKey entry in db._Entries.Keys) 
             {
                 //ResourceKey key = db.Entries.Keys[i];
                 //DatabasePackedFile.Entry entry = db.Entries.Keys[i];
                 //DatabasePackedFile.Entry entry = db.dbpfEntries[i];
-                MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
+                //MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
 
                 switch (searchType)
                 {
@@ -599,9 +599,8 @@ namespace CASPartEditor
                 if (casThumbsKeyList.Count == 0)
                 {
                     Helpers.logMessageToFile("Populating casThumbs entry lists from " + castdb._Entries.Count.ToString() + " entries");
-                    foreach (string keyString in castdb._Entries.Keys)
+                    foreach (MadScience.Wrappers.ResourceKey entry in castdb._Entries.Keys)
                     {
-                        MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
                         //DatabasePackedFile.Entry entry = castdb.dbpfEntries[i];
                         if (entry.groupId == 0x00000000 && entry.typeId == 0x626f60ce)
                         {
@@ -1473,9 +1472,8 @@ namespace CASPartEditor
                 Dictionary<ulong, string> keyNames = new Dictionary<ulong, string>();
                 long nowTicks = DateTime.Now.Ticks;
                 Console.WriteLine("Started at: " + nowTicks);
-                foreach (string keyString in db._Entries.Keys)
+                foreach (MadScience.Wrappers.ResourceKey entry in db._Entries.Keys)
                 {
-                    MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
                     //DatabasePackedFile.Entry entry = db.dbpfEntries[i];
                     if (entry.typeId == (int)0x0166038C)
                     {
@@ -2928,9 +2926,9 @@ namespace CASPartEditor
                 Dictionary<ulong, string> keyNames = new Dictionary<ulong, string>();
                 long nowTicks = DateTime.Now.Ticks;
                 Console.WriteLine("Started at: " + nowTicks);
-                foreach (string keyString in db._Entries.Keys)
+                foreach (MadScience.Wrappers.ResourceKey entry in db._Entries.Keys)
                 {
-                    MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
+                    //MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
                     //DatabasePackedFile.Entry entry = db.dbpfEntries[i];
                     if (entry.typeId == (int)0x0166038C)
                     {
@@ -2951,10 +2949,10 @@ namespace CASPartEditor
                 int numFound = 0;
                 folderBrowserDialog1.SelectedPath = "";
 
-                foreach (string keyString in db._Entries.Keys)
+                foreach (MadScience.Wrappers.ResourceKey entry in db._Entries.Keys)
                 {
 
-                    MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
+                    //MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
 
                     toolStripProgressBar1.Value++;
                     bool searchChunk = false;

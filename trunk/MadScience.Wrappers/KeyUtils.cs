@@ -66,16 +66,22 @@ namespace MadScience.Wrappers
         ITG = 2,
     }
 
-    public class ResourceKey
+    public struct ResourceKey
     {
-        public uint typeId = 0;
-        public uint groupId = 0;
-        public ulong instanceId = 0;
-        public uint order = 0; // Default to TGI
-
+        public uint typeId;
+        public uint groupId;
+        public ulong instanceId;
+        public uint order; // Default to TGI
+        
+        /*
         public ResourceKey()
         {
+            this.typeId = 0;
+            this.groupId = 0;
+            this.instanceId = 0;
+            this.order = 0;
         }
+        */
 
         public ResourceKey(Stream input)
         {
@@ -83,8 +89,10 @@ namespace MadScience.Wrappers
             this.typeId = reader.ReadUInt32();
             this.groupId = reader.ReadUInt32();
             this.instanceId = reader.ReadUInt64();
+            this.order = 0;
             reader = null;
         }
+
         public ResourceKey(Stream input, uint order)
         {
             BinaryReader reader = new BinaryReader(input);
@@ -109,13 +117,14 @@ namespace MadScience.Wrappers
                     break;
             }
             reader = null;
+
         }
 
         public ResourceKey(string keyString)
         {
+            this.order = 0;
             keyString = keyString.Replace("key:", "");
             string[] temp = keyString.Split(":".ToCharArray());
-
             this.typeId = MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
             this.groupId = MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
             this.instanceId = MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
@@ -126,7 +135,6 @@ namespace MadScience.Wrappers
             this.order = order;
             keyString = keyString.Replace("key:", "");
             string[] temp = keyString.Split(":".ToCharArray());
-
             this.typeId = MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
             this.groupId = MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
             this.instanceId = MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
@@ -151,6 +159,31 @@ namespace MadScience.Wrappers
         public override string ToString()
         {
             return "key:" + this.typeId.ToString("X8") + ":" + this.groupId.ToString("X8") + ":" + this.instanceId.ToString("X16");
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return (ResourceKey)obj == this;
+        }
+
+        public static bool operator !=(ResourceKey a, ResourceKey b)
+        {
+            return a.typeId != b.typeId || a.groupId != b.groupId || a.instanceId != b.instanceId;
+        }
+
+        public static bool operator ==(ResourceKey a, ResourceKey b)
+        {
+            return a.typeId == b.typeId && a.groupId == b.groupId && a.instanceId == b.instanceId;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.instanceId.GetHashCode() ^ ((int)(this.typeId ^ (this.groupId << 16)));
         }
 
         public void Save(Stream output)

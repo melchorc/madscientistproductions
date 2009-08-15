@@ -32,9 +32,8 @@ namespace MadScience.Wrappers
         private long BaseOffset;
         private long EndOfDataOffset;
 
-        //public Dictionary<MadScience.Wrappers.ResourceKey, Entry> Entries;
-        public Dictionary<string, Entry> _Entries;
-        private Dictionary<string, StreamEntry> OriginalEntries;
+        public Dictionary<MadScience.Wrappers.ResourceKey, Entry> _Entries;
+        private Dictionary<MadScience.Wrappers.ResourceKey, StreamEntry> OriginalEntries;
 
         public Database(Stream stream)
             : this(stream, true)
@@ -51,10 +50,10 @@ namespace MadScience.Wrappers
             this.Stream = stream;
             this.BaseOffset = this.Stream.Position;
 
-            this._Entries = new Dictionary<string, Entry>();
-            //this.Entries = new Dictionary<MadScience.Wrappers.ResourceKey, Entry>(this._Entries);
+            //this._Entries = new Dictionary<string, Entry>();
+            this._Entries = new Dictionary<MadScience.Wrappers.ResourceKey, Entry>();
 
-            this.OriginalEntries = new Dictionary<string, StreamEntry>();
+            this.OriginalEntries = new Dictionary<MadScience.Wrappers.ResourceKey, StreamEntry>();
 
             if (readExisting == true)
             {
@@ -65,7 +64,7 @@ namespace MadScience.Wrappers
                 
                 foreach (MadScience.Wrappers.DatabasePackedFile.Entry entry in dbpf.Entries)
                 {
-                    this._Entries.Add(entry.Key.ToString(), new StreamEntry()
+                    this._Entries.Add(entry.Key, new StreamEntry()
                         {
                             Compressed = entry.Compressed,
                             Offset = entry.Offset,
@@ -95,17 +94,17 @@ namespace MadScience.Wrappers
                 throw new NotSupportedException();
             }
 
-            if (this._Entries.ContainsKey(key.ToString()) == false)
+            if (this._Entries.ContainsKey(key) == false)
             {
                 throw new KeyNotFoundException();
             }
 
-            if (this._Entries[key.ToString()] is StreamEntry)
+            if (this._Entries[key] is StreamEntry)
             {
-                this.OriginalEntries[key.ToString()] = (StreamEntry)this._Entries[key.ToString()];
+                this.OriginalEntries[key] = (StreamEntry)this._Entries[key];
             }
 
-            this._Entries.Remove(key.ToString());
+            this._Entries.Remove(key);
         }
 
         public void MoveResource(MadScience.Wrappers.ResourceKey oldKey, MadScience.Wrappers.ResourceKey newKey)
@@ -115,36 +114,36 @@ namespace MadScience.Wrappers
                 throw new NotSupportedException();
             }
 
-            if (this._Entries.ContainsKey(oldKey.ToString()) == false)
+            if (this._Entries.ContainsKey(oldKey) == false)
             {
                 throw new KeyNotFoundException();
             }
-            else if (this._Entries.ContainsKey(newKey.ToString()) == true)
+            else if (this._Entries.ContainsKey(newKey) == true)
             {
                 throw new ArgumentException("database already contains the new resource key", "newKey");
             }
 
-            Entry entry = this._Entries[oldKey.ToString()];
+            Entry entry = this._Entries[oldKey];
 
             if (entry is StreamEntry)
             {
-                this.OriginalEntries[oldKey.ToString()] = (StreamEntry)entry;
+                this.OriginalEntries[oldKey] = (StreamEntry)entry;
             }
 
-            this._Entries.Remove(oldKey.ToString());
-            this._Entries.Add(newKey.ToString(), entry);
+            this._Entries.Remove(oldKey);
+            this._Entries.Add(newKey, entry);
         }
 
         public byte[] GetResource(MadScience.Wrappers.ResourceKey key)
         {
-            if (this._Entries.ContainsKey(key.ToString()) == false)
+            if (this._Entries.ContainsKey(key) == false)
             {
                 throw new KeyNotFoundException();
             }
 
-            if (this._Entries[key.ToString()] is StreamEntry)
+            if (this._Entries[key] is StreamEntry)
             {
-                StreamEntry entry = (StreamEntry)this._Entries[key.ToString()];
+                StreamEntry entry = (StreamEntry)this._Entries[key];
 
                 this.Stream.Seek(this.BaseOffset + entry.Offset, SeekOrigin.Begin);
 
@@ -167,9 +166,9 @@ namespace MadScience.Wrappers
 
                 return data;
             }
-            else if (this._Entries[key.ToString()] is MemoryEntry)
+            else if (this._Entries[key] is MemoryEntry)
             {
-                return (byte[])(((MemoryEntry)this._Entries[key.ToString()]).Data.Clone());
+                return (byte[])(((MemoryEntry)this._Entries[key]).Data.Clone());
             }
             else
             {
@@ -184,12 +183,12 @@ namespace MadScience.Wrappers
 
         public byte[] GetRawResource(MadScience.Wrappers.ResourceKey key)
         {
-            if (this._Entries.ContainsKey(key.ToString()) == false || !(this._Entries[key.ToString()] is StreamEntry))
+            if (this._Entries.ContainsKey(key) == false || !(this._Entries[key] is StreamEntry))
             {
                 throw new KeyNotFoundException();
             }
 
-            StreamEntry entry = (StreamEntry)this._Entries[key.ToString()];
+            StreamEntry entry = (StreamEntry)this._Entries[key];
             this.Stream.Seek(this.BaseOffset + entry.Offset, SeekOrigin.Begin);
 
             byte[] data = new byte[entry.CompressedSize];
@@ -204,9 +203,9 @@ namespace MadScience.Wrappers
                 throw new NotSupportedException();
             }
 
-            if (this._Entries.ContainsKey(key.ToString()) && this._Entries[key.ToString()] is StreamEntry)
+            if (this._Entries.ContainsKey(key) && this._Entries[key] is StreamEntry)
             {
-                this.OriginalEntries[key.ToString()] = (StreamEntry)this._Entries[key.ToString()];
+                this.OriginalEntries[key] = (StreamEntry)this._Entries[key];
             }
 
             MemoryEntry entry = new MemoryEntry();
@@ -214,7 +213,7 @@ namespace MadScience.Wrappers
             entry.CompressedSize = entry.DecompressedSize = (uint)data.Length;
             entry.Data = (byte[])(data.Clone());
 
-            this._Entries[key.ToString()] = entry;
+            this._Entries[key] = entry;
         }
 
         public void SetResourceStream(MadScience.Wrappers.ResourceKey key, Stream stream)
@@ -254,11 +253,10 @@ namespace MadScience.Wrappers
                     this.EndOfDataOffset = this.Stream.Position - this.BaseOffset;
                 }
 
-                foreach (KeyValuePair<string, Entry> kvp in this._Entries)
+                foreach (KeyValuePair<MadScience.Wrappers.ResourceKey, Entry> kvp in this._Entries)
                 {
                     DatabasePackedFile.Entry entry = new DatabasePackedFile.Entry();
-                    string key = kvp.Key;
-                    entry.Key = new ResourceKey(key);
+                    entry.Key = kvp.Key;
 
                     if (kvp.Value is MemoryEntry)
                     {
@@ -356,12 +354,10 @@ namespace MadScience.Wrappers
                 dbpf.WriteHeader(clean, 0, 0);
                 this.EndOfDataOffset = clean.Position;
 
-                foreach (KeyValuePair<string, Entry> kvp in this._Entries)
+                foreach (KeyValuePair<MadScience.Wrappers.ResourceKey, Entry> kvp in this._Entries)
                 {
                     DatabasePackedFile.Entry entry = new DatabasePackedFile.Entry();
-                    //entry.Key = kvp.Key;
-                    string key = kvp.Key;
-                    entry.Key = new ResourceKey(key);
+                    entry.Key = kvp.Key;
 
                     if (kvp.Value is MemoryEntry)
                     {
@@ -466,7 +462,7 @@ namespace MadScience.Wrappers
 
             foreach (DatabasePackedFile.Entry entry in dbpf.Entries)
             {
-                this._Entries.Add(entry.Key.ToString(), new StreamEntry()
+                this._Entries.Add(entry.Key, new StreamEntry()
                 {
                     Compressed = entry.Compressed,
                     Offset = entry.Offset,
@@ -485,12 +481,12 @@ namespace MadScience.Wrappers
                 throw new NotSupportedException();
             }
 
-            foreach (KeyValuePair<string, StreamEntry> entry in this.OriginalEntries)
+            foreach (KeyValuePair<MadScience.Wrappers.ResourceKey, StreamEntry> entry in this.OriginalEntries)
             {
                 this._Entries[entry.Key] = entry.Value;
             }
 
-            foreach (KeyValuePair<string, Entry> entry in this._Entries) //.Where(entry => entry.Value is MemoryEntry).ToList())
+            foreach (KeyValuePair<MadScience.Wrappers.ResourceKey, Entry> entry in this._Entries) //.Where(entry => entry.Value is MemoryEntry).ToList())
             {
                 if (entry.Value is MemoryEntry)
                 {
