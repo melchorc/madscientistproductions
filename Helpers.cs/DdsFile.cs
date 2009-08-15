@@ -30,9 +30,7 @@
 //#define	APPLY_PITCH_ALIGNMENT
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 //using PaintDotNet;
 using System.Drawing;
 using System.Drawing.Imaging;

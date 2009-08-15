@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CASPartEditor</RootNamespace>
     <AssemblyName>CasTextureUnitool</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -49,24 +49,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gibbed.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Gibbed\Gibbed.Helpers\bin\Debug\Gibbed.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="Gibbed.Sims3.FileFormats, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Gibbed\Gibbed.Sims3.FileFormats\bin\Debug\Gibbed.Sims3.FileFormats.dll</HintPath>
-    </Reference>
     <Reference Include="OX.Copyable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Form1.cs">
@@ -130,6 +118,10 @@
     <ProjectReference Include="..\Helpers.cs\MadScience.Helpers.csproj">
       <Project>{EA40DDB1-1C28-4323-90B3-5B99071F0B78}</Project>
       <Name>MadScience.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MadScience.Wrappers\MadScience.Wrappers.csproj">
+      <Project>{82597921-C98E-4D1C-B32E-6BB2164B89AD}</Project>
+      <Name>MadScience.Wrappers</Name>
     </ProjectReference>
     <ProjectReference Include="..\PatternBrowser\PatternBrowser.csproj">
       <Project>{94FF1D12-494E-46D1-A4F8-E45EB11B9CF7}</Project>

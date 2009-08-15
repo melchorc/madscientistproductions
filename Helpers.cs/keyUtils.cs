@@ -17,21 +17,24 @@ namespace MadScience
 
         public string Blank = "key:00000000:00000000:0000000000000000";
 
+        /*
         public keyName(tgi64 tgi)
         {
             this.typeId = tgi.typeid;
             this.groupId = tgi.groupid;
             this.instanceId = tgi.instanceid;
         }
+        */
 
         public keyName(string keyString)
         {
             keyString = keyString.Replace("key:", "");
             string[] temp = keyString.Split(":".ToCharArray());
 
-            this.typeId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[0]);
-            this.groupId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[1]);
-            this.instanceId = Gibbed.Helpers.StringHelpers.ParseHex64("0x" + temp[2]);
+            
+            this.typeId = MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
+            this.groupId = MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
+            this.instanceId = MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
 
         }
 
@@ -45,9 +48,9 @@ namespace MadScience
                     keyString = keyString.Replace("key:", "");
                     string[] temp = keyString.Split(":".ToCharArray());
 
-                    this.typeId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[0]);
-                    this.groupId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[1]);
-                    this.instanceId = Gibbed.Helpers.StringHelpers.ParseHex64("0x" + temp[2]);
+                    this.typeId = MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
+                    this.groupId = MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
+                    this.instanceId = MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
                 }
                 else
                 {
@@ -55,14 +58,14 @@ namespace MadScience
                     {
                         this.typeId = 0x00B2D882;
                         this.groupId = 0x0;
-                        this.instanceId = Gibbed.Helpers.StringHelpers.ParseHex64("0x" + keyString);
+                        this.instanceId = MadScience.StringHelpers.ParseHex64("0x" + keyString);
                     }
                     else
                     {
                         this.typeId = 0x00B2D882;
                         this.groupId = 0x0;
                         this.name = meshName;
-                        this.instanceId = Gibbed.Helpers.StringHelpers.HashFNV64(meshName);
+                        this.instanceId = MadScience.StringHelpers.HashFNV64(meshName);
                     }
                 }
             }
@@ -101,7 +104,7 @@ namespace MadScience
             this.typeId = typeId;
             this.groupId = groupId;
             this.name = kName;
-            this.instanceId = Gibbed.Helpers.StringHelpers.HashFNV64(kName);
+            this.instanceId = MadScience.StringHelpers.HashFNV64(kName);
         }
 
         public override string ToString()
@@ -109,6 +112,7 @@ namespace MadScience
             return "key:" + this.typeId.ToString("X8") + ":" + this.groupId.ToString("X8") + ":" + this.instanceId.ToString("X16");
         }
 
+        /*
         public tgi64 ToTGI()
         {
             tgi64 temp = new tgi64();
@@ -117,14 +121,22 @@ namespace MadScience
             temp.instanceid = this.instanceId;
             return temp;
         }
+        */
 
-        public Gibbed.Sims3.FileFormats.ResourceKey ToResourceKey()
+        /*
+        public MadScience.Wrappers.ResourceKey ToResourceKey()
         {
-            Gibbed.Sims3.FileFormats.ResourceKey temp = new Gibbed.Sims3.FileFormats.ResourceKey();
+            MadScience.Wrappers.ResourceKey temp = new MadScience.Wrappers.ResourceKey();
             temp.TypeId = this.typeId;
             temp.GroupId = this.groupId;
             temp.InstanceId = this.instanceId;
             return temp;
+        }
+        */
+
+        public MadScience.Wrappers.ResourceKey ToResourceKey()
+        {
+            return new MadScience.Wrappers.ResourceKey(this.typeId, this.groupId, this.instanceId);
         }
     }
 
@@ -185,11 +197,10 @@ namespace MadScience
             Stream tStream = null;
 
             Stream input = File.OpenRead(sims3root + "\\GameData\\Shared\\Packages\\FullBuild" + fullBuild.ToString() + ".package");
-            Gibbed.Sims3.FileFormats.Database db = new Gibbed.Sims3.FileFormats.Database(input, true);
+            MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(input, true);
 
             try
             {
-
                 tStream = db.GetResourceStream(tKey.ToResourceKey());
             }
             catch (System.Collections.Generic.KeyNotFoundException ex)
@@ -224,7 +235,7 @@ namespace MadScience
             Stream tStream = null;
 
             Stream input = File.OpenRead(filename);
-            Gibbed.Sims3.FileFormats.Database db = new Gibbed.Sims3.FileFormats.Database(input, true);
+            MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(input, true);
 
             try
             {
@@ -343,7 +354,7 @@ namespace MadScience
             if (!String.IsNullOrEmpty(Helpers.currentPackageFile))
             {
                 Stream localPackage = File.Open(Helpers.currentPackageFile, FileMode.Open, FileAccess.Read, FileShare.Read);
-                Gibbed.Sims3.FileFormats.Database localDb = new Gibbed.Sims3.FileFormats.Database(localPackage, true);
+                MadScience.Wrappers.Database localDb = new MadScience.Wrappers.Database(localPackage, true);
 
                 for (int i = 0; i < keyNames.Count; i++)
                 {
@@ -366,7 +377,7 @@ namespace MadScience
             }
 
             Stream input = File.OpenRead(Helpers.findSims3Root() + "\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package");
-            Gibbed.Sims3.FileFormats.Database db = new Gibbed.Sims3.FileFormats.Database(input, true);
+            MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(input, true);
 
             for (int i = 0; i < keyNames.Count; i++)
             {

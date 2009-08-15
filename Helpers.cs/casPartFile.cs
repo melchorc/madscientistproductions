@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
+//using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Xml;
 using OX.Copyable;
-using Gibbed.Helpers;
+//using Gibbed.Helpers;
 
 namespace MadScience
 {
@@ -35,19 +35,19 @@ namespace MadScience
             if (!String.IsNullOrEmpty(value))
             {
                 Console.WriteLine("Adding " + keyName);
-                if (addToKeylist) addToTGI(casP, keyToTGI64(value));
+                if (addToKeylist) addToTGI(casP, new MadScience.Wrappers.ResourceKey(value));
                 avSB(keyName, value);
             }
         }
 
-        private void addToTGI(casPart casP, tgi64 tgiNew)
+        private void addToTGI(casPart casP, MadScience.Wrappers.ResourceKey tgiNew)
         {
             // Remove duplicates from the tgi64list (just in case)
             bool hasTGI = false;
                 for (int k = 0; k < casP.tgi64list.Count; k++)
                 {
-                    tgi64 tgi = (tgi64)casP.tgi64list[k];
-                    if (tgi.typeid == tgiNew.typeid && tgi.groupid == tgiNew.groupid && tgi.instanceid == tgiNew.instanceid)
+                    MadScience.Wrappers.ResourceKey tgi = casP.tgi64list[k];
+                    if (tgi.typeId == tgiNew.typeId && tgi.groupId == tgiNew.groupId && tgi.instanceId == tgiNew.instanceId)
                     {
                         hasTGI = true;
                         break;
@@ -55,7 +55,7 @@ namespace MadScience
                 }
                 if (!hasTGI)
                 {
-                    Console.WriteLine("Adding tgi64 " + tgiNew.typeid.ToString("X8") + ":" + tgiNew.groupid.ToString("X8") + ":" + tgiNew.instanceid.ToString("X16"));
+                    Console.WriteLine("Adding tgi64 " + tgiNew.ToString());
                     casP.tgi64list.Add(tgiNew);
                 }
             
@@ -196,7 +196,7 @@ namespace MadScience
             addLine(casP, "Part Mask", chunk.PartMask, true);
 
             if (addComments) sb.Append("<!-- We are running out of lime! -->");
-            casP.tgi64list.Add(new keyName(chunk.reskey).ToTGI());
+            casP.tgi64list.Add(new MadScience.Wrappers.ResourceKey(chunk.reskey));
 
             for (int i = 0; i < 4; i++)
             {
@@ -213,7 +213,8 @@ namespace MadScience
                     }
 
                     sb.AppendLine("<pattern name=\"" + chunk.pattern[i].name + "\" reskey=\"" + chunk.pattern[i].key + "\" variable=\"" + patternName + "\">");
-                    casP.tgi64list.Add(new keyName(chunk.pattern[i].key).ToTGI());
+                    //casP.tgi64list.Add(new keyName(chunk.pattern[i].key).ToTGI());
+                    casP.tgi64list.Add(new MadScience.Wrappers.ResourceKey(chunk.pattern[i].key));
                     if (addComments) sb.Append("<!-- " + charName + "-->");
                     avSBL("assetRoot", "X:");
 
@@ -225,7 +226,7 @@ namespace MadScience
                     {
                         if (!String.IsNullOrEmpty(chunk.pattern[i].BackgroundImage))
                         {
-                            casP.tgi64list.Add(keyToTGI64(chunk.pattern[i].BackgroundImage));
+                            casP.tgi64list.Add(new MadScience.Wrappers.ResourceKey(chunk.pattern[i].BackgroundImage));
                             avSBL("Background Image", chunk.pattern[i].BackgroundImage);
                         }
                         if (!String.IsNullOrEmpty(chunk.pattern[i].HBg)) avSBL("H Bg", chunk.pattern[i].HBg);
@@ -254,7 +255,7 @@ namespace MadScience
             if (!String.IsNullOrEmpty(chunk.logo.name))
             {
                 sb.Append("<pattern name=\"" + chunk.logo.name + "\" reskey=\"" + chunk.logo.key + "\" variable=\"Logo\">");
-                casP.tgi64list.Add(new keyName(chunk.logo.key).ToTGI());
+                casP.tgi64list.Add(new MadScience.Wrappers.ResourceKey(chunk.logo.key));
                 avSB("assetRoot", "X:");
                 //avSB("Color", chunk.pattern.Logo.Color);
                 avSB("filename", chunk.logo.filename);
@@ -283,11 +284,12 @@ namespace MadScience
             {
 
                 // Remove the textures and XML from the tgi64 list
-                ArrayList temp = new ArrayList();
+                List<MadScience.Wrappers.ResourceKey> temp = new List<MadScience.Wrappers.ResourceKey>();
                 for (int j = 0; j < casP.tgi64list.Count; j++)
                 {
-                    tgi64 tgi = (tgi64)casP.tgi64list[j];
-                    switch (tgi.typeid)
+                    //tgi64 tgi = (tgi64)casP.tgi64list[j];
+                    MadScience.Wrappers.ResourceKey tgi = casP.tgi64list[j];
+                    switch (tgi.typeId)
                     {
                         case 0x00B2D882:
                         case 0x0333406C:
@@ -323,17 +325,17 @@ namespace MadScience
             }
 
             // Okay remove any possible duplicates from the tgi list
-            ArrayList newTGIs = new ArrayList();
+            List<MadScience.Wrappers.ResourceKey> newTGIs = new List<MadScience.Wrappers.ResourceKey>();
             for (int i = 0; i < casP.tgi64list.Count; i++)
             {
                 bool hasMatch = false;
-                tgi64 srcTgi = (tgi64)casP.tgi64list[i];
+                MadScience.Wrappers.ResourceKey srcTgi = casP.tgi64list[i];
 
                 for (int j = 0; j < newTGIs.Count; j++)
                 {
-                    tgi64 dstTgi = (tgi64)newTGIs[j];
+                    MadScience.Wrappers.ResourceKey dstTgi = newTGIs[j];
 
-                    if (srcTgi.typeid == dstTgi.typeid && srcTgi.groupid == dstTgi.groupid && srcTgi.instanceid == dstTgi.instanceid)
+                    if (srcTgi.typeId == dstTgi.typeId && srcTgi.groupId == dstTgi.groupId && srcTgi.instanceId == dstTgi.instanceId)
                     {
                         hasMatch = true;
                         break;
@@ -359,13 +361,13 @@ namespace MadScience
                 {
                     string temp = (string)casP.xmlChunkRaw[i - 1];
                     writer.Write(temp.Length);
-                    Gibbed.Helpers.StreamHelpers.WriteStringUTF16(casFile, true, temp);
+                    MadScience.StreamHelpers.WriteStringUTF16(casFile, true, temp);
                     writer.Write(i);
                 }
             }
 
             writer.Write((byte)(casP.meshName.Length * 2));
-            Gibbed.Helpers.StreamHelpers.WriteStringUTF16(casFile, false, casP.meshName);
+            MadScience.StreamHelpers.WriteStringUTF16(casFile, false, casP.meshName);
             writer.Write(casP.clothingOrder);
             writer.Write(casP.unk2);
             writer.Write(casP.clothingType);
@@ -378,7 +380,7 @@ namespace MadScience
             // If we still dont have a match... add a blank entry to the end.
             if (casP.tgiIndexBodyPart1 == 0)
             {
-                casP.tgi64list.Add(new tgi64());
+                casP.tgi64list.Add(new MadScience.Wrappers.ResourceKey());
                 casP.tgiIndexBodyPart1 = (byte)(casP.tgi64list.Count - 1);
             }
             casP.tgiIndexBodyPart2 = (byte)findChunkInTGIList(casP, 0x034AEECB, 2);
@@ -500,7 +502,7 @@ namespace MadScience
             }
 
             writer.Write((byte)(casP.unkString.Length * 2));
-            Gibbed.Helpers.StreamHelpers.WriteStringUTF16(casFile, false, casP.unkString);
+            MadScience.StreamHelpers.WriteStringUTF16(casFile, false, casP.unkString);
 
             int tgiPos = (int)casFile.Position - 8;
 
@@ -508,11 +510,11 @@ namespace MadScience
             writer.Write(casP.count6);
             for (int i = 0; i < casP.count6; i++)
             {
-                tgi64 tgi = (tgi64)newTGIs[i];
-                Console.WriteLine("Writing tgi64 " + tgi.typeid.ToString("X8") + ":" + tgi.groupid.ToString("X8") + ":" + tgi.instanceid.ToString("X16"));
-                writer.Write(tgi.instanceid);
-                writer.Write(tgi.groupid);
-                writer.Write(tgi.typeid);
+                MadScience.Wrappers.ResourceKey tgi = newTGIs[i];
+                Console.WriteLine("Writing tgi64 " + tgi.ToString());
+                writer.Write(tgi.instanceId);
+                writer.Write(tgi.groupId);
+                writer.Write(tgi.typeId);
             }
 
             casFile.Seek(4, SeekOrigin.Begin);
@@ -526,8 +528,8 @@ namespace MadScience
             int curCount = 0;
             for (int i = 0; i < casP.tgi64list.Count; i++)
             {
-                tgi64 tgi = (tgi64)casP.tgi64list[i];
-                if (tgi.typeid == typeId)
+                MadScience.Wrappers.ResourceKey tgi = casP.tgi64list[i];
+                if (tgi.typeId == typeId)
                 {
                     curCount++;
                     if (curCount == counter)
@@ -538,33 +540,6 @@ namespace MadScience
                 }
             }
             return temp;
-        }
-        private tgi64 keyToTGI64(string keyString)
-        {
-            tgi64 tgi = new tgi64();
-            if (keyString == "")
-            {
-                tgi.typeid = 0;
-                tgi.groupid = 0;
-                tgi.instanceid = 0;
-                return tgi;
-            }
-
-            keyString = keyString.Replace("key:", "");
-            string[] temp = keyString.Split(":".ToCharArray());
-
-            uint typeID = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[0]);
-            uint groupID = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[1]);
-            ulong instanceID = Gibbed.Helpers.StringHelpers.ParseHex64("0x" + temp[2]);
-
-            tgi.typeid = typeID;
-            tgi.groupid = groupID;
-            tgi.instanceid = instanceID;
-
-            Console.WriteLine("Returning tgi64 " + tgi.typeid.ToString("X8") + ":" + tgi.groupid.ToString("X8") + ":" + tgi.instanceid.ToString("X16"));
-
-            return tgi;
-
         }
 
         public casPart Load(Stream casFile)
@@ -579,13 +554,13 @@ namespace MadScience
             for (int i = 0; i < cFile.numParts; i++)
             {
                 uint xmlSize = reader.ReadUInt32();
-                cFile.xmlChunkRaw.Add(Gibbed.Helpers.StreamHelpers.ReadStringUTF16(casFile, (xmlSize * 2)));
+                cFile.xmlChunkRaw.Add(MadScience.StreamHelpers.ReadStringUTF16(casFile, (xmlSize * 2)));
                 this.parseRawXML(cFile.xmlChunkRaw.Count);
                 uint xmlNum = reader.ReadUInt32();
             }
 
             byte meshStringSize = reader.ReadByte();
-            cFile.meshName = Gibbed.Helpers.StreamHelpers.ReadStringUTF16(casFile, false, (uint)meshStringSize);
+            cFile.meshName = MadScience.StreamHelpers.ReadStringUTF16(casFile, false, (uint)meshStringSize);
 
             cFile.clothingOrder = reader.ReadSingle();
             cFile.unk2 = reader.ReadByte();
@@ -660,15 +635,12 @@ namespace MadScience
             }
 
             byte len = reader.ReadByte();
-            cFile.unkString = Gibbed.Helpers.StreamHelpers.ReadStringUTF16(casFile, false, (uint)len);
+            cFile.unkString = MadScience.StreamHelpers.ReadStringUTF16(casFile, false, (uint)len);
 
             cFile.count6 = reader.ReadByte();
             for (int i = 0; i < cFile.count6; i++)
             {
-                tgi64 tgi = new tgi64();
-                tgi.instanceid = reader.ReadUInt64();
-                tgi.groupid = reader.ReadUInt32();
-                tgi.typeid = reader.ReadUInt32();
+                MadScience.Wrappers.ResourceKey tgi = new MadScience.Wrappers.ResourceKey(casFile, (int)MadScience.Wrappers.ResourceKeyOrder.IGT);
                 cFile.tgi64list.Add(tgi);
             }
 
@@ -1493,7 +1465,8 @@ namespace MadScience
         public string unkString = "";
 
         public byte count6 = 0;
-        public ArrayList tgi64list = new ArrayList();
+        //public ArrayList tgi64list = new ArrayList();
+        public List<MadScience.Wrappers.ResourceKey> tgi64list = new List<MadScience.Wrappers.ResourceKey>();
     }
 
     public class unkRepeat
@@ -1503,14 +1476,6 @@ namespace MadScience
         public uint unk2 = 0; // Flags?
         public byte unkRepeatInnerCount = 0;
         public ArrayList unkRepeatInnerLoop = new ArrayList();
-    }
-
-    public class tgi64
-    {
-
-        public ulong instanceid = 0;
-        public uint groupid = 0;
-        public uint typeid = 0;
     }
 
     public class intTriple

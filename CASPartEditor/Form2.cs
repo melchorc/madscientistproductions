@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.IO;
-using Gibbed.Sims3.FileFormats;
+using MadScience.Wrappers;
 
 namespace CASPartEditor
 {
@@ -64,7 +64,7 @@ namespace CASPartEditor
             {
                 dbpf.Read(input);
             }
-            catch (NotAPackageException)
+            catch (MadScience.Exceptions.NotAPackageException)
             {
                 MessageBox.Show("bad file: {0}", sims3root + "\\GameData\\Shared\\Packages\\FullBuild2.package");
                 input.Close();
@@ -75,9 +75,9 @@ namespace CASPartEditor
             keyString = keyString.Replace("key:", "");
             string[] temp = keyString.Split(":".ToCharArray());
 
-            uint typeID = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[0]);
-            uint groupID = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[1]);
-            ulong instanceID = Gibbed.Helpers.StringHelpers.ParseHex64("0x" + temp[2]);
+            uint typeID = MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
+            uint groupID = MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
+            ulong instanceID = MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
 
             toolStripProgressBar1.Maximum = dbpf.Entries.Count;
 
@@ -88,7 +88,7 @@ namespace CASPartEditor
                 DatabasePackedFile.Entry entry = dbpf.Entries[i];
                 toolStripProgressBar1.Value++;
 
-                if (entry.Key.TypeId == typeID && entry.Key.GroupId == groupID && entry.Key.InstanceId == instanceID)
+                if (entry.Key.typeId == typeID && entry.Key.groupId == groupID && entry.Key.instanceId == instanceID)
                 {
                     foundMatch = true;
                     MadScience.DDSPreview ddsP = new MadScience.DDSPreview();
