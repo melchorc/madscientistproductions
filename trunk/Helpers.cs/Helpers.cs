@@ -7,12 +7,13 @@ using System.Globalization;
 using Microsoft.Win32;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Linq;
+//using System.Linq;
 using System.IO;
-using Gibbed.Helpers;
+//using Gibbed.Helpers;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace MadScience
 {
@@ -312,13 +313,18 @@ namespace MadScience
         {
             Dictionary<ulong, string> temp = new Dictionary<ulong, string>();
 
-            input.ReadValueU32();
-            int count = input.ReadValueS32();
+            BinaryReader reader = new BinaryReader(input);
+            reader.ReadUInt32();            
+            //input.ReadValueU32();
+            int count = reader.ReadInt32();
+            //int count = input.ReadValueS32();
             for (int i = 0; i < count; i++)
             {
-                ulong instanceId = input.ReadValueU64();
-                uint nLength = input.ReadValueU32();
-                temp.Add(instanceId, input.ReadStringASCII(nLength));
+                ulong instanceId = reader.ReadUInt64();
+                //ulong instanceId = input.ReadValueU64();
+                uint nLength = reader.ReadUInt32();
+                //uint nLength = input.ReadValueU32();
+                temp.Add(instanceId, MadScience.StreamHelpers.ReadStringASCII(input, nLength));
             }
 
             return temp;
@@ -865,8 +871,11 @@ namespace MadScience
         #region String functions
         public static string sanitiseString(string input)
         {
-            var s = from ch in input where char.IsLetterOrDigit(ch) select ch;
-            return UnicodeEncoding.ASCII.GetString(UnicodeEncoding.ASCII.GetBytes(s.ToArray()));
+            string temp = Regex.Replace(input, "[^a-zA-Z0-9]", "");
+            return temp;
+
+            //var s = from ch in input where char.IsLetterOrDigit(ch) select ch;
+            //return UnicodeEncoding.ASCII.GetString(UnicodeEncoding.ASCII.GetBytes(s.ToArray()));
         }
         #endregion
 
@@ -1208,17 +1217,17 @@ namespace MadScience
             if (!String.IsNullOrEmpty(pDetail.rgbmask) && !MadScience.KeyUtils.validateKey(pDetail.rgbmask, false))
             {
                 // Need to change rgbmask to key format
-                pDetail.rgbmask = "key:00B2D882:00000000:" + Gibbed.Helpers.StringHelpers.HashFNV64(pDetail.rgbmask.Substring(pDetail.rgbmask.LastIndexOf("\\") + 1).Replace(@".tga", "").Replace(@".dds", "")).ToString("X16");
+                pDetail.rgbmask = "key:00B2D882:00000000:" + MadScience.StringHelpers.HashFNV64(pDetail.rgbmask.Substring(pDetail.rgbmask.LastIndexOf("\\") + 1).Replace(@".tga", "").Replace(@".dds", "")).ToString("X16");
             }
             if (!String.IsNullOrEmpty(pDetail.specmap) && !MadScience.KeyUtils.validateKey(pDetail.specmap, false))
             {
                 // Need to change rgbmask to key format
-                pDetail.specmap = "key:00B2D882:00000000:" + Gibbed.Helpers.StringHelpers.HashFNV64(pDetail.specmap.Substring(pDetail.specmap.LastIndexOf("\\") + 1).Replace(@".tga", "").Replace(@".dds", "")).ToString("X16");
+                pDetail.specmap = "key:00B2D882:00000000:" + MadScience.StringHelpers.HashFNV64(pDetail.specmap.Substring(pDetail.specmap.LastIndexOf("\\") + 1).Replace(@".tga", "").Replace(@".dds", "")).ToString("X16");
             }
 
             if (!String.IsNullOrEmpty(pDetail.BackgroundImage) && !MadScience.KeyUtils.validateKey(pDetail.BackgroundImage, false))
             {
-                pDetail.BackgroundImage = "key:00B2D882:00000000:" + Gibbed.Helpers.StringHelpers.HashFNV64(pDetail.BackgroundImage.Substring(pDetail.BackgroundImage.LastIndexOf("\\") + 1).Replace(@".tga", "").Replace(@".dds", "")).ToString("X16");
+                pDetail.BackgroundImage = "key:00B2D882:00000000:" + MadScience.StringHelpers.HashFNV64(pDetail.BackgroundImage.Substring(pDetail.BackgroundImage.LastIndexOf("\\") + 1).Replace(@".tga", "").Replace(@".dds", "")).ToString("X16");
             }
 
             for (int i = 0; i < 4; i++)

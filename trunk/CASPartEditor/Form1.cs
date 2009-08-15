@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.IO;
 using OX.Copyable;
-using Gibbed.Sims3.FileFormats;
+using MadScience.Wrappers;
 using MadScience;
 
 namespace CASPartEditor
@@ -234,57 +234,62 @@ namespace CASPartEditor
             openFileDialog1.Filter = "Sims 3 Package|*.package|CAS Part File|*.caspart|All Files|*.*";
             if (openFileDialog1.ShowDialog() == DialogResult.OK && openFileDialog1.FileName.Trim() != "")
             {
+                loadFile(openFileDialog1.FileName);
+            }
+        }
 
-                toolStripStatusLabel1.Text = openFileDialog1.FileName;
+        public void loadFile(string filename)
+        {
+            toolStripStatusLabel1.Text = filename;
 
-                if (debugModeToolStripMenuItem.Checked)
+            if (debugModeToolStripMenuItem.Checked)
+            {
+                Helpers.logMessageToFile("Opening file " + filename);
+            }
+
+            casPartFile cPartFile;
+            Stream inputCasPart = new MemoryStream(); ;
+
+            FileInfo f = new FileInfo(filename);
+            if (f.Extension.ToLower() == ".caspart")
+            {
+                inputCasPart = File.Open(f.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                cPartFile = new casPartFile();
+                this.casPartSrc = cPartFile.Load(inputCasPart);
+                inputCasPart.Close();
+                this.isNew = false;
+                this.fromPackage = false;
+                this.stencilPool.Clear();
+                //this.stencilPool.TrimExcess();
+
+                displayCasPartFile();
+            }
+            else if (f.Extension.ToLower() == ".package")
+            {
+                inputCasPart = searchInPackage(f.FullName, (int)0x034AEECB, -1, -1);
+
+                if (inputCasPart != null)
                 {
-                    Helpers.logMessageToFile("Opening file " + openFileDialog1.FileName);
-                }
-
-                casPartFile cPartFile;
-                Stream inputCasPart = new MemoryStream(); ;
-
-                FileInfo f = new FileInfo(openFileDialog1.FileName);
-                if (f.Extension.ToLower() == ".caspart")
-                {
-                    inputCasPart = File.Open(f.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
                     cPartFile = new casPartFile();
                     this.casPartSrc = cPartFile.Load(inputCasPart);
                     inputCasPart.Close();
                     this.isNew = false;
-                    this.fromPackage = false;
+                    this.fromPackage = true;
+                    Helpers.currentPackageFile = f.FullName;
                     this.stencilPool.Clear();
                     //this.stencilPool.TrimExcess();
 
+                    saveToolStripMenuItem.Enabled = true;
+
                     displayCasPartFile();
                 }
-                else if (f.Extension.ToLower() == ".package")
+                else
                 {
-                    inputCasPart = searchInPackage(f.FullName, (int)0x034AEECB, -1, -1);
-
-                    if (inputCasPart != null)
-                    {
-                        cPartFile = new casPartFile();
-                        this.casPartSrc = cPartFile.Load(inputCasPart);
-                        inputCasPart.Close();
-                        this.isNew = false;
-                        this.fromPackage = true;
-                        Helpers.currentPackageFile = f.FullName;
-                        this.stencilPool.Clear();
-                        //this.stencilPool.TrimExcess();
-
-                        saveToolStripMenuItem.Enabled = true;
-
-                        displayCasPartFile();
-                    }
-                    else
-                    {
-                        MessageBox.Show("No CAS Part file can be found in this package!");
-                    }
+                    MessageBox.Show("No CAS Part file can be found in this package!");
                 }
-                saveAsToolStripMenuItem.Enabled = true;
             }
+            saveAsToolStripMenuItem.Enabled = true;
+
         }
 
         public Stream searchInPackage(string filename, string keyString)
@@ -292,9 +297,9 @@ namespace CASPartEditor
             keyString = keyString.Replace("key:", "");
             string[] temp = keyString.Split(":".ToCharArray());
 
-            int typeID = (int)Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[0]);
-            int groupID = (int)Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[1]);
-            long instanceID = (long)Gibbed.Helpers.StringHelpers.ParseHex64("0x" + temp[2]);
+            int typeID = (int)MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
+            int groupID = (int)MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
+            long instanceID = (long)MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
 
             return searchInPackage(filename, typeID, groupID, instanceID);
         }
@@ -309,7 +314,7 @@ namespace CASPartEditor
 
             // Open the package file and search
             Stream package = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
-            Gibbed.Sims3.FileFormats.Database db = new Gibbed.Sims3.FileFormats.Database(package, true);
+            MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(package, true);
 
             int searchType = 0;
             if (typeID != -1) { searchType += 1; }
@@ -320,16 +325,17 @@ namespace CASPartEditor
 
 
 
-            foreach (ResourceKey entry in db.Entries.Keys) 
+            foreach (string keyString in db._Entries.Keys) 
             {
                 //ResourceKey key = db.Entries.Keys[i];
                 //DatabasePackedFile.Entry entry = db.Entries.Keys[i];
                 //DatabasePackedFile.Entry entry = db.dbpfEntries[i];
+                MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
 
                 switch (searchType)
                 {
                     case 7:
-                        if (entry.TypeId == typeID && entry.GroupId == groupID && entry.InstanceId == (ulong)instanceID)
+                        if (entry.typeId == typeID && entry.groupId == groupID && entry.instanceId == (ulong)instanceID)
                         {
                             loadedCasPart = entry;
                             matchChunk = db.GetResourceStream(entry);
@@ -337,7 +343,7 @@ namespace CASPartEditor
                         }
                         break;
                     case 6:
-                        if (entry.GroupId == groupID && entry.InstanceId == (ulong)instanceID)
+                        if (entry.groupId == groupID && entry.instanceId == (ulong)instanceID)
                         {
                             loadedCasPart = entry;
                             matchChunk = db.GetResourceStream(entry);
@@ -345,7 +351,7 @@ namespace CASPartEditor
                         }
                         break;
                     case 5:
-                        if (entry.TypeId == typeID && entry.InstanceId == (ulong)instanceID)
+                        if (entry.typeId == typeID && entry.instanceId == (ulong)instanceID)
                         {
                             loadedCasPart = entry;
                             matchChunk = db.GetResourceStream(entry);
@@ -353,7 +359,7 @@ namespace CASPartEditor
                         }
                         break;
                     case 4:
-                        if (entry.InstanceId == (ulong)instanceID)
+                        if (entry.instanceId == (ulong)instanceID)
                         {
                             loadedCasPart = entry;
                             matchChunk = db.GetResourceStream(entry);
@@ -361,7 +367,7 @@ namespace CASPartEditor
                         }
                         break;
                     case 3:
-                        if (entry.TypeId == typeID && entry.GroupId == groupID)
+                        if (entry.typeId == typeID && entry.groupId == groupID)
                         {
                             loadedCasPart = entry;
                             matchChunk = db.GetResourceStream(entry);
@@ -369,7 +375,7 @@ namespace CASPartEditor
                         }
                         break;
                     case 2:
-                        if (entry.GroupId == groupID)
+                        if (entry.groupId == groupID)
                         {
                             loadedCasPart = entry;
                             matchChunk = db.GetResourceStream(entry);
@@ -377,7 +383,7 @@ namespace CASPartEditor
                         }
                         break;
                     case 1:
-                        if (entry.TypeId == typeID)
+                        if (entry.typeId == typeID)
                         {
                             loadedCasPart = entry;
                             matchChunk = db.GetResourceStream(entry);
@@ -588,21 +594,22 @@ namespace CASPartEditor
                 //                    cast.Close();
                 //                  return null ;
                 //            }
-                ulong instanceid = Gibbed.Helpers.StringHelpers.HashFNV64(meshName);
+                ulong instanceid = MadScience.StringHelpers.HashFNV64(meshName);
 
                 if (casThumbsKeyList.Count == 0)
                 {
-                    Helpers.logMessageToFile("Populating casThumbs entry lists from " + castdb.Entries.Count.ToString() + " entries");
-                    foreach (ResourceKey entry in castdb.Entries.Keys)
+                    Helpers.logMessageToFile("Populating casThumbs entry lists from " + castdb._Entries.Count.ToString() + " entries");
+                    foreach (string keyString in castdb._Entries.Keys)
                     {
+                        MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
                         //DatabasePackedFile.Entry entry = castdb.dbpfEntries[i];
-                        if (entry.GroupId == 0x00000000 && entry.TypeId == 0x626f60ce)
+                        if (entry.groupId == 0x00000000 && entry.typeId == 0x626f60ce)
                         {
-                            casThumbsKeyList.Add(entry.InstanceId, entry);
+                            casThumbsKeyList.Add(entry.instanceId, entry);
                         }
-                        if (entry.GroupId == 0x00000001 && entry.TypeId == 0x626f60ce)
+                        if (entry.groupId == 0x00000001 && entry.typeId == 0x626f60ce)
                         {
-                            casThumbsKeyList2.Add(entry.InstanceId, entry);
+                            casThumbsKeyList2.Add(entry.instanceId, entry);
                         }
                     }
                     Helpers.logMessageToFile("casThumbs now contains " + casThumbsKeyList.Count.ToString() + " entries");
@@ -726,7 +733,7 @@ namespace CASPartEditor
                 txtCasPartName.Text = casPartSrc.meshName;
                 txtMeshName.Text = casPartSrc.meshName;
 
-                txtCasPartInstance.Text = Gibbed.Helpers.StringHelpers.HashFNV64(meshName).ToString("X16");
+                txtCasPartInstance.Text = MadScience.StringHelpers.HashFNV64(meshName).ToString("X16");
                 picMeshPreview.Image = null;
                 picMeshPreview.Invalidate();
 
@@ -879,29 +886,28 @@ namespace CASPartEditor
 
             for (int i = 0; i < casPartSrc.count6; i++)
             {
-                tgi64 tgi = new tgi64();
-                tgi = (tgi64)casPartSrc.tgi64list[i];
-                string tgiType = MadScience.Helpers.findMetaEntry(tgi.typeid).shortName;
-                Console.WriteLine(tgi.typeid.ToString() + " " + tgiType);
+                MadScience.Wrappers.ResourceKey tgi = casPartSrc.tgi64list[i];
+                string tgiType = MadScience.Helpers.findMetaEntry(tgi.typeId).shortName;
+                Console.WriteLine(tgi.typeId.ToString() + " " + tgiType);
 
-                if (tgi.typeid == 0x0333406C)
+                if (tgi.typeId == 0x0333406C)
                 {
-                    if (tgi.instanceid == 0x52E8BE209C703561)
+                    if (tgi.instanceId == 0x52E8BE209C703561)
                     {
                         checkedListBox1.SetItemChecked(0, true);
                     }
-                    if (tgi.instanceid == 0xE37696463F6B2D6E)
+                    if (tgi.instanceId == 0xE37696463F6B2D6E)
                     {
                         checkedListBox1.SetItemChecked(1, true);
                     }
-                    if (tgi.instanceid == 0x01625DDC220C08C6)
+                    if (tgi.instanceId == 0x01625DDC220C08C6)
                     {
                         checkedListBox1.SetItemChecked(2, true);
                     }
 
                 }
 
-                addCasPartItem("TGI #" + i.ToString() + " " + tgiType, "key:" + tgi.typeid.ToString("X8") + ":" + tgi.groupid.ToString("X8") + ":" + tgi.instanceid.ToString("X16"));
+                addCasPartItem("TGI #" + i.ToString() + " " + tgiType, tgi.ToString());
             }
 
             // Category flags
@@ -1460,17 +1466,18 @@ namespace CASPartEditor
                 statusStrip1.Refresh();
 
                 Stream fbuild2 = File.Open(s3root + "\\GameData\\Shared\\Packages\\FullBuild2.package", FileMode.Open, FileAccess.Read, FileShare.Read);
-                Gibbed.Sims3.FileFormats.Database db = new Gibbed.Sims3.FileFormats.Database(fbuild2, true);
+                MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(fbuild2, true);
 
                 toolStripProgressBar1.Maximum = casPartSrc.tgi64list.Count;
 
                 Dictionary<ulong, string> keyNames = new Dictionary<ulong, string>();
                 long nowTicks = DateTime.Now.Ticks;
                 Console.WriteLine("Started at: " + nowTicks);
-                foreach (ResourceKey entry in db.Entries.Keys)
+                foreach (string keyString in db._Entries.Keys)
                 {
+                    MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
                     //DatabasePackedFile.Entry entry = db.dbpfEntries[i];
-                    if (entry.TypeId == (int)0x0166038C)
+                    if (entry.typeId == (int)0x0166038C)
                     {
                         keyNames = Helpers.getKeyNames(db.GetResourceStream(entry));
                         break;
@@ -1483,7 +1490,8 @@ namespace CASPartEditor
                 for (int j = 0; j < casPartSrc.tgi64list.Count; j++)
                 {
                     toolStripProgressBar1.Value++;
-                    keyName tgi = new keyName((tgi64)casPartSrc.tgi64list[j]);
+                    //keyName tgi = new keyName((tgi64)casPartSrc.tgi64list[j]);
+                    MadScience.Wrappers.ResourceKey tgi = casPartSrc.tgi64list[j];
                     if (tgi.typeId == (int)0x00B2D882)
                     {
                         Stream textureStream = KeyUtils.searchForKey(tgi.ToString(), 2);
@@ -1508,7 +1516,7 @@ namespace CASPartEditor
                             if (folderBrowserDialog1.SelectedPath != "")
                             {
 
-                                Stream output = db.GetResourceStream(tgi.ToResourceKey());
+                                Stream output = db.GetResourceStream(tgi);
                                 FileStream saveFile = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + fileNameToSave + ".dds", FileMode.Create, FileAccess.Write);
                                 Helpers.CopyStream(output, saveFile);
                                 saveFile.Close();
@@ -1527,7 +1535,7 @@ namespace CASPartEditor
 
                     toolStripProgressBar1.Value++;
 
-                    //Gibbed.Sims3.FileFormats.DatabasePackedFile.Entry entry = db.dbpfEntries[i];
+                    //MadScience.Wrappers.DatabasePackedFile.Entry entry = db.dbpfEntries[i];
                     if (entry.TypeId == 0x00B2D882)
                     {
                         for (int j = 0; j < casPartSrc.tgi64list.Count; j++)
@@ -1645,22 +1653,6 @@ namespace CASPartEditor
 
         private void chkPatternAEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 1)
-            {
-
-                xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-                int chunkNo = cmbPatternSelect.SelectedIndex;
-                if (chkPatternAEnabled.Checked == true)
-                {
-                    //grpPatternA.Enabled = true;
-                    chunk.pattern[chunkNo].Enabled = "True";
-                }
-                else
-                {
-                    //grpPatternA.Enabled = false;
-                    chunk.pattern[chunkNo].Enabled = "False";
-                }
-            }
         }
 
 
@@ -1724,6 +1716,17 @@ namespace CASPartEditor
         {
 
             patternDetails pDetails = new patternDetails();
+
+            if (chkPatternAEnabled.Checked == true)
+            {
+                //grpPatternA.Enabled = true;
+                pDetails.Enabled = "True";
+            }
+            else
+            {
+                //grpPatternA.Enabled = false;
+                pDetails.Enabled = "False";
+            }
 
             if (txtPatternATiling.Text.Trim() != "") { pDetails.Tiling = txtPatternATiling.Text; }
             if (chkPatternALinked.Checked == true) { pDetails.Linked = "true"; } else { pDetails.Linked = "false"; }
@@ -1832,8 +1835,8 @@ namespace CASPartEditor
             }
 
             // Real GEOM chunk
-            string geomString = Gibbed.Helpers.StreamHelpers.ReadStringASCII(input, 4);
-            Gibbed.Helpers.StreamHelpers.WriteStringASCII(output, geomString);
+            string geomString = MadScience.StreamHelpers.ReadStringASCII(input, 4);
+            MadScience.StreamHelpers.WriteStringASCII(output, geomString);
 
             uint geomVersion = reader.ReadUInt32();
             writer.Write(geomVersion);
@@ -1880,15 +1883,15 @@ namespace CASPartEditor
             // If 4 then chop off first one
             // If 5 then save all
 
-            if (numOrig == 3) { 
-                keynames.RemoveAt(0); 
-                keynames.RemoveAt(1); 
+            int startAt = 0;
+            if (numOrig == 3) {
+                startAt = 2;
             }
-            if (numOrig == 4) { 
-                keynames.RemoveAt(0); 
+            if (numOrig == 4) {
+                startAt = 1;
             }
 
-            for (int i = 0; i < numOrig; i++)
+            for (int i = startAt; i < keynames.Count; i++)
             {
                 if (keynames[i].ToString() != keynames[i].Blank)
                 {
@@ -1911,32 +1914,43 @@ namespace CASPartEditor
         private MemoryStream makeBlendFile(keyName proxy)
         {
             MemoryStream output = new MemoryStream();
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 7);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 0);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 20);
-            Gibbed.Helpers.StreamHelpers.WriteValueU8(output, (byte)(proxy.name.Length * 2));
-            Gibbed.Helpers.StreamHelpers.WriteStringUTF16(output, false, proxy.name);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 2);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 1);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 1024);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 1);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 77951);
-            Gibbed.Helpers.StreamHelpers.WriteValueU16(output, 0);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 16256);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 0);
-            Gibbed.Helpers.StreamHelpers.WriteValueU16(output, 0);
+            MadScience.StreamHelpers.WriteValueU32(output, 7);
+            MadScience.StreamHelpers.WriteValueU32(output, 0);
+            MadScience.StreamHelpers.WriteValueU32(output, 20);
+            MadScience.StreamHelpers.WriteValueU8(output, (byte)(proxy.name.Length * 2));
+            MadScience.StreamHelpers.WriteStringUTF16(output, false, proxy.name);
+            MadScience.StreamHelpers.WriteValueU32(output, 2);
+            MadScience.StreamHelpers.WriteValueU32(output, 1);
+            MadScience.StreamHelpers.WriteValueU32(output, 1024);
+            MadScience.StreamHelpers.WriteValueU32(output, 1);
+            MadScience.StreamHelpers.WriteValueU32(output, 77951);
+            MadScience.StreamHelpers.WriteValueU16(output, 0);
+            MadScience.StreamHelpers.WriteValueU32(output, 16256);
+            MadScience.StreamHelpers.WriteValueU32(output, 0);
+            MadScience.StreamHelpers.WriteValueU16(output, 0);
             uint position = (uint)output.Position;
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, 1);
-            //Gibbed.Helpers.StreamHelpers.WriteValueU64(output, 6231196913);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, proxy.typeId);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, proxy.groupId);
-            Gibbed.Helpers.StreamHelpers.WriteValueU64(output, proxy.instanceId);
+            MadScience.StreamHelpers.WriteValueU32(output, 1);
+            //MadScience.StreamHelpers.WriteValueU64(output, 6231196913);
+            MadScience.StreamHelpers.WriteValueU32(output, proxy.typeId);
+            MadScience.StreamHelpers.WriteValueU32(output, proxy.groupId);
+            MadScience.StreamHelpers.WriteValueU64(output, proxy.instanceId);
 
             output.Seek(4, SeekOrigin.Begin);
-            Gibbed.Helpers.StreamHelpers.WriteValueU32(output, (position - 8));
+            MadScience.StreamHelpers.WriteValueU32(output, (position - 8));
 
             // Should be 101 bytes long at this point
             return output;
+        }
+
+        private MemoryStream makeVPXYfile(MadScience.Wrappers.ResourceKey headerKey)
+        {
+            MemoryStream mem = new MemoryStream();
+            MadScience.Wrappers.VPXYFile vpxyFile = new MadScience.Wrappers.VPXYFile();
+            vpxyFile.rcolHeader.internalChunks.Add(headerKey);
+
+            vpxyFile.Save(mem);
+
+            return mem;
         }
 
         private void saveToDBPF(Database db, ulong instanceId, bool newInstance)
@@ -1952,16 +1966,16 @@ namespace CASPartEditor
 
             if (!String.IsNullOrEmpty(txtMeshLod1.Text))
             {
-                uint customGroup = Gibbed.Helpers.StringHelpers.HashFNV24(meshName);
-                keyName meshLod1 = new keyName(0x015A1849, customGroup, (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(meshName + "_lod1"), meshName + "_lod1");
-                keyName meshLod2 = new keyName(0x015A1849, customGroup, (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(meshName + "_lod2"), meshName + "_lod2");
-                keyName meshLod3 = new keyName(0x015A1849, customGroup, (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(meshName + "_lod3"), meshName + "_lod3");
+                uint customGroup = MadScience.StringHelpers.HashFNV24(meshName);
+                keyName meshLod1 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod1"), meshName + "_lod1");
+                keyName meshLod2 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod2"), meshName + "_lod2");
+                keyName meshLod3 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod3"), meshName + "_lod3");
 
                 keyName vpxyKey = new keyName(0x736884F1, 0x00000001, (ulong)customGroup);
 
                 // Load in the VPXY - we need to modify it.
-                keyName oldVpxyKey = new keyName((tgi64)casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY]);
-                Stream vpxyStream = KeyUtils.findKey(oldVpxyKey.ToString(), 0);
+                //keyName oldVpxyKey = new keyName((tgi64)casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY]);
+                Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY].ToString(), 0);
                 if (vpxyStream != null)
                 {
 
@@ -1975,25 +1989,27 @@ namespace CASPartEditor
                     keyName bodyBlendSpecial = new keyName(0x062C8204, 0x0, meshName + "_special");
 
                     vpxyStream.Seek(0x14, SeekOrigin.Begin);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU64(vpxyStream, vpxyKey.instanceId);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU32(vpxyStream, vpxyKey.typeId);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU32(vpxyStream, vpxyKey.groupId);
+                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, vpxyKey.instanceId);
+                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, vpxyKey.typeId);
+                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, vpxyKey.groupId);
 
                     vpxyStream.Seek(vpxyStream.Length - 48, SeekOrigin.Begin);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU32(vpxyStream, meshLod1.typeId);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU32(vpxyStream, meshLod1.groupId);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU64(vpxyStream, meshLod1.instanceId);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU32(vpxyStream, meshLod2.typeId);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU32(vpxyStream, meshLod2.groupId);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU64(vpxyStream, meshLod2.instanceId);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU32(vpxyStream, meshLod3.typeId);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU32(vpxyStream, meshLod3.groupId);
-                    Gibbed.Helpers.StreamHelpers.WriteValueU64(vpxyStream, meshLod3.instanceId);
+                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod1.typeId);
+                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod1.groupId);
+                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, meshLod1.instanceId);
+                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod2.typeId);
+                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod2.groupId);
+                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, meshLod2.instanceId);
+                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod3.typeId);
+                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod3.groupId);
+                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, meshLod3.instanceId);
 
-                    MemoryStream proxyFitFile = vpxyFile.New(proxyFit);
-                    MemoryStream proxyFatFile = vpxyFile.New(proxyFat);
-                    MemoryStream proxyThinFile = vpxyFile.New(proxyThin);
-                    MemoryStream proxySpecialFile = vpxyFile.New(proxySpecial);
+
+                    MemoryStream proxyFitFile = makeVPXYfile(proxyFit.ToResourceKey());
+                    MemoryStream proxyFatFile = makeVPXYfile(proxyFat.ToResourceKey());
+                    MemoryStream proxyThinFile = makeVPXYfile(proxyThin.ToResourceKey());
+                    MemoryStream proxySpecialFile = makeVPXYfile(proxySpecial.ToResourceKey());
+
                     MemoryStream bodyBlendFitFile = makeBlendFile(proxyFit);
                     MemoryStream bodyBlendFatFile = makeBlendFile(proxyFat);
                     MemoryStream bodyBlendThinFile = makeBlendFile(proxyThin);
@@ -2010,11 +2026,11 @@ namespace CASPartEditor
                     db.SetResourceStream(bodyBlendSpecial.ToResourceKey(), bodyBlendSpecialFile);
 
                     // Update the CAS part TGI links with the new VPXY
-                    casPartNew.tgi64list[casPartNew.tgiIndexVPXY] = vpxyKey.ToTGI();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFat] = proxyFat.ToTGI();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFit] = proxyFit.ToTGI();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoThin] = proxyThin.ToTGI();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoSpecial] = proxySpecial.ToTGI();
+                    casPartNew.tgi64list[casPartNew.tgiIndexVPXY] = vpxyKey.ToResourceKey();
+                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFat] = bodyBlendFat.ToResourceKey();
+                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFit] = bodyBlendFit.ToResourceKey();
+                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoThin] = bodyBlendThin.ToResourceKey();
+                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoSpecial] = bodyBlendSpecial.ToResourceKey();
 
 
                     // Modify the meshes if they need a replacement bump map
@@ -2033,7 +2049,7 @@ namespace CASPartEditor
                         kNames.Add(new keyName());
                     }
                     kNames.Add(new keyName());
-                    //kNames.Add(new keyName());
+                    kNames.Add(new keyName());
 
                     Stream blah;
 
@@ -2084,7 +2100,7 @@ namespace CASPartEditor
 
             if (this.loadedCasPart.ToString() == "00000000:00000000:0000000000000000")
             {
-                rkey = new ResourceKey(instanceId, (uint)0x034AEECB, (uint)0);
+                rkey = new ResourceKey((uint)0x034AEECB, (uint)0, instanceId, (uint)ResourceKeyOrder.ITG);
             }
             else
             {
@@ -2094,7 +2110,7 @@ namespace CASPartEditor
                 }
                 else
                 {
-                    rkey = new ResourceKey(instanceId, (uint)0x034AEECB, (uint)0);
+                    rkey = new ResourceKey((uint)0x034AEECB, (uint)0, instanceId, (uint)ResourceKeyOrder.ITG);
                 }
             }
             db.SetResourceStream(rkey, mem);
@@ -2154,7 +2170,7 @@ namespace CASPartEditor
                     if (newPNGfiles.ContainsKey(i))
                     {
                         Stream newPNG = File.Open(newPNGfiles[i], FileMode.Open, FileAccess.Read, FileShare.Read);
-                        ResourceKey keyPNG = new ResourceKey(instanceId, 0x626F60CE, (uint)(i + 1));
+                        ResourceKey keyPNG = new ResourceKey(0x626F60CE, (uint)(i + 1), instanceId, (uint)ResourceKeyOrder.ITG);
                         db.SetResourceStream(keyPNG, newPNG);
                         newPNG.Close();
                     }
@@ -2179,7 +2195,7 @@ namespace CASPartEditor
 
                     Stream saveFile = File.Open(saveFileDialog1.FileName, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 
-                    ulong instanceId = Gibbed.Helpers.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
+                    ulong instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
                     Database db = new Database(saveFile, false);
 
                     saveToDBPF(db, instanceId, true);
@@ -2207,16 +2223,12 @@ namespace CASPartEditor
 
         private void writeLocalResource(Database db, string keyName)
         {
-            ResourceKey key;
             if (keyName.Trim() == "") return;
             //if (!validateKey(keyName)) return;
 
             if (Helpers.localFiles.ContainsKey(keyName))
             {
-                string[] temp = keyName.Replace("key:", "").Split(":".ToCharArray());
-                key.TypeId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[0]);
-                key.GroupId = Gibbed.Helpers.StringHelpers.ParseHex32("0x" + temp[1]);
-                key.InstanceId = Gibbed.Helpers.StringHelpers.ParseHex64("0x" + temp[2]);
+                ResourceKey key = new ResourceKey(keyName);
                 Stream newDDS = File.Open((string)Helpers.localFiles[keyName], FileMode.Open, FileAccess.Read, FileShare.Read);
                 db.SetResourceStream(key, newDDS);
                 newDDS.Close();
@@ -2263,14 +2275,14 @@ namespace CASPartEditor
                 string instanceID = "";
                 if (keyString.Trim() == "")
                 {
-                    instanceID = Gibbed.Helpers.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks.ToString() + "_" + f.Name).ToString("X16");
+                    instanceID = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks.ToString() + "_" + f.Name).ToString("X16");
                     newKey = "key:00B2D882:00000000:" + instanceID;
                 }
                 else
                 {
                     keyString = keyString.Replace("key:", "");
                     string[] temp = keyString.Split(":".ToCharArray());
-                    instanceID = Gibbed.Helpers.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks.ToString() + "_" + f.Name).ToString("X16");
+                    instanceID = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks.ToString() + "_" + f.Name).ToString("X16");
 
                     newKey = "key:" + temp[0] + ":" + temp[1] + ":" + instanceID;
                 }
@@ -2715,11 +2727,11 @@ namespace CASPartEditor
                 }
                 if (lstCasPartDetails.Items[i].SubItems[1].Text.StartsWith("TGI #"))
                 {
-                    string igtText = lstCasPartDetails.Items[i].SubItems[1].Text.Replace("IFT #", "");
+                    string igtText = lstCasPartDetails.Items[i].SubItems[1].Text.Replace("IGT #", "");
                     igtText = igtText.Substring(0, igtText.IndexOf(" ") - 1);
                     int igtNo = Convert.ToInt32(igtText);
-                    tgi64 tgi = (tgi64)casPartNew.tgi64list[igtNo];
-                    tgi = new keyName(lstCasPartDetails.Items[i].Text).ToTGI();
+                    casPartNew.tgi64list[igtNo] = new ResourceKey(lstCasPartDetails.Items[i].Text);
+                    //tgi64 tgi = (tgi64)casPartNew.tgi64list[igtNo];
                 }
 
             }
@@ -2893,17 +2905,17 @@ namespace CASPartEditor
                 statusStrip1.Refresh();
 
                 Stream fbuild0 = File.Open(s3root + "\\GameData\\Shared\\Packages\\FullBuild0.package", FileMode.Open, FileAccess.Read, FileShare.Read);
-                Gibbed.Sims3.FileFormats.Database db = new Gibbed.Sims3.FileFormats.Database(fbuild0, true);
+                MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(fbuild0, true);
 
                 /*
                 fbuild0.Seek(0, SeekOrigin.Begin);
 
-                Gibbed.Sims3.FileFormats.DatabasePackedFile dbpf = new Gibbed.Sims3.FileFormats.DatabasePackedFile();
+                MadScience.Wrappers.DatabasePackedFile dbpf = new MadScience.Wrappers.DatabasePackedFile();
                 try
                 {
                     dbpf.Read(fbuild0);
                 }
-                catch (Gibbed.Sims3.FileFormats.NotAPackageException)
+                catch (MadScience.Wrappers.NotAPackageException)
                 {
                     MessageBox.Show("bad file: {0}");
                     fbuild0.Close();
@@ -2911,15 +2923,16 @@ namespace CASPartEditor
                 }
                 */
 
-                toolStripProgressBar1.Maximum = db.Entries.Count;
+                toolStripProgressBar1.Maximum = db._Entries.Count;
 
                 Dictionary<ulong, string> keyNames = new Dictionary<ulong, string>();
                 long nowTicks = DateTime.Now.Ticks;
                 Console.WriteLine("Started at: " + nowTicks);
-                foreach (ResourceKey entry in db.Entries.Keys)
+                foreach (string keyString in db._Entries.Keys)
                 {
+                    MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
                     //DatabasePackedFile.Entry entry = db.dbpfEntries[i];
-                    if (entry.TypeId == (int)0x0166038C)
+                    if (entry.typeId == (int)0x0166038C)
                     {
                         keyNames = Helpers.getKeyNames(db.GetResourceStream(entry));
                         break;
@@ -2927,49 +2940,51 @@ namespace CASPartEditor
                 }
 
                 // Calc the 4 lod files
-                ulong lod0 = (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod0");
-                ulong lod1 = (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod1");
-                ulong lod2 = (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod2");
-                ulong lod3 = (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod3");
-                ulong vpxy = (ulong)Gibbed.Helpers.StringHelpers.HashFNV24(txtCasPartName.Text);
+                ulong lod0 = (ulong)MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod0");
+                ulong lod1 = (ulong)MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod1");
+                ulong lod2 = (ulong)MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod2");
+                ulong lod3 = (ulong)MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod3");
+                ulong vpxy = (ulong)MadScience.StringHelpers.HashFNV24(txtCasPartName.Text);
 
-                Console.WriteLine("0x00000000" + Gibbed.Helpers.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod0").ToString("X8").ToUpper());
+                Console.WriteLine("0x00000000" + MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod0").ToString("X8").ToUpper());
 
                 int numFound = 0;
                 folderBrowserDialog1.SelectedPath = "";
 
-                foreach (ResourceKey entry in db.Entries.Keys)
+                foreach (string keyString in db._Entries.Keys)
                 {
+
+                    MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
 
                     toolStripProgressBar1.Value++;
                     bool searchChunk = false;
                     string extension = "";
                     //DatabasePackedFile.Entry entry = db.dbpfEntries[i];
-                    if (entry.TypeId == 0x736884F1)
+                    if (entry.typeId == 0x736884F1)
                     {
                         extension = ".vpxy";
-                        if (entry.InstanceId == vpxy) searchChunk = true;
+                        if (entry.instanceId == vpxy) searchChunk = true;
 
                     }
-                    if (entry.TypeId == 0x015A1849)
+                    if (entry.typeId == 0x015A1849)
                     {
                         extension = ".simgeom";
-                        if (entry.InstanceId == lod0) searchChunk = true;
-                        if (entry.InstanceId == lod1) searchChunk = true;
-                        if (entry.InstanceId == lod2) searchChunk = true;
-                        if (entry.InstanceId == lod3) searchChunk = true;
+                        if (entry.instanceId == lod0) searchChunk = true;
+                        if (entry.instanceId == lod1) searchChunk = true;
+                        if (entry.instanceId == lod2) searchChunk = true;
+                        if (entry.instanceId == lod3) searchChunk = true;
                     }
                     if (searchChunk)
                     {
                         string fileNameToSave = "";
-                        if (keyNames.ContainsKey(entry.InstanceId))
+                        if (keyNames.ContainsKey(entry.instanceId))
                         {
-                            fileNameToSave = keyNames[entry.InstanceId];
-                            if (fileNameToSave.Contains("0x") == false) { fileNameToSave += "_0x" + entry.InstanceId.ToString("X16"); }
+                            fileNameToSave = keyNames[entry.instanceId];
+                            if (fileNameToSave.Contains("0x") == false) { fileNameToSave += "_0x" + entry.instanceId.ToString("X16"); }
                         }
                         else
                         {
-                            fileNameToSave = entry.TypeId.ToString("X8") + "_" + entry.GroupId.ToString("X8") + "_" + entry.InstanceId.ToString("X16");
+                            fileNameToSave = entry.typeId.ToString("X8") + "_" + entry.groupId.ToString("X8") + "_" + entry.instanceId.ToString("X16");
                         }
 
                         Stream output = db.GetResourceStream(entry);
@@ -3080,7 +3095,7 @@ namespace CASPartEditor
                 {
                     if (pBrowser.selectedPattern.isCustom == false)
                     {
-                        txtPatternARGBMask.Text = "key:00B2D882:" + pBrowser.selectedPattern.groupid.ToUpper() + ":" + Gibbed.Helpers.StringHelpers.HashFNV64(pBrowser.selectedPattern.texturename).ToString("X16");
+                        txtPatternARGBMask.Text = "key:00B2D882:" + pBrowser.selectedPattern.groupid.ToUpper() + ":" + MadScience.StringHelpers.HashFNV64(pBrowser.selectedPattern.texturename).ToString("X16");
                     }
                     else
                     {
@@ -3095,7 +3110,16 @@ namespace CASPartEditor
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            newToolStripMenuItem_Click(this, null);
+            //MessageBox.Show(Environment.GetCommandLineArgs().Length.ToString());
+            if (Environment.GetCommandLineArgs().Length > 1)
+            {
+                //MessageBox.Show(Environment.GetCommandLineArgs()[0] + " " + Environment.GetCommandLineArgs()[1]);
+                loadFile(Environment.GetCommandLineArgs()[1].ToString());
+            }
+            else
+            {
+                newToolStripMenuItem_Click(this, null);
+            }
         }
 
         private void btnCustomThumbnail_Click(object sender, EventArgs e)
@@ -3200,8 +3224,8 @@ namespace CASPartEditor
 
                     Stream saveFile = File.Open(Helpers.currentPackageFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
 
-                    //ulong instanceId = Gibbed.Helpers.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
-                    ulong instanceId = Gibbed.Helpers.StringHelpers.HashFNV64(casPartNew.meshName);
+                    //ulong instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
+                    ulong instanceId = MadScience.StringHelpers.HashFNV64(casPartNew.meshName);
                     Database db = new Database(saveFile, true);
 
                     saveToDBPF(db, instanceId, false);
@@ -3799,65 +3823,63 @@ namespace CASPartEditor
             if (listView1.SelectedItems.Count == 1)
             {
                 xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-                string s3root = Helpers.findSims3Root();
-                if (s3root != "")
+
+                toolStripStatusLabel1.Text = "Initialising 3d view... please wait...";
+                statusStrip1.Refresh();
+
+                DateTime startTime = DateTime.Now;
+
+                uint groupId = MadScience.StringHelpers.HashFNV24(txtMeshName.Text);
+                keyName lod0 = new keyName(0x15a1849, groupId, (ulong)MadScience.StringHelpers.HashFNV32(txtMeshName.Text + "_lod0"));
+                Console.WriteLine("Checking for lod0: " + lod0.ToString());
+                Stream meshStream = searchInPackage(Helpers.currentPackageFile, lod0.ToString());
+                if (meshStream == null)
                 {
-                    toolStripStatusLabel1.Text = "Initialising 3d view... please wait...";
-                    statusStrip1.Refresh();
-
-                    DateTime startTime = DateTime.Now;
-
-                    uint groupId = Gibbed.Helpers.StringHelpers.HashFNV24(txtMeshName.Text);
-                    keyName lod0 = new keyName(0x15a1849, groupId, (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(txtMeshName.Text + "_lod0"));
-                    Console.WriteLine("Checking for lod0: " + lod0.ToString());
-                    Stream meshStream = searchInPackage(Helpers.currentPackageFile, lod0.ToString());
-                    if (meshStream == null)
-                    {
-                        meshStream = KeyUtils.searchForKey(lod0.ToString(), 0);
-                    }
-                    if (meshStream == null)
-                    {
-                        keyName lod1 = new keyName(0x15a1849, groupId, (ulong)Gibbed.Helpers.StringHelpers.HashFNV32(txtMeshName.Text + "_lod1"));
-                        Console.WriteLine("Checking for lod1: " + lod1.ToString());
-                        meshStream = KeyUtils.searchForKey(lod1.ToString(), 0);
-                    }
-
-                    if (meshStream != null)
-                    {
-
-                        MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStream);
-                        newModel.name = txtMeshName.Text;
-
-                        renderWindow1.loadDefaultTextures();
-                        renderWindow1.setModel(newModel);
-
-                        renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
-                        renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
-                        //renderWindow1.loadTexture(findKey(details.Multiplier), "baseTexture");
-                        renderWindow1.loadTextureFromBitmap(composeMultiplier(details,details.filename != "CasRgbMask"), "baseTexture");
-                        /*
-                        if (details.stencil.A.Enabled == "True")
-                        {
-                            renderWindow1.loadTexture(findKey(details.stencil.A.key), "stencilA");
-                        }
-                        else
-                        {
-                            renderWindow1.loadTexture(null, "stencilA");
-                        }
-                        */
-
-                        renderWindow1.resetDevice();
-
-                        renderWindow1.RenderEnabled = true;
-
-
-                    }
-
-                    DateTime stopTime = DateTime.Now;
-                    TimeSpan duration = stopTime - startTime;
-                    this.toolStripStatusLabel1.Text = "Loaded 3D in " + duration.Milliseconds + "ms";
-                    
+                    meshStream = KeyUtils.searchForKey(lod0.ToString(), 0);
                 }
+                if (meshStream == null)
+                {
+                    keyName lod1 = new keyName(0x15a1849, groupId, (ulong)MadScience.StringHelpers.HashFNV32(txtMeshName.Text + "_lod1"));
+                    Console.WriteLine("Checking for lod1: " + lod1.ToString());
+                    meshStream = KeyUtils.searchForKey(lod1.ToString(), 0);
+                }
+
+                if (meshStream != null)
+                {
+
+                    MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStream);
+                    newModel.name = txtMeshName.Text;
+
+                    renderWindow1.loadDefaultTextures();
+                    renderWindow1.setModel(newModel);
+
+                    renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
+                    renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
+                    //renderWindow1.loadTexture(findKey(details.Multiplier), "baseTexture");
+                    renderWindow1.loadTextureFromBitmap(composeMultiplier(details, details.filename != "CasRgbMask"), "baseTexture");
+                    /*
+                    if (details.stencil.A.Enabled == "True")
+                    {
+                        renderWindow1.loadTexture(findKey(details.stencil.A.key), "stencilA");
+                    }
+                    else
+                    {
+                        renderWindow1.loadTexture(null, "stencilA");
+                    }
+                    */
+
+                    renderWindow1.resetDevice();
+
+                    renderWindow1.RenderEnabled = true;
+
+
+                }
+
+                DateTime stopTime = DateTime.Now;
+                TimeSpan duration = stopTime - startTime;
+                this.toolStripStatusLabel1.Text = "Loaded 3D in " + duration.Milliseconds + "ms";
+
+
             }
 
         }

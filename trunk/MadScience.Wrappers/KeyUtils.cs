@@ -1,0 +1,182 @@
+﻿using System.Collections.Generic;
+using System.IO;
+
+namespace MadScience.Wrappers
+{
+    public class KeyTable
+    {
+        public uint offset = 0;
+        public uint size = 0;
+        public List<ResourceKey> keys = new List<ResourceKey>();
+
+        public KeyTable()
+        {
+        }
+
+        public KeyTable(Stream input)
+        {
+            loadFromStream(input, (int)MadScience.Wrappers.ResourceKeyOrder.TGI);
+        }
+        public KeyTable(Stream input, uint order)
+        {
+            loadFromStream(input, order);
+        }
+        public void Load(Stream input)
+        {
+            loadFromStream(input, (int)MadScience.Wrappers.ResourceKeyOrder.TGI);
+        }
+        public void Load(Stream input, uint order)
+        {
+            loadFromStream(input, order);
+        }
+
+        private void loadFromStream(Stream input, uint order)
+        {
+            if (this.size == 0) return;
+
+            BinaryReader reader = new BinaryReader(input);
+            uint numTGIs = reader.ReadUInt32();
+            for (int i = 0; i < numTGIs; i++)
+            {
+                this.keys.Add(new MadScience.Wrappers.ResourceKey(input, order));
+            }
+            reader = null;
+        }
+
+        public void Save(Stream output)
+        {
+            if (this.keys.Count == 0) return;
+
+            BinaryWriter writer = new BinaryWriter(output);
+            this.size += 4;
+            writer.Write(this.keys.Count);
+            for (int i = 0; i < this.keys.Count; i++)
+            {
+                this.keys[i].Save(output);
+                this.size += 16;
+            }
+            writer = null;
+        }
+    }
+
+    public enum ResourceKeyOrder : uint
+    {
+        TGI = 0,
+        IGT = 1,
+        ITG = 2,
+    }
+
+    public class ResourceKey
+    {
+        public uint typeId = 0;
+        public uint groupId = 0;
+        public ulong instanceId = 0;
+        public uint order = 0; // Default to TGI
+
+        public ResourceKey()
+        {
+        }
+
+        public ResourceKey(Stream input)
+        {
+            BinaryReader reader = new BinaryReader(input);
+            this.typeId = reader.ReadUInt32();
+            this.groupId = reader.ReadUInt32();
+            this.instanceId = reader.ReadUInt64();
+            reader = null;
+        }
+        public ResourceKey(Stream input, uint order)
+        {
+            BinaryReader reader = new BinaryReader(input);
+            this.order = order;
+            switch (order)
+            {
+                case 2: // ITG
+                    this.instanceId = reader.ReadUInt64();
+                    this.typeId = reader.ReadUInt32();
+                    this.groupId = reader.ReadUInt32();
+                    break;
+                case 1: // IGT
+                    this.instanceId = reader.ReadUInt64();
+                    this.groupId = reader.ReadUInt32();
+                    this.typeId = reader.ReadUInt32();
+                    break;
+                case 0: // TGI
+                default:
+                    this.typeId = reader.ReadUInt32();
+                    this.groupId = reader.ReadUInt32();
+                    this.instanceId = reader.ReadUInt64();
+                    break;
+            }
+            reader = null;
+        }
+
+        public ResourceKey(string keyString)
+        {
+            keyString = keyString.Replace("key:", "");
+            string[] temp = keyString.Split(":".ToCharArray());
+
+            this.typeId = MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
+            this.groupId = MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
+            this.instanceId = MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
+        }
+
+        public ResourceKey(string keyString, uint order)
+        {
+            this.order = order;
+            keyString = keyString.Replace("key:", "");
+            string[] temp = keyString.Split(":".ToCharArray());
+
+            this.typeId = MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
+            this.groupId = MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
+            this.instanceId = MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
+        }
+
+        public ResourceKey(uint type, uint group, ulong instance)
+        {
+            this.order = 0;
+            this.typeId = type;
+            this.groupId = group;
+            this.instanceId = instance;
+        }
+
+        public ResourceKey(uint type, uint group, ulong instance, uint order)
+        {
+            this.order = order;
+            this.typeId = type;
+            this.groupId = group;
+            this.instanceId = instance;
+        }
+
+        public override string ToString()
+        {
+            return "key:" + this.typeId.ToString("X8") + ":" + this.groupId.ToString("X8") + ":" + this.instanceId.ToString("X16");
+        }
+
+        public void Save(Stream output)
+        {
+            BinaryWriter writer = new BinaryWriter(output);
+            switch (this.order)
+            {
+                case 2: // ITG
+                    writer.Write(this.instanceId);
+                    writer.Write(this.typeId);
+                    writer.Write(this.groupId);
+                    break;
+                case 1: // IGT
+                    writer.Write(this.instanceId);
+                    writer.Write(this.groupId);
+                    writer.Write(this.typeId);
+                    break;
+                case 0: // TGI
+                default:
+                    writer.Write(this.typeId);
+                    writer.Write(this.groupId);
+                    writer.Write(this.instanceId);
+                    break;
+            }
+
+            writer = null;
+        }
+    }
+}

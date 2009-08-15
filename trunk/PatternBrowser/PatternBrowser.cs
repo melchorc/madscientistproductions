@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -191,7 +190,7 @@ namespace PatternBrowser
         //private patternDetails _selectedPattern = new patternDetails();
         public patternDetails selectedPattern = new patternDetails();
 
-        //Dictionary<ulong, Gibbed.Sims3.FileFormats.ResourceKey> castEntries = new Dictionary<ulong, Gibbed.Sims3.FileFormats.ResourceKey>();
+        //Dictionary<ulong, MadScience.Wrappers.ResourceKey> castEntries = new Dictionary<ulong, MadScience.Wrappers.ResourceKey>();
 
         public int curCategory = 0;
 
@@ -228,7 +227,7 @@ namespace PatternBrowser
             {
                 patternsFile pattern = this.customPatterns.Items[i];
 
-                if (Gibbed.Helpers.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && Gibbed.Helpers.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && Gibbed.Helpers.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
+                if (MadScience.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && MadScience.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && MadScience.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
                 {
                     hasMatch = true;
                     temp = pattern;
@@ -242,7 +241,7 @@ namespace PatternBrowser
                 {
                     patternsFile pattern = this.patterns.Items[i];
 
-                    if (Gibbed.Helpers.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && Gibbed.Helpers.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && Gibbed.Helpers.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
+                    if (MadScience.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && MadScience.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && MadScience.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
                     {
                         hasMatch = true;
                         temp = pattern;
@@ -276,14 +275,14 @@ namespace PatternBrowser
                             {
                                 patternsFile pattern = this.customPatterns.Items[i];
 
-                                if (Gibbed.Helpers.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && Gibbed.Helpers.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && Gibbed.Helpers.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
+                                if (MadScience.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && MadScience.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && MadScience.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
                                 {
                                     hasMatch = true;
                  */
                 if (File.Exists(pattern.subcategory))
                 {
                     Stream cast = File.Open(pattern.subcategory, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    Gibbed.Sims3.FileFormats.Database castdb = new Gibbed.Sims3.FileFormats.Database(cast, true);
+                    MadScience.Wrappers.Database castdb = new MadScience.Wrappers.Database(cast, true);
 
                     keyName temp = new keyName(pattern.texturename);
                     Stream patternThumb = null;
@@ -344,18 +343,18 @@ namespace PatternBrowser
                 Console.WriteLine("Starting at: " + DateTime.Now.ToString());
 
                 Stream cast2 = File.Open(s3root + thumbnailPackage, FileMode.Open, FileAccess.Read, FileShare.Read);
-                Gibbed.Sims3.FileFormats.Database castdb2 = new Gibbed.Sims3.FileFormats.Database(cast2);
+                MadScience.Wrappers.Database castdb2 = new MadScience.Wrappers.Database(cast2);
 
                 /*
                 for (int i = 0; i < this.patterns.Items.Count; i++)
                 {
                     patternsFile pattern = this.patterns.Items[i];
 
-                    if (Gibbed.Helpers.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && Gibbed.Helpers.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && Gibbed.Helpers.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
+                    if (MadScience.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && MadScience.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && MadScience.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
                     {
                         hasMatch = true;
                 */
-                        ulong instanceid = Gibbed.Helpers.StringHelpers.HashFNV64(pattern.casPart);
+                        ulong instanceid = MadScience.StringHelpers.HashFNV64(pattern.casPart);
                         keyName temp = new keyName(0x00B2D882, 0x00000000, instanceid);
                         Stream patternThumb = null;
 
@@ -365,7 +364,7 @@ namespace PatternBrowser
                         }
                         catch (System.Collections.Generic.KeyNotFoundException ex)
                         {
-                            temp.instanceId = Gibbed.Helpers.StringHelpers.HashFNV64(pattern.texturename);
+                            temp.instanceId = MadScience.StringHelpers.HashFNV64(pattern.texturename);
                             try
                             {
                                 patternThumb = castdb2.GetResourceStream(temp.ToResourceKey());
@@ -555,7 +554,7 @@ namespace PatternBrowser
                             if (File.Exists(pattern.subcategory))
                             {
                                 Stream cast = File.Open(pattern.subcategory, FileMode.Open, FileAccess.Read, FileShare.Read);
-                                Gibbed.Sims3.FileFormats.Database castdb = new Gibbed.Sims3.FileFormats.Database(cast, true);
+                                MadScience.Wrappers.Database castdb = new MadScience.Wrappers.Database(cast, true);
 
                                 keyName temp = new keyName(pattern.texturename);
                                 Stream patternThumb = null;
@@ -615,7 +614,7 @@ namespace PatternBrowser
                 Console.WriteLine("Starting at: " + DateTime.Now.ToString());
 
                 Stream cast = File.Open(s3root + thumbnailPackage, FileMode.Open, FileAccess.Read, FileShare.Read);
-                Gibbed.Sims3.FileFormats.Database castdb = new Gibbed.Sims3.FileFormats.Database(cast);
+                MadScience.Wrappers.Database castdb = new MadScience.Wrappers.Database(cast);
 
                 for (int i = 0; i < this.patterns.Items.Count; i++)
                 {
@@ -650,7 +649,7 @@ namespace PatternBrowser
                         }
                         else
                         {
-                            ulong instanceid = Gibbed.Helpers.StringHelpers.HashFNV64(pattern.casPart);
+                            ulong instanceid = MadScience.StringHelpers.HashFNV64(pattern.casPart);
                             keyName temp = new keyName(0x00B2D882, 0x00000000, instanceid);
                             Stream patternThumb = null;
 
@@ -660,7 +659,7 @@ namespace PatternBrowser
                             }
                             catch (System.Collections.Generic.KeyNotFoundException ex)
                             {
-                                temp.instanceId = Gibbed.Helpers.StringHelpers.HashFNV64(pattern.texturename);
+                                temp.instanceId = MadScience.StringHelpers.HashFNV64(pattern.texturename);
                                 try
                                 {
                                     patternThumb = castdb.GetResourceStream(temp.ToResourceKey());
@@ -875,15 +874,17 @@ namespace PatternBrowser
             if (openFileDialog1.ShowDialog() == DialogResult.OK && openFileDialog1.FileName != "")
             {
                 Stream cast = File.Open(openFileDialog1.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                Gibbed.Sims3.FileFormats.Database castdb = new Gibbed.Sims3.FileFormats.Database(cast, true);
+                MadScience.Wrappers.Database castdb = new MadScience.Wrappers.Database(cast, true);
 
                 // Open XML file 
                 string patternTexture = "";
                 patternsFile cPattern = new patternsFile();
 
-                foreach (Gibbed.Sims3.FileFormats.ResourceKey key in castdb.Entries.Keys)
+                foreach (string kString in castdb._Entries.Keys)
                 {
-                    if ((key.GroupId == 0x00000000) && (key.TypeId == 0x0333406C))
+                    MadScience.Wrappers.ResourceKey key = new MadScience.Wrappers.ResourceKey(kString);
+
+                    if ((key.groupId == 0x00000000) && (key.typeId == 0x0333406C))
                     {
                         Stream mem = castdb.GetResourceStream(key);
                         XmlTextReader xtr = new XmlTextReader(mem);
@@ -987,9 +988,9 @@ namespace PatternBrowser
 
                         if (patternTexture != "")
                         {
-                            cPattern.typeid = "0x" + key.TypeId.ToString("X8");
-                            cPattern.groupid = "0x" + key.GroupId.ToString("X8");
-                            cPattern.instanceid = "0x" + key.InstanceId.ToString("X16");
+                            cPattern.typeid = "0x" + key.typeId.ToString("X8");
+                            cPattern.groupid = "0x" + key.groupId.ToString("X8");
+                            cPattern.instanceid = "0x" + key.instanceId.ToString("X16");
                             cPattern.texturename = patternTexture;
                             cPattern.isCustom = true;
                             cPattern.subcategory = openFileDialog1.FileName;
@@ -1002,9 +1003,10 @@ namespace PatternBrowser
                             r.Close();
 
                             keyName temp = new keyName(cPattern.texturename);
-                            foreach (Gibbed.Sims3.FileFormats.ResourceKey key2 in castdb.Entries.Keys)
+                            foreach (string keyString in castdb._Entries.Keys)
                             {
-                                if ((key2.GroupId == temp.groupId) && (key2.TypeId == temp.typeId) && (key2.InstanceId == temp.instanceId))
+                                MadScience.Wrappers.ResourceKey key2 = new MadScience.Wrappers.ResourceKey(keyString);
+                                if ((key2.groupId == temp.groupId) && (key2.typeId == temp.typeId) && (key2.instanceId == temp.instanceId))
                                 {
 
                                     int horizontal = 0;

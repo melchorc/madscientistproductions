@@ -5,15 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{94FF1D12-494E-46D1-A4F8-E45EB11B9CF7}</ProjectGuid>
+    <ProjectGuid>{82597921-C98E-4D1C-B32E-6BB2164B89AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PatternBrowser</RootNamespace>
-    <AssemblyName>PatternBrowser</AssemblyName>
+    <RootNamespace>MadScience.Wrappers</RootNamespace>
+    <AssemblyName>MadScience.Wrappers</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StartupObject>
-    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,52 +33,37 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Deployment" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PatternBrowser.cs">
+    <Compile Include="BlendUnit.cs" />
+    <Compile Include="BoneDelta.cs" />
+    <Compile Include="CommonFunctions.cs" />
+    <Compile Include="FacialBlend.cs" />
+    <Compile Include="KeyUtils.cs" />
+    <Compile Include="MadScienceHelpers.cs" />
+    <Compile Include="NumberHelpers.cs" />
+    <Compile Include="RCOLHeader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RCOLHeaderEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PatternBrowser.Designer.cs">
-      <DependentUpon>PatternBrowser.cs</DependentUpon>
+    <Compile Include="RCOLHeaderEditor.designer.cs">
+      <DependentUpon>RCOLHeaderEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="PatternBrowser.resx">
-      <DependentUpon>PatternBrowser.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+    <Compile Include="STBL.cs" />
+    <Compile Include="StreamHelpers.cs" />
+    <Compile Include="StringHelpers.cs" />
+    <Compile Include="VPXY.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Helpers.cs\MadScience.Helpers.csproj">
-      <Project>{EA40DDB1-1C28-4323-90B3-5B99071F0B78}</Project>
-      <Name>MadScience.Helpers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MadScience.Wrappers\MadScience.Wrappers.csproj">
-      <Project>{82597921-C98E-4D1C-B32E-6BB2164B89AD}</Project>
-      <Name>MadScience.Wrappers</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="RCOLHeaderEditor.resx">
+      <DependentUpon>RCOLHeaderEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
