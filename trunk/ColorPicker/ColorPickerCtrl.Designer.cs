@@ -32,7 +32,6 @@ namespace ColorPicker
             this.panel1 = new System.Windows.Forms.Panel();
             this.m_colorWheel = new ColorPicker.ColorWheelCtrl();
             this.m_opacitySlider = new ColorPicker.ColorSlider();
-            this.m_eyedropColorPicker = new ColorPicker.EyedropColorPicker();
             this.m_tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.txtHexColor = new System.Windows.Forms.TextBox();
@@ -48,7 +47,6 @@ namespace ColorPicker
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.Controls.Add(this.m_colorWheel);
             this.panel1.Controls.Add(this.m_opacitySlider);
-            this.panel1.Controls.Add(this.m_eyedropColorPicker);
             this.panel1.Location = new System.Drawing.Point(257, 4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(254, 242);
@@ -90,19 +88,6 @@ namespace ColorPicker
             this.m_opacitySlider.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.m_opacitySlider.TextAngle = 0F;
             this.m_opacitySlider.ValueOrientation = ColorPicker.ColorSlider.eValueOrientation.MinToMax;
-            // 
-            // m_eyedropColorPicker
-            // 
-            this.m_eyedropColorPicker.BackColor = System.Drawing.SystemColors.Control;
-            this.m_eyedropColorPicker.Location = new System.Drawing.Point(-1, 146);
-            this.m_eyedropColorPicker.Name = "m_eyedropColorPicker";
-            this.m_eyedropColorPicker.SelectedColor = System.Drawing.Color.Empty;
-            this.m_eyedropColorPicker.Size = new System.Drawing.Size(60, 60);
-            this.m_eyedropColorPicker.TabIndex = 2;
-            this.m_eyedropColorPicker.TabStop = false;
-            this.m_tooltip.SetToolTip(this.m_eyedropColorPicker, "Color Selector. Click and Drag to pick a color from the screen");
-            this.m_eyedropColorPicker.Visible = false;
-            this.m_eyedropColorPicker.Zoom = 4;
             // 
             // label1
             // 
@@ -336,8 +321,7 @@ namespace ColorPicker
 
 		private ColorWheelCtrl m_colorWheel;
 		private ColorSlider m_opacitySlider;
-		private System.Windows.Forms.Panel panel1;
-		private EyedropColorPicker m_eyedropColorPicker;
+        private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.ToolTip m_tooltip;
 		private ColorTable m_colorTable;
 		private LabelRotate m_infoLabel;

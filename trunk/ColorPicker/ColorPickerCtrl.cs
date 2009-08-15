@@ -73,13 +73,13 @@ namespace ColorPicker
 
 			m_colorWheel.SelectedColorChanged += new EventHandler(OnColorWheelSelectionChanged);
 			m_opacitySlider.SelectedValueChanged += new EventHandler(OnOpacityValueChanged);
-			m_eyedropColorPicker.SelectedColorChanged += new EventHandler(OnEyeDropperSelectionChanged);
+			//m_eyedropColorPicker.SelectedColorChanged += new EventHandler(OnEyeDropperSelectionChanged);
 			m_colorSample.Paint += new PaintEventHandler(OnColorSamplePaint);
 		}
-		void OnEyeDropperSelectionChanged(object sender, EventArgs e)
-		{
-			m_colorWheel.SelectedColor = m_eyedropColorPicker.SelectedColor;
-		}
+		//void OnEyeDropperSelectionChanged(object sender, EventArgs e)
+		//{
+		//	m_colorWheel.SelectedColor = m_eyedropColorPicker.SelectedColor;
+		//}
 		void OnOpacityValueChanged(object sender, EventArgs e)
 		{
 			m_opacity = Math.Max(0, m_opacitySlider.Percent);

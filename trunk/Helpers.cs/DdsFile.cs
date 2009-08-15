@@ -34,6 +34,7 @@ using System.IO;
 //using PaintDotNet;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace DdsFileTypePlugin
 {
@@ -379,6 +380,9 @@ namespace DdsFileTypePlugin
             int height = this.GetHeight();
             int width = this.GetWidth();
             Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            //MemoryStream ms = new MemoryStream();
+            //bitmap.Save(ms, ImageFormat.Bmp);
+            //ms.Seek(54, SeekOrigin.Begin);
 
             byte[] readPixelData = this.GetPixelData();
 
@@ -580,95 +584,137 @@ namespace DdsFileTypePlugin
 
         public Image Image(bool red, bool green, bool blue, bool alpha, bool invAlpha)
         {
-            unsafe
+            //unsafe
+            //{
+            int height = this.GetHeight();
+            int width = this.GetWidth();
+
+            //byte[] readPixelData = this.GetPixelData();
+            //byte[] myBuffer = (byte[])readPixelData.Clone();
+            byte[] myBuffer = (byte[])this.GetPixelData().Clone();
+
+            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+            if (myBuffer == null) return bitmap;
+
+            //BitmapData newData = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+            int pixelSize = 4;
+            int sizeInBytes = (width * height * pixelSize);
+
+            for (int i = 0; i < sizeInBytes; i += pixelSize)
             {
-                int height = this.GetHeight();
-                int width = this.GetWidth();
-                Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-
-                byte[] readPixelData = this.GetPixelData();
-
-                if (readPixelData == null) return bitmap;
-
-                BitmapData newData = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
-                int pixelSize = 4;
-
                 //for (int y = (height - 1); y >= 0; y--)
-                for (int y = 0; y < height; y++)
+                //for (int y = 0; y < height; y++)
+                //{
+                //get the data from the new image
+                //byte* nRow = (byte*)newData.Scan0 + (y * newData.Stride);
+
+                //for (int x = 0; x < width; x++)
+                //{
+                //int readPixelOffset = (y * width * 4) + (x * 4);
+
+                uint cred = 0;
+                uint cgreen = 0;
+                uint cblue = 0;
+                uint calpha = 0;
+
+                //if (red) { cred = readPixelData[readPixelOffset + 0]; }
+                //if (green) { cgreen = readPixelData[readPixelOffset + 1]; }
+                //if (blue) { cblue = readPixelData[readPixelOffset + 2]; }
+
+                if (alpha)
                 {
-                    //get the data from the new image
-                    byte* nRow = (byte*)newData.Scan0 + (y * newData.Stride);
-
-                    for (int x = 0; x < width; x++)
-                    {
-                        int readPixelOffset = (y * width * 4) + (x * 4);
-
-                        int cred = 0;
-                        int cgreen = 0;
-                        int cblue = 0;
-                        int calpha = 0;
-
-                        if (red) { cred = readPixelData[readPixelOffset + 0]; }
-                        if (green) { cgreen = readPixelData[readPixelOffset + 1]; }
-                        if (blue) { cblue = readPixelData[readPixelOffset + 2]; }
-                        if (alpha)
-                        {
-                            calpha = readPixelData[readPixelOffset + 3];
-                            // Inverse the alpha
-                            if (invAlpha) calpha = (255 - calpha);
-                        }
-
-                        //ms.WriteByte((byte)cblue);
-                        //ms.WriteByte((byte)cgreen);
-                        //ms.WriteByte((byte)cred);
-
-                        //if (x == 0 && y == 0) Console.WriteLine("A: " + calpha.ToString() + " R: " + cred.ToString() + " G: " + cgreen.ToString() + " B: " + cblue.ToString());
-
-                        if (!red && !green && !blue)
-                        {
-                            // Don't invert the alpha is viewing on it's own
-                            // but instead do the entire image as greyscale
-                            
-                            cred = calpha;
-                            cblue = calpha;
-                            cgreen = calpha;
-                            calpha = 255;
-                        }
-
-                        nRow[x * pixelSize] = (byte)cblue;
-                        nRow[x * pixelSize + 1] = (byte)cgreen;
-                        nRow[x * pixelSize + 2] = (byte)cred;
-
-                        if (alpha)
-                        {
-                            if (!red && !green && !blue)
-                            {
-                                
-                            }
-                            //ms.WriteByte((byte)calpha);
-                            nRow[x * pixelSize + 3] = (byte)calpha;
-
-                            //bitmap.SetPixel(x, y, Color.FromArgb(calpha, cred, cgreen, cblue ));
-                        }
-                        else
-                        {
-                            //ms.WriteByte((byte)0);
-                            nRow[x * pixelSize + 3] = 255;
-                            //bitmap.SetPixel(x, y, Color.FromArgb(cred, cgreen, cblue));
-                        }
-                    }
+                    //calpha = readPixelData[readPixelOffset + 3];
+                    calpha = myBuffer[i + 3];
+                    // Inverse the alpha
+                    if (invAlpha) calpha = 255 - calpha;
+                }
+                else
+                {
+                    calpha = 255;
                 }
 
-                //bitmap = System.Drawing.Bitmap.FromStream(ms);
-                //bitmap = new Bitmap(ms, );
+                if (!red && !green && !blue)
+                {
+                    // Don't invert the alpha is viewing on it's own
+                    // but instead do the entire image as greyscale
+                    cred = calpha;
+                    cblue = calpha;
+                    cgreen = calpha;
+                    calpha = 255;
+                }
+                else
+                {
+                    if (red) cred = myBuffer[i + 0];
+                    if (green) cgreen = myBuffer[i + 1];
+                    if (blue) cblue = myBuffer[i + 2];
+                }
 
-                bitmap.UnlockBits(newData);
-                //sourceBitmap.UnlockBits(originalData);
-                //Console.WriteLine(bitmap.GetPixel(0, 0).ToString());
+                myBuffer[i + 2] = (byte)cred;
+                myBuffer[i + 1] = (byte)cgreen;
+                myBuffer[i + 0] = (byte)cblue;
+                myBuffer[i + 3] = (byte)calpha;
 
-                return bitmap;
+                //ms.WriteByte((byte)cblue);
+                //ms.WriteByte((byte)cgreen);
+                //ms.WriteByte((byte)cred);
+
+                //if (x == 0 && y == 0) Console.WriteLine("A: " + calpha.ToString() + " R: " + cred.ToString() + " G: " + cgreen.ToString() + " B: " + cblue.ToString());
+                /*
+                if (!red && !green && !blue)
+                {
+                    // Don't invert the alpha is viewing on it's own
+                    // but instead do the entire image as greyscale
+                            
+                    cred = calpha;
+                    cblue = calpha;
+                    cgreen = calpha;
+                    calpha = 255;
+                }
+                */
+                //nRow[x * pixelSize] = (byte)cblue;
+                //nRow[x * pixelSize + 1] = (byte)cgreen;
+                //nRow[x * pixelSize + 2] = (byte)cred;
+
+                //if (alpha)
+                //{
+                //    if (!red && !green && !blue)
+                //    {
+
+                //    }
+                //    //ms.WriteByte((byte)calpha);
+                //    nRow[x * pixelSize + 3] = (byte)calpha;
+
+                //bitmap.SetPixel(x, y, Color.FromArgb(calpha, cred, cgreen, cblue ));
+                //}
+                //else
+                //{
+                //    //ms.WriteByte((byte)0);
+                //    nRow[x * pixelSize + 3] = 255;
+                //    //bitmap.SetPixel(x, y, Color.FromArgb(cred, cgreen, cblue));
+                //}
+                //}
             }
+
+            //bitmap = System.Drawing.Bitmap.FromStream(ms, NNop);
+            //bitmap = new Bitmap(ms, );
+
+            //bitmap.UnlockBits(newData);
+            //sourceBitmap.UnlockBits(originalData);
+            //Console.WriteLine(bitmap.GetPixel(0, 0).ToString());
+
+            Rectangle area = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+
+            BitmapData data = bitmap.LockBits(area, ImageLockMode.WriteOnly, bitmap.PixelFormat);
+
+            Marshal.Copy(myBuffer, 0, data.Scan0, (int)(width * height * 4));
+
+            bitmap.UnlockBits(data);
+            return bitmap;
+
+            //return bitmap;
+            //}
         }
 
         private void ReadWriteStream(Stream readStream, Stream writeStream)
