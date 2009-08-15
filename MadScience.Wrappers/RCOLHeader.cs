@@ -45,14 +45,14 @@ namespace MadScience.Wrappers
             {
                 MadScience.Wrappers.ResourceKey rKey = new ResourceKey(input, (int)ResourceKeyOrder.ITG);
                 this.internalChunks.Add(rKey);
-                rKey = null;
+                //rKey = null;
             }
 
             for (int i = 0; i < rcolIndex1; i++)
             {
                 MadScience.Wrappers.ResourceKey rKey = new ResourceKey(input, (int)ResourceKeyOrder.ITG);
                 this.externalChunks.Add(rKey);
-                rKey = null;
+                //rKey = null;
             }
 
             for (int i = 0; i < rcolIndex2; i++)

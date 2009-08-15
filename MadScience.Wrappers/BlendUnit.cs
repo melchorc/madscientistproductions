@@ -54,7 +54,7 @@ namespace MadScience.Wrappers
             {
                 MadScience.Wrappers.ResourceKey temp = new MadScience.Wrappers.ResourceKey(input);
                 this.keytable.keys.Add(temp);
-                temp = null;
+                //temp = null;
             }
 
             for (int i = 0; i < indexersCount; i++)

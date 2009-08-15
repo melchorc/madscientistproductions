@@ -880,10 +880,8 @@ namespace PatternBrowser
                 string patternTexture = "";
                 patternsFile cPattern = new patternsFile();
 
-                foreach (string kString in castdb._Entries.Keys)
+                foreach (MadScience.Wrappers.ResourceKey key in castdb._Entries.Keys)
                 {
-                    MadScience.Wrappers.ResourceKey key = new MadScience.Wrappers.ResourceKey(kString);
-
                     if ((key.groupId == 0x00000000) && (key.typeId == 0x0333406C))
                     {
                         Stream mem = castdb.GetResourceStream(key);
@@ -1003,9 +1001,8 @@ namespace PatternBrowser
                             r.Close();
 
                             keyName temp = new keyName(cPattern.texturename);
-                            foreach (string keyString in castdb._Entries.Keys)
+                            foreach (MadScience.Wrappers.ResourceKey key2 in castdb._Entries.Keys)
                             {
-                                MadScience.Wrappers.ResourceKey key2 = new MadScience.Wrappers.ResourceKey(keyString);
                                 if ((key2.groupId == temp.groupId) && (key2.typeId == temp.typeId) && (key2.instanceId == temp.instanceId))
                                 {
 
