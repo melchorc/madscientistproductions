@@ -3,6 +3,21 @@
 namespace MadScience.Wrappers
 {
 
+    public enum AgeGenderFlags : uint
+    {
+        Toddler = 0x2,
+        Child = 0x4,
+        Teen = 0x8,
+        YoungAdult = 0x10,
+        Adult = 0x20,
+        Elder = 0x40,
+        Male = 0x1000,
+        Female = 0x2000,
+        Human = 0x10000,
+        LeftHanded = 0x100000,
+        RightHanded = 0x200000,
+    }
+
     public class Vector3
     {
         public float x = 0f;
