@@ -8,7 +8,7 @@ namespace MadScience.Wrappers
         public uint version = 3;
         public uint datatype = 1;
 
-        // These are IGT lists *not TGI*
+        // These are ITG lists *not TGI*
         public List<MadScience.Wrappers.ResourceKey> index3 = new List<ResourceKey>();
         public List<MadScience.Wrappers.ResourceKey> externalChunks = new List<ResourceKey>();
         public List<MadScience.Wrappers.ResourceKey> internalChunks = new List<ResourceKey>();
@@ -77,11 +77,12 @@ namespace MadScience.Wrappers
             writer.Write(this.internalChunks.Count);
             for (int i = 0; i < this.internalChunks.Count; i++)
             {
-                this.internalChunks[i].Save(output);
+                // Always set ResourceKey order to ITG
+                this.internalChunks[i].Save(output, (uint)ResourceKeyOrder.ITG);
             }
             for (int i = 0; i < this.externalChunks.Count; i++)
             {
-                this.externalChunks[i].Save(output);
+                this.externalChunks[i].Save(output, (uint)ResourceKeyOrder.ITG);
             }
 
             this.chunkListOffset = (uint)output.Position;

@@ -5,6 +5,63 @@ using System.IO;
 
 namespace MadScience.Wrappers
 {
+    public class BoneDeltaFile
+    {
+        public RcolHeader rcolHeader = new RcolHeader();
+        public BoneDelta bonedelta = new BoneDelta();
+
+        public BoneDeltaFile()
+        {
+        }
+
+        public BoneDeltaFile(Stream input)
+        {
+            loadFromStream(input);
+        }
+
+        public void Load(Stream input)
+        {
+            loadFromStream(input);
+        }
+
+        private void loadFromStream(Stream input)
+        {
+            this.rcolHeader.Load(input);
+            this.bonedelta.Load(input);
+        }
+
+        public void Save(Stream output)
+        {
+            if (this.rcolHeader.chunks.Count == 0)
+            {
+                this.rcolHeader.chunks.Add(new MadScience.Wrappers.OffsetSize());
+            }
+            if (this.rcolHeader.externalChunks.Count == 0 && this.rcolHeader.internalChunks.Count == 0)
+            {
+                throw new Exception("You must have a valid RCOL header");
+                //return;
+            }
+
+            this.rcolHeader.Save(output);
+            this.bonedelta.Save(output);
+
+            rcolHeader.chunks[0] = bonedelta.offSize;
+
+            output.Seek(rcolHeader.chunkListOffset, SeekOrigin.Begin);
+            for (int i = 0; i < rcolHeader.chunks.Count; i++)
+            {
+                rcolHeader.chunks[i].Save(output);
+            }
+        }
+
+        public Stream Save()
+        {
+            Stream temp = new MemoryStream();
+            Save(temp);
+            return temp;
+        }
+    }
+
     public class BoneDelta
     {
         public uint version = 1;

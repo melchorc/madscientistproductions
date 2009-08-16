@@ -148,14 +148,6 @@ namespace MadScience.Wrappers
             this.instanceId = instance;
         }
 
-        public ResourceKey(ulong instance, uint type, uint group)
-        {
-            this.order = (uint)ResourceKeyOrder.ITG;
-            this.typeId = type;
-            this.groupId = group;
-            this.instanceId = instance;
-        }
-
         public ResourceKey(uint type, uint group, ulong instance, uint order)
         {
             this.order = order;
@@ -196,8 +188,13 @@ namespace MadScience.Wrappers
 
         public void Save(Stream output)
         {
+            Save(output, this.order);
+        }
+
+        public void Save(Stream output, uint order)
+        {
             BinaryWriter writer = new BinaryWriter(output);
-            switch (this.order)
+            switch (order)
             {
                 case 2: // ITG
                     writer.Write(this.instanceId);

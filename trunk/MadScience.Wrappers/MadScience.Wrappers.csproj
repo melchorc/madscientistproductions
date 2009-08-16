@@ -39,12 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlendGeom.cs" />
     <Compile Include="BlendUnit.cs" />
     <Compile Include="BoneDelta.cs" />
     <Compile Include="CommonFunctions.cs" />
     <Compile Include="FacialBlend.cs" />
     <Compile Include="KeyUtils.cs" />
     <Compile Include="MadScienceHelpers.cs" />
+    <Compile Include="NameMap.cs" />
     <Compile Include="NumberHelpers.cs" />
     <Compile Include="RCOLHeader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

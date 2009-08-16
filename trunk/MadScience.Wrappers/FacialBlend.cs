@@ -3,7 +3,7 @@ using System.IO;
 
 namespace MadScience.Wrappers
 {
-    public enum facialRegions : uint
+    public enum FacialRegions : uint
     {
         Eyes = 0x1,
         Nose = 0x2,
