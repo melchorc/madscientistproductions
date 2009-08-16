@@ -773,15 +773,14 @@ namespace MadScience.Render
             // 
             // lblGeneratingTexture
             // 
-            this.lblGeneratingTexture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblGeneratingTexture.AutoSize = true;
             this.lblGeneratingTexture.BackColor = System.Drawing.SystemColors.Menu;
-            this.lblGeneratingTexture.Location = new System.Drawing.Point(47, 137);
+            this.lblGeneratingTexture.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lblGeneratingTexture.Location = new System.Drawing.Point(0, 124);
             this.lblGeneratingTexture.Name = "lblGeneratingTexture";
             this.lblGeneratingTexture.Size = new System.Drawing.Size(103, 13);
             this.lblGeneratingTexture.TabIndex = 2;
             this.lblGeneratingTexture.Text = "Generating texture...";
-            this.lblGeneratingTexture.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.lblGeneratingTexture.Visible = false;
             // 
             // RenderWindow
