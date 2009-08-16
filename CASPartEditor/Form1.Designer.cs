@@ -277,10 +277,6 @@
             this.txtCustomThumbnailPath = new System.Windows.Forms.TextBox();
             this.btnCustomThumbnail = new System.Windows.Forms.Button();
             this.chkUseCustomThumbnail = new System.Windows.Forms.CheckBox();
-            this.tabPage12 = new System.Windows.Forms.TabPage();
-            this.btnStart3D = new System.Windows.Forms.Button();
-            this.renderWindow1 = new MadScience.Render.RenderWindow();
-            this.btnReloadTextures = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.btnAddNewDesign = new System.Windows.Forms.Button();
             this.btnDeleteDesign = new System.Windows.Forms.Button();
@@ -338,7 +334,14 @@
             this.label14 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addNewBlankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyDefaultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewCopyLastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bwGenTexture = new System.ComponentModel.BackgroundWorker();
+            this.btnStart3D = new System.Windows.Forms.Button();
+            this.btnReloadTextures = new System.Windows.Forms.Button();
+            this.cEnable3DPreview = new System.Windows.Forms.CheckBox();
+            this.renderWindow1 = new MadScience.Render.RenderWindow();
+            this.btnResetView = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl3.SuspendLayout();
@@ -373,7 +376,6 @@
             this.grpLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoColour)).BeginInit();
             this.tabPage6.SuspendLayout();
-            this.tabPage12.SuspendLayout();
             this.tabPage11.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -390,7 +392,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip1.Size = new System.Drawing.Size(594, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(992, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -415,14 +417,14 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.loadToolStripMenuItem.Text = "Open";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
@@ -430,7 +432,7 @@
             // 
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -438,33 +440,33 @@
             // 
             this.saveAsToolStripMenuItem.Enabled = false;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(172, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(183, 6);
             // 
             // findKeyToolStripMenuItem
             // 
             this.findKeyToolStripMenuItem.Name = "findKeyToolStripMenuItem";
-            this.findKeyToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.findKeyToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.findKeyToolStripMenuItem.Text = "Find Key";
             this.findKeyToolStripMenuItem.Click += new System.EventHandler(this.findKeyToolStripMenuItem_Click);
             // 
             // generateThumbnailsToolStripMenuItem
             // 
             this.generateThumbnailsToolStripMenuItem.Name = "generateThumbnailsToolStripMenuItem";
-            this.generateThumbnailsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.generateThumbnailsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.generateThumbnailsToolStripMenuItem.Text = "Generate Thumbnails";
             this.generateThumbnailsToolStripMenuItem.Click += new System.EventHandler(this.generateThumbnailsToolStripMenuItem_Click);
             // 
             // debugModeToolStripMenuItem
             // 
             this.debugModeToolStripMenuItem.Name = "debugModeToolStripMenuItem";
-            this.debugModeToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.debugModeToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.debugModeToolStripMenuItem.Text = "Debug Mode";
             this.debugModeToolStripMenuItem.CheckedChanged += new System.EventHandler(this.debugModeToolStripMenuItem_CheckedChanged);
             this.debugModeToolStripMenuItem.Click += new System.EventHandler(this.debugModeToolStripMenuItem_Click);
@@ -472,19 +474,19 @@
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.optionsToolStripMenuItem.Text = "Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(172, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(183, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -504,17 +506,16 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripProgressBar1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 602);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 600);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(594, 22);
-            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.Size = new System.Drawing.Size(992, 22);
             this.statusStrip1.TabIndex = 20;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(377, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(775, 17);
             this.toolStripStatusLabel1.Spring = true;
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -525,6 +526,8 @@
             // 
             // tabControl3
             // 
+            this.tabControl3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.tabControl3.Controls.Add(this.tabPage7);
             this.tabControl3.Controls.Add(this.tabPage9);
             this.tabControl3.Controls.Add(this.tabPage10);
@@ -535,7 +538,7 @@
             this.tabControl3.Location = new System.Drawing.Point(0, 27);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(593, 572);
+            this.tabControl3.Size = new System.Drawing.Size(578, 570);
             this.tabControl3.TabIndex = 23;
             // 
             // tabPage7
@@ -545,17 +548,19 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(585, 546);
+            this.tabPage7.Size = new System.Drawing.Size(570, 544);
             this.tabPage7.TabIndex = 0;
             this.tabPage7.Text = "Find a CAS Part";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
             // groupBox11
             // 
+            this.groupBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox11.Controls.Add(this.panelMeshThumbs);
             this.groupBox11.Location = new System.Drawing.Point(8, 201);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(574, 339);
+            this.groupBox11.Size = new System.Drawing.Size(555, 337);
             this.groupBox11.TabIndex = 20;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Quick Find";
@@ -563,10 +568,12 @@
             // 
             // panelMeshThumbs
             // 
+            this.panelMeshThumbs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.panelMeshThumbs.AutoScroll = true;
             this.panelMeshThumbs.Location = new System.Drawing.Point(6, 19);
             this.panelMeshThumbs.Name = "panelMeshThumbs";
-            this.panelMeshThumbs.Size = new System.Drawing.Size(561, 314);
+            this.panelMeshThumbs.Size = new System.Drawing.Size(542, 312);
             this.panelMeshThumbs.TabIndex = 0;
             // 
             // groupBox1
@@ -592,14 +599,14 @@
             this.groupBox1.Controls.Add(this.label70);
             this.groupBox1.Location = new System.Drawing.Point(8, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(570, 189);
+            this.groupBox1.Size = new System.Drawing.Size(555, 189);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Find a CAS part";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(525, 162);
+            this.button1.Location = new System.Drawing.Point(509, 162);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(39, 23);
             this.button1.TabIndex = 21;
@@ -795,14 +802,14 @@
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(585, 546);
+            this.tabPage9.Size = new System.Drawing.Size(570, 544);
             this.tabPage9.TabIndex = 5;
             this.tabPage9.Text = "Part Details";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
             // btnCasPartDetailsCommit
             // 
-            this.btnCasPartDetailsCommit.Location = new System.Drawing.Point(503, 12);
+            this.btnCasPartDetailsCommit.Location = new System.Drawing.Point(489, 12);
             this.btnCasPartDetailsCommit.Name = "btnCasPartDetailsCommit";
             this.btnCasPartDetailsCommit.Size = new System.Drawing.Size(75, 23);
             this.btnCasPartDetailsCommit.TabIndex = 20;
@@ -822,6 +829,8 @@
             // 
             // lstCasPartDetails
             // 
+            this.lstCasPartDetails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.lstCasPartDetails.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
@@ -832,7 +841,7 @@
             this.lstCasPartDetails.LabelEdit = true;
             this.lstCasPartDetails.Location = new System.Drawing.Point(10, 41);
             this.lstCasPartDetails.Name = "lstCasPartDetails";
-            this.lstCasPartDetails.Size = new System.Drawing.Size(569, 499);
+            this.lstCasPartDetails.Size = new System.Drawing.Size(554, 499);
             this.lstCasPartDetails.TabIndex = 2;
             this.lstCasPartDetails.UseCompatibleStateImageBehavior = false;
             this.lstCasPartDetails.View = System.Windows.Forms.View.Details;
@@ -869,7 +878,7 @@
             this.tabPage10.Controls.Add(this.label88);
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Size = new System.Drawing.Size(585, 546);
+            this.tabPage10.Size = new System.Drawing.Size(570, 544);
             this.tabPage10.TabIndex = 3;
             this.tabPage10.Text = "Part Category";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -1086,14 +1095,15 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(585, 546);
+            this.tabPage4.Size = new System.Drawing.Size(570, 544);
             this.tabPage4.TabIndex = 4;
             this.tabPage4.Text = "Stencil Pool";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // button13
             // 
-            this.button13.Location = new System.Drawing.Point(503, 517);
+            this.button13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button13.Location = new System.Drawing.Point(489, 518);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(75, 23);
             this.button13.TabIndex = 27;
@@ -1103,6 +1113,8 @@
             // 
             // listView3
             // 
+            this.listView3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.listView3.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader9,
             this.columnHeader10});
@@ -1112,7 +1124,7 @@
             this.listView3.MultiSelect = false;
             this.listView3.Name = "listView3";
             this.listView3.ShowGroups = false;
-            this.listView3.Size = new System.Drawing.Size(570, 506);
+            this.listView3.Size = new System.Drawing.Size(556, 506);
             this.listView3.TabIndex = 24;
             this.listView3.UseCompatibleStateImageBehavior = false;
             this.listView3.View = System.Windows.Forms.View.Details;
@@ -1134,6 +1146,7 @@
             // 
             // button7
             // 
+            this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button7.Enabled = false;
             this.button7.Location = new System.Drawing.Point(50, 518);
             this.button7.Name = "button7";
@@ -1145,6 +1158,7 @@
             // 
             // button12
             // 
+            this.button12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button12.Enabled = false;
             this.button12.Location = new System.Drawing.Point(8, 518);
             this.button12.Name = "button12";
@@ -1166,7 +1180,7 @@
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(585, 546);
+            this.tabPage8.Size = new System.Drawing.Size(570, 544);
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "Designs";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -1184,18 +1198,18 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage13);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage6);
-            this.tabControl1.Controls.Add(this.tabPage12);
             this.tabControl1.Location = new System.Drawing.Point(6, 99);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(578, 444);
+            this.tabControl1.Size = new System.Drawing.Size(558, 444);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -1221,17 +1235,18 @@
             this.tabPage1.Controls.Add(this.btnPatternStencil1Preview);
             this.tabPage1.Controls.Add(this.label15);
             this.tabPage1.Controls.Add(this.cmbPatternStencil1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(570, 415);
+            this.tabPage1.Size = new System.Drawing.Size(550, 418);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Stencils";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // btnDesignStencilCommit
             // 
-            this.btnDesignStencilCommit.Location = new System.Drawing.Point(489, 386);
+            this.btnDesignStencilCommit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnDesignStencilCommit.Location = new System.Drawing.Point(472, 386);
             this.btnDesignStencilCommit.Name = "btnDesignStencilCommit";
             this.btnDesignStencilCommit.Size = new System.Drawing.Size(75, 23);
             this.btnDesignStencilCommit.TabIndex = 41;
@@ -1542,10 +1557,10 @@
             this.tabPage2.Controls.Add(this.grpPatternA);
             this.tabPage2.Controls.Add(this.label37);
             this.tabPage2.Controls.Add(this.btnPatternACommit);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(570, 415);
+            this.tabPage2.Size = new System.Drawing.Size(550, 418);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Patterns";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1595,7 +1610,7 @@
             this.grpPatternA.Enabled = false;
             this.grpPatternA.Location = new System.Drawing.Point(9, 38);
             this.grpPatternA.Name = "grpPatternA";
-            this.grpPatternA.Size = new System.Drawing.Size(540, 581);
+            this.grpPatternA.Size = new System.Drawing.Size(538, 592);
             this.grpPatternA.TabIndex = 2;
             this.grpPatternA.TabStop = false;
             this.grpPatternA.Enter += new System.EventHandler(this.grpPatternA_Enter);
@@ -2145,7 +2160,7 @@
             // 
             // picPatternThumb
             // 
-            this.picPatternThumb.Location = new System.Drawing.Point(404, 37);
+            this.picPatternThumb.Location = new System.Drawing.Point(389, 41);
             this.picPatternThumb.Name = "picPatternThumb";
             this.picPatternThumb.Size = new System.Drawing.Size(128, 128);
             this.picPatternThumb.TabIndex = 44;
@@ -2153,7 +2168,7 @@
             // 
             // btnBrowsePatterns
             // 
-            this.btnBrowsePatterns.Location = new System.Drawing.Point(439, 12);
+            this.btnBrowsePatterns.Location = new System.Drawing.Point(424, 12);
             this.btnBrowsePatterns.Name = "btnBrowsePatterns";
             this.btnBrowsePatterns.Size = new System.Drawing.Size(93, 23);
             this.btnBrowsePatterns.TabIndex = 43;
@@ -2174,7 +2189,7 @@
             // 
             this.txtPatternAFilename.Location = new System.Drawing.Point(61, 113);
             this.txtPatternAFilename.Name = "txtPatternAFilename";
-            this.txtPatternAFilename.Size = new System.Drawing.Size(338, 20);
+            this.txtPatternAFilename.Size = new System.Drawing.Size(322, 20);
             this.txtPatternAFilename.TabIndex = 3;
             // 
             // label39
@@ -2204,7 +2219,7 @@
             // 
             this.txtPatternAName.Location = new System.Drawing.Point(61, 85);
             this.txtPatternAName.Name = "txtPatternAName";
-            this.txtPatternAName.Size = new System.Drawing.Size(338, 20);
+            this.txtPatternAName.Size = new System.Drawing.Size(321, 20);
             this.txtPatternAName.TabIndex = 5;
             // 
             // label55
@@ -2264,7 +2279,7 @@
             this.txtPatternASpecular.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPatternASpecular.Location = new System.Drawing.Point(62, 200);
             this.txtPatternASpecular.Name = "txtPatternASpecular";
-            this.txtPatternASpecular.Size = new System.Drawing.Size(337, 20);
+            this.txtPatternASpecular.Size = new System.Drawing.Size(321, 20);
             this.txtPatternASpecular.TabIndex = 32;
             // 
             // label54
@@ -2291,7 +2306,7 @@
             this.txtPatternARGBMask.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPatternARGBMask.Location = new System.Drawing.Point(62, 171);
             this.txtPatternARGBMask.Name = "txtPatternARGBMask";
-            this.txtPatternARGBMask.Size = new System.Drawing.Size(337, 20);
+            this.txtPatternARGBMask.Size = new System.Drawing.Size(321, 20);
             this.txtPatternARGBMask.TabIndex = 27;
             // 
             // label52
@@ -2317,7 +2332,7 @@
             this.txtPatternAKey.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPatternAKey.Location = new System.Drawing.Point(61, 32);
             this.txtPatternAKey.Name = "txtPatternAKey";
-            this.txtPatternAKey.Size = new System.Drawing.Size(338, 20);
+            this.txtPatternAKey.Size = new System.Drawing.Size(322, 20);
             this.txtPatternAKey.TabIndex = 7;
             // 
             // chkPatternALinked
@@ -2359,7 +2374,7 @@
             // 
             // btnPatternACommit
             // 
-            this.btnPatternACommit.Location = new System.Drawing.Point(428, 9);
+            this.btnPatternACommit.Location = new System.Drawing.Point(415, 9);
             this.btnPatternACommit.Name = "btnPatternACommit";
             this.btnPatternACommit.Size = new System.Drawing.Size(111, 23);
             this.btnPatternACommit.TabIndex = 34;
@@ -2375,16 +2390,17 @@
             this.tabPage13.Controls.Add(this.btnListTextureReplace);
             this.tabPage13.Controls.Add(this.btnListTextureFind);
             this.tabPage13.Controls.Add(this.lstTextureDetails);
-            this.tabPage13.Location = new System.Drawing.Point(4, 25);
+            this.tabPage13.Location = new System.Drawing.Point(4, 22);
             this.tabPage13.Name = "tabPage13";
             this.tabPage13.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage13.Size = new System.Drawing.Size(570, 415);
+            this.tabPage13.Size = new System.Drawing.Size(550, 418);
             this.tabPage13.TabIndex = 6;
             this.tabPage13.Text = "Textures";
             this.tabPage13.UseVisualStyleBackColor = true;
             // 
             // label114
             // 
+            this.label114.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label114.AutoSize = true;
             this.label114.Location = new System.Drawing.Point(113, 391);
             this.label114.Name = "label114";
@@ -2394,6 +2410,7 @@
             // 
             // picLstTextureColour
             // 
+            this.picLstTextureColour.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.picLstTextureColour.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.picLstTextureColour.Location = new System.Drawing.Point(159, 386);
             this.picLstTextureColour.Name = "picLstTextureColour";
@@ -2404,7 +2421,8 @@
             // 
             // btnCommitLstTexture
             // 
-            this.btnCommitLstTexture.Location = new System.Drawing.Point(489, 386);
+            this.btnCommitLstTexture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCommitLstTexture.Location = new System.Drawing.Point(472, 386);
             this.btnCommitLstTexture.Name = "btnCommitLstTexture";
             this.btnCommitLstTexture.Size = new System.Drawing.Size(75, 23);
             this.btnCommitLstTexture.TabIndex = 9;
@@ -2414,6 +2432,7 @@
             // 
             // btnListTextureReplace
             // 
+            this.btnListTextureReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnListTextureReplace.Enabled = false;
             this.btnListTextureReplace.Location = new System.Drawing.Point(45, 386);
             this.btnListTextureReplace.Name = "btnListTextureReplace";
@@ -2425,6 +2444,7 @@
             // 
             // btnListTextureFind
             // 
+            this.btnListTextureFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnListTextureFind.Enabled = false;
             this.btnListTextureFind.Location = new System.Drawing.Point(3, 386);
             this.btnListTextureFind.Name = "btnListTextureFind";
@@ -2436,6 +2456,8 @@
             // 
             // lstTextureDetails
             // 
+            this.lstTextureDetails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.lstTextureDetails.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader7,
             this.columnHeader8});
@@ -2473,7 +2495,7 @@
             this.lstTextureDetails.MultiSelect = false;
             this.lstTextureDetails.Name = "lstTextureDetails";
             this.lstTextureDetails.ShowGroups = false;
-            this.lstTextureDetails.Size = new System.Drawing.Size(564, 372);
+            this.lstTextureDetails.Size = new System.Drawing.Size(544, 372);
             this.lstTextureDetails.TabIndex = 6;
             this.lstTextureDetails.UseCompatibleStateImageBehavior = false;
             this.lstTextureDetails.View = System.Windows.Forms.View.Details;
@@ -2501,15 +2523,16 @@
             this.tabPage3.Controls.Add(this.btnLstOtherReplace);
             this.tabPage3.Controls.Add(this.btnListOtherFind);
             this.tabPage3.Controls.Add(this.lstOtherDetails);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(570, 415);
+            this.tabPage3.Size = new System.Drawing.Size(550, 418);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Other Details";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // label11
             // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(113, 391);
             this.label11.Name = "label11";
@@ -2519,6 +2542,7 @@
             // 
             // picLstOtherColour
             // 
+            this.picLstOtherColour.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.picLstOtherColour.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.picLstOtherColour.Location = new System.Drawing.Point(159, 386);
             this.picLstOtherColour.Name = "picLstOtherColour";
@@ -2529,7 +2553,8 @@
             // 
             // btnCommitLstOther
             // 
-            this.btnCommitLstOther.Location = new System.Drawing.Point(489, 386);
+            this.btnCommitLstOther.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCommitLstOther.Location = new System.Drawing.Point(472, 386);
             this.btnCommitLstOther.Name = "btnCommitLstOther";
             this.btnCommitLstOther.Size = new System.Drawing.Size(75, 23);
             this.btnCommitLstOther.TabIndex = 3;
@@ -2539,6 +2564,7 @@
             // 
             // btnLstOtherReplace
             // 
+            this.btnLstOtherReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnLstOtherReplace.Enabled = false;
             this.btnLstOtherReplace.Location = new System.Drawing.Point(45, 386);
             this.btnLstOtherReplace.Name = "btnLstOtherReplace";
@@ -2550,6 +2576,7 @@
             // 
             // btnListOtherFind
             // 
+            this.btnListOtherFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnListOtherFind.Enabled = false;
             this.btnListOtherFind.Location = new System.Drawing.Point(3, 386);
             this.btnListOtherFind.Name = "btnListOtherFind";
@@ -2561,6 +2588,8 @@
             // 
             // lstOtherDetails
             // 
+            this.lstOtherDetails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.lstOtherDetails.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader5,
             this.columnHeader6});
@@ -2598,7 +2627,7 @@
             this.lstOtherDetails.MultiSelect = false;
             this.lstOtherDetails.Name = "lstOtherDetails";
             this.lstOtherDetails.ShowGroups = false;
-            this.lstOtherDetails.Size = new System.Drawing.Size(564, 372);
+            this.lstOtherDetails.Size = new System.Drawing.Size(544, 372);
             this.lstOtherDetails.TabIndex = 0;
             this.lstOtherDetails.UseCompatibleStateImageBehavior = false;
             this.lstOtherDetails.View = System.Windows.Forms.View.Details;
@@ -2624,17 +2653,18 @@
             this.tabPage5.Controls.Add(this.grpLogo);
             this.tabPage5.Controls.Add(this.chkLogoEnabled);
             this.tabPage5.Controls.Add(this.label102);
-            this.tabPage5.Location = new System.Drawing.Point(4, 25);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(570, 415);
+            this.tabPage5.Size = new System.Drawing.Size(550, 418);
             this.tabPage5.TabIndex = 3;
             this.tabPage5.Text = "Logo";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // btnLogoCommit
             // 
-            this.btnLogoCommit.Location = new System.Drawing.Point(489, 386);
+            this.btnLogoCommit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnLogoCommit.Location = new System.Drawing.Point(472, 386);
             this.btnLogoCommit.Name = "btnLogoCommit";
             this.btnLogoCommit.Size = new System.Drawing.Size(75, 23);
             this.btnLogoCommit.TabIndex = 34;
@@ -2791,10 +2821,10 @@
             this.tabPage6.Controls.Add(this.txtCustomThumbnailPath);
             this.tabPage6.Controls.Add(this.btnCustomThumbnail);
             this.tabPage6.Controls.Add(this.chkUseCustomThumbnail);
-            this.tabPage6.Location = new System.Drawing.Point(4, 25);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(570, 415);
+            this.tabPage6.Size = new System.Drawing.Size(550, 418);
             this.tabPage6.TabIndex = 4;
             this.tabPage6.Text = "Thumbnail";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -2826,7 +2856,8 @@
             // 
             // btnCustomThumbnail
             // 
-            this.btnCustomThumbnail.Location = new System.Drawing.Point(489, 386);
+            this.btnCustomThumbnail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCustomThumbnail.Location = new System.Drawing.Point(472, 386);
             this.btnCustomThumbnail.Name = "btnCustomThumbnail";
             this.btnCustomThumbnail.Size = new System.Drawing.Size(75, 23);
             this.btnCustomThumbnail.TabIndex = 1;
@@ -2843,52 +2874,6 @@
             this.chkUseCustomThumbnail.TabIndex = 0;
             this.chkUseCustomThumbnail.Text = "Use Custom Thumbnail";
             this.chkUseCustomThumbnail.UseVisualStyleBackColor = true;
-            // 
-            // tabPage12
-            // 
-            this.tabPage12.Controls.Add(this.btnStart3D);
-            this.tabPage12.Controls.Add(this.renderWindow1);
-            this.tabPage12.Controls.Add(this.btnReloadTextures);
-            this.tabPage12.Location = new System.Drawing.Point(4, 25);
-            this.tabPage12.Name = "tabPage12";
-            this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage12.Size = new System.Drawing.Size(570, 415);
-            this.tabPage12.TabIndex = 5;
-            this.tabPage12.Text = "3D View";
-            this.tabPage12.UseVisualStyleBackColor = true;
-            // 
-            // btnStart3D
-            // 
-            this.btnStart3D.Location = new System.Drawing.Point(3, 386);
-            this.btnStart3D.Name = "btnStart3D";
-            this.btnStart3D.Size = new System.Drawing.Size(75, 23);
-            this.btnStart3D.TabIndex = 2;
-            this.btnStart3D.Text = "Reload 3D";
-            this.btnStart3D.UseVisualStyleBackColor = true;
-            this.btnStart3D.Click += new System.EventHandler(this.btnStart3D_Click);
-            // 
-            // renderWindow1
-            // 
-            this.renderWindow1.BackgroundColour = System.Drawing.Color.Empty;
-            this.renderWindow1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.renderWindow1.CurrentFillMode = 1;
-            this.renderWindow1.Location = new System.Drawing.Point(2, 3);
-            this.renderWindow1.Name = "renderWindow1";
-            this.renderWindow1.RenderEnabled = false;
-            this.renderWindow1.Size = new System.Drawing.Size(562, 377);
-            this.renderWindow1.TabIndex = 1;
-            this.renderWindow1.WireframeColour = System.Drawing.Color.Empty;
-            this.renderWindow1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.renderWindow1_Scroll);
-            // 
-            // btnReloadTextures
-            // 
-            this.btnReloadTextures.Location = new System.Drawing.Point(449, 386);
-            this.btnReloadTextures.Name = "btnReloadTextures";
-            this.btnReloadTextures.Size = new System.Drawing.Size(115, 23);
-            this.btnReloadTextures.TabIndex = 0;
-            this.btnReloadTextures.Text = "Reload Textures";
-            this.btnReloadTextures.UseVisualStyleBackColor = true;
-            this.btnReloadTextures.Click += new System.EventHandler(this.btnReloadTextures_Click);
             // 
             // listView1
             // 
@@ -2941,11 +2926,11 @@
             // 
             this.label69.Location = new System.Drawing.Point(407, 6);
             this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(172, 90);
+            this.label69.Size = new System.Drawing.Size(157, 90);
             this.label69.TabIndex = 4;
-            this.label69.Text = "\"Designs\" are a collection of Stencil , Pattern information and the textures that" +
-                " make them up, grouped together.  Each \"Design\" will appear as a new thumbnail i" +
-                "n a row in CAS.";
+            this.label69.Text = "\"Designs\" are a collection of Stencil, Pattern information and the textures that " +
+                "make them up, grouped together.  Each \"Design\" will appear as a new thumbnail in" +
+                " a row in CAS.";
             // 
             // tabPage11
             // 
@@ -2957,7 +2942,7 @@
             this.tabPage11.Location = new System.Drawing.Point(4, 22);
             this.tabPage11.Name = "tabPage11";
             this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage11.Size = new System.Drawing.Size(585, 546);
+            this.tabPage11.Size = new System.Drawing.Size(570, 544);
             this.tabPage11.TabIndex = 6;
             this.tabPage11.Text = "Meshes";
             this.tabPage11.UseVisualStyleBackColor = true;
@@ -3178,7 +3163,7 @@
             this.tabPage14.Location = new System.Drawing.Point(4, 22);
             this.tabPage14.Name = "tabPage14";
             this.tabPage14.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage14.Size = new System.Drawing.Size(585, 546);
+            this.tabPage14.Size = new System.Drawing.Size(570, 544);
             this.tabPage14.TabIndex = 7;
             this.tabPage14.Text = "Other";
             this.tabPage14.UseVisualStyleBackColor = true;
@@ -3459,37 +3444,119 @@
             this.contextMenuStrip1.BackColor = System.Drawing.SystemColors.Menu;
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addNewBlankToolStripMenuItem,
+            this.copyDefaultsToolStripMenuItem,
             this.addNewCopyLastToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(177, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(188, 70);
             // 
             // addNewBlankToolStripMenuItem
             // 
             this.addNewBlankToolStripMenuItem.Name = "addNewBlankToolStripMenuItem";
-            this.addNewBlankToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.addNewBlankToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.addNewBlankToolStripMenuItem.Text = "Add New Blank";
             this.addNewBlankToolStripMenuItem.Click += new System.EventHandler(this.addNewBlankToolStripMenuItem_Click);
+            // 
+            // copyDefaultsToolStripMenuItem
+            // 
+            this.copyDefaultsToolStripMenuItem.Name = "copyDefaultsToolStripMenuItem";
+            this.copyDefaultsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.copyDefaultsToolStripMenuItem.Text = "Copy All From Base";
+            this.copyDefaultsToolStripMenuItem.Click += new System.EventHandler(this.copyDefaultsToolStripMenuItem_Click);
             // 
             // addNewCopyLastToolStripMenuItem
             // 
             this.addNewCopyLastToolStripMenuItem.Name = "addNewCopyLastToolStripMenuItem";
-            this.addNewCopyLastToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.addNewCopyLastToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.addNewCopyLastToolStripMenuItem.Text = "Add New (Copy Last)";
             this.addNewCopyLastToolStripMenuItem.Click += new System.EventHandler(this.addNewCopyLastToolStripMenuItem_Click);
+            // 
+            // bwGenTexture
+            // 
+            this.bwGenTexture.WorkerSupportsCancellation = true;
+            this.bwGenTexture.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwGenTexture_DoWork);
+            this.bwGenTexture.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwGenTexture_RunWorkerCompleted);
+            // 
+            // btnStart3D
+            // 
+            this.btnStart3D.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStart3D.Location = new System.Drawing.Point(794, 24);
+            this.btnStart3D.Name = "btnStart3D";
+            this.btnStart3D.Size = new System.Drawing.Size(75, 23);
+            this.btnStart3D.TabIndex = 26;
+            this.btnStart3D.Text = "Reload 3D";
+            this.btnStart3D.UseVisualStyleBackColor = true;
+            this.btnStart3D.Visible = false;
+            this.btnStart3D.Click += new System.EventHandler(this.btnStart3D_Click);
+            // 
+            // btnReloadTextures
+            // 
+            this.btnReloadTextures.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReloadTextures.Location = new System.Drawing.Point(875, 24);
+            this.btnReloadTextures.Name = "btnReloadTextures";
+            this.btnReloadTextures.Size = new System.Drawing.Size(115, 23);
+            this.btnReloadTextures.TabIndex = 24;
+            this.btnReloadTextures.Text = "Reload Textures";
+            this.btnReloadTextures.UseVisualStyleBackColor = true;
+            this.btnReloadTextures.Visible = false;
+            this.btnReloadTextures.Click += new System.EventHandler(this.btnReloadTextures_Click);
+            // 
+            // cEnable3DPreview
+            // 
+            this.cEnable3DPreview.AutoSize = true;
+            this.cEnable3DPreview.Checked = true;
+            this.cEnable3DPreview.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cEnable3DPreview.Location = new System.Drawing.Point(455, 30);
+            this.cEnable3DPreview.Name = "cEnable3DPreview";
+            this.cEnable3DPreview.Size = new System.Drawing.Size(117, 17);
+            this.cEnable3DPreview.TabIndex = 27;
+            this.cEnable3DPreview.Text = "Enable 3D Preview";
+            this.cEnable3DPreview.UseVisualStyleBackColor = true;
+            this.cEnable3DPreview.CheckedChanged += new System.EventHandler(this.cEnable3DPreview_CheckedChanged);
+            // 
+            // renderWindow1
+            // 
+            this.renderWindow1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.renderWindow1.BackgroundColour = System.Drawing.Color.Empty;
+            this.renderWindow1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.renderWindow1.CurrentFillMode = 1;
+            this.renderWindow1.Location = new System.Drawing.Point(579, 47);
+            this.renderWindow1.Name = "renderWindow1";
+            this.renderWindow1.RenderEnabled = false;
+            this.renderWindow1.Size = new System.Drawing.Size(411, 548);
+            this.renderWindow1.TabIndex = 25;
+            this.renderWindow1.WireframeColour = System.Drawing.Color.Empty;
+            // 
+            // btnResetView
+            // 
+            this.btnResetView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnResetView.Location = new System.Drawing.Point(713, 24);
+            this.btnResetView.Name = "btnResetView";
+            this.btnResetView.Size = new System.Drawing.Size(75, 23);
+            this.btnResetView.TabIndex = 28;
+            this.btnResetView.Text = "ResetView";
+            this.btnResetView.UseVisualStyleBackColor = true;
+            this.btnResetView.Visible = false;
+            this.btnResetView.Click += new System.EventHandler(this.btnResetView_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(594, 624);
+            this.ClientSize = new System.Drawing.Size(992, 622);
+            this.Controls.Add(this.cEnable3DPreview);
             this.Controls.Add(this.tabControl3);
+            this.Controls.Add(this.renderWindow1);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.btnReloadTextures);
             this.Controls.Add(this.menuStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Controls.Add(this.btnStart3D);
+            this.Controls.Add(this.btnResetView);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(1000, 650);
             this.Name = "Form1";
             this.Text = "Delphy\'s CAS Texture+Unitool";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -3543,7 +3610,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.picLogoColour)).EndInit();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
-            this.tabPage12.ResumeLayout(false);
             this.tabPage11.ResumeLayout(false);
             this.tabPage11.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -3771,10 +3837,6 @@
         private System.Windows.Forms.ToolStripMenuItem generateThumbnailsToolStripMenuItem;
         private System.Windows.Forms.TabPage tabPage11;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
-        private System.Windows.Forms.TabPage tabPage12;
-        private System.Windows.Forms.Button btnReloadTextures;
-        private MadScience.Render.RenderWindow renderWindow1;
-        private System.Windows.Forms.Button btnStart3D;
         private System.Windows.Forms.TabPage tabPage13;
         private System.Windows.Forms.Label label114;
         private System.Windows.Forms.PictureBox picLstTextureColour;
@@ -3843,6 +3905,13 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem addNewBlankToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNewCopyLastToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyDefaultsToolStripMenuItem;
+        private System.ComponentModel.BackgroundWorker bwGenTexture;
+        private System.Windows.Forms.Button btnStart3D;
+        private System.Windows.Forms.Button btnReloadTextures;
+        private MadScience.Render.RenderWindow renderWindow1;
+        private System.Windows.Forms.CheckBox cEnable3DPreview;
+        private System.Windows.Forms.Button btnResetView;
     }
 }
 

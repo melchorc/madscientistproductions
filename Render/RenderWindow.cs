@@ -71,6 +71,7 @@ namespace MadScience.Render
 
         private int spinX = 180;
         private int spinY;
+        private float transX;
         private float transZ;
         private float height;
 
@@ -323,6 +324,7 @@ namespace MadScience.Render
             this.Invalidate();
 
             device.RenderState.FillMode = getFillMode();
+            device.RenderState.CullMode = Cull.None;
 
             setupShaders();
 
@@ -388,7 +390,7 @@ namespace MadScience.Render
             // Load the values for the transformation matrices
             // View moves the virtual camera around the 3d model (Lighting moves with the model)
             // World moves the 3d model - (Lighting stays in place as the model rotates, illuminating different parts)
-            Matrix viewx = Matrix.Translation(0f, 0, 2f + transZ);
+            Matrix viewx = Matrix.Translation(transX, 0f, 2f + transZ);
             Matrix worldx = Matrix.Translation(0f, -height, 0f) * Matrix.RotationYawPitchRoll(Geometry.DegreeToRadian(spinX),
                     Geometry.DegreeToRadian(-spinY), 0.0f);
             // * 
@@ -552,18 +554,20 @@ namespace MadScience.Render
             {
                 bMouseDragged = true;
 
-                spinX -= (ptCurrentMousePosit.X - ptLastMousePosit.X);
                 if (mousing == 1)
                 {
                     transZ += ((Single)(ptCurrentMousePosit.Y - ptLastMousePosit.Y) / 40);
+                    spinX -= (ptCurrentMousePosit.X - ptLastMousePosit.X);
                 }
                 if (mousing == 2)
                 {
                     spinY -= (ptCurrentMousePosit.Y - ptLastMousePosit.Y);
+                    spinX -= (ptCurrentMousePosit.X - ptLastMousePosit.X);
                 }
                 if (mousing == 3)
                 {
                     height -= ((Single)(ptCurrentMousePosit.Y - ptLastMousePosit.Y) / 40);
+                    transX -= ((Single)(ptCurrentMousePosit.X - ptLastMousePosit.X) / 40);
                 }
 
                 if (spinX < 0) spinX += 360;
@@ -647,6 +651,8 @@ namespace MadScience.Render
             spinX = 180;
             spinY = 0;
             transZ = 0;
+            transX = 0;
+            Invalidate();
         }
 
         private void InitializeComponent()

@@ -1407,15 +1407,16 @@ namespace CASPartEditor
             addListItem(lstOtherDetails, chunk.assetRoot, "assetRoot", "");
             addListItem(lstOtherDetails, chunk.Rotation, "Rotation", "");
 
-            if (chunkNo == 0)
-            {
-                toolStripStatusLabel1.Text = "Initialising 3d view... please wait...";
-                statusStrip1.Refresh();
+            toolStripStatusLabel1.Text = "Initialising 3d view... please wait...";
+            statusStrip1.Refresh();
 
+            if (renderWindow1.RenderEnabled)
+                btnReloadTextures_Click(null, null);
+            else
                 btnStart3D_Click(null, null);
 
-                toolStripStatusLabel1.Text = "";
-            }
+            toolStripStatusLabel1.Text = "";
+
         }
 
         private void btnPreviewTexture_Click(object sender, EventArgs e)
@@ -3707,7 +3708,7 @@ namespace CASPartEditor
 
         private void btnReloadTextures_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 1)
+            if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
             {
 
                 xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
@@ -3720,7 +3721,8 @@ namespace CASPartEditor
                 
                 renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
                 renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
-                renderWindow1.loadTextureFromBitmap(composeMultiplier(details, details.filename != "CasRgbMask"), "baseTexture");
+                renderWindow1.loadTexture(KeyUtils.findKey(details.Multiplier), "baseTexture");
+                generate3DTexture(details);
                 /*
                 if (details.stencil.A.Enabled == "True")
                 {
@@ -3745,7 +3747,9 @@ namespace CASPartEditor
 
         private void btnStart3D_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 1)
+
+
+            if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
             {
                 xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
 
@@ -3798,8 +3802,9 @@ namespace CASPartEditor
 
                     renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
                     renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
-                    //renderWindow1.loadTexture(findKey(details.Multiplier), "baseTexture");
-                    renderWindow1.loadTextureFromBitmap(composeMultiplier(details, details.filename != "CasRgbMask"), "baseTexture");
+                    renderWindow1.loadTexture(KeyUtils.findKey(details.Multiplier), "baseTexture");
+                    generate3DTexture(details);
+
                     /*
                     if (details.stencil.A.Enabled == "True")
                     {
@@ -3827,6 +3832,31 @@ namespace CASPartEditor
 
             }
 
+        }
+
+        private void generate3DTexture(xmlChunkDetails details)
+        {
+            if (!bwGenTexture.IsBusy)
+                bwGenTexture.RunWorkerAsync(details);
+            else
+            {
+                bwGenTexture.CancelAsync();
+            }
+        }
+
+        private void bwGenTexture_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            xmlChunkDetails details = (xmlChunkDetails)e.Argument;
+            renderWindow1.loadTextureFromBitmap(composeMultiplier(details, details.filename != "CasRgbMask"), "baseTexture");
+            e.Result = details;
+            renderWindow1.resetDevice();
+            renderWindow1.RenderEnabled = true;
+        }
+
+        private void bwGenTexture_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            if(e.Result != (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]])
+                generate3DTexture((xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]]);
         }
 
         private Bitmap composeMultiplier(xmlChunkDetails details, bool RGBA)
@@ -4127,6 +4157,57 @@ namespace CASPartEditor
 
             listView1.Items.Add(item);
             listView1.Items[listView1.Items.Count - 1].Selected = true;
+        }
+
+        private void copyDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < casPartSrc.xmlChunk.Count; i++)
+            {
+                ListViewItem item = new ListViewItem();
+                item.Text = "Design #" + (listView1.Items.Count + 1).ToString();
+
+                listView1.Items.Add(item);
+
+                // Add a new XML chunk to the casPart
+                xmlChunkDetails chunk = new xmlChunkDetails();
+                // Copy chunk from casPartSrc index i
+                chunk = (xmlChunkDetails)casPartSrc.xmlChunk[i].Copy();
+
+
+                casPartNew.xmlChunk.Add(chunk);
+                casPartNew.xmlChunkRaw.Add("");
+            }
+            saveAsToolStripMenuItem.Enabled = true;
+            listView1.Items[listView1.Items.Count - 1].Selected = true;
+        }
+
+        private void cEnable3DPreview_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cEnable3DPreview.Checked)
+            {
+                this.MinimumSize=new Size(1000,650);
+                btnStart3D.Visible = true;
+                btnReloadTextures.Visible = true;
+                btnResetView.Visible = true;
+                renderWindow1.Visible = true;
+                btnStart3D_Click(null,null);
+            }
+            else
+            {
+                //there is a bug when making the window smaller than that. Probably the 3d view doesn't like it to have no width.
+                this.MinimumSize = new Size(590,650);
+                this.Size = new Size(590, this.Height);
+                btnStart3D.Visible = false;
+                btnReloadTextures.Visible = false;
+                btnResetView.Visible = false;
+                renderWindow1.Visible = false;
+                renderWindow1.RenderEnabled = false;
+            }
+        }
+
+        private void btnResetView_Click(object sender, EventArgs e)
+        {
+            renderWindow1.ResetView();
         }
 
     }
