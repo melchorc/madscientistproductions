@@ -91,6 +91,7 @@ namespace MadScience.Render
         private ToolStripMenuItem solidToolStripMenuItem;
         private ToolStripMenuItem solidWireframeToolStripMenuItem;
         public Label statusLabel;
+        public Label lblGeneratingTexture;
         //private System.ComponentModel.IContainer components;
 
         private int fillMode = 1;
@@ -316,6 +317,7 @@ namespace MadScience.Render
                 d3dDevice = null;
             }
             renderEnabled = false;
+            statusLabel.Text = "3d view currently not initialised.";
             Invalidate();
         }
 
@@ -715,6 +717,7 @@ namespace MadScience.Render
             this.solidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.solidWireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusLabel = new System.Windows.Forms.Label();
+            this.lblGeneratingTexture = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -768,8 +771,22 @@ namespace MadScience.Render
             this.statusLabel.TabIndex = 1;
             this.statusLabel.Text = "3d view currently not initialised.";
             // 
+            // lblGeneratingTexture
+            // 
+            this.lblGeneratingTexture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblGeneratingTexture.AutoSize = true;
+            this.lblGeneratingTexture.BackColor = System.Drawing.SystemColors.Menu;
+            this.lblGeneratingTexture.Location = new System.Drawing.Point(47, 137);
+            this.lblGeneratingTexture.Name = "lblGeneratingTexture";
+            this.lblGeneratingTexture.Size = new System.Drawing.Size(103, 13);
+            this.lblGeneratingTexture.TabIndex = 2;
+            this.lblGeneratingTexture.Text = "Generating texture...";
+            this.lblGeneratingTexture.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.lblGeneratingTexture.Visible = false;
+            // 
             // RenderWindow
             // 
+            this.Controls.Add(this.lblGeneratingTexture);
             this.Controls.Add(this.statusLabel);
             this.Name = "RenderWindow";
             this.contextMenuStrip1.ResumeLayout(false);
