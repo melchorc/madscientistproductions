@@ -71,7 +71,7 @@ namespace MadScience.Render
 
         private int spinX = 180;
         private int spinY;
-        private float spinZ;
+        private float transZ;
         private float height;
 
         MadScience.Render.modelInfo model = new modelInfo();
@@ -334,7 +334,7 @@ namespace MadScience.Render
             {
 
                 Console.WriteLine(model.bounds.mid.X.ToString() + " : " + model.bounds.mid.Y.ToString() + " : " + model.bounds.mid.Z.ToString());
-                Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + spinZ.ToString() + " : " + height.ToString());
+                Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + transZ.ToString() + " : " + height.ToString());
                 Console.WriteLine("num vertices: " + model.numVertices.ToString());
 
 
@@ -388,10 +388,11 @@ namespace MadScience.Render
             // Load the values for the transformation matrices
             // View moves the virtual camera around the 3d model (Lighting moves with the model)
             // World moves the 3d model - (Lighting stays in place as the model rotates, illuminating different parts)
-            Matrix viewx = Matrix.Identity;
-            Matrix worldx = Matrix.RotationYawPitchRoll(Geometry.DegreeToRadian(spinX),
-                    Geometry.DegreeToRadian(0f), 0.0f) *
-                    Matrix.Translation(0f, -height, spinZ + 2f);
+            Matrix viewx = Matrix.Translation(0f, 0, 2f + transZ);
+            Matrix worldx = Matrix.Translation(0f, -height, 0f) * Matrix.RotationYawPitchRoll(Geometry.DegreeToRadian(spinX),
+                    Geometry.DegreeToRadian(-spinY), 0.0f);
+            // * 
+
             // Projection matrix - typically can be left alone unless the viewport needs to be adjusted
             Matrix projx = Matrix.PerspectiveFovLH(Geometry.DegreeToRadian(45.0f),
                 (float)Width / Height,
@@ -554,21 +555,21 @@ namespace MadScience.Render
                 spinX -= (ptCurrentMousePosit.X - ptLastMousePosit.X);
                 if (mousing == 1)
                 {
-                    spinY -= (ptCurrentMousePosit.Y - ptLastMousePosit.Y);
+                    transZ += ((Single)(ptCurrentMousePosit.Y - ptLastMousePosit.Y) / 40);
                 }
                 if (mousing == 2)
                 {
-                    spinZ += ((Single)(ptCurrentMousePosit.Y - ptLastMousePosit.Y) / 40);
+                    spinY -= (ptCurrentMousePosit.Y - ptLastMousePosit.Y);
                 }
                 if (mousing == 3)
                 {
                     height -= ((Single)(ptCurrentMousePosit.Y - ptLastMousePosit.Y) / 40);
                 }
 
-                if (spinX < 0) spinX = 359;
-                if (spinY < 0) spinY = 359;
-                if (spinX > 359) spinX = 0;
-                if (spinY > 359) spinY = 0;
+                if (spinX < 0) spinX += 360;
+                if (spinY < 0) spinY += 360;
+                if (spinX > 359) spinX -= 360;
+                if (spinY > 359) spinY -= 360;
 
                 //Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + spinZ.ToString() + " : " + height.ToString());
             }
@@ -583,12 +584,12 @@ namespace MadScience.Render
             if (e.Delta > 0)
             {
                 // Towards object
-                spinZ += -0.25f;
+                transZ += -0.25f;
             }
             else
             {
                 // Away from object
-                spinZ += 0.25f;
+                transZ += 0.25f;
             }
 
             Invalidate();
@@ -645,7 +646,7 @@ namespace MadScience.Render
             height = model.bounds.mid.Y / 1.35f;
             spinX = 180;
             spinY = 0;
-            spinZ = 0;
+            transZ = 0;
         }
 
         private void InitializeComponent()
