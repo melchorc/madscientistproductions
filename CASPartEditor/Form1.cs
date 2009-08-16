@@ -1492,7 +1492,8 @@ namespace CASPartEditor
                     MadScience.Wrappers.ResourceKey tgi = casPartSrc.tgi64list[j];
                     if (tgi.typeId == (int)0x00B2D882)
                     {
-                        Stream textureStream = KeyUtils.searchForKey(tgi.ToString(), 2);
+                        //Stream textureStream = KeyUtils.searchForKey(tgi.ToString(), 2);
+                        Stream textureStream = KeyUtils.findKey(tgi);
                         if (textureStream != null)
                         {
                             string fileNameToSave = "";
@@ -3827,20 +3828,38 @@ namespace CASPartEditor
 
                 DateTime startTime = DateTime.Now;
 
+                Stream meshStream = Stream.Null;
+
+                // Use the VPXY to get the mesh lod
+                Stream vpxyStream = KeyUtils.findKey(casPartNew.tgi64list[casPartNew.tgiIndexVPXY], 0);
+
+                if (vpxyStream != null)
+                {
+                    VPXYFile vpxyFile = new VPXYFile(vpxyStream);
+                    // Get the first VPXY internal link
+                    if (vpxyFile.vpxy.linkEntries.Count >= 1 && vpxyFile.vpxy.linkEntries[0].tgiList.Count >= 1 )
+                    {
+                        meshStream = KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[0], 0);
+                    }
+                    vpxyStream.Close();
+                }
+
+                /*
                 uint groupId = MadScience.StringHelpers.HashFNV24(txtMeshName.Text);
                 keyName lod0 = new keyName(0x15a1849, groupId, (ulong)MadScience.StringHelpers.HashFNV32(txtMeshName.Text + "_lod0"));
                 Console.WriteLine("Checking for lod0: " + lod0.ToString());
                 Stream meshStream = searchInPackage(Helpers.currentPackageFile, lod0.ToString());
                 if (meshStream == null)
                 {
-                    meshStream = KeyUtils.searchForKey(lod0.ToString(), 0);
+                    meshStream = KeyUtils.findKey(lod0.ToString(), 0);
                 }
                 if (meshStream == null)
                 {
                     keyName lod1 = new keyName(0x15a1849, groupId, (ulong)MadScience.StringHelpers.HashFNV32(txtMeshName.Text + "_lod1"));
                     Console.WriteLine("Checking for lod1: " + lod1.ToString());
-                    meshStream = KeyUtils.searchForKey(lod1.ToString(), 0);
+                    meshStream = KeyUtils.findKey(lod1.ToString(), 0);
                 }
+                */
 
                 if (meshStream != null)
                 {
@@ -3873,6 +3892,8 @@ namespace CASPartEditor
 
                 }
 
+                meshStream.Close();
+
                 DateTime stopTime = DateTime.Now;
                 TimeSpan duration = stopTime - startTime;
                 this.toolStripStatusLabel1.Text = "Loaded 3D in " + duration.Milliseconds + "ms";
@@ -3900,14 +3921,14 @@ namespace CASPartEditor
             if (details.stencil.F.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.F.key));
 
             DateTime startTime2 = DateTime.Now;
-            List<string> tempList = new List<string>();
-            tempList.Add(details.Multiplier);
-            tempList.Add(details.Mask);
-            tempList.Add(details.Overlay);
-            tempList.Add(details.pattern[0].rgbmask);
-            tempList.Add(details.pattern[1].rgbmask);
-            tempList.Add(details.pattern[2].rgbmask);
-            tempList.Add(details.pattern[3].rgbmask);
+            List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Multiplier));
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Mask));
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[0].rgbmask));
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[1].rgbmask));
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[2].rgbmask));
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[3].rgbmask));
 
             List<Stream> textures = KeyUtils.findKey(tempList, 2);
             DateTime stopTime2 = DateTime.Now;
