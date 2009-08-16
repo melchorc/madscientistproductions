@@ -14,11 +14,15 @@ namespace Sims3Pack_Multi_Installer
         public ArrayList packagedFiles = new ArrayList();
 
         private string filename = "";
+        private string cleanName = "";
 
         public bool load(string filename)
         {
             FileStream s3pfile = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
             BinaryReader readFile = new BinaryReader(s3pfile);
+
+            FileInfo f = new FileInfo(filename);
+            this.cleanName = f.Name.Replace(f.Extension, "");
 
             uint version = readFile.ReadUInt32();
             string s3pack = Encoding.ASCII.GetString(readFile.ReadBytes(7));
@@ -53,7 +57,7 @@ namespace Sims3Pack_Multi_Installer
 
                 Sims3PackFileInfo s3fileInfo = new Sims3PackFileInfo();
                 s3fileInfo.name = tempName;
-                s3fileInfo.cleanName = sanitiseString(tempName.Replace(".package", "")) + ".package";
+                //s3fileInfo.cleanName = sanitiseString(tempName.Replace(".package", "")) + ".package";
                 s3fileInfo.offset = tempOffset;
                 s3fileInfo.length = length;
 
@@ -134,9 +138,9 @@ namespace Sims3Pack_Multi_Installer
             s3pfile.Seek(xmlLength + file.offset, SeekOrigin.Current);
 
             string outputName = "";
-            if (cleanNames)
+            if (cleanNames && this.packagedFiles.Count == 1)
             {
-                outputName = file.cleanName;
+                outputName = this.cleanName + ".package";
             }
             else
             {
@@ -161,7 +165,6 @@ namespace Sims3Pack_Multi_Installer
     class Sims3PackFileInfo
     {
         public string name = "";
-        public string cleanName = "";
         public int offset = 0;
         public int length = 0;
     }
