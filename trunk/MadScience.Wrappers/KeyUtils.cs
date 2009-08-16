@@ -123,21 +123,39 @@ namespace MadScience.Wrappers
         public ResourceKey(string keyString)
         {
             this.order = 0;
-            keyString = keyString.Replace("key:", "");
-            string[] temp = keyString.Split(":".ToCharArray());
-            this.typeId = MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
-            this.groupId = MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
-            this.instanceId = MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
+            if (Helpers.validateKey(keyString) == false)
+            {
+                this.typeId = 0;
+                this.groupId = 0;
+                this.instanceId = 0;
+            }
+            else
+            {
+                keyString = keyString.Replace("key:", "");
+                string[] temp = keyString.Split(":".ToCharArray());
+                this.typeId = MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
+                this.groupId = MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
+                this.instanceId = MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
+            }
         }
 
         public ResourceKey(string keyString, uint order)
         {
             this.order = order;
-            keyString = keyString.Replace("key:", "");
-            string[] temp = keyString.Split(":".ToCharArray());
-            this.typeId = MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
-            this.groupId = MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
-            this.instanceId = MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
+            if (Helpers.validateKey(keyString) == false)
+            {
+                this.typeId = 0;
+                this.groupId = 0;
+                this.instanceId = 0;
+            }
+            else
+            {
+                keyString = keyString.Replace("key:", "");
+                string[] temp = keyString.Split(":".ToCharArray());
+                this.typeId = MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
+                this.groupId = MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
+                this.instanceId = MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
+            }
         }
 
         public ResourceKey(uint type, uint group, ulong instance)
@@ -215,6 +233,25 @@ namespace MadScience.Wrappers
             }
 
             writer = null;
+        }
+    }
+
+    class Helpers
+    {
+        public static bool validateKey(string keyString)
+        {
+            bool retVal = true;
+
+            if (keyString.Trim() == "")
+            {
+                return false;
+            }
+            if (!keyString.StartsWith("key:")) retVal = false;
+            if (!keyString.Contains(":")) retVal = false;
+            string[] temp = keyString.Split(":".ToCharArray());
+            if (temp.Length < 4) retVal = false;
+
+            return retVal;
         }
     }
 }

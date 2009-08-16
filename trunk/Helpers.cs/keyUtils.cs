@@ -172,51 +172,6 @@ namespace MadScience
             }
         }
 
-        public static Stream searchForKey(string keyString)
-        {
-            return searchForKey(keyString, 2);
-        }
-
-        public static Stream searchForKey(string keyString, int fullBuild)
-        {
-
-            // Validate keystring
-            if (validateKey(keyString) == false)
-            {
-                return null;
-            }
-
-            string sims3root = MadScience.Helpers.findSims3Root();
-            if (sims3root == "")
-            {
-                return null;
-            }
-
-            // Split the input key
-            keyName tKey = new keyName(keyString);
-            Stream tStream = null;
-
-            Stream input = File.OpenRead(sims3root + "\\GameData\\Shared\\Packages\\FullBuild" + fullBuild.ToString() + ".package");
-            MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(input, true);
-
-            try
-            {
-                tStream = db.GetResourceStream(tKey.ToResourceKey());
-            }
-            catch (System.Collections.Generic.KeyNotFoundException ex)
-            {
-                Helpers.logMessageToFile(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Helpers.logMessageToFile(ex.Message);
-            }
-
-            input.Close();
-
-            return tStream;
-        }
-
         public static Stream searchForKey(string keyString, string filename)
         {
 
@@ -275,60 +230,33 @@ namespace MadScience
 
         public static Stream findKey(string keyName, int fullBuildNum)
         {
-            List<string> keyNames = new List<string>();
-            keyNames.Add(keyName);
+            if (KeyUtils.validateKey(keyName) == false) return null;
 
-            return findKey(keyNames, fullBuildNum)[0];
+            List<MadScience.Wrappers.ResourceKey> resourceKeys = new List<MadScience.Wrappers.ResourceKey>();
+            resourceKeys.Add(new MadScience.Wrappers.ResourceKey(keyName));
+
+            return findKey(resourceKeys, fullBuildNum)[0];
         }
 
-        /*
-        public static Stream findKey(string keyName, int fullBuildNum)
+        public static Stream findKey(MadScience.Wrappers.ResourceKey resourceKey)
         {
-            Stream tempChunk = new MemoryStream();
-
-            bool hasMatch = false;
-
-            // Check local files first
-            if (newDDSFiles.Count > 0)
-            {
-                //DDSPreview ddsP = new DDSPreview();
-
-                //for (int i = 0; i < newDDSFiles.Count; i++)
-                //{
-                if (KeyUtils.validateKey(keyName) == true && newDDSFiles.ContainsKey(keyName))
-                {
-                    Stream blah = File.OpenRead((string)newDDSFiles[keyName]);
-                    Helpers.CopyStream(blah, tempChunk);
-                    tempChunk.Seek(0, SeekOrigin.Begin);
-                    blah.Close();
-                    hasMatch = true;
-                    //break;
-                }
-
-            }
-
-            if (!hasMatch)
-            {
-                if (KeyUtils.validateKey(keyName) == true)
-                {
-                    tempChunk = searchInPackage(this.filename, keyName);
-                    if (tempChunk == null)
-                    {
-                        tempChunk = searchForKey(keyName, fullBuildNum);
-                    }
-                }
-            }
-
-            return tempChunk;
+            return findKey(resourceKey, 2);
         }
-        */
 
-        public static List<Stream> findKey(List<string> keyNames, int fullBuildNum)
+        public static Stream findKey(MadScience.Wrappers.ResourceKey resourceKey, int fullBuildNum)
+        {
+            List<MadScience.Wrappers.ResourceKey> resourceKeys = new List<MadScience.Wrappers.ResourceKey>();
+            resourceKeys.Add(resourceKey);
+
+            return findKey(resourceKeys, fullBuildNum)[0];
+        }
+         
+        public static List<Stream> findKey(List<MadScience.Wrappers.ResourceKey> resourceKeys, int fullBuildNum)
         {
             List<Stream> tempChunks = new List<Stream>();
 
             // Add one Stream per keyName, even if null
-            for (int i = 0; i < keyNames.Count; i++)
+            for (int i = 0; i < resourceKeys.Count; i++)
             {
                 tempChunks.Add(new MemoryStream());
             }
@@ -337,11 +265,11 @@ namespace MadScience
             if (Helpers.localFiles.Count > 0)
             {
 
-                for (int i = 0; i < keyNames.Count; i++)
+                for (int i = 0; i < resourceKeys.Count; i++)
                 {
-                    if (KeyUtils.validateKey(keyNames[i]) == true && Helpers.localFiles.ContainsKey(keyNames[i]))
+                    if (Helpers.localFiles.ContainsKey(resourceKeys[i]))
                     {
-                        Stream blah = File.OpenRead((string)Helpers.localFiles[keyNames[i]]);
+                        Stream blah = File.OpenRead((string)Helpers.localFiles[resourceKeys[i]]);
                         Helpers.CopyStream(blah, tempChunks[i]);
                         tempChunks[i].Seek(0, SeekOrigin.Begin);
                         blah.Close();
@@ -356,13 +284,13 @@ namespace MadScience
                 Stream localPackage = File.Open(Helpers.currentPackageFile, FileMode.Open, FileAccess.Read, FileShare.Read);
                 MadScience.Wrappers.Database localDb = new MadScience.Wrappers.Database(localPackage, true);
 
-                for (int i = 0; i < keyNames.Count; i++)
+                for (int i = 0; i < resourceKeys.Count; i++)
                 {
-                    if (tempChunks[i].Length == 0 && KeyUtils.validateKey(keyNames[i]) == true)
+                    if (tempChunks[i].Length == 0)
                     {
                         try
                         {
-                            tempChunks[i] = localDb.GetResourceStream(new keyName(keyNames[i]).ToResourceKey());
+                            tempChunks[i] = localDb.GetResourceStream(resourceKeys[i]);
                         }
                         catch (System.Collections.Generic.KeyNotFoundException ex)
                         {
@@ -379,15 +307,15 @@ namespace MadScience
             Stream input = File.OpenRead(Helpers.findSims3Root() + "\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package");
             MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(input, true);
 
-            for (int i = 0; i < keyNames.Count; i++)
+            for (int i = 0; i < resourceKeys.Count; i++)
             {
-                if (tempChunks[i].Length == 0 && KeyUtils.validateKey(keyNames[i]) == true)
+                if (tempChunks[i].Length == 0)
                 {
 
-                    keyName tKey = new keyName(keyNames[i]);
+                    //keyName tKey = new keyName(resourceKeys[i]);
                     try
                     {
-                        tempChunks[i] = db.GetResourceStream(tKey.ToResourceKey());
+                        tempChunks[i] = db.GetResourceStream(resourceKeys[i]);
                     }
                     catch (System.Collections.Generic.KeyNotFoundException ex)
                     {

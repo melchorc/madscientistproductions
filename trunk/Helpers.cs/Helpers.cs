@@ -913,6 +913,12 @@ namespace MadScience
                         case "variables":
                             level++;
                             break;
+                        case "texturePart":
+                            level++;
+                            break;
+                        case "destination":
+                            level++;
+                            break;
                         case "param":
                             if (level == 1)
                             {
@@ -932,11 +938,11 @@ namespace MadScience
                                         xtr.MoveToAttribute("default");
                                         pDetail.assetRoot = xtr.Value;
                                         break;
-
                                     case "Color":
                                         xtr.MoveToAttribute("default");
                                         pDetail.Color = xtr.Value;
                                         break;
+
                                     case "Color 0":
                                         xtr.MoveToAttribute("default");
                                         pDetail.ColorP[0] = xtr.Value;
@@ -1179,6 +1185,38 @@ namespace MadScience
                             curPattern = a3;
 
                             break;
+                        case "step":
+                            if (level == 3)
+                            {
+                                // Inside pattern
+                                xtr.MoveToAttribute("type");
+                                switch (xtr.Value)
+                                {
+                                    case "ColorFill":
+                                        if (xtr.AttributeCount == 2)
+                                        {
+                                            // Okay here we have to get creative.  In-Game patterns often have the params as Color 1 through 4, but custom patterns have them as Color 0 through 3.
+                                            // What we need to do is to try and detect which this pattern is - in-game or custom, and to shift things accordingly so we can load the background colour in.
+
+                                            if (pDetail.ColorP[0] != null)
+                                            {
+                                                // We already have a background color... so check to see if we are already filled up
+                                                if (pDetail.ColorP[4] == null)
+                                                {
+                                                    pDetail.ColorP[4] = pDetail.ColorP[3];
+                                                    pDetail.ColorP[3] = pDetail.ColorP[2];
+                                                    pDetail.ColorP[2] = pDetail.ColorP[1];
+                                                    pDetail.ColorP[1] = pDetail.ColorP[0];
+                                                }
+                                            }
+
+                                            xtr.MoveToAttribute("color");
+                                            pDetail.ColorP[0] = xtr.Value;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
                     }
                 }
                 if (xtr.NodeType == XmlNodeType.EndElement)
@@ -1189,6 +1227,12 @@ namespace MadScience
                             level--;
                             break;
                         case "complate":
+                            level--;
+                            break;
+                        case "texturePart":
+                            level--;
+                            break;
+                        case "destination":
                             level--;
                             break;
                     }
