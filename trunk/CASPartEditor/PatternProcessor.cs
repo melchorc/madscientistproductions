@@ -223,7 +223,6 @@ namespace CASPartEditor
                 ResizeBitmap(ref _Pattern4, 256, 256);
             }
 
-
             startTime = DateTime.Now;
             BitmapData outputData = output.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
             BitmapData multiplierData = _Multiplier.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -236,7 +235,6 @@ namespace CASPartEditor
             stopTime = DateTime.Now;
             duration = stopTime - startTime;
             Console.WriteLine("LockBits time: " + duration.TotalMilliseconds);
-
             const int pixelSize = 4;
             //process every pixel
             unsafe
