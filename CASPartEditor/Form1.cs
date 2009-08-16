@@ -3076,7 +3076,14 @@ namespace CASPartEditor
                     if (txtCustomThumbnailPath.Text.Trim() != "")
                     {
                         chunk.hasCustomThumbnail = true;
-                        this.newPNGfiles.Add(listView1.SelectedIndices[0], txtCustomThumbnailPath.Text);
+                        try
+                        {
+                            this.newPNGfiles.Add(listView1.SelectedIndices[0], txtCustomThumbnailPath.Text);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
                     }
                 }
             }
