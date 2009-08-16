@@ -25,6 +25,8 @@ namespace CASPartEditor
             Helpers.logMessageToFile("Setting icon");
             //this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
 
+            pBrowser.Icon = this.Icon;
+
             //MadScience.Helpers.productName = Application.ProductName;
 
             Helpers.logMessageToFile("Checking license");
@@ -3027,83 +3029,7 @@ namespace CASPartEditor
             {
                 showPatternDetails(pBrowser.selectedPattern, false);
             }
-            /*
-            if (pBrowser.selectedPattern.casPart != "")
-            {
-                txtPatternAKey.Text = "key:" + pBrowser.selectedPattern.typeid.ToUpper() + ":" + pBrowser.selectedPattern.groupid.ToUpper() + ":" + pBrowser.selectedPattern.instanceid.ToUpper();
-                txtPatternAName.Text = pBrowser.selectedPattern.casPart;
-                if (pBrowser.selectedPattern.isCustom == false)
-                {
-                    txtPatternAFilename.Text = "Materials\\" + pBrowser.selectedPattern.category;
-                    if (pBrowser.selectedPattern.subcategory != "")
-                    {
-                        txtPatternAFilename.Text += "\\" + pBrowser.selectedPattern.subcategory;
-                    }
-                    txtPatternAFilename.Text += "\\" + pBrowser.selectedPattern.texturename;
-                }
-                else
-                {
-                    // Get pattern complate and parse it
-                    patternDetails pDetail = Helpers.parsePatternComplate(Helpers.searchForKey(txtPatternAKey.Text, 0));
 
-                    txtPatternAFilename.Text = "Materials\\" + pBrowser.selectedPattern.category + "\\" + pBrowser.selectedPattern.casPart;
-                }
-
-                if (pBrowser.selectedPattern.HBg != "")
-                {
-                    cmbPatternAType.SelectedIndex = 2;
-                }
-                if (pBrowser.selectedPattern.SBg != "")
-                {
-                    
-                }
-                if (pBrowser.selectedPattern.VBg != "")
-                {
-                }
-
-                picPatternColourBg.BackColor = Color.Black;
-                picPatternColour1.BackColor = Color.Black;
-                picPatternColour2.BackColor = Color.Black;
-                picPatternColour3.BackColor = Color.Black;
-                picPatternColour4.BackColor = Color.Black;
-
-                if (pBrowser.selectedPattern.color0 != "")
-                {
-                    cmbPatternAType.SelectedIndex = 1;
-                    picPatternColourBg.BackColor = Helpers.convertColour(pBrowser.selectedPattern.color0);
-                }
-                if (pBrowser.selectedPattern.color1 != "")
-                {
-                    cmbPatternAType.SelectedIndex = 1;
-                    picPatternColour1.BackColor = Helpers.convertColour(pBrowser.selectedPattern.color1);
-                }
-                if (pBrowser.selectedPattern.color2 != "")
-                {
-                    picPatternColour2.BackColor = Helpers.convertColour(pBrowser.selectedPattern.color2);
-                }
-                if (pBrowser.selectedPattern.color3 != "")
-                {
-                    picPatternColour3.BackColor = Helpers.convertColour(pBrowser.selectedPattern.color3);
-                }
-                if (pBrowser.selectedPattern.color4 != "")
-                {
-                    picPatternColour4.BackColor = Helpers.convertColour(pBrowser.selectedPattern.color4);
-                }
-
-                if (pBrowser.selectedPattern.texturename != "")
-                {
-                    if (pBrowser.selectedPattern.isCustom == false)
-                    {
-                        txtPatternARGBMask.Text = "key:00B2D882:" + pBrowser.selectedPattern.groupid.ToUpper() + ":" + MadScience.StringHelpers.HashFNV64(pBrowser.selectedPattern.texturename).ToString("X16");
-                    }
-                    else
-                    {
-                        txtPatternARGBMask.Text = pBrowser.selectedPattern.texturename;
-                    }
-                }
-
-            }
-             */
             pBrowser.Hide();
         }
 
