@@ -3870,12 +3870,9 @@ namespace CASPartEditor
 
         private void generate3DTexture(xmlChunkDetails details)
         {
+            renderWindow1.lblGeneratingTexture.Visible = true;
             if (!bwGenTexture.IsBusy)
                 bwGenTexture.RunWorkerAsync(details);
-            else
-            {
-                bwGenTexture.CancelAsync();
-            }
         }
 
         private void bwGenTexture_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -3896,6 +3893,7 @@ namespace CASPartEditor
                 renderWindow1.loadTextureFromBitmap((Bitmap)a[1], "baseTexture");
                 renderWindow1.resetDevice();
                 renderWindow1.RenderEnabled = true;
+                renderWindow1.lblGeneratingTexture.Visible = false;
             }
             //if the user changed the selection while processing, we need to restart
             if (listView1.SelectedIndices.Count > 0)
