@@ -271,6 +271,54 @@ namespace MadScience.Render
             //OnResetDevice(d3dDevice, null);
         }
 
+        public void DeInit()
+        {
+            if (vertexDeclaration != null)
+                vertexDeclaration.Dispose();
+            vertexDeclaration = null;
+            if (vertexBuffer != null)
+                vertexBuffer.Dispose();
+            vertexBuffer = null;
+            if (indexBuffer != null)
+                indexBuffer.Dispose();
+            indexBuffer = null;
+            if (shader != null)
+                shader.Dispose();
+            shader = null;
+            if (skinTexture != null)
+                skinTexture.Dispose();
+            skinTexture = null;
+            if (skinSpecular != null)
+                skinSpecular.Dispose();
+            skinSpecular = null;
+            if (normalMapTexture != null)
+                normalMapTexture.Dispose();
+            normalMapTexture = null;
+            if (model != null)
+            {
+                if (model.textures.ambientTexture != null)
+                    model.textures.ambientTexture.Dispose();
+                model.textures.ambientTexture = null;
+                if (model.textures.baseTexture != null)
+                    model.textures.baseTexture.Dispose();
+                model.textures.baseTexture = null;
+                if (model.textures.curStencil != null)
+                    model.textures.curStencil.Dispose();
+                model.textures.curStencil = null;
+                if (model.textures.specularTexture != null)
+                    model.textures.specularTexture.Dispose();
+                model.textures.specularTexture = null;
+                model = null;
+            }
+            if (d3dDevice != null)
+            {
+                d3dDevice.Dispose();
+                d3dDevice = null;
+            }
+            renderEnabled = false;
+            Invalidate();
+        }
+
         private void setupShaders()
         {
             logMessageToFile("Setup shaders");
@@ -516,19 +564,19 @@ namespace MadScience.Render
 
             logMessageToFile("Load default skintone");
 
-            Stream skinTextureFile = File.OpenRead(Path.Combine(Application.StartupPath, "afBody_m_0xb4cdc208d8d51bf0_0x00B2D882-0x00000000-0xB4CDC208D8D51BF0.dds"));
+            Stream skinTextureFile = File.OpenRead(Path.Combine(Application.StartupPath, "body_m.dds"));
             skinTexture = TextureLoader.FromStream(d3dDevice, skinTextureFile);
             skinTextureFile.Close();
 
             logMessageToFile("Load default skintone specular");
 
-            Stream skinSpecularFile = File.OpenRead(Path.Combine(Application.StartupPath, "S3_00B2D882_00000000_B4CDC208D8D51BEE_afBody_s_0xb4cdc208d8d51bee%%+_IMG.dds"));
+            Stream skinSpecularFile = File.OpenRead(Path.Combine(Application.StartupPath, "body_s.dds"));
             skinSpecular = TextureLoader.FromStream(d3dDevice, skinSpecularFile);
             skinSpecularFile.Close();
 
             logMessageToFile("Load default skintone normal map");
 
-            Stream normalMapTextureFile = File.OpenRead(Path.Combine(Application.StartupPath, "S3_00B2D882_00000000_B4CDC208D8D51BF3_afBody_n_0xb4cdc208d8d51bf3%%+_IMG.dds"));
+            Stream normalMapTextureFile = File.OpenRead(Path.Combine(Application.StartupPath, "body_n.dds"));
             normalMapTexture = TextureLoader.FromStream(d3dDevice, normalMapTextureFile);
             normalMapTextureFile.Close();
 
@@ -676,7 +724,7 @@ namespace MadScience.Render
             this.renderModeToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(150, 26);
             // 
             // renderModeToolStripMenuItem
             // 
@@ -685,27 +733,27 @@ namespace MadScience.Render
             this.solidToolStripMenuItem,
             this.solidWireframeToolStripMenuItem});
             this.renderModeToolStripMenuItem.Name = "renderModeToolStripMenuItem";
-            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.renderModeToolStripMenuItem.Text = "Render Mode";
             // 
             // wireframeToolStripMenuItem
             // 
             this.wireframeToolStripMenuItem.Name = "wireframeToolStripMenuItem";
-            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.wireframeToolStripMenuItem.Text = "Wireframe";
             this.wireframeToolStripMenuItem.Click += new System.EventHandler(this.wireframeToolStripMenuItem_Click);
             // 
             // solidToolStripMenuItem
             // 
             this.solidToolStripMenuItem.Name = "solidToolStripMenuItem";
-            this.solidToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.solidToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.solidToolStripMenuItem.Text = "Solid";
             this.solidToolStripMenuItem.Click += new System.EventHandler(this.solidToolStripMenuItem_Click);
             // 
             // solidWireframeToolStripMenuItem
             // 
             this.solidWireframeToolStripMenuItem.Name = "solidWireframeToolStripMenuItem";
-            this.solidWireframeToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.solidWireframeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.solidWireframeToolStripMenuItem.Text = "Solid+Wireframe";
             this.solidWireframeToolStripMenuItem.Click += new System.EventHandler(this.solidWireframeToolStripMenuItem_Click);
             // 
