@@ -302,6 +302,8 @@ namespace CASPartEditor
                     copyDefaultsToolStripMenuItem.Enabled = false;
 
                     displayCasPartFile();
+
+                    btnStart3D_Click(null, null);
                 }
                 else
                 {
@@ -1206,6 +1208,8 @@ namespace CASPartEditor
             this.stencilPool.Clear();
             this.stencilPool.TrimExcess();
 
+            copyDefaultsToolStripMenuItem.Enabled = true;
+            renderWindow1.DeInit();
             //cmbStencilList.Enabled = true;
         }
 
@@ -3875,16 +3879,28 @@ namespace CASPartEditor
         private void bwGenTexture_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             xmlChunkDetails details = (xmlChunkDetails)e.Argument;
-            renderWindow1.loadTextureFromBitmap(composeMultiplier(details, details.filename != "CasRgbMask"), "baseTexture");
-            e.Result = details;
-            renderWindow1.resetDevice();
-            renderWindow1.RenderEnabled = true;
+            Bitmap b = composeMultiplier(details, details.filename != "CasRgbMask");
+            Object[] a = new Object[2];
+            a[0] = details;
+            a[1] = b;
+            e.Result = a;
         }
 
         private void bwGenTexture_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            if(e.Result != (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]])
-                generate3DTexture((xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]]);
+            Object[] a = (Object[])e.Result;
+            if (renderWindow1.RenderEnabled)
+            {
+                renderWindow1.loadTextureFromBitmap((Bitmap)a[1], "baseTexture");
+                renderWindow1.resetDevice();
+                renderWindow1.RenderEnabled = true;
+            }
+            //if the user changed the selection while processing, we need to restart
+            if (listView1.SelectedIndices.Count > 0)
+            {
+                if (a[0] != (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]])
+                    generate3DTexture((xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]]);
+            }
         }
 
         private Bitmap composeMultiplier(xmlChunkDetails details, bool RGBA)
@@ -4167,6 +4183,7 @@ namespace CASPartEditor
             saveAsToolStripMenuItem.Enabled = true;
 
             listView1.Items[listView1.Items.Count - 1].Selected = true;
+            btnStart3D_Click(null, null);
         }
 
         private void addNewCopyLastToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4185,6 +4202,7 @@ namespace CASPartEditor
 
             listView1.Items.Add(item);
             listView1.Items[listView1.Items.Count - 1].Selected = true;
+            btnStart3D_Click(null, null);
         }
 
         private void copyDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4207,6 +4225,7 @@ namespace CASPartEditor
             }
             saveAsToolStripMenuItem.Enabled = true;
             listView1.Items[listView1.Items.Count - 1].Selected = true;
+            btnStart3D_Click(null, null);
         }
 
         private void cEnable3DPreview_CheckedChanged(object sender, EventArgs e)
