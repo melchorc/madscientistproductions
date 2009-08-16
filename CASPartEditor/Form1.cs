@@ -48,6 +48,23 @@ namespace CASPartEditor
                 Directory.CreateDirectory(Application.StartupPath + "\\cache\\");
             }
 
+            if (MadScience.Helpers.getRegistryValue("show3dRender") == "True")
+            {
+                cEnable3DPreview.Checked = true;
+                cEnable3DPreview_CheckedChanged(null, null);
+            }
+            else
+            {
+                cEnable3DPreview.Checked = false;
+            }
+
+            if (String.IsNullOrEmpty(MadScience.Helpers.getRegistryValue("renderBackgroundColour")))
+            {
+                MadScience.Helpers.saveRegistryValue("renderBackgroundColour", MadScience.Helpers.convertColour(Color.SlateBlue));
+            }
+
+            renderWindow1.BackColor = MadScience.Helpers.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
+
             lookupTypes();
 
             Helpers.logMessageToFile("Populating types list");
@@ -282,6 +299,7 @@ namespace CASPartEditor
                     //this.stencilPool.TrimExcess();
 
                     saveToolStripMenuItem.Enabled = true;
+                    copyDefaultsToolStripMenuItem.Enabled = false;
 
                     displayCasPartFile();
                 }
@@ -3748,7 +3766,6 @@ namespace CASPartEditor
         private void btnStart3D_Click(object sender, EventArgs e)
         {
 
-
             if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
             {
                 xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
@@ -3791,12 +3808,12 @@ namespace CASPartEditor
                 }
                 */
 
-                if (meshStream != null)
+                if (meshStream != Stream.Null)
                 {
 
                     MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStream);
                     newModel.name = txtMeshName.Text;
-
+                    renderWindow1.BackgroundColour = MadScience.Helpers.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
                     renderWindow1.loadDefaultTextures();
                     renderWindow1.setModel(newModel);
 
@@ -3821,6 +3838,10 @@ namespace CASPartEditor
                     renderWindow1.RenderEnabled = true;
 
 
+                }
+                else
+                {
+                    renderWindow1.statusLabel.Text = "Sorry, we could not find a mesh!";
                 }
 
                 meshStream.Close();
@@ -4183,8 +4204,10 @@ namespace CASPartEditor
 
         private void cEnable3DPreview_CheckedChanged(object sender, EventArgs e)
         {
+
             if (cEnable3DPreview.Checked)
             {
+                MadScience.Helpers.saveRegistryValue("show3dRender", "True");
                 this.MinimumSize=new Size(1000,650);
                 btnStart3D.Visible = true;
                 btnReloadTextures.Visible = true;
@@ -4195,6 +4218,7 @@ namespace CASPartEditor
             else
             {
                 //there is a bug when making the window smaller than that. Probably the 3d view doesn't like it to have no width.
+                MadScience.Helpers.saveRegistryValue("show3dRender", "False");
                 this.MinimumSize = new Size(590,650);
                 this.Size = new Size(590, this.Height);
                 btnStart3D.Visible = false;

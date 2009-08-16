@@ -18,7 +18,7 @@ namespace MadScience.Render
             InitializeComponent();
         }
 
-        private Color backgroundColour = new Color();
+        private Color backgroundColour = Color.SlateBlue;
         [System.ComponentModel.Browsable(false)]
         public Color BackgroundColour
         {
@@ -90,6 +90,7 @@ namespace MadScience.Render
         private ToolStripMenuItem wireframeToolStripMenuItem;
         private ToolStripMenuItem solidToolStripMenuItem;
         private ToolStripMenuItem solidWireframeToolStripMenuItem;
+        public Label statusLabel;
         //private System.ComponentModel.IContainer components;
 
         private int fillMode = 1;
@@ -231,7 +232,7 @@ namespace MadScience.Render
 
             solidToolStripMenuItem_Click(null, null);
 
-            backgroundColour = Color.SlateBlue;
+            //backgroundColour = Color.SlateBlue;
             wireframeColour = Color.FromArgb(127, 127, 127);
 
             //
@@ -338,6 +339,8 @@ namespace MadScience.Render
                 Console.WriteLine(model.bounds.mid.X.ToString() + " : " + model.bounds.mid.Y.ToString() + " : " + model.bounds.mid.Z.ToString());
                 Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + transZ.ToString() + " : " + height.ToString());
                 Console.WriteLine("num vertices: " + model.numVertices.ToString());
+
+                this.statusLabel.Text = "Model loaded.  (" + String.Format("{0:0} polygons, ", model.numPolygons) + String.Format("{0:0} vertices)", model.numVertices);
 
 
                 vertexDeclaration = new VertexDeclaration(device,
@@ -663,6 +666,7 @@ namespace MadScience.Render
             this.wireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.solidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.solidWireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusLabel = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -681,20 +685,20 @@ namespace MadScience.Render
             this.solidToolStripMenuItem,
             this.solidWireframeToolStripMenuItem});
             this.renderModeToolStripMenuItem.Name = "renderModeToolStripMenuItem";
-            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.renderModeToolStripMenuItem.Text = "Render Mode";
             // 
             // wireframeToolStripMenuItem
             // 
             this.wireframeToolStripMenuItem.Name = "wireframeToolStripMenuItem";
-            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.wireframeToolStripMenuItem.Text = "Wireframe";
             this.wireframeToolStripMenuItem.Click += new System.EventHandler(this.wireframeToolStripMenuItem_Click);
             // 
             // solidToolStripMenuItem
             // 
             this.solidToolStripMenuItem.Name = "solidToolStripMenuItem";
-            this.solidToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.solidToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.solidToolStripMenuItem.Text = "Solid";
             this.solidToolStripMenuItem.Click += new System.EventHandler(this.solidToolStripMenuItem_Click);
             // 
@@ -705,12 +709,24 @@ namespace MadScience.Render
             this.solidWireframeToolStripMenuItem.Text = "Solid+Wireframe";
             this.solidWireframeToolStripMenuItem.Click += new System.EventHandler(this.solidWireframeToolStripMenuItem_Click);
             // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.BackColor = System.Drawing.SystemColors.Menu;
+            this.statusLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.statusLabel.Location = new System.Drawing.Point(0, 124);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(153, 13);
+            this.statusLabel.TabIndex = 1;
+            this.statusLabel.Text = "3d view currently not initialised.";
+            // 
             // RenderWindow
             // 
-            //this.ContextMenuStrip = this.contextMenuStrip1;
+            this.Controls.Add(this.statusLabel);
             this.Name = "RenderWindow";
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
