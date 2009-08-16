@@ -838,6 +838,8 @@ namespace CASPartEditor
 
 
             lstCasPartDetails.Items.Clear();
+            renderWindow1.DeInit();
+
             // Populate the CAS Part Details 
             addCasPartItem("Mesh Name", casPartSrc.meshName);
             addCasPartItem("Clothing Order", casPartSrc.clothingOrder.ToString());
