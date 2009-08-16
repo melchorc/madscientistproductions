@@ -11,7 +11,7 @@ namespace MadScience.Wrappers
         public uint version = 768;
 
         //public uint s1count = 0;
-        //public uint s1subcount = 0;
+        public uint s1subcount = 0;
         //public uint s2count = 0;
         //public uint s3count = 0;
         public uint s1presubcount = 0;
@@ -47,7 +47,7 @@ namespace MadScience.Wrappers
             this.version = reader.ReadUInt32();
 
             uint s1count = reader.ReadUInt32();
-            uint s1subcount = reader.ReadUInt32();
+            this.s1subcount = reader.ReadUInt32();
 
             uint s2count = reader.ReadUInt32();
             uint s3count = reader.ReadUInt32();
@@ -90,12 +90,60 @@ namespace MadScience.Wrappers
                 if (v3 > bbox.max.z) bbox.max.z = v3;
             }
 
-            printS3(this.section3[0]);
-            printS3(this.section3[1]);
-            printS3(this.section3[4]);
-
             reader = null;
         }
+
+        public void Save(Stream output)
+        {
+            MadScience.StreamHelpers.WriteStringASCII(output, this.magic);
+            MadScience.StreamHelpers.WriteValueU32(output, this.version);
+            MadScience.StreamHelpers.WriteValueU32(output, (uint)this.section1.Count);
+            MadScience.StreamHelpers.WriteValueU32(output, this.s1subcount);
+            MadScience.StreamHelpers.WriteValueU32(output, (uint)this.section2.Count);
+            MadScience.StreamHelpers.WriteValueU32(output, (uint)this.section3.Count);
+            MadScience.StreamHelpers.WriteValueU32(output, this.s1presubcount);
+            MadScience.StreamHelpers.WriteValueU32(output, this.s1subentryentrysize);
+
+            long subSectionOffset = output.Position;
+            // Write null offsets for now
+            MadScience.StreamHelpers.WriteValueU32(output, 0);
+            MadScience.StreamHelpers.WriteValueU32(output, 0);
+            MadScience.StreamHelpers.WriteValueU32(output, 0);
+
+            this.s1offset = (uint)output.Position;
+            for (int i = 0; i < this.section1.Count; i++)
+            {
+                this.section1[i].Save(output);
+            }
+
+            this.s2offset = (uint)output.Position;
+            for (int i = 0; i < this.section2.Count; i++)
+            {
+                MadScience.StreamHelpers.WriteValueS16(output, this.section2[i]);
+            }
+
+            this.s3offset = (uint)output.Position;
+            for (int i = 0; i < this.section3.Count; i++)
+            {
+                this.section3[i].Save(output);
+            }
+
+            // Write offsets
+            output.Seek(subSectionOffset, SeekOrigin.Begin);
+            MadScience.StreamHelpers.WriteValueU32(output, this.s1offset);
+            MadScience.StreamHelpers.WriteValueU32(output, this.s2offset);
+            MadScience.StreamHelpers.WriteValueU32(output, this.s3offset);
+
+
+        }
+
+        public Stream Save()
+        {
+            Stream temp = new MemoryStream();
+            Save(temp);
+            return temp;
+        }
+
 
         private void printS3(BlendGeomSection3 entry)
         {
@@ -108,17 +156,6 @@ namespace MadScience.Wrappers
             Console.WriteLine((entry.v1 / 8192).ToString() + " " + (entry.v2 / 8192).ToString() + " " + (entry.v3 / 8192).ToString());
             Console.WriteLine((entry.v1 / 16384).ToString() + " " + (entry.v2 / 16384).ToString() + " " + (entry.v3 / 16384).ToString());
 
-        }
-
-        public void Save(Stream output)
-        {
-        }
-
-        public Stream Save()
-        {
-            Stream temp = new MemoryStream();
-            Save(temp);
-            return temp;
         }
     }
 
@@ -147,8 +184,8 @@ namespace MadScience.Wrappers
         private void loadFromStream(Stream input)
         {
             BinaryReader reader = new BinaryReader(input);
-            this.ageGenderFlags = reader.ReadUInt32();
-            this.regionFlags = reader.ReadUInt32();
+            this.ageGenderFlags = MadScience.StreamHelpers.ReadValueU32(input);
+            this.regionFlags = MadScience.StreamHelpers.ReadValueU32(input);
             for (int i = 0; i < this.subEntryCount; i++)
             {
                 this.subentries.Add(new BlendGeomSection1SubEntry(input));
@@ -158,7 +195,21 @@ namespace MadScience.Wrappers
 
         public void Save(Stream output)
         {
+            MadScience.StreamHelpers.WriteValueU32(output, this.ageGenderFlags);
+            MadScience.StreamHelpers.WriteValueU32(output, this.regionFlags);
+            for (int i = 0; i < this.subEntryCount; i++)
+            {
+                this.subentries[i].Save(output);
+            }
         }
+
+        public Stream Save()
+        {
+            Stream temp = new MemoryStream();
+            Save(temp);
+            return temp;
+        }
+
     }
 
     public class BlendGeomSection1SubEntry
@@ -183,29 +234,32 @@ namespace MadScience.Wrappers
 
         private void loadFromStream(Stream input)
         {
-            BinaryReader reader = new BinaryReader(input);
-            this.lastFaceIndex = reader.ReadUInt32();
-            this.faceIndexList = reader.ReadUInt32();
-            this.blendVectorList = reader.ReadUInt32();
-            reader = null;
-
+            this.lastFaceIndex = MadScience.StreamHelpers.ReadValueU32(input);
+            this.faceIndexList = MadScience.StreamHelpers.ReadValueU32(input);
+            this.blendVectorList = MadScience.StreamHelpers.ReadValueU32(input);
         }
 
         public void Save(Stream output)
         {
-            BinaryWriter writer = new BinaryWriter(output);
-            writer.Write(this.lastFaceIndex);
-            writer.Write(this.faceIndexList);
-            writer.Write(this.blendVectorList);
-            writer = null;
+            MadScience.StreamHelpers.WriteValueU32(output, this.lastFaceIndex);
+            MadScience.StreamHelpers.WriteValueU32(output, this.faceIndexList);
+            MadScience.StreamHelpers.WriteValueU32(output, this.blendVectorList);
         }
+
+        public Stream Save()
+        {
+            Stream temp = new MemoryStream();
+            Save(temp);
+            return temp;
+        }
+
     }
 
     public class BlendGeomSection3
     {
-        public float v1 = 0f;
-        public float v2 = 0f; 
-        public float v3 = 0f;
+        public ushort v1 = 0;
+        public ushort v2 = 0; 
+        public ushort v3 = 0;
 
         public BlendGeomSection3()
         {
@@ -223,29 +277,31 @@ namespace MadScience.Wrappers
 
         private void loadFromStream(Stream input)
         {
-            BinaryReader reader = new BinaryReader(input);
+            ushort v1n = MadScience.StreamHelpers.ReadValueU16(input);
+            ushort v2n = MadScience.StreamHelpers.ReadValueU16(input);
+            ushort v3n = MadScience.StreamHelpers.ReadValueU16(input);
 
-            ushort v1n = reader.ReadUInt16();
-            ushort v2n = reader.ReadUInt16();
-            ushort v3n = reader.ReadUInt16();
-
-            //this.v1 = GetSingle16(v1n);
-            //this.v2 = GetSingle16(v2n);
-            //this.v3 = GetSingle16(v3n);
-
-            this.v1 = (v1n - 0x8000);
-            this.v2 = (v2n - 0x8000);
-            this.v3 = (v3n - 0x8000);
+            this.v1 = v1n;
+            this.v2 = v2n;
+            this.v3 = v3n;
 
             //float half1 = (v1n - 0x8000);
             //float half2 = (v2n - 0x8000);
             //float half3 = (v3n - 0x8000);
+        }
 
-            //Console.WriteLine(v1n.ToString() + "(0x" + v1n.ToString("X4") + ") -> " + this.v1.ToString() + " / " + half1.ToString());
-            //Console.WriteLine(v2n.ToString() + "(0x" + v2n.ToString("X4") + ") -> " + this.v2.ToString() + " / " + half2.ToString());
-            //Console.WriteLine(v3n.ToString() + "(0x" + v3n.ToString("X4") + ") -> " + this.v3.ToString() + " / " + half3.ToString());
+        public void Save(Stream output)
+        {
+            MadScience.StreamHelpers.WriteValueU16(output, this.v1);
+            MadScience.StreamHelpers.WriteValueU16(output, this.v2);
+            MadScience.StreamHelpers.WriteValueU16(output, this.v3);
+        }
 
-            reader = null;
+        public Stream Save()
+        {
+            Stream temp = new MemoryStream();
+            Save(temp);
+            return temp;
         }
 
         protected static float GetSingle16(UInt16 val)
