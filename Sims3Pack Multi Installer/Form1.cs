@@ -40,6 +40,12 @@ namespace Sims3Pack_Multi_Installer
                 key.SetValue("destFolder", "");
             }
 
+            if (key.GetValue("cleanNames") != null)
+            {
+                if (key.GetValue("cleanNames").ToString() == "True") checkBox1.Checked = true;
+                else checkBox1.Checked = false;
+            }
+
             key.Close();
         }
 
@@ -87,7 +93,13 @@ namespace Sims3Pack_Multi_Installer
                     if (s3pack.load(filename) == true)
                     {
                         // Okay so now we should have a list of Sims3PackFileInfo stuff in the packagedFiles Array
-                        //Sims3PackFileInfo s3fileinfo = new Sims3PackFileInfo();
+                            //Sims3PackFileInfo s3fileinfo = new Sims3PackFileInfo();
+
+                        FileInfo f = new FileInfo(filename);
+
+                        toolStripStatusLabel1.Text = "Extracting " + f.Name;
+                        statusStrip1.Refresh();
+
                         for (int j = 0; j < s3pack.packagedFiles.Count; j++)
                         {
                             Sims3PackFileInfo s3fileinfo = (Sims3PackFileInfo)s3pack.packagedFiles[j];
@@ -96,14 +108,13 @@ namespace Sims3Pack_Multi_Installer
                             //Console.WriteLine(s3fileinfo.name + " " + extension);
                             if (extension.ToLower() == ".package")
                             {
-                                if (s3pack.extractFile(s3fileinfo, txtDestinationFolder.Text, checkBox1.Checked) == true)
+                                if (s3pack.extractFile(s3fileinfo, txtDestinationFolder.Text, false) == true)
                                 {
 
                                 }
                             }
                         }
-                        label1.Text = "Extracted " + filename;
-                        label1.Refresh();
+                       
                         ProgressBar1.Value++;
 
                         
@@ -122,7 +133,9 @@ namespace Sims3Pack_Multi_Installer
             int timeTaken = (stop.Second - start.Second);
             if (timeTaken == 0) timeTaken++;
 
-            label1.Text  = "Done " + numFiles + " files in " + timeTaken + " seconds with " + (numFiles / timeTaken) + " files per second.";
+            double filesPerSecond = Math.Round((double)(numFiles / timeTaken), 2);
+
+            toolStripStatusLabel1.Text = "Done " + numFiles + " files in " + timeTaken + " seconds with " + filesPerSecond + " files per second.";
             ProgressBar1.Value = 0;
 
         }
@@ -163,6 +176,9 @@ namespace Sims3Pack_Multi_Installer
                 RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Mad Scientist Productions\\Sims3PackMultiInstaller", true);
                 key.SetValue("sourceFolder", txtSourceFolder.Text);
                 key.SetValue("destFolder", txtDestinationFolder.Text);
+                if (checkBox1.Checked) key.SetValue("cleanNames", "True");
+                else key.SetValue("cleanNames", "False");
+
                 key.Close();
 
                 CountFiles(txtSourceFolder.Text);
@@ -172,7 +188,7 @@ namespace Sims3Pack_Multi_Installer
                 }
                 else
                 {
-                    label1.Text = "No Sims3Packs found in folder.";
+                    toolStripStatusLabel1.Text = "No Sims3Packs found in folder.";
                 }
             }
         }

@@ -36,13 +36,15 @@
             this.txtSourceFolder = new System.Windows.Forms.TextBox();
             this.GroupBox3 = new System.Windows.Forms.GroupBox();
             this.Button3 = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.txtDestinationFolder = new System.Windows.Forms.TextBox();
             this.GroupBox2 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.GroupBox1.SuspendLayout();
             this.GroupBox3.SuspendLayout();
             this.GroupBox2.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ProgressBar1
@@ -96,13 +98,14 @@
             // GroupBox3
             // 
             this.GroupBox3.Controls.Add(this.Button3);
+            this.GroupBox3.Controls.Add(this.checkBox1);
             this.GroupBox3.Controls.Add(this.ProgressBar1);
             this.GroupBox3.Location = new System.Drawing.Point(12, 124);
             this.GroupBox3.Name = "GroupBox3";
-            this.GroupBox3.Size = new System.Drawing.Size(544, 50);
+            this.GroupBox3.Size = new System.Drawing.Size(544, 71);
             this.GroupBox3.TabIndex = 6;
             this.GroupBox3.TabStop = false;
-            this.GroupBox3.Text = "Step 3: Click Install:";
+            this.GroupBox3.Text = "Step 3: Click Extract:";
             // 
             // Button3
             // 
@@ -110,9 +113,19 @@
             this.Button3.Name = "Button3";
             this.Button3.Size = new System.Drawing.Size(68, 21);
             this.Button3.TabIndex = 5;
-            this.Button3.Text = "Install";
+            this.Button3.Text = "Extract";
             this.Button3.UseVisualStyleBackColor = true;
             this.Button3.Click += new System.EventHandler(this.Button3_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 47);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(398, 17);
+            this.checkBox1.TabIndex = 8;
+            this.checkBox1.Text = "Rename files on Save (only valid for Sims3Packs with single packages in them)";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // txtDestinationFolder
             // 
@@ -131,48 +144,50 @@
             this.GroupBox2.Size = new System.Drawing.Size(544, 50);
             this.GroupBox2.TabIndex = 5;
             this.GroupBox2.TabStop = false;
-            this.GroupBox2.Text = "Step 2: Select Destination folder to install to:";
+            this.GroupBox2.Text = "Step 2: Select Destination folder to extract to:";
             // 
-            // label1
+            // statusStrip1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(0, 182);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 13);
-            this.label1.TabIndex = 7;
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 203);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(571, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.TabIndex = 9;
+            this.statusStrip1.Text = "statusStrip1";
             // 
-            // checkBox1
+            // toolStripStatusLabel1
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(12, 180);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(130, 17);
-            this.checkBox1.TabIndex = 8;
-            this.checkBox1.Text = "Rename files on Save";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.Visible = false;
+            this.toolStripStatusLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(525, 17);
+            this.toolStripStatusLabel1.Spring = true;
+            this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(569, 185);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(571, 225);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.GroupBox1);
             this.Controls.Add(this.GroupBox3);
             this.Controls.Add(this.GroupBox2);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Multi Sims3Pack Installer by Delphy";
+            this.Text = "Multi Sims3Pack Extractor by Delphy";
             this.GroupBox1.ResumeLayout(false);
             this.GroupBox1.PerformLayout();
             this.GroupBox3.ResumeLayout(false);
+            this.GroupBox3.PerformLayout();
             this.GroupBox2.ResumeLayout(false);
             this.GroupBox2.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -190,8 +205,9 @@
         internal System.Windows.Forms.Button Button3;
         internal System.Windows.Forms.TextBox txtDestinationFolder;
         internal System.Windows.Forms.GroupBox GroupBox2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 
     }
 }
