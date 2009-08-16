@@ -2163,6 +2163,7 @@
             this.picPatternThumb.Location = new System.Drawing.Point(389, 41);
             this.picPatternThumb.Name = "picPatternThumb";
             this.picPatternThumb.Size = new System.Drawing.Size(128, 128);
+            this.picPatternThumb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picPatternThumb.TabIndex = 44;
             this.picPatternThumb.TabStop = false;
             // 
