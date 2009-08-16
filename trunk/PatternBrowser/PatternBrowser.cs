@@ -144,6 +144,25 @@ namespace PatternBrowser
 
                                 }
                                 break;
+                            case "step":
+                                xtr.MoveToAttribute("type");
+                                if (xtr.Value == "ColorFill")
+                                {
+                                    if (xtr.AttributeCount == 2)
+                                    {
+                                        if (color0 != "")
+                                        {
+                                            color4 = color3;
+                                            color3 = color2;
+                                            color2 = color1;
+                                            color1 = color0;
+                                        }
+
+                                        xtr.MoveToAttribute("color");
+                                        color0 = xtr.Value;
+                                    }
+                                }
+                                break;
                         }
                     }
                 }
@@ -169,7 +188,7 @@ namespace PatternBrowser
                         subCategory = "";
                     }
 
-                    sb.AppendLine("<file groupid=\"" + lookupList.Items[i].groupid + "\" instanceid=\"" + lookupList.Items[i].instanceid + "\" typeid=\"" + lookupList.Items[i].typeid + "\" category=\"" + category + "\" subcategory=\"" + subCategory + "\" texturename=\"" + fullName + "\" color0=\"" + color0 + "\" color1=\"" + color1 + "\" color2=\"" + color2 + "\" color3=\"" + color3 + "\" color4=\"" + color4 + "\" HBg=\"" + HBg + "\" SBg=\"" + SBg + "\" VBg=\"" + VBg + "\" HSVShiftBg=\"" + HSVShiftBg + "\" >" + lookupList.Items[i].fullCasPartname + "</file>");
+                    sb.AppendLine("<file texturename=\"" + fullName + "\" typeid=\"" + lookupList.Items[i].typeid + "\" groupid=\"" + lookupList.Items[i].groupid + "\" instanceid=\"" + lookupList.Items[i].instanceid + "\" category=\"" + category + "\" subcategory=\"" + subCategory + "\" color0=\"" + color0 + "\" color1=\"" + color1 + "\" color2=\"" + color2 + "\" color3=\"" + color3 + "\" color4=\"" + color4 + "\" HBg=\"" + HBg + "\" SBg=\"" + SBg + "\" VBg=\"" + VBg + "\" HSVShiftBg=\"" + HSVShiftBg + "\" >" + lookupList.Items[i].fullCasPartname + "</file>");
 
                 }
                 xtr.Close();
@@ -845,7 +864,7 @@ namespace PatternBrowser
 
             if (_selectedPattern.isCustom == false)
             {
-                this.selectedPattern = Helpers.parsePatternComplate(KeyUtils.searchForKey(reskey, 0));
+                this.selectedPattern = Helpers.parsePatternComplate(KeyUtils.findKey(reskey, 0));
             }
             else
             {
@@ -1046,6 +1065,7 @@ namespace PatternBrowser
                                     picBox.Location = new System.Drawing.Point(horizontal, vertical);
                                     picBox.Name = cPattern.casPart;
                                     picBox.Size = new System.Drawing.Size(this.imageWidth, this.imageHeight);
+                                    picBox.SizeMode = PictureBoxSizeMode.StretchImage;
                                     picBox.Click += new System.EventHandler(pictureBox_Click);
 
                                     string toolTip = cPattern.category + "\\";
