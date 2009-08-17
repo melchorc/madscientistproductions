@@ -18,7 +18,7 @@ namespace CASPartEditor
         public void startRender(xmlChunkDetails details)
         {
 
-            List<string> textures = findTextures(casPartNew.ageGenderFlag, casPartNew.typeFlag);
+            List<string> textures = findDefaultTextures(casPartNew.ageGenderFlag, casPartNew.typeFlag);
 
             Stream meshStream = Stream.Null;
 
@@ -282,7 +282,50 @@ namespace CASPartEditor
             return colors;
         }
 
-        public static List<string> findTextures(uint ageGenderFlag, uint typeFlag)
+        public static ResourceKey findDefaultMeshes(uint ageGenderFlag, uint typeFlag)
+        {
+            ResourceKey ret = new ResourceKey();
+
+            // Load in XML
+            TextReader r = new StreamReader(Path.Combine(Application.StartupPath, "xml\\defaultMeshes.xml"));
+            Dictionary<string, string> defaultMeshes = new Dictionary<string, string>();
+            Deserialize(r, defaultMeshes);
+            r.Close();
+
+            string flags = "";
+            string highestAge = "";
+
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Toddler) == (uint)AgeGenderFlags.Toddler) highestAge = "p";
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Child) == (uint)AgeGenderFlags.Child) highestAge = "c";
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Teen) == (uint)AgeGenderFlags.Teen) highestAge = "t";
+            if ((ageGenderFlag & (uint)AgeGenderFlags.YoungAdult) == (uint)AgeGenderFlags.YoungAdult) highestAge = "y";
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Adult) == (uint)AgeGenderFlags.Adult) highestAge = "a";
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Elder) == (uint)AgeGenderFlags.Elder) highestAge = "e";
+
+            flags = highestAge;
+
+            //just default to male for now
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Male) == (uint)AgeGenderFlags.Male) flags += "m";
+            else if ((ageGenderFlag & (uint)AgeGenderFlags.Female) == (uint)AgeGenderFlags.Female) flags += "f";
+
+            // Face Overlay (ie Makeup)
+            if ((typeFlag & 0x4) == 0x4) flags += "Face";
+
+            // Body
+            if ((typeFlag & 0x8) == 0x8) flags += "Body";
+
+            // Accessory
+            if ((typeFlag & 0x10) == 0x10) flags += "Accessory";
+
+            // Check in Dictionary - _m = multiplier, _s = specular, _n = normal map
+            //if (defaultTextures.ContainsKey(flags + "_m")) returnTextures[0] = "key:00B2D882:00000000:" + defaultTextures[flags + "_m"];
+            //if (defaultTextures.ContainsKey(flags + "_s")) returnTextures[1] = "key:00B2D882:00000000:" + defaultTextures[flags + "_s"];
+            //if (defaultTextures.ContainsKey(flags + "_n")) returnTextures[2] = "key:00B2D882:00000000:" + defaultTextures[flags + "_n"];
+
+            return ret;
+        }
+
+        public static List<string> findDefaultTextures(uint ageGenderFlag, uint typeFlag)
         {
 
             // textures[0] = skinTexture
@@ -295,7 +338,7 @@ namespace CASPartEditor
             }
 
             // Load in XML
-            TextReader r = new StreamReader(Path.Combine(Application.StartupPath, "defaultTextures.xml"));
+            TextReader r = new StreamReader(Path.Combine(Application.StartupPath, "xml\\defaultTextures.xml"));
             Dictionary<string, string> defaultTextures = new Dictionary<string, string>();
             Deserialize(r, defaultTextures);
             r.Close();

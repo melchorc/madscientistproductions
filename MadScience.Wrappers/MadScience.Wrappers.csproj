@@ -56,6 +56,7 @@
     <Compile Include="RCOLHeaderEditor.designer.cs">
       <DependentUpon>RCOLHeaderEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="SimGeom.cs" />
     <Compile Include="STBL.cs" />
     <Compile Include="StreamHelpers.cs" />
     <Compile Include="StringHelpers.cs" />

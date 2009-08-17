@@ -267,9 +267,9 @@ namespace MadScience
 
                 for (int i = 0; i < resourceKeys.Count; i++)
                 {
-                    if (Helpers.localFiles.ContainsKey(resourceKeys[i]))
+                    if (Helpers.localFiles.ContainsKey(resourceKeys[i].ToString()))
                     {
-                        Stream blah = File.OpenRead((string)Helpers.localFiles[resourceKeys[i]]);
+                        Stream blah = File.OpenRead((string)Helpers.localFiles[resourceKeys[i].ToString()]);
                         Helpers.CopyStream(blah, tempChunks[i]);
                         tempChunks[i].Seek(0, SeekOrigin.Begin);
                         blah.Close();
