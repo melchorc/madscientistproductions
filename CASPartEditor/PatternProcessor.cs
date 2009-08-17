@@ -12,6 +12,10 @@ namespace CASPartEditor
         public static Bitmap ProcessMakeupTexture(
                 List<Stream> textures,
                 uint clothingType,
+                MadScience.tintDetail tinta,
+                MadScience.tintDetail tintb,
+                MadScience.tintDetail tintc,
+                MadScience.tintDetail tintd, 
                 bool RGBA
             )
         {
@@ -20,10 +24,15 @@ namespace CASPartEditor
             Bitmap _Overlay;
             Bitmap output;
 
-            Color[] Pattern1Colors;
-            Color[] Pattern2Colors;
-            Color[] Pattern3Colors;
-            Color[] Pattern4Colors;
+            Color color1 = Color.Empty;
+            Color color2 = Color.Empty;
+            Color color3 = Color.Empty;
+            Color color4 = Color.Empty;
+
+            if (tinta.enabled.ToLower() == "true") color1 = MadScience.Helpers.convertColour(tinta.color);
+            if (tintb.enabled.ToLower() == "true") color2 = MadScience.Helpers.convertColour(tintb.color);
+            if (tintc.enabled.ToLower() == "true") color3 = MadScience.Helpers.convertColour(tintc.color);
+            if (tintd.enabled.ToLower() == "true") color4 = MadScience.Helpers.convertColour(tintd.color);
 
             var d = new DdsFileTypePlugin.DdsFile();
 
@@ -34,7 +43,6 @@ namespace CASPartEditor
             if (Multiplier.Length == 0)
             {
                 _Multiplier = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
-                System.Windows.Forms.MessageBox.Show("Could not load multiplier");
             }
             else
             {
@@ -44,11 +52,6 @@ namespace CASPartEditor
                 _Multiplier = (Bitmap)d.Image(true, true, true, true);
                 Multiplier.Close();
             }
-            DateTime stopTime = DateTime.Now;
-            TimeSpan duration = stopTime - startTime;
-            Console.WriteLine("Multiplier generation time: " + duration.TotalMilliseconds);
-
-            startTime = DateTime.Now;
             Stream PartMask = textures[1];
             Console.WriteLine("PartMask length: " + PartMask.Length.ToString());
             //Load partmask
@@ -61,15 +64,10 @@ namespace CASPartEditor
             else
             {
                 _PartMask = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
-                System.Windows.Forms.MessageBox.Show("Could not load mask");
             }
-            stopTime = DateTime.Now;
-            duration = stopTime - startTime;
-            Console.WriteLine("PartMask generation time: " + duration.TotalMilliseconds);
 
-            startTime = DateTime.Now;
             Stream Overlay = textures[2];
-            Console.WriteLine("Overlay length: " + Overlay.Length.ToString());
+
 
             //Load overlay
             if ((Overlay.Length != 0))
@@ -82,19 +80,11 @@ namespace CASPartEditor
             {
                 _Overlay = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
             }
-            stopTime = DateTime.Now;
-            duration = stopTime - startTime;
-            Console.WriteLine("Overlay generation time: " + duration.TotalMilliseconds);
 
             //create empty output bitmap
             output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
 
             //some error handling
-            if (_Multiplier.Width != 1024 || _Multiplier.Height != 1024)
-            {
-                ResizeBitmap(ref _Multiplier, 1024, 1024);
-            }
-
             if (_PartMask.Width != 1024 || _PartMask.Height != 1024)
             {
                 ResizeBitmap(ref _PartMask, 1024, 1024);
@@ -105,78 +95,61 @@ namespace CASPartEditor
                 ResizeBitmap(ref _Overlay, 1024, 1024);
             }
 
-            startTime = DateTime.Now;
             BitmapData outputData = output.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
             BitmapData multiplierData = _Multiplier.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
             BitmapData maskData = _PartMask.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
-            stopTime = DateTime.Now;
-            duration = stopTime - startTime;
-            Console.WriteLine("LockBits time: " + duration.TotalMilliseconds);
+            Color outputColor;
             const int pixelSize = 4;
             //process every pixel
             unsafe
             {
-                startTime = DateTime.Now;
                 for (int y = 0; y < 1024; y++)
                 {
                     byte* outputRow = (byte*)outputData.Scan0 + (y * outputData.Stride);
                     byte* multiplierRow = (byte*)multiplierData.Scan0 + (y * multiplierData.Stride);
                     byte* maskRow = (byte*)maskData.Scan0 + (y * maskData.Stride);
-
+                    
                     for (int x = 0; x < 1024; x++)
                     {
 
                         int pixelLocation = x * pixelSize;
 
-                        Color multiplierColor = Color.FromArgb(multiplierRow[pixelLocation + 3], multiplierRow[pixelLocation + 2], multiplierRow[pixelLocation + 1], multiplierRow[pixelLocation]);
-                        if (multiplierColor.A != 0)
-                        {
                             Color maskColor = Color.FromArgb(maskRow[pixelLocation + 3], maskRow[pixelLocation + 2], maskRow[pixelLocation + 1], maskRow[pixelLocation]);
-
-                            int xs = x % 256;
-                            int pixelLocation2 = xs * pixelSize;
-
-                            Color pattern1Color = Color.Empty;
-                            Color pattern2Color = Color.Empty;
-                            Color pattern3Color = Color.Empty;
-                            Color pattern4Color = Color.Empty;
-
-                            if (RGBA)
+                            Color multiplierColor = Color.FromArgb(multiplierRow[pixelLocation + 3], multiplierRow[pixelLocation + 2], multiplierRow[pixelLocation + 1], multiplierRow[pixelLocation]);
+                            if (multiplierColor.A != 0)
                             {
-                                //multiplierColor = ProcessPixelRGBA(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color, pattern4Color, Pattern1Colors, Pattern2Colors, Pattern3Colors, Pattern4Colors);
+                                if (RGBA && !color4.IsEmpty)
+                                {
+                                    outputColor = ProcessMakeUpPixelRGBA(multiplierColor, maskColor, color1, color2, color3, color4);
+                                }
+                                else
+                                {
+                                    outputColor = ProcessMakeUpPixelRGB(multiplierColor, maskColor, color1, color2, color3);
+                                }
+                                outputRow[pixelLocation] = (byte)outputColor.B;
+                                outputRow[pixelLocation + 1] = (byte)outputColor.G;
+                                outputRow[pixelLocation + 2] = (byte)outputColor.R;
+                                outputRow[pixelLocation + 3] = (byte)outputColor.A;
                             }
-                            else
-                            {
-                                //multiplierColor = ProcessPixelRGB(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color, Pattern1Colors, Pattern2Colors, Pattern3Colors);
-                            }
-                            outputRow[pixelLocation] = (byte)multiplierColor.B;
-                            outputRow[pixelLocation + 1] = (byte)multiplierColor.G;
-                            outputRow[pixelLocation + 2] = (byte)multiplierColor.R;
-                            outputRow[pixelLocation + 3] = (byte)multiplierColor.A;
-                        }
                     }
                 }
 
-                stopTime = DateTime.Now;
-                duration = stopTime - startTime;
-                Console.WriteLine("Loop time: " + duration.TotalMilliseconds);
 
             }
             output.UnlockBits(outputData);
 
             //apply overlay and stencils
             Graphics g = Graphics.FromImage(output);
-            g.DrawImage(_Overlay, 0, 0);
-            if ((textures[3] != null))
-            {
-                d.Load(textures[3]);
-                var _Stencil = d.Image(true, true, true, true);
-                if (_Stencil.Width == 1024 || _Stencil.Height == 1024)
-                {
-                    g.DrawImage(_Stencil, 0, 0);
-                }
-            }
+            //g.DrawImage(_Overlay, 0, 0);
+            //if ((textures[2] != null))
+            //{
+            //    d.Load(textures[2]);
+            //    var _Stencil = d.Image(true, true, true, true);
+            //    if (_Stencil.Width == 1024 || _Stencil.Height == 1024)
+            //    {
+            //        g.DrawImage(_Stencil, 0, 0);
+            //    }
+            //}
 
 
             return output;
@@ -232,7 +205,6 @@ namespace CASPartEditor
             if (Multiplier.Length == 0)
             {
                 _Multiplier = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
-                System.Windows.Forms.MessageBox.Show("Could not load multiplier");
             }
             else
             {
@@ -259,7 +231,6 @@ namespace CASPartEditor
             else
             {
                 _PartMask = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
-                System.Windows.Forms.MessageBox.Show("Could not load Mask");
             }
             stopTime = DateTime.Now;
             duration = stopTime - startTime;
@@ -524,7 +495,27 @@ namespace CASPartEditor
 
         }
 
-        private static Color ProcessPixelRGB(Color multiplier, Color mask, Color pattern1mask, Color pattern2mask, Color pattern3mask,  Color[] colors1, Color[] colors2, Color[] colors3)
+        private static Color ProcessMakeUpPixelRGB(Color multiplier, Color mask, Color color1, Color color2, Color color3)
+        {
+            Color output = multiplier;
+            output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, color1));
+            output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, color2));
+            output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, color3));
+            return output;
+        }
+
+        private static Color ProcessMakeUpPixelRGBA(Color multiplier, Color mask, Color color1, Color color2, Color color3, Color color4)
+        {
+            Color output = multiplier;
+            output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, color1));
+            output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, color2));
+            output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, color3));
+            output = ColorOverlay(mask.A, output, ColorMultiply(multiplier, color4));
+
+            return output;
+        }
+
+        private static Color ProcessPixelRGB(Color multiplier, Color mask, Color pattern1mask, Color pattern2mask, Color pattern3mask, Color[] colors1, Color[] colors2, Color[] colors3)
         {
             Color output;
             output = multiplier;
@@ -553,6 +544,20 @@ namespace CASPartEditor
         {
             int cFactor = 255 - factor;
             return Color.FromArgb(colorA.A, ((int)colorA.R * (cFactor) + (int)colorB.R * factor) / 255, ((int)colorA.G * (cFactor) + (int)colorB.G * factor) / 255, ((int)colorA.B * (cFactor) + (int)colorB.B * factor) / 255);
+        }
+
+        private static Color ColorPaint(byte factor, Color colorA, Color colorB)
+        {
+            if (factor == 0)
+                return colorA;
+            float fFactor = (float)factor / 255;
+            float fIFactor = 1-(fFactor);
+            float a = factor + colorA.A * fIFactor;
+            float r = (((fIFactor * colorA.R * colorA.A)) / 255 + (fFactor * colorB.R)) / (a / 255);
+            float g = (((fIFactor * colorA.B * colorA.A)) / 255 + (fFactor * colorB.G)) / (a / 255);
+            float b = (((fIFactor * colorA.G * colorA.A)) / 255 + (fFactor * colorB.B)) / (a / 255);
+
+            return Color.FromArgb((int)a, (int)r, (int)g, (int)b);
         }
 
         private static Color ColorFromPattern(Color mask, Color[] colors)

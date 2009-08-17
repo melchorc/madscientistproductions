@@ -7,10 +7,6 @@
   <texture flags="pmBody_m" instanceid="19D137BA2DC4D6CC" />
   <texture flags="pmBody_n" instanceid="19D137BA2DC4D6CF" />
   <texture flags="pmBody_s" instanceid="19D137BA2DC4D6D2" />
-  
-  <texture flags="pmfBody_m" instanceid="19D137BA2DC4D6CC" />
-  <texture flags="pmfBody_n" instanceid="19D137BA2DC4D6CF" />
-  <texture flags="pmfBody_s" instanceid="19D137BA2DC4D6D2" />
 
   <texture flags="cfBody_m" instanceid="A50790B91BBD15A1" />
   <texture flags="cfBody_n" instanceid="A50790B91BBD15A2" />
@@ -63,10 +59,6 @@
   <texture flags="pmFace_m" instanceid="F27771ADAE43381F" />
   <texture flags="pmFace_n" instanceid="F27771ADAE43381C" />
   <texture flags="pmFace_s" instanceid="F27771ADAE433801" />  
-  
-  <texture flags="pmfFace_m" instanceid="F27771ADAE43381F" />
-  <texture flags="pmfFace_n" instanceid="F27771ADAE43381C" />
-  <texture flags="pmfFace_s" instanceid="F27771ADAE433801" />  
   
   <texture flags="cfFace_m" instanceid="8ACF6FE36D35C202" />
   <texture flags="cfFace_n" instanceid="8ACF6FE36D35C201" />
