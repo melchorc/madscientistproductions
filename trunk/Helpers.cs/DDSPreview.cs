@@ -99,7 +99,7 @@ namespace MadScience
         {
             if (!this.lockImage)
             {
-                pictureBox1.Image = ddsFile.Image(chkShowRed.Checked, chkShowGreen.Checked, chkShowBlue.Checked, chkShowAlpha.Checked, true);
+                pictureBox1.Image = ddsFile.Image(chkShowRed.Checked, chkShowGreen.Checked, chkShowBlue.Checked, chkShowAlpha.Checked, false);
             }
         }
 

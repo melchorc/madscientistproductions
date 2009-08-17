@@ -119,6 +119,7 @@ namespace CASPartEditor
         {
             //this.casPartNew = (casPart)casPartSrc.Copy();
 
+            lastSelected = -1;
             listView1.Items.Clear();
             lstTextureDetails.Items.Clear();
             lstOtherDetails.Items.Clear();
@@ -1089,6 +1090,7 @@ namespace CASPartEditor
                 {
                     this.casPartNew.xmlChunk.Clear();
                     this.casPartNew.xmlChunkRaw.Clear();
+                    lastSelected = -1;
                     listView1.Items.Clear();
                     lstTextureDetails.Items.Clear();
                     lstOtherDetails.Items.Clear();
@@ -1195,6 +1197,7 @@ namespace CASPartEditor
             btnLstOtherReplace.Enabled = false;
 
             lstCasPartDetails.Items.Clear();
+            lastSelected = -1;
             listView1.Items.Clear();
             lstTextureDetails.Items.Clear();
             lstOtherDetails.Items.Clear();
@@ -1351,10 +1354,10 @@ namespace CASPartEditor
                 addListItem(lstTextureDetails, chunk.tint.B.color, "Tint Color B", "color");
                 addListItem(lstTextureDetails, chunk.tint.C.color, "Tint Color C", "color");
                 addListItem(lstTextureDetails, chunk.tint.D.color, "Tint Color D", "color");
-                addListItem(lstTextureDetails, chunk.tint.A.enabled, "Tint Color A Enabled", "color");
-                addListItem(lstTextureDetails, chunk.tint.B.enabled, "Tint Color B Enabled", "color");
-                addListItem(lstTextureDetails, chunk.tint.C.enabled, "Tint Color C Enabled", "color");
-                addListItem(lstTextureDetails, chunk.tint.D.enabled, "Tint Color D Enabled", "color");
+                addListItem(lstTextureDetails, chunk.tint.A.enabled, "Tint Color A Enabled", "");
+                addListItem(lstTextureDetails, chunk.tint.B.enabled, "Tint Color B Enabled", "");
+                addListItem(lstTextureDetails, chunk.tint.C.enabled, "Tint Color C Enabled", "");
+                addListItem(lstTextureDetails, chunk.tint.D.enabled, "Tint Color D Enabled", "");
                 addListBlank(lstTextureDetails);
                 addListItem(lstTextureDetails, chunk.faceOverlay, "Face Overlay", "texture");
                 addListItem(lstTextureDetails, chunk.faceSpecular, "Face Specular", "texture");
