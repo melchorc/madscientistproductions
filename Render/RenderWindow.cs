@@ -724,7 +724,7 @@ namespace MadScience.Render
         {
             base.OnMouseClick(e);
 
-            if (e.Button == MouseButtons.Right && !bMouseDragged)
+            if (renderEnabled && e.Button == MouseButtons.Right && !bMouseDragged)
             {
                 this.contextMenuStrip1.Show(PointToScreen(new Point(e.X, e.Y)));
             }

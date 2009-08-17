@@ -3226,6 +3226,8 @@ namespace CASPartEditor
             ListViewItem item = new ListViewItem();
             item.Text = "Design #" + (listView1.Items.Count + 1).ToString();
 
+            if (listView1.Items.Count == 0) lastSelected = -1;
+
             listView1.Items.Add(item);
 
             // Add a new XML chunk to the casPart
@@ -3244,6 +3246,7 @@ namespace CASPartEditor
             saveAsToolStripMenuItem.Enabled = true;
 
             listView1.Items[listView1.Items.Count - 1].Selected = true;
+            
             if (renderWindow1.RenderEnabled)
                 btnReloadTextures_Click(null, null);
             else
@@ -3254,6 +3257,8 @@ namespace CASPartEditor
         {
             ListViewItem item = new ListViewItem();
             item.Text = "Design #" + (listView1.Items.Count + 1).ToString();
+
+            if (listView1.Items.Count == 0) lastSelected = -1;
 
             // Add a new XML chunk to the casPart
             xmlChunkDetails chunk = new xmlChunkDetails();
@@ -3278,6 +3283,8 @@ namespace CASPartEditor
             {
                 ListViewItem item = new ListViewItem();
                 item.Text = "Design #" + (listView1.Items.Count + 1).ToString();
+
+                if (listView1.Items.Count == 0) lastSelected = -1;
 
                 listView1.Items.Add(item);
 
