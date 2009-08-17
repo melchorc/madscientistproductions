@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<texturesFile>
+  <texture flags="cfBody_m" instanceid="A50790B91BBD15A1" />
+  <texture flags="cfBody_n" instanceid="A50790B91BBD15A2" />
+  <texture flags="cfBody_s" instanceid="A50790B91BBD15BF" />
+
+  <texture flags="cmBody_m" instanceid="A50790B91BBD15A1" />
+  <texture flags="cmBody_n" instanceid="A50790B91BBD15A2" />
+  <texture flags="cmBody_s" instanceid="A50790B91BBD15BF" />
+  
+  <texture flags="tfBody_m" instanceid="659D7229A87C7A03" />
+  <texture flags="tfBody_n" instanceid="B4CDC208D8D51BF3" /> <!-- Same as yf, for now -->
+  <texture flags="tfBody_s" instanceid="659D7229A87C7A1D" />
+  
+  <texture flags="tmBody_m" instanceid="4DB46D1662895FC3" /> <!-- Same as adult -->
+  <texture flags="tmBody_n" instanceid="4DB46D1662895FC0" /> <!-- Same as adult -->
+  <texture flags="tmBody_s" instanceid="1DE6CF6D6C84692E" />
+  
+  <texture flags="yfBody_m" instanceid="B4CDC208D8D51BF0" />
+  <texture flags="yfBody_n" instanceid="B4CDC208D8D51BF3" />
+  <texture flags="yfBody_s" instanceid="B4CDC208D8D51BEE" />
+
+  <texture flags="ymBody_m" instanceid="4DB46D1662895FC3" /> <!-- Same as adult -->
+  <texture flags="ymBody_n" instanceid="4DB46D1662895FC0" /> <!-- Same as adult -->
+  <texture flags="ymBody_s" instanceid="4DB46D1662895FDD" /> <!-- Same as adult -->
+  
+  <texture flags="afBody_m" instanceid="B4CDC208D8D51BF0" />
+  <texture flags="afBody_n" instanceid="B4CDC208D8D51BF3" />
+  <texture flags="afBody_s" instanceid="B4CDC208D8D51BEE" />
+
+  <texture flags="amBody_m" instanceid="4DB46D1662895FC3" />
+  <texture flags="amBody_n" instanceid="4DB46D1662895FC0" />
+  <texture flags="amBody_s" instanceid="4DB46D1662895FDD" />
+
+  <texture flags="efBody_m" instanceid="798410349B50700C" />
+  <texture flags="efBody_n" instanceid="798410349B50700F" />
+  <texture flags="efBody_s" instanceid="798410349B507012" />
+
+  <texture flags="emBody_m" instanceid="9121FA3B0B65C88F" />
+  <texture flags="emBody_n" instanceid="9121FA3B0B65C88C" />
+  <texture flags="emBody_s" instanceid="9121FA3B0B65C891" />
+  
+  <texture flags="cfFace_m" instanceid="8ACF6FE36D35C202" />
+  <texture flags="cfFace_n" instanceid="8ACF6FE36D35C201" />
+  <texture flags="cfFace_s" instanceid="8ACF6FE36D35C21C" />
+
+  <texture flags="cmFace_m" instanceid="8ACF6FE36D35C202" />
+  <texture flags="cmFace_n" instanceid="8ACF6FE36D35C201" />
+  <texture flags="cmFace_s" instanceid="8ACF6FE36D35C21C" />
+
+  <texture flags="tfFace_m" instanceid="40E5744B0DBFC323" /> <!-- Same as adult -->
+  <texture flags="tfFace_n" instanceid="40E5744B0DBFC320" /> <!-- Same as adult -->
+  <texture flags="tfFace_s" instanceid="821A4C77B0C52A7A" />
+
+  <texture flags="tmFace_m" instanceid="6F853F0E35157E24" /> <!-- Same as adult -->
+  <texture flags="tmFace_n" instanceid="6F853F0E35157E27" /> <!-- Same as adult -->
+  <texture flags="tmFace_s" instanceid="ABEC795968CF577D" />
+
+  <texture flags="yfFace_m" instanceid="66F8047C00C00CBB" />
+  <texture flags="yfFace_n" instanceid="66F8047C00C00CB8" />
+  <texture flags="yfFace_s" instanceid="66F8047C00C00CA5" />
+
+  <texture flags="ymFace_m" instanceid="598325880B644F6C" />
+  <texture flags="ymFace_n" instanceid="598325880B644F6F" />
+  <texture flags="ymFace_s" instanceid="598325880B644F72" />
+  
+  <texture flags="afFace_m" instanceid="40E5744B0DBFC323" />
+  <texture flags="afFace_n" instanceid="40E5744B0DBFC320" />
+  <texture flags="afFace_s" instanceid="40E5744B0DBFC33D" />
+  
+  <texture flags="amFace_m" instanceid="6F853F0E35157E24" />
+  <texture flags="amFace_n" instanceid="6F853F0E35157E27" />
+  <texture flags="amFace_s" instanceid="6F853F0E35157E3A" />
+  
+  <texture flags="efFace_m" instanceid="503C527E546E8C5F" />
+  <texture flags="efFace_n" instanceid="503C527E546E8C5C" />
+  <texture flags="efFace_s" instanceid="503C527E546E8C41" />
+
+  <texture flags="emFace_m" instanceid="6F853F0E35157E24" /> <!-- Same as adult -->
+  <texture flags="emFace_n" instanceid="6F853F0E35157E27" /> <!-- Same as adult -->
+  <texture flags="emFace_s" instanceid="6F853F0E35157E3A" /> <!-- Same as adult -->
+  
+  
+</texturesFile>
