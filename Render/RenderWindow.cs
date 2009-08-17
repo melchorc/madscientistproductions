@@ -556,25 +556,25 @@ namespace MadScience.Render
                 switch (outputTexture)
                 {
                     case "ambientTexture":
-                        this.model.textures.ambientTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        this.model.textures.ambientTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
                         break;
                     case "baseTexture":
-                        this.model.textures.baseTexture = Texture.FromBitmap(d3dDevice, textureInput , Usage.AutoGenerateMipMap, Pool.Managed);
+                        this.model.textures.baseTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
                         break;
                     case "specularTexture":
-                        this.model.textures.specularTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        this.model.textures.specularTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
                         break;
                     case "stencilA":
-                        this.model.textures.curStencil = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        this.model.textures.curStencil = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
                         break;
                     case "skinTexture":
-                        this.skinTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        this.skinTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
                         break;
                     case "skinSpecular":
-                        this.skinSpecular = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        this.skinSpecular = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
                         break;
                     case "normalMap":
-                        this.normalMapTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        this.normalMapTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
                         break;
                 }
 
@@ -753,13 +753,13 @@ namespace MadScience.Render
             this.wireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.solidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.solidWireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusLabel = new System.Windows.Forms.Label();
-            this.lblGeneratingTexture = new System.Windows.Forms.Label();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.frontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leftSideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusLabel = new System.Windows.Forms.Label();
+            this.lblGeneratingTexture = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -770,7 +770,7 @@ namespace MadScience.Render
             this.viewToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(150, 48);
             // 
             // renderModeToolStripMenuItem
             // 
@@ -779,29 +779,68 @@ namespace MadScience.Render
             this.solidToolStripMenuItem,
             this.solidWireframeToolStripMenuItem});
             this.renderModeToolStripMenuItem.Name = "renderModeToolStripMenuItem";
-            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.renderModeToolStripMenuItem.Text = "Render Mode";
             // 
             // wireframeToolStripMenuItem
             // 
             this.wireframeToolStripMenuItem.Name = "wireframeToolStripMenuItem";
-            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.wireframeToolStripMenuItem.Text = "Wireframe";
             this.wireframeToolStripMenuItem.Click += new System.EventHandler(this.wireframeToolStripMenuItem_Click);
             // 
             // solidToolStripMenuItem
             // 
             this.solidToolStripMenuItem.Name = "solidToolStripMenuItem";
-            this.solidToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.solidToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.solidToolStripMenuItem.Text = "Solid";
             this.solidToolStripMenuItem.Click += new System.EventHandler(this.solidToolStripMenuItem_Click);
             // 
             // solidWireframeToolStripMenuItem
             // 
             this.solidWireframeToolStripMenuItem.Name = "solidWireframeToolStripMenuItem";
-            this.solidWireframeToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.solidWireframeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.solidWireframeToolStripMenuItem.Text = "Solid+Wireframe";
             this.solidWireframeToolStripMenuItem.Click += new System.EventHandler(this.solidWireframeToolStripMenuItem_Click);
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.frontToolStripMenuItem,
+            this.backToolStripMenuItem,
+            this.leftSideToolStripMenuItem,
+            this.rightToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // frontToolStripMenuItem
+            // 
+            this.frontToolStripMenuItem.Name = "frontToolStripMenuItem";
+            this.frontToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.frontToolStripMenuItem.Text = "Front";
+            this.frontToolStripMenuItem.Click += new System.EventHandler(this.frontToolStripMenuItem_Click);
+            // 
+            // backToolStripMenuItem
+            // 
+            this.backToolStripMenuItem.Name = "backToolStripMenuItem";
+            this.backToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.backToolStripMenuItem.Text = "Back";
+            this.backToolStripMenuItem.Click += new System.EventHandler(this.backToolStripMenuItem_Click);
+            // 
+            // leftSideToolStripMenuItem
+            // 
+            this.leftSideToolStripMenuItem.Name = "leftSideToolStripMenuItem";
+            this.leftSideToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.leftSideToolStripMenuItem.Text = "Left";
+            this.leftSideToolStripMenuItem.Click += new System.EventHandler(this.leftSideToolStripMenuItem_Click);
+            // 
+            // rightToolStripMenuItem
+            // 
+            this.rightToolStripMenuItem.Name = "rightToolStripMenuItem";
+            this.rightToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.rightToolStripMenuItem.Text = "Right";
+            this.rightToolStripMenuItem.Click += new System.EventHandler(this.rightToolStripMenuItem_Click);
             // 
             // statusLabel
             // 
@@ -826,45 +865,6 @@ namespace MadScience.Render
             this.lblGeneratingTexture.TabIndex = 2;
             this.lblGeneratingTexture.Text = "Generating texture...";
             this.lblGeneratingTexture.Visible = false;
-            // 
-            // viewToolStripMenuItem
-            // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.frontToolStripMenuItem,
-            this.backToolStripMenuItem,
-            this.leftSideToolStripMenuItem,
-            this.rightToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.viewToolStripMenuItem.Text = "View";
-            // 
-            // frontToolStripMenuItem
-            // 
-            this.frontToolStripMenuItem.Name = "frontToolStripMenuItem";
-            this.frontToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.frontToolStripMenuItem.Text = "Front";
-            this.frontToolStripMenuItem.Click += new System.EventHandler(this.frontToolStripMenuItem_Click);
-            // 
-            // backToolStripMenuItem
-            // 
-            this.backToolStripMenuItem.Name = "backToolStripMenuItem";
-            this.backToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.backToolStripMenuItem.Text = "Back";
-            this.backToolStripMenuItem.Click += new System.EventHandler(this.backToolStripMenuItem_Click);
-            // 
-            // leftSideToolStripMenuItem
-            // 
-            this.leftSideToolStripMenuItem.Name = "leftSideToolStripMenuItem";
-            this.leftSideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.leftSideToolStripMenuItem.Text = "Left";
-            this.leftSideToolStripMenuItem.Click += new System.EventHandler(this.leftSideToolStripMenuItem_Click);
-            // 
-            // rightToolStripMenuItem
-            // 
-            this.rightToolStripMenuItem.Name = "rightToolStripMenuItem";
-            this.rightToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.rightToolStripMenuItem.Text = "Right";
-            this.rightToolStripMenuItem.Click += new System.EventHandler(this.rightToolStripMenuItem_Click);
             // 
             // RenderWindow
             // 
