@@ -68,7 +68,7 @@ namespace CASPartEditor
             lookupTypes();
 
             Helpers.logMessageToFile("Populating types list");
-            MadScience.Helpers.lookupTypes(Application.StartupPath + "\\metaTypes.xml");
+            MadScience.Helpers.lookupTypes(Application.StartupPath + "\\xml\\metaTypes.xml");
 
             Helpers.logMessageToFile("Finished Initialisation");
         }
@@ -96,7 +96,7 @@ namespace CASPartEditor
 
             Helpers.logMessageToFile("LookupTypes");
 
-            TextReader r = new StreamReader(Application.StartupPath + "\\files.xml");
+            TextReader r = new StreamReader(Application.StartupPath + "\\xml\\casPartList.xml");
             XmlSerializer s = new XmlSerializer(typeof(files));
             this.lookupList = (files)s.Deserialize(r);
             lookupList.makeCTypes();
@@ -835,6 +835,43 @@ namespace CASPartEditor
             for (int i = 0; i < checkedListType.Items.Count; i++)
             {
                 checkedListType.SetItemChecked(i, false);
+            }
+
+            // Get the Mesh links for the first LOD
+            Stream meshStream = Stream.Null;
+
+            // Use the VPXY to get the mesh lod
+            Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY], 0);
+
+            if (vpxyStream != null)
+            {
+                VPXYFile vpxyFile = new VPXYFile(vpxyStream);
+                // Get the first VPXY internal link
+                if (vpxyFile.vpxy.linkEntries.Count >= 1 && vpxyFile.vpxy.linkEntries[0].tgiList.Count >= 1)
+                {
+                    meshStream = KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[0], 0);
+                }
+                vpxyStream.Close();
+            }
+
+            if (meshStream != null)
+            {
+                SimGeomFile simgeomfile = new SimGeomFile(meshStream);
+                for (int i = 0; i < simgeomfile.simgeom.keytable.keys.Count; i++)
+                {
+                    ListViewItem item = new ListViewItem();
+                    item.SubItems.Add("TGI #" + (i + 1));
+                    item.Text = simgeomfile.simgeom.keytable.keys[i].ToString();
+                    if (simgeomfile.simgeom.keytable.keys[i].typeId == 0x00B2D882)
+                    {
+                        item.Tag = "texture";
+                    }
+                    else
+                    {
+                        item.Tag = "";
+                    }
+                    lstMeshTGILinks.Items.Add(item);
+                }
             }
 
 
@@ -1749,7 +1786,13 @@ namespace CASPartEditor
 
                     newKey = "key:" + temp[0] + ":" + temp[1] + ":" + instanceID;
                 }
-                Helpers.localFiles.Add(newKey, f.FullName);
+                try
+                {
+                    Helpers.localFiles.Add(newKey, f.FullName);
+                }
+                catch (Exception ex)
+                {
+                }
                 return newKey;
 
             }
@@ -3154,30 +3197,6 @@ namespace CASPartEditor
 
         }
 
-        private void checkedListComplateBlend_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            // Uncheck all other boxes
-            for (int i = 0; i < checkedListComplateBlend.Items.Count; i++)
-            {
-                if (i != e.Index)
-                {
-                    checkedListComplateBlend.SetItemChecked(i, false);
-                }
-            }
-        }
-
-        private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            // Uncheck all other boxes
-            for (int i = 0; i < checkedListBox1.Items.Count; i++)
-            {
-                if (i != e.Index)
-                {
-                    checkedListBox1.SetItemChecked(i, false);
-                }
-            }
-        }
-
         private void btnDesignTypeCommit_Click(object sender, EventArgs e)
         {
             if (checkedListBox1.GetItemChecked(0) == true)
@@ -3344,6 +3363,28 @@ namespace CASPartEditor
         private void cmbMeshName_SelectionChangeCommitted(object sender, EventArgs e)
         {
             newToolStripMenuItem_Click(null, null);
+        }
+
+        private void lstMeshTGILinks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstMeshTGILinks.SelectedItems.Count == 1)
+            {
+                ListViewItem item = lstMeshTGILinks.SelectedItems[0];
+                switch (item.Tag.ToString())
+                {
+                    case "texture":
+                        btnMeshTGILinksFind.Enabled = true;
+                        break;
+                    default:
+                        btnMeshTGILinksFind.Enabled = false;
+                        break;
+                }
+            }
+        }
+
+        private void btnMeshTGILinksFind_Click(object sender, EventArgs e)
+        {
+            listFindOrReplace(lstMeshTGILinks, true);
         }
 
     }

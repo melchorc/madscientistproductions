@@ -57,6 +57,15 @@
             System.Windows.Forms.ListViewGroup listViewGroup25 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup26 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup27 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup28 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup29 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup30 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup31 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup32 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup33 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup34 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup35 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup36 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -284,8 +293,10 @@
             this.label69 = new System.Windows.Forms.Label();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.checkedListComplateBlend = new System.Windows.Forms.CheckedListBox();
-            this.chkStoreComplate = new System.Windows.Forms.CheckBox();
+            this.lstMeshTGILinks = new System.Windows.Forms.ListView();
+            this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
+            this.btnMeshTGILinksFind = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button33 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
@@ -2949,39 +2960,86 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.checkedListComplateBlend);
-            this.groupBox4.Controls.Add(this.chkStoreComplate);
-            this.groupBox4.Location = new System.Drawing.Point(13, 247);
+            this.groupBox4.Controls.Add(this.lstMeshTGILinks);
+            this.groupBox4.Controls.Add(this.btnMeshTGILinksFind);
+            this.groupBox4.Location = new System.Drawing.Point(8, 39);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(469, 166);
+            this.groupBox4.Size = new System.Drawing.Size(469, 172);
             this.groupBox4.TabIndex = 26;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Advanced Complate Blending";
-            this.groupBox4.Visible = false;
+            this.groupBox4.Text = "Mesh TGI Links:";
             // 
-            // checkedListComplateBlend
+            // lstMeshTGILinks
             // 
-            this.checkedListComplateBlend.FormattingEnabled = true;
-            this.checkedListComplateBlend.Items.AddRange(new object[] {
-            "Opaque",
-            "Multiply",
-            "Overlay",
-            "Screen"});
-            this.checkedListComplateBlend.Location = new System.Drawing.Point(32, 42);
-            this.checkedListComplateBlend.Name = "checkedListComplateBlend";
-            this.checkedListComplateBlend.Size = new System.Drawing.Size(120, 94);
-            this.checkedListComplateBlend.TabIndex = 1;
-            this.checkedListComplateBlend.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListComplateBlend_ItemCheck);
+            this.lstMeshTGILinks.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.lstMeshTGILinks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader11,
+            this.columnHeader12});
+            this.lstMeshTGILinks.FullRowSelect = true;
+            this.lstMeshTGILinks.GridLines = true;
+            listViewGroup19.Header = "Texture Details";
+            listViewGroup19.Name = "groupTextures";
+            listViewGroup20.Header = "Clothing Details";
+            listViewGroup20.Name = "groupClothing";
+            listViewGroup21.Header = "Face Overlay Details";
+            listViewGroup21.Name = "groupFaceOverlay";
+            listViewGroup22.Header = "Mask and Overlay Details";
+            listViewGroup22.Name = "groupMask";
+            listViewGroup23.Header = "Hair Details";
+            listViewGroup23.Name = "groupHair";
+            listViewGroup24.Header = "Skin Details";
+            listViewGroup24.Name = "groupSkin";
+            listViewGroup25.Header = "Logo Details";
+            listViewGroup25.Name = "groupLogo";
+            listViewGroup26.Header = "CAS Details";
+            listViewGroup26.Name = "groupCasDetails";
+            listViewGroup27.Header = "Misc. Details";
+            listViewGroup27.Name = "groupMisc";
+            this.lstMeshTGILinks.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup19,
+            listViewGroup20,
+            listViewGroup21,
+            listViewGroup22,
+            listViewGroup23,
+            listViewGroup24,
+            listViewGroup25,
+            listViewGroup26,
+            listViewGroup27});
+            this.lstMeshTGILinks.HideSelection = false;
+            this.lstMeshTGILinks.Location = new System.Drawing.Point(9, 19);
+            this.lstMeshTGILinks.MultiSelect = false;
+            this.lstMeshTGILinks.Name = "lstMeshTGILinks";
+            this.lstMeshTGILinks.ShowGroups = false;
+            this.lstMeshTGILinks.Size = new System.Drawing.Size(454, 123);
+            this.lstMeshTGILinks.TabIndex = 7;
+            this.lstMeshTGILinks.UseCompatibleStateImageBehavior = false;
+            this.lstMeshTGILinks.View = System.Windows.Forms.View.Details;
+            this.lstMeshTGILinks.SelectedIndexChanged += new System.EventHandler(this.lstMeshTGILinks_SelectedIndexChanged);
             // 
-            // chkStoreComplate
+            // columnHeader11
             // 
-            this.chkStoreComplate.AutoSize = true;
-            this.chkStoreComplate.Location = new System.Drawing.Point(9, 19);
-            this.chkStoreComplate.Name = "chkStoreComplate";
-            this.chkStoreComplate.Size = new System.Drawing.Size(322, 17);
-            this.chkStoreComplate.TabIndex = 0;
-            this.chkStoreComplate.Text = "Store Complate in .package and override texture blending with:";
-            this.chkStoreComplate.UseVisualStyleBackColor = true;
+            this.columnHeader11.DisplayIndex = 1;
+            this.columnHeader11.Text = "Value";
+            this.columnHeader11.Width = 330;
+            // 
+            // columnHeader12
+            // 
+            this.columnHeader12.DisplayIndex = 0;
+            this.columnHeader12.Text = "Name";
+            this.columnHeader12.Width = 100;
+            // 
+            // btnMeshTGILinksFind
+            // 
+            this.btnMeshTGILinksFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnMeshTGILinksFind.Enabled = false;
+            this.btnMeshTGILinksFind.Location = new System.Drawing.Point(9, 143);
+            this.btnMeshTGILinksFind.Name = "btnMeshTGILinksFind";
+            this.btnMeshTGILinksFind.Size = new System.Drawing.Size(36, 23);
+            this.btnMeshTGILinksFind.TabIndex = 8;
+            this.btnMeshTGILinksFind.Text = "find";
+            this.btnMeshTGILinksFind.UseVisualStyleBackColor = true;
+            this.btnMeshTGILinksFind.Click += new System.EventHandler(this.btnMeshTGILinksFind_Click);
             // 
             // groupBox2
             // 
@@ -2999,7 +3057,7 @@
             this.groupBox2.Controls.Add(this.txtMeshLod3);
             this.groupBox2.Controls.Add(this.txtMeshLod2);
             this.groupBox2.Controls.Add(this.txtMeshLod1);
-            this.groupBox2.Location = new System.Drawing.Point(13, 52);
+            this.groupBox2.Location = new System.Drawing.Point(8, 217);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(469, 189);
             this.groupBox2.TabIndex = 25;
@@ -3198,7 +3256,6 @@
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(120, 94);
             this.checkedListBox1.TabIndex = 0;
-            this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
             // 
             // pictureBox1
             // 
@@ -3253,34 +3310,34 @@
             this.columnHeader3,
             this.columnHeader4});
             this.listView2.GridLines = true;
-            listViewGroup19.Header = "Texture Details";
-            listViewGroup19.Name = "groupTextures";
-            listViewGroup20.Header = "Clothing Details";
-            listViewGroup20.Name = "groupClothing";
-            listViewGroup21.Header = "Face Overlay Details";
-            listViewGroup21.Name = "groupFaceOverlay";
-            listViewGroup22.Header = "Mask and Overlay Details";
-            listViewGroup22.Name = "groupMask";
-            listViewGroup23.Header = "Hair Details";
-            listViewGroup23.Name = "groupHair";
-            listViewGroup24.Header = "Skin Details";
-            listViewGroup24.Name = "groupSkin";
-            listViewGroup25.Header = "Logo Details";
-            listViewGroup25.Name = "groupLogo";
-            listViewGroup26.Header = "CAS Details";
-            listViewGroup26.Name = "groupCasDetails";
-            listViewGroup27.Header = "Misc. Details";
-            listViewGroup27.Name = "groupMisc";
+            listViewGroup28.Header = "Texture Details";
+            listViewGroup28.Name = "groupTextures";
+            listViewGroup29.Header = "Clothing Details";
+            listViewGroup29.Name = "groupClothing";
+            listViewGroup30.Header = "Face Overlay Details";
+            listViewGroup30.Name = "groupFaceOverlay";
+            listViewGroup31.Header = "Mask and Overlay Details";
+            listViewGroup31.Name = "groupMask";
+            listViewGroup32.Header = "Hair Details";
+            listViewGroup32.Name = "groupHair";
+            listViewGroup33.Header = "Skin Details";
+            listViewGroup33.Name = "groupSkin";
+            listViewGroup34.Header = "Logo Details";
+            listViewGroup34.Name = "groupLogo";
+            listViewGroup35.Header = "CAS Details";
+            listViewGroup35.Name = "groupCasDetails";
+            listViewGroup36.Header = "Misc. Details";
+            listViewGroup36.Name = "groupMisc";
             this.listView2.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup19,
-            listViewGroup20,
-            listViewGroup21,
-            listViewGroup22,
-            listViewGroup23,
-            listViewGroup24,
-            listViewGroup25,
-            listViewGroup26,
-            listViewGroup27});
+            listViewGroup28,
+            listViewGroup29,
+            listViewGroup30,
+            listViewGroup31,
+            listViewGroup32,
+            listViewGroup33,
+            listViewGroup34,
+            listViewGroup35,
+            listViewGroup36});
             this.listView2.LabelEdit = true;
             this.listView2.Location = new System.Drawing.Point(3, 8);
             this.listView2.MultiSelect = false;
@@ -3613,7 +3670,6 @@
             this.tabPage11.ResumeLayout(false);
             this.tabPage11.PerformLayout();
             this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabPage14.ResumeLayout(false);
@@ -3895,9 +3951,6 @@
         private System.Windows.Forms.Button button20;
         private System.Windows.Forms.TextBox txtOtherBumpMap;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.CheckedListBox checkedListComplateBlend;
-        private System.Windows.Forms.CheckBox chkStoreComplate;
         private System.Windows.Forms.TabPage tabPage14;
         private System.Windows.Forms.Button btnDesignTypeCommit;
         private System.Windows.Forms.Label label22;
@@ -3912,6 +3965,11 @@
         private MadScience.Render.RenderWindow renderWindow1;
         private System.Windows.Forms.CheckBox cEnable3DPreview;
         private System.Windows.Forms.Button btnResetView;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.ListView lstMeshTGILinks;
+        private System.Windows.Forms.ColumnHeader columnHeader11;
+        private System.Windows.Forms.ColumnHeader columnHeader12;
+        private System.Windows.Forms.Button btnMeshTGILinksFind;
     }
 }
 
