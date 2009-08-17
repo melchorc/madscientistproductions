@@ -11,11 +11,11 @@ namespace MadScience.Wrappers
         public uint version = 768;
 
         //public uint s1count = 0;
-        public uint s1subcount = 0;
+        public uint s1subcount = 4;
         //public uint s2count = 0;
         //public uint s3count = 0;
-        public uint s1presubcount = 0;
-        public uint s1subentryentrysize = 0;
+        public uint s1presubcount = 8;
+        public uint s1subentryentrysize = 0xC;
 
         public uint s1offset = 0;
         public uint s2offset = 0;
