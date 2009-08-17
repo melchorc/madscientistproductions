@@ -120,6 +120,8 @@ namespace CASPartEditor
             //this.casPartNew = (casPart)casPartSrc.Copy();
 
             listView1.Items.Clear();
+            lstTextureDetails.Items.Clear();
+            lstOtherDetails.Items.Clear();
             setComboBoxes(casPartSrc.meshName);
             /*
             if (casPart.xmlChunkRaw.Count > 0) { cmbStencilList.Items.Clear(); }
@@ -1087,6 +1089,8 @@ namespace CASPartEditor
                     this.casPartNew.xmlChunk.Clear();
                     this.casPartNew.xmlChunkRaw.Clear();
                     listView1.Items.Clear();
+                    lstTextureDetails.Items.Clear();
+                    lstOtherDetails.Items.Clear();
 
                     //btnAddNewDesign_Click(this, null);
                 }
@@ -1191,6 +1195,7 @@ namespace CASPartEditor
 
             lstCasPartDetails.Items.Clear();
             listView1.Items.Clear();
+            lstTextureDetails.Items.Clear();
             lstOtherDetails.Items.Clear();
 
             saveAsToolStripMenuItem.Enabled = false;
@@ -1644,6 +1649,9 @@ namespace CASPartEditor
                 casPartNew.xmlChunk.RemoveAt(listView1.SelectedIndices[0]);
                 casPartNew.xmlChunkRaw.RemoveAt(listView1.SelectedIndices[0]);
                 listView1.Items.RemoveAt(listView1.SelectedIndices[0]);
+
+                lstTextureDetails.Items.Clear();
+                lstOtherDetails.Items.Clear();
 
                 if (listView1.Items.Count == 0)
                 {
