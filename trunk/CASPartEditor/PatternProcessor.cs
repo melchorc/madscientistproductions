@@ -34,6 +34,7 @@ namespace CASPartEditor
             if (Multiplier.Length == 0)
             {
                 _Multiplier = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
+                System.Windows.Forms.MessageBox.Show("Could not load multiplier");
             }
             else
             {
@@ -60,6 +61,7 @@ namespace CASPartEditor
             else
             {
                 _PartMask = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
+                System.Windows.Forms.MessageBox.Show("Could not load mask");
             }
             stopTime = DateTime.Now;
             duration = stopTime - startTime;
@@ -230,6 +232,7 @@ namespace CASPartEditor
             if (Multiplier.Length == 0)
             {
                 _Multiplier = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
+                System.Windows.Forms.MessageBox.Show("Could not load multiplier");
             }
             else
             {
@@ -245,7 +248,7 @@ namespace CASPartEditor
 
             startTime = DateTime.Now;
             Stream PartMask = textures[1];
-            Console.WriteLine("PartMask length: " + PartMask.Length.ToString());
+            Console.WriteLine("Mask length: " + PartMask.Length.ToString());
             //Load partmask
             if ((PartMask.Length != 0))
             {
@@ -256,10 +259,11 @@ namespace CASPartEditor
             else
             {
                 _PartMask = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
+                System.Windows.Forms.MessageBox.Show("Could not load Mask");
             }
             stopTime = DateTime.Now;
             duration = stopTime - startTime;
-            Console.WriteLine("PartMask generation time: " + duration.TotalMilliseconds);
+            Console.WriteLine("Mask generation time: " + duration.TotalMilliseconds);
 
             startTime = DateTime.Now;
             Stream Overlay = textures[2];

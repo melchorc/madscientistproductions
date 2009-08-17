@@ -3322,6 +3322,11 @@ namespace CASPartEditor
             renderWindow1.ResetView();
         }
 
+        private void cmbMeshName_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            newToolStripMenuItem_Click(null, null);
+        }
+
     }
 
     /// <remarks/>
