@@ -579,7 +579,7 @@ namespace DdsFileTypePlugin
 
         public Image Image(bool red, bool green, bool blue, bool alpha)
         {
-            return Image(red, green, blue, blue, false);
+            return Image(red, green, blue, alpha, false);
         }
 
         public Image Image(bool red, bool green, bool blue, bool alpha, bool invAlpha)

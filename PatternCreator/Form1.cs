@@ -747,7 +747,7 @@ namespace PatternCreator
                 pictureBox1.Image.Save(pngFile, System.Drawing.Imaging.ImageFormat.Png);
 
                 pngFile.Seek(0, SeekOrigin.Begin);
-                rkey = new ResourceKey(instanceId, 0x2E75C765, groupId);
+                rkey = new ResourceKey(0x2E75C765, groupId, instanceId);
                 db.SetResourceStream(rkey, pngFile);
 
                 db.Commit(true);
