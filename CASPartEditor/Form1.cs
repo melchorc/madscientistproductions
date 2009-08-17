@@ -84,14 +84,11 @@ namespace CASPartEditor
 
         string logPath = Helpers.logPath(Application.StartupPath + "\\" + Application.ProductName + ".log", true);
 
-        //private int patternBrowserCategory = 0;
-        PatternBrowser.PatternBrowser pBrowser = new PatternBrowser.PatternBrowser();
-
         //public string filename;
 
         //public Hashtable newDDSFiles = new Hashtable();
-        public Hashtable newVPXYFiles = new Hashtable();
-        public Hashtable newGEOMFiles = new Hashtable();
+        //public Hashtable newVPXYFiles = new Hashtable();
+        //public Hashtable newGEOMFiles = new Hashtable();
         public Dictionary<int, string> newPNGfiles = new Dictionary<int, string>();
 
         private void lookupTypes()
@@ -1134,7 +1131,7 @@ namespace CASPartEditor
             item.SubItems.Add(" " + headerText);
             item.BackColor = Color.LightGray;
             item.Tag = "readonly";
-            item.Font = new Font(item.Font.FontFamily, item.Font.Size + 1, FontStyle.Bold);
+            item.Font = new Font(item.Font.FontFamily, item.Font.Size, FontStyle.Bold);
             lView.Items.Add(item);
         }
 
@@ -1552,60 +1549,6 @@ namespace CASPartEditor
                     }
                 }
 
-
-                /*
-                foreach (ResourceKey entry in db.Entries.Keys)
-                {
-
-                    toolStripProgressBar1.Value++;
-
-                    //MadScience.Wrappers.DatabasePackedFile.Entry entry = db.dbpfEntries[i];
-                    if (entry.TypeId == 0x00B2D882)
-                    {
-                        for (int j = 0; j < casPartSrc.tgi64list.Count; j++)
-                        {
-                            tgi64 tgi = (tgi64)casPartSrc.tgi64list[j];
-                            if (tgi.typeid == (int)0x00B2D882)
-                            {
-                                if (entry.TypeId == tgi.typeid && entry.GroupId == tgi.groupid && entry.InstanceId == tgi.instanceid)
-                                {
-
-                                    string fileNameToSave = "";
-                                    if (keyNames.ContainsKey(entry.InstanceId))
-                                    {
-                                        fileNameToSave = keyNames[entry.InstanceId];
-                                    }
-                                    else
-                                    {
-                                        fileNameToSave = entry.TypeId.ToString("X8") + "_" + entry.GroupId.ToString("X8") + "_" + entry.InstanceId.ToString("X16");
-                                    }
-
-                                    if (!hasShownDialog)
-                                    {
-                                        folderBrowserDialog1.Description = "Please select a folder to save the extracted textures to.";
-                                        folderBrowserDialog1.ShowDialog();
-                                        hasShownDialog = true;
-                                    }
-                                    if (folderBrowserDialog1.SelectedPath != "")
-                                    {
-
-                                        Stream output = db.GetResourceStream(entry);
-                                        FileStream saveFile = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + fileNameToSave + ".dds", FileMode.Create, FileAccess.Write);
-                                        Helpers.CopyStream(output, saveFile);
-                                        saveFile.Close();
-                                        output.Close();
-                                        numFound++;
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    //Console.WriteLine("Time taken: " + (DateTime.Now.Ticks - nowTicks));
-
-                }
-                */
-
                 toolStripProgressBar1.Value = 0;
                 toolStripStatusLabel1.Text = numFound + " textures found.";
                 statusStrip1.Refresh();
@@ -1675,11 +1618,6 @@ namespace CASPartEditor
             }
         }
 
-        private void chkPatternAEnabled_CheckedChanged(object sender, EventArgs e)
-        {
-        }
-
-
         private void chkLogoEnabled_CheckedChanged(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 1)
@@ -1714,100 +1652,6 @@ namespace CASPartEditor
             }
         }
 
-        private void btnPatternAReplaceBGImage_Click(object sender, EventArgs e)
-        {
-            txtPatternBGImage.Text = replaceImageKey(txtPatternBGImage.Text);
-        }
-
-        private void btnPatternAReplaceRGBMask_Click(object sender, EventArgs e)
-        {
-            txtPatternARGBMask.Text = replaceImageKey(txtPatternARGBMask.Text);
-        }
-
-        private void btnPatternACommit_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count == 1)
-            {
-
-                int chunkNo = cmbPatternSelect.SelectedIndex;
-
-                xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-                chunk.pattern[chunkNo] = commitPatternDetails();
-            }
-        }
-
-        private patternDetails commitPatternDetails()
-        {
-
-            patternDetails pDetails = new patternDetails();
-
-            if (chkPatternAEnabled.Checked == true)
-            {
-                //grpPatternA.Enabled = true;
-                pDetails.Enabled = "True";
-            }
-            else
-            {
-                //grpPatternA.Enabled = false;
-                pDetails.Enabled = "False";
-            }
-
-            if (txtPatternATiling.Text.Trim() != "") { pDetails.Tiling = txtPatternATiling.Text; }
-            if (chkPatternALinked.Checked == true) { pDetails.Linked = "true"; } else { pDetails.Linked = "false"; }
-            if (txtPatternAName.Text.Trim() != "") { pDetails.name = txtPatternAName.Text; }
-            if (txtPatternAFilename.Text.Trim() != "") { pDetails.filename = txtPatternAFilename.Text; }
-            if (txtPatternAKey.Text.Trim() != "") { pDetails.key = txtPatternAKey.Text; }
-            pDetails.rgbmask = txtPatternARGBMask.Text;
-            pDetails.specmap = txtPatternASpecular.Text;
-
-            switch (cmbPatternAType.SelectedIndex)
-            {
-                case 0:
-                    pDetails.type = "solidColor";
-                    break;
-                case 2:
-                    pDetails.type = "HSV";
-                    break;
-                case 1:
-                    pDetails.type = "Coloured";
-                    break;
-            }
-
-            if (pDetails.type == "solidColor")
-            {
-                pDetails.nameHigh = pDetails.filename;
-                pDetails.Color = MadScience.Helpers.convertColour(picPatternSolidColour.BackColor);
-            }
-            if (pDetails.type == "HSV")
-            {
-                pDetails.nameHigh = pDetails.filename;
-                if (txtPatternBGImage.Text.Trim() != "") { pDetails.BackgroundImage = txtPatternBGImage.Text; }
-                if (txtPatternAHBg.Text.Trim() != "") { pDetails.HBg = txtPatternAHBg.Text; }
-                if (txtPatternASBg.Text.Trim() != "") { pDetails.SBg = txtPatternASBg.Text; }
-                if (txtPatternAVBg.Text.Trim() != "") { pDetails.VBg = txtPatternAVBg.Text; }
-                if (txtPatternABaseHBg.Text.Trim() != "") { pDetails.BaseHBg = txtPatternABaseHBg.Text; }
-                if (txtPatternABaseSBg.Text.Trim() != "") { pDetails.BaseSBg = txtPatternABaseSBg.Text; }
-                if (txtPatternABaseVBg.Text.Trim() != "") { pDetails.BaseVBg = txtPatternABaseVBg.Text; }
-                if (txtPatternAHSVShiftBG.Text.Trim() != "") { pDetails.HSVShiftBg = txtPatternAHSVShiftBG.Text; }
-            }
-            if (pDetails.type == "Coloured")
-            {
-                pDetails.nameHigh = @"Materials\Miscellaneous\solidColor_1";
-                if (picPatternColourBg.Visible) { pDetails.ColorP[0] = MadScience.Helpers.convertColour(picPatternColourBg.BackColor); }
-                else { pDetails.ColorP[0] = null; }
-                if (picPatternColour1.Visible) { pDetails.ColorP[1] = MadScience.Helpers.convertColour(picPatternColour1.BackColor); }
-                else { pDetails.ColorP[1] = null; }
-                if (picPatternColour2.Visible) { pDetails.ColorP[2] = MadScience.Helpers.convertColour(picPatternColour2.BackColor); }
-                else { pDetails.ColorP[2] = null; }
-                if (picPatternColour3.Visible) { pDetails.ColorP[3] = MadScience.Helpers.convertColour(picPatternColour3.BackColor); }
-                else { pDetails.ColorP[3] = null; }
-                if (picPatternColour4.Visible) { pDetails.ColorP[4] = MadScience.Helpers.convertColour(picPatternColour4.BackColor); }
-                else { pDetails.ColorP[4] = null; }
-            }
-
-            return pDetails;
-        }
-
         private void txtLogoCommit_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 1)
@@ -1821,388 +1665,6 @@ namespace CASPartEditor
                 if (txtLogoLowerRight.Text.Trim() != "") { chunk.logo.lowerRight = txtLogoLowerRight.Text; }
                 //chunk.logo.Color = MadScience.Helpers.convertColour(picLogoColour.BackColor);
             }
-        }
-
-        private void saveGeom(Stream input, Stream output, List<keyName> keynames)
-        {
-            BinaryReader reader = new BinaryReader(input);
-            BinaryWriter writer = new BinaryWriter(output);
-
-            uint rcolVersion = reader.ReadUInt32();
-            writer.Write(rcolVersion);
-            uint rcolDatatype = reader.ReadUInt32();
-            writer.Write(rcolDatatype);
-
-            uint rcolIndex3 = reader.ReadUInt32();
-            writer.Write(rcolIndex3);
-            uint rcolIndex1 = reader.ReadUInt32();
-            writer.Write(rcolIndex1);
-            uint rcolIndex2 = reader.ReadUInt32();
-            writer.Write(rcolIndex2);
-
-            for (int i = 0; i < rcolIndex2; i++)
-            {
-                ulong instanceId = reader.ReadUInt64();
-                writer.Write(instanceId);
-                uint typeId = reader.ReadUInt32();
-                writer.Write(typeId);
-                uint groupId = reader.ReadUInt32();
-                writer.Write(groupId);
-            }
-
-            for (int i = 0; i < rcolIndex2; i++)
-            {
-                uint chunkOffset = reader.ReadUInt32();
-                writer.Write(chunkOffset);
-                uint chunkSize = reader.ReadUInt32();
-                writer.Write(chunkSize);
-            }
-
-            // Real GEOM chunk
-            string geomString = MadScience.StreamHelpers.ReadStringASCII(input, 4);
-            MadScience.StreamHelpers.WriteStringASCII(output, geomString);
-
-            uint geomVersion = reader.ReadUInt32();
-            writer.Write(geomVersion);
-
-            uint tailOffset = reader.ReadUInt32();
-            writer.Write(tailOffset);
-
-            long seekFrom = input.Position;
-            //uint tailSize = reader.ReadUInt32();
-            //writer.Write(tailSize);
-
-            //int bytesLeft = (int)((tailOffset + startGeom) - input.Position);
-            int bytesLeft = (int)(input.Length - input.Position);
-            writer.Write(reader.ReadBytes(bytesLeft));
-
-            output.Seek(tailOffset + seekFrom, SeekOrigin.Begin);
-            input.Seek(tailOffset + seekFrom, SeekOrigin.Begin);
-
-            // Tail section
-            /*
-            uint tailStart = reader.ReadUInt32();
-            if (tailStart != 4)
-            {
-                // Looks like we seeked to the wrong place... try going back a bit
-                output.Seek(tailOffset + 40, SeekOrigin.Begin);
-                input.Seek(tailOffset + 40, SeekOrigin.Begin);
-                tailStart = reader.ReadUInt32();
-
-            }
-            writer.Write(tailStart);
-            uint countTail = reader.ReadUInt32();
-            writer.Write(countTail);
-            for (int i = 0; i < countTail; i++)
-            {
-                writer.Write(reader.ReadUInt32());
-            }
-            */
-            // TGI list
-            uint numOrig = reader.ReadUInt32();
-            writer.Write(numOrig);
-
-            // How many does the original mesh have? - Some meshes (Accessories) have only 3 TGI links.  Some have 4, some have 5.
-            // If 3 then chop off first two
-            // If 4 then chop off first one
-            // If 5 then save all
-
-            int startAt = 0;
-            if (numOrig == 3) {
-                startAt = 2;
-            }
-            if (numOrig == 4) {
-                startAt = 1;
-            }
-
-            for (int i = startAt; i < keynames.Count; i++)
-            {
-                if (keynames[i].ToString() != keynames[i].Blank)
-                {
-                    writer.Write(keynames[i].typeId);
-                    writer.Write(keynames[i].groupId);
-                    writer.Write(keynames[i].instanceId);
-                }
-                else
-                {
-                    // Skip this key
-                    writer.Write(reader.ReadUInt32());
-                    writer.Write(reader.ReadUInt32());
-                    writer.Write(reader.ReadUInt64());
-                }
-            }
-
-            Console.WriteLine("Done saving mesh...");
-        }
-
-        private MemoryStream makeBlendFile(keyName proxy)
-        {
-            MemoryStream output = new MemoryStream();
-            MadScience.StreamHelpers.WriteValueU32(output, 7);
-            MadScience.StreamHelpers.WriteValueU32(output, 0);
-            MadScience.StreamHelpers.WriteValueU32(output, 20);
-            MadScience.StreamHelpers.WriteValueU8(output, (byte)(proxy.name.Length * 2));
-            MadScience.StreamHelpers.WriteStringUTF16(output, false, proxy.name);
-            MadScience.StreamHelpers.WriteValueU32(output, 2);
-            MadScience.StreamHelpers.WriteValueU32(output, 1);
-            MadScience.StreamHelpers.WriteValueU32(output, 1024);
-            MadScience.StreamHelpers.WriteValueU32(output, 1);
-            MadScience.StreamHelpers.WriteValueU32(output, 77951);
-            MadScience.StreamHelpers.WriteValueU16(output, 0);
-            MadScience.StreamHelpers.WriteValueU32(output, 16256);
-            MadScience.StreamHelpers.WriteValueU32(output, 0);
-            MadScience.StreamHelpers.WriteValueU16(output, 0);
-            uint position = (uint)output.Position;
-            MadScience.StreamHelpers.WriteValueU32(output, 1);
-            //MadScience.StreamHelpers.WriteValueU64(output, 6231196913);
-            MadScience.StreamHelpers.WriteValueU32(output, proxy.typeId);
-            MadScience.StreamHelpers.WriteValueU32(output, proxy.groupId);
-            MadScience.StreamHelpers.WriteValueU64(output, proxy.instanceId);
-
-            output.Seek(4, SeekOrigin.Begin);
-            MadScience.StreamHelpers.WriteValueU32(output, (position - 8));
-
-            // Should be 101 bytes long at this point
-            return output;
-        }
-
-        private MemoryStream makeVPXYfile(MadScience.Wrappers.ResourceKey headerKey)
-        {
-            MemoryStream mem = new MemoryStream();
-            MadScience.Wrappers.VPXYFile vpxyFile = new MadScience.Wrappers.VPXYFile();
-            vpxyFile.rcolHeader.internalChunks.Add(headerKey);
-
-            vpxyFile.Save(mem);
-
-            return mem;
-        }
-
-        private void saveToDBPF(Database db, ulong instanceId, bool newInstance)
-        {
-            ResourceKey rkey;
-
-            MemoryStream mem = new MemoryStream();
-            casPartFile casPF = new casPartFile();
-
-            // Do we have new meshes?  If so, we need to do some pretty heft modifications. :)
-
-            string meshName = txtMeshName.Text;
-
-            if (!String.IsNullOrEmpty(txtMeshLod1.Text))
-            {
-                uint customGroup = MadScience.StringHelpers.HashFNV24(meshName);
-                keyName meshLod1 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod1"), meshName + "_lod1");
-                keyName meshLod2 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod2"), meshName + "_lod2");
-                keyName meshLod3 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod3"), meshName + "_lod3");
-
-                keyName vpxyKey = new keyName(0x736884F1, 0x00000001, (ulong)customGroup);
-
-                // Load in the VPXY - we need to modify it.
-                //keyName oldVpxyKey = new keyName((tgi64)casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY]);
-                Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY].ToString(), 0);
-                if (vpxyStream != null)
-                {
-
-                    keyName proxyFit = new keyName(0x736884F1, 0x00000001, meshName + "_fit");
-                    keyName proxyFat = new keyName(0x736884F1, 0x00000001, meshName + "_fat");
-                    keyName proxyThin = new keyName(0x736884F1, 0x00000001, meshName + "_thin");
-                    keyName proxySpecial = new keyName(0x736884F1, 0x00000001, meshName + "_special");
-                    keyName bodyBlendFat = new keyName(0x062C8204, 0x0, meshName + "_fat");
-                    keyName bodyBlendFit = new keyName(0x062C8204, 0x0, meshName + "_fit");
-                    keyName bodyBlendThin = new keyName(0x062C8204, 0x0, meshName + "_thin");
-                    keyName bodyBlendSpecial = new keyName(0x062C8204, 0x0, meshName + "_special");
-
-                    vpxyStream.Seek(0x14, SeekOrigin.Begin);
-                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, vpxyKey.instanceId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, vpxyKey.typeId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, vpxyKey.groupId);
-
-                    vpxyStream.Seek(vpxyStream.Length - 48, SeekOrigin.Begin);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod1.typeId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod1.groupId);
-                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, meshLod1.instanceId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod2.typeId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod2.groupId);
-                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, meshLod2.instanceId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod3.typeId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod3.groupId);
-                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, meshLod3.instanceId);
-
-
-                    MemoryStream proxyFitFile = makeVPXYfile(proxyFit.ToResourceKey());
-                    MemoryStream proxyFatFile = makeVPXYfile(proxyFat.ToResourceKey());
-                    MemoryStream proxyThinFile = makeVPXYfile(proxyThin.ToResourceKey());
-                    MemoryStream proxySpecialFile = makeVPXYfile(proxySpecial.ToResourceKey());
-
-                    MemoryStream bodyBlendFitFile = makeBlendFile(proxyFit);
-                    MemoryStream bodyBlendFatFile = makeBlendFile(proxyFat);
-                    MemoryStream bodyBlendThinFile = makeBlendFile(proxyThin);
-                    MemoryStream bodyBlendSpecialFile = makeBlendFile(proxySpecial);
-
-                    db.SetResourceStream(vpxyKey.ToResourceKey(), vpxyStream);
-                    db.SetResourceStream(proxyFit.ToResourceKey(), proxyFitFile);
-                    db.SetResourceStream(proxyFat.ToResourceKey(), proxyFatFile);
-                    db.SetResourceStream(proxyThin.ToResourceKey(), proxyThinFile);
-                    db.SetResourceStream(proxySpecial.ToResourceKey(), proxySpecialFile);
-                    db.SetResourceStream(bodyBlendFit.ToResourceKey(), bodyBlendFitFile);
-                    db.SetResourceStream(bodyBlendFat.ToResourceKey(), bodyBlendFatFile);
-                    db.SetResourceStream(bodyBlendThin.ToResourceKey(), bodyBlendThinFile);
-                    db.SetResourceStream(bodyBlendSpecial.ToResourceKey(), bodyBlendSpecialFile);
-
-                    // Update the CAS part TGI links with the new VPXY
-                    casPartNew.tgi64list[casPartNew.tgiIndexVPXY] = vpxyKey.ToResourceKey();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFat] = bodyBlendFat.ToResourceKey();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFit] = bodyBlendFit.ToResourceKey();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoThin] = bodyBlendThin.ToResourceKey();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoSpecial] = bodyBlendSpecial.ToResourceKey();
-
-
-                    // Modify the meshes if they need a replacement bump map
-                    List<keyName> kNames = new List<keyName>();
-
-                    kNames.Add(new keyName());
-                    kNames.Add(new keyName());
-                    if (String.IsNullOrEmpty(txtOtherBumpMap.Text) == false)
-                    {
-                        keyName bumpMapKey = new keyName(txtOtherBumpMap.Text, meshName + "_n");
-                        kNames.Add(bumpMapKey);
-                        if (txtOtherBumpMap.Text != "" && !txtOtherBumpMap.Text.StartsWith("key:")) db.SetResourceStream(bumpMapKey.ToResourceKey(), File.OpenRead(txtOtherBumpMap.Text));                        
-                    }
-                    else
-                    {
-                        kNames.Add(new keyName());
-                    }
-                    kNames.Add(new keyName());
-                    kNames.Add(new keyName());
-
-                    Stream blah;
-
-                    MemoryStream geomLod1 = new MemoryStream();
-                    if (txtMeshLod1.Text.Trim() != "")
-                    {
-                        blah = File.Open(txtMeshLod1.Text, FileMode.Open);
-                        saveGeom(blah, geomLod1, kNames);
-                        blah.Close();
-                        db.SetResourceStream(meshLod1.ToResourceKey(), geomLod1);
-                    }
-                    geomLod1.Close();
-
-                    MemoryStream geomLod2 = new MemoryStream();
-                    if (txtMeshLod2.Text.Trim() != "")
-                    {
-                        blah = File.Open(txtMeshLod2.Text, FileMode.Open);
-                        saveGeom(blah, geomLod2, kNames);
-                        blah.Close();
-                        db.SetResourceStream(meshLod2.ToResourceKey(), geomLod2);
-                    }
-                    geomLod2.Close();
-
-                    MemoryStream geomLod3 = new MemoryStream();
-                    if (txtMeshLod3.Text.Trim() != "")
-                    {
-                        blah = File.Open(txtMeshLod3.Text, FileMode.Open);
-                        saveGeom(blah, geomLod3, kNames);
-                        blah.Close();
-                        db.SetResourceStream(meshLod3.ToResourceKey(), geomLod3);
-                    }
-                    geomLod3.Close();
-
-                    blah = null;
-                }
-
-            }
-
-            if (casPartNew != null)
-            {
-                casPF.Save(mem, casPartNew);
-            }
-            else
-            {
-                casPF.Save(mem, casPartSrc);
-            }
-            casPF = null;
-
-            if (this.loadedCasPart.ToString() == "00000000:00000000:0000000000000000")
-            {
-                rkey = new ResourceKey((uint)0x034AEECB, (uint)0, instanceId, (uint)ResourceKeyOrder.ITG);
-            }
-            else
-            {
-                if (!newInstance)
-                {
-                    rkey = this.loadedCasPart;
-                }
-                else
-                {
-                    rkey = new ResourceKey((uint)0x034AEECB, (uint)0, instanceId, (uint)ResourceKeyOrder.ITG);
-                }
-            }
-            db.SetResourceStream(rkey, mem);
-
-            if (casPartNew != null)
-            {
-                // Go through a list of all the keys and see if they are "local"
-                for (int i = 0; i < casPartNew.xmlChunk.Count; i++)
-                {
-                    xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[i];
-
-                    for (int j = 0; j < 10; j++)
-                    {
-                        writeLocalResource(db, stencilPool[j].key);
-                    }
-                    writeLocalResource(db, chunk.Multiplier);
-                    writeLocalResource(db, chunk.Overlay);
-                    writeLocalResource(db, chunk.hair.RootColor);
-                    writeLocalResource(db, chunk.hair.DiffuseColor);
-                    writeLocalResource(db, chunk.hair.HighlightColor);
-                    writeLocalResource(db, chunk.hair.TipColor);
-                    writeLocalResource(db, chunk.hair.ScalpDiffuseMap);
-                    writeLocalResource(db, chunk.hair.ScalpControlMap);
-                    writeLocalResource(db, chunk.hair.ScalpSpecularMap);
-                    writeLocalResource(db, chunk.hair.ScalpAO);
-                    writeLocalResource(db, chunk.hair.FaceDiffuseMap);
-                    writeLocalResource(db, chunk.hair.FaceControlMap);
-                    writeLocalResource(db, chunk.hair.FaceSpecularMap);
-                    writeLocalResource(db, chunk.hair.FaceAO);
-                    writeLocalResource(db, chunk.Mask);
-                    writeLocalResource(db, chunk.SkinSpecular);
-                    writeLocalResource(db, chunk.SkinAmbient);
-                    writeLocalResource(db, chunk.ClothingSpecular);
-                    writeLocalResource(db, chunk.ClothingAmbient);
-                    writeLocalResource(db, chunk.PartMask);
-                    writeLocalResource(db, chunk.pattern[0].BackgroundImage);
-                    writeLocalResource(db, chunk.pattern[1].BackgroundImage);
-                    writeLocalResource(db, chunk.pattern[2].BackgroundImage);
-                    writeLocalResource(db, chunk.pattern[3].BackgroundImage);
-                    writeLocalResource(db, chunk.pattern[0].rgbmask);
-                    writeLocalResource(db, chunk.pattern[1].rgbmask);
-                    writeLocalResource(db, chunk.pattern[2].rgbmask);
-                    writeLocalResource(db, chunk.pattern[3].rgbmask);
-                    writeLocalResource(db, chunk.pattern[0].specmap);
-                    writeLocalResource(db, chunk.pattern[1].specmap);
-                    writeLocalResource(db, chunk.pattern[2].specmap);
-                    writeLocalResource(db, chunk.pattern[3].specmap);
-                    writeLocalResource(db, chunk.pattern[0].filename);
-                    writeLocalResource(db, chunk.pattern[1].filename);
-                    writeLocalResource(db, chunk.pattern[2].filename);
-                    writeLocalResource(db, chunk.pattern[3].filename);
-                    writeLocalResource(db, chunk.faceOverlay);
-                    writeLocalResource(db, chunk.faceSpecular);
-                    writeLocalResource(db, chunk.ControlMap);
-                    writeLocalResource(db, chunk.DiffuseMap);
-
-                    if (newPNGfiles.ContainsKey(i))
-                    {
-                        Stream newPNG = File.Open(newPNGfiles[i], FileMode.Open, FileAccess.Read, FileShare.Read);
-                        ResourceKey keyPNG = new ResourceKey(0x626F60CE, (uint)(i + 1), instanceId, (uint)ResourceKeyOrder.ITG);
-                        db.SetResourceStream(keyPNG, newPNG);
-                        newPNG.Close();
-                    }
-                }
-            }
-
-            mem.Close();
-
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2245,44 +1707,9 @@ namespace CASPartEditor
             }
         }
 
-        private void writeLocalResource(Database db, string keyName)
-        {
-            if (keyName.Trim() == "") return;
-            //if (!validateKey(keyName)) return;
-
-            if (Helpers.localFiles.ContainsKey(keyName))
-            {
-                ResourceKey key = new ResourceKey(keyName);
-                Stream newDDS = File.Open((string)Helpers.localFiles[keyName], FileMode.Open, FileAccess.Read, FileShare.Read);
-                db.SetResourceStream(key, newDDS);
-                newDDS.Close();
-            }
-
-        }
-
         private void btnListOtherFind_Click(object sender, EventArgs e)
         {
             listFindOrReplace(lstOtherDetails, true);
-        }
-
-        private void btnPatternAFindBGImage_Click(object sender, EventArgs e)
-        {
-            KeyUtils.findAndShowImage(txtPatternBGImage.Text);
-        }
-
-        private void btnPatternAFindRGBMask_Click(object sender, EventArgs e)
-        {
-            KeyUtils.findAndShowImage(txtPatternARGBMask.Text);
-        }
-
-        private void btnPatternAFindSpec_Click(object sender, EventArgs e)
-        {
-            KeyUtils.findAndShowImage(txtPatternASpecular.Text);
-        }
-
-        private void btnPatternAReplaceSpec_Click(object sender, EventArgs e)
-        {
-            txtPatternASpecular.Text = replaceImageKey(txtPatternASpecular.Text);
         }
 
         private string replaceImageKey(string keyString)
@@ -2320,27 +1747,6 @@ namespace CASPartEditor
         private void btnLstOtherReplace_Click(object sender, EventArgs e)
         {
             listFindOrReplace(lstOtherDetails, false);
-        }
-
-        private void picPatternAColor_Click(object sender, EventArgs e)
-        {
-            picPatternSolidColour.BackColor = showColourDialog(picPatternSolidColour.BackColor);
-        }
-
-        private Color showColourDialog(Color input)
-        {
-
-            ColorPicker.ColorPickerDialog cpd = new ColorPicker.ColorPickerDialog();
-            cpd.Color = input;
-            if (cpd.ShowDialog() == DialogResult.OK)
-            {
-                return cpd.Color;
-            }
-            else
-            {
-                return input;
-            }
-
         }
 
         private void picLogoColour_Click(object sender, EventArgs e)
@@ -2456,266 +1862,6 @@ namespace CASPartEditor
             }
         }
 
-        private void btnPatternChannelTextureFind_Click(object sender, EventArgs e)
-        {
-            KeyUtils.findAndShowImage(txtPatternChannelTexture.Text);
-        }
-
-        private void btnPatternChannelTextureReplace_Click(object sender, EventArgs e)
-        {
-            txtPatternChannelTexture.Text = replaceImageKey(txtPatternChannelTexture.Text);
-        }
-
-        private void btnPatternChannelCommit_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count == 1)
-            {
-
-                int patternNo = cmbPatternSelect.SelectedIndex;
-                int channelNo = cmbChannelSelect.SelectedIndex;
-                xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-
-                if (chkPatternChannelEnabled.Checked)
-                {
-                    chunk.pattern[patternNo].ChannelEnabled[channelNo] = "True";
-                }
-                else
-                {
-                    chunk.pattern[patternNo].ChannelEnabled[channelNo] = "False";
-                }
-
-                chunk.pattern[patternNo].Channel[channelNo] = txtPatternChannelTexture.Text;
-                chunk.pattern[patternNo].H[channelNo] = txtPatternChannelH.Text;
-                chunk.pattern[patternNo].S[channelNo] = txtPatternChannelS.Text;
-                chunk.pattern[patternNo].V[channelNo] = txtPatternChannelV.Text;
-                chunk.pattern[patternNo].BaseH[channelNo] = txtPatternChannelBaseH.Text;
-                chunk.pattern[patternNo].BaseS[channelNo] = txtPatternChannelBaseS.Text;
-                chunk.pattern[patternNo].BaseV[channelNo] = txtPatternChannelBaseV.Text;
-                chunk.pattern[patternNo].HSVShift[channelNo] = txtPatternChannelBaseHSVShift.Text;
-
-            }
-        }
-
-        private void makePatternPreviewThumb()
-        {
-            if (listView1.SelectedItems.Count == 1)
-            {
-
-                patternDetails temp = commitPatternDetails();
-
-                picPatternThumb.Image = this.pBrowser.makePatternThumb(pBrowser.findPattern(temp.key), false, pBrowser.pDetailsTopFile(temp));
-                picPatternThumb.Visible = true;
-            }
-
-        }
-
-        private void picPatternColourBg_Click(object sender, EventArgs e)
-        {
-            picPatternColourBg.BackColor = showColourDialog(picPatternColourBg.BackColor);
-            picPatternColourBg.Tag = "color";
-
-            makePatternPreviewThumb();
-        }
-
-        private void picPatternColour1_Click(object sender, EventArgs e)
-        {
-            picPatternColour1.BackColor = showColourDialog(picPatternColour1.BackColor);
-            picPatternColour1.Tag = "color";
-            makePatternPreviewThumb();
-        }
-
-        private void picPatternColour2_Click(object sender, EventArgs e)
-        {
-            picPatternColour2.BackColor = showColourDialog(picPatternColour2.BackColor);
-            picPatternColour2.Tag = "color";
-            makePatternPreviewThumb();
-        }
-
-        private void picPatternColour3_Click(object sender, EventArgs e)
-        {
-            picPatternColour3.BackColor = showColourDialog(picPatternColour3.BackColor);
-            picPatternColour3.Tag = "color";
-            makePatternPreviewThumb();
-        }
-
-        private void picPatternColour4_Click(object sender, EventArgs e)
-        {
-            picPatternColour4.BackColor = showColourDialog(picPatternColour4.BackColor);
-            picPatternColour4.Tag = "color";
-            makePatternPreviewThumb();
-        }
-
-        private void cmbPatternSelect_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count == 1)
-            {
-                showPatternDetails(listView1.SelectedIndices[0]);
-            }
-
-        }
-
-        private void showPatternDetails(int designNo)
-        {
-            xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[designNo];
-
-            int i = cmbPatternSelect.SelectedIndex;
-            if (chunk.filename == "CasRgbMask" && i == 3)
-            {
-                grpPatternA.Enabled = false;
-            }
-            else
-            {
-                grpPatternA.Enabled = true;
-                showPatternDetails(chunk.pattern[i]);
-            }
-        }
-
-        private void showPatternDetails(patternDetails pDetails)
-        {
-            showPatternDetails(pDetails, true);
-        }
-
-        private void showPatternDetails(patternDetails pDetails, bool doEnable)
-        {
-
-            switch (pDetails.type)
-            {
-                case "solidColor":
-                    cmbPatternAType.SelectedIndex = 0;
-                    break;
-                case "HSV":
-                    cmbPatternAType.SelectedIndex = 2;
-                    break;
-                case "Coloured":
-                    cmbPatternAType.SelectedIndex = 1;
-                    break;
-            }
-
-            if (doEnable)
-            {
-                if (pDetails.Enabled.ToLower() == "true") { chkPatternAEnabled.Checked = true; }
-                else { chkPatternAEnabled.Checked = false; }
-            }
-            txtPatternABaseHBg.Text = pDetails.BaseHBg;
-            txtPatternABaseSBg.Text = pDetails.BaseSBg;
-            txtPatternABaseVBg.Text = pDetails.BaseVBg;
-            txtPatternBGImage.Text = pDetails.BackgroundImage;
-            txtPatternAFilename.Text = pDetails.filename;
-            txtPatternAHBg.Text = pDetails.HBg;
-            txtPatternASBg.Text = pDetails.SBg;
-            txtPatternAVBg.Text = pDetails.VBg;
-            txtPatternAHSVShiftBG.Text = pDetails.HSVShiftBg;
-            txtPatternAKey.Text = pDetails.key;
-            txtPatternAName.Text = pDetails.name;
-            if (pDetails.Linked.ToLower() == "true") { chkPatternALinked.Checked = true; }
-            else { chkPatternALinked.Checked = false; }
-            txtPatternARGBMask.Text = pDetails.rgbmask;
-            txtPatternASpecular.Text = pDetails.specmap;
-            txtPatternATiling.Text = pDetails.Tiling;
-            picPatternSolidColour.BackColor = MadScience.Helpers.convertColour(pDetails.Color);
-
-            grpPatternA.Enabled = true;
-
-            if (pDetails.type == "Coloured")
-            {
-                PatternBrowser.patternsFile pFile = pBrowser.pDetailsTopFile(pDetails);
-                PatternBrowser.patternsFile pattern = pBrowser.findPattern(pDetails.key);
-
-                // Check if pFile has the correct colours
-                if (String.IsNullOrEmpty(pattern.color0)) { pFile.color0 = ""; pDetails.ColorP[0] = null; }
-                if (String.IsNullOrEmpty(pattern.color1)) { pFile.color1 = ""; pDetails.ColorP[1] = null; }
-                if (String.IsNullOrEmpty(pattern.color2)) { pFile.color2 = ""; pDetails.ColorP[2] = null; }
-                if (String.IsNullOrEmpty(pattern.color3)) { pFile.color3 = ""; pDetails.ColorP[3] = null; }
-                if (String.IsNullOrEmpty(pattern.color4)) { pFile.color4 = ""; pDetails.ColorP[4] = null; }
-
-                picPatternThumb.Image = this.pBrowser.makePatternThumb(pattern, false, pFile);
-                picPatternThumb.Visible = true;
-            }
-            
-            if (pDetails.type == "HSV")
-            {
-                if (File.Exists(Application.StartupPath + "\\patterncache\\" + pDetails.name + ".png"))
-                {
-                    Stream pngThumb = File.OpenRead(Application.StartupPath + "\\patterncache\\" + pDetails.name + ".png");
-                    picPatternThumb.Image = Image.FromStream(pngThumb);
-                    pngThumb.Close();
-                    picPatternThumb.Visible = true;
-                }
-                else
-                {
-                    picPatternThumb.Image = this.pBrowser.makePatternThumb(pDetails.key);
-                    picPatternThumb.Visible = true;
-                }
-            }
-
-            Color temp;
-            temp = MadScience.Helpers.convertColour(pDetails.ColorP[0], true);
-            picPatternColourBg.BackColor = temp;
-            if (temp == Color.Empty)
-            {
-                picPatternColourBg.Tag = "empty";
-                picPatternColourBg.Visible = false;
-            }
-            else
-            {
-                picPatternColourBg.Tag = "color";
-                picPatternColourBg.Visible = true;
-            }
-
-            temp = MadScience.Helpers.convertColour(pDetails.ColorP[1], true);
-            picPatternColour1.BackColor = temp;
-            if (temp == Color.Empty)
-            {
-                picPatternColour1.Tag = "empty";
-                picPatternColour1.Visible = false;
-            }
-            else
-            {
-                picPatternColour1.Tag = "color";
-                picPatternColour1.Visible = true;
-            }
-
-            temp = MadScience.Helpers.convertColour(pDetails.ColorP[2], true);
-            picPatternColour2.BackColor = temp;
-            if (temp == Color.Empty)
-            {
-                picPatternColour2.Tag = "empty";
-                picPatternColour2.Visible = false;
-            }
-            else
-            {
-                picPatternColour2.Tag = "color";
-                picPatternColour2.Visible = true;
-            }
-
-            temp = MadScience.Helpers.convertColour(pDetails.ColorP[3], true);
-            picPatternColour3.BackColor = temp;
-            if (temp == Color.Empty)
-            {
-                picPatternColour3.Tag = "empty";
-                picPatternColour3.Visible = false;
-            }
-            else
-            {
-                picPatternColour3.Tag = "color";
-                picPatternColour3.Visible = true;
-            }
-
-            temp = MadScience.Helpers.convertColour(pDetails.ColorP[4], true);
-            picPatternColour4.BackColor = temp;
-            if (temp == Color.Empty)
-            {
-                picPatternColour4.Tag = "empty";
-                picPatternColour4.Visible = false;
-            }
-            else
-            {
-                picPatternColour4.Tag = "color";
-                picPatternColour4.Visible = true;
-            }
-
-        }
-
         private void picLstOtherColour_Click(object sender, EventArgs e)
         {
             if (lstOtherDetails.SelectedItems.Count == 1)
@@ -2757,61 +1903,6 @@ namespace CASPartEditor
                     casPartNew.tgi64list[igtNo] = new ResourceKey(lstCasPartDetails.Items[i].Text);
                     //tgi64 tgi = (tgi64)casPartNew.tgi64list[igtNo];
                 }
-
-            }
-
-        }
-
-
-        private void cmbPatternAType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (cmbPatternAType.SelectedIndex)
-            {
-                case 0: // solidColour
-                    groupBox3.Visible = true;
-                    groupBox5.Visible = false;
-                    groupBox7.Visible = false;
-                    break;
-                case 1: // Coloured
-                    groupBox3.Visible = false;
-                    groupBox5.Visible = false;
-                    groupBox7.Visible = true;
-                    break;
-                case 2: // HSV
-                    groupBox3.Visible = false;
-                    groupBox5.Visible = true;
-                    groupBox7.Visible = false;
-                    cmbChannelSelect.SelectedIndex = 0;
-                    break;
-            }
-        }
-
-        private void cmbChannelSelect_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count == 1)
-            {
-
-                int patternNo = cmbPatternSelect.SelectedIndex;
-                int channelNo = cmbChannelSelect.SelectedIndex;
-                xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-
-                if (chunk.pattern[patternNo].ChannelEnabled[channelNo] == "True")
-                {
-                    chkPatternChannelEnabled.Checked = true;
-                }
-                else
-                {
-                    chkPatternChannelEnabled.Checked = false;
-                }
-
-                txtPatternChannelTexture.Text = chunk.pattern[patternNo].Channel[channelNo];
-                txtPatternChannelH.Text = chunk.pattern[patternNo].H[channelNo];
-                txtPatternChannelS.Text = chunk.pattern[patternNo].S[channelNo];
-                txtPatternChannelV.Text = chunk.pattern[patternNo].V[channelNo];
-                txtPatternChannelBaseH.Text = chunk.pattern[patternNo].BaseH[channelNo];
-                txtPatternChannelBaseS.Text = chunk.pattern[patternNo].BaseS[channelNo];
-                txtPatternChannelBaseV.Text = chunk.pattern[patternNo].BaseV[channelNo];
-                txtPatternChannelBaseHSVShift.Text = chunk.pattern[patternNo].HSVShift[channelNo];
 
             }
 
@@ -2901,16 +1992,6 @@ namespace CASPartEditor
                 btnReloadTextures_Click(sender, null);
             }
         
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            txtPatternAKey.Text = "key:0333406C:00000000:71D5EFB6C391BC17";
-            txtPatternAName.Text = "solidColor_1";
-            txtPatternARGBMask.Text = "";
-            txtPatternASpecular.Text = "";
-            txtPatternATiling.Text = "4.0000,4.0000";
-            txtPatternAFilename.Text = @"Materials\Miscellaneous\solidColor_1";
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -3042,18 +2123,6 @@ namespace CASPartEditor
             }
 
 
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-
-            //pBrowser.curCategory = this.patternBrowserCategory;
-            if (pBrowser.ShowDialog() == DialogResult.OK)
-            {
-                showPatternDetails(pBrowser.selectedPattern, false);
-            }
-
-            pBrowser.Hide();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -3735,6 +2804,196 @@ namespace CASPartEditor
 
         }
 
+        #region Pattern tab 
+        private void btnPatternAReplaceBGImage_Click(object sender, EventArgs e)
+        {
+            txtPatternBGImage.Text = replaceImageKey(txtPatternBGImage.Text);
+        }
+
+        private void btnPatternAReplaceRGBMask_Click(object sender, EventArgs e)
+        {
+            txtPatternARGBMask.Text = replaceImageKey(txtPatternARGBMask.Text);
+        }
+
+        private void btnPatternACommit_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1)
+            {
+
+                int chunkNo = cmbPatternSelect.SelectedIndex;
+
+                xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+                chunk.pattern[chunkNo] = commitPatternDetails();
+
+                if (renderWindow1.RenderEnabled)
+                    btnReloadTextures_Click(null, null);
+                else
+                    btnStart3D_Click(null, null);
+            }
+        }
+
+        private void btnPatternAFindBGImage_Click(object sender, EventArgs e)
+        {
+            KeyUtils.findAndShowImage(txtPatternBGImage.Text);
+        }
+
+        private void btnPatternAFindRGBMask_Click(object sender, EventArgs e)
+        {
+            KeyUtils.findAndShowImage(txtPatternARGBMask.Text);
+        }
+
+        private void btnPatternAFindSpec_Click(object sender, EventArgs e)
+        {
+            KeyUtils.findAndShowImage(txtPatternASpecular.Text);
+        }
+
+        private void btnPatternAReplaceSpec_Click(object sender, EventArgs e)
+        {
+            txtPatternASpecular.Text = replaceImageKey(txtPatternASpecular.Text);
+        }
+
+        private void picPatternAColor_Click(object sender, EventArgs e)
+        {
+            picPatternSolidColour.BackColor = showColourDialog(picPatternSolidColour.BackColor);
+        }
+
+        private void btnPatternChannelTextureFind_Click(object sender, EventArgs e)
+        {
+            KeyUtils.findAndShowImage(txtPatternChannelTexture.Text);
+        }
+
+        private void btnPatternChannelTextureReplace_Click(object sender, EventArgs e)
+        {
+            txtPatternChannelTexture.Text = replaceImageKey(txtPatternChannelTexture.Text);
+        }
+
+        private void btnPatternChannelCommit_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1)
+            {
+
+                int patternNo = cmbPatternSelect.SelectedIndex;
+                int channelNo = cmbChannelSelect.SelectedIndex;
+                xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+
+                if (chkPatternChannelEnabled.Checked)
+                {
+                    chunk.pattern[patternNo].ChannelEnabled[channelNo] = "True";
+                }
+                else
+                {
+                    chunk.pattern[patternNo].ChannelEnabled[channelNo] = "False";
+                }
+
+                chunk.pattern[patternNo].Channel[channelNo] = txtPatternChannelTexture.Text;
+                chunk.pattern[patternNo].H[channelNo] = txtPatternChannelH.Text;
+                chunk.pattern[patternNo].S[channelNo] = txtPatternChannelS.Text;
+                chunk.pattern[patternNo].V[channelNo] = txtPatternChannelV.Text;
+                chunk.pattern[patternNo].BaseH[channelNo] = txtPatternChannelBaseH.Text;
+                chunk.pattern[patternNo].BaseS[channelNo] = txtPatternChannelBaseS.Text;
+                chunk.pattern[patternNo].BaseV[channelNo] = txtPatternChannelBaseV.Text;
+                chunk.pattern[patternNo].HSVShift[channelNo] = txtPatternChannelBaseHSVShift.Text;
+
+            }
+        }
+
+
+        private void picPatternColourBg_Click(object sender, EventArgs e)
+        {
+            picPatternColourBg.BackColor = showColourDialog(picPatternColourBg.BackColor);
+            picPatternColourBg.Tag = "color";
+
+            makePatternPreviewThumb();
+        }
+
+        private void picPatternColour1_Click(object sender, EventArgs e)
+        {
+            picPatternColour1.BackColor = showColourDialog(picPatternColour1.BackColor);
+            picPatternColour1.Tag = "color";
+            makePatternPreviewThumb();
+        }
+
+        private void picPatternColour2_Click(object sender, EventArgs e)
+        {
+            picPatternColour2.BackColor = showColourDialog(picPatternColour2.BackColor);
+            picPatternColour2.Tag = "color";
+            makePatternPreviewThumb();
+        }
+
+        private void picPatternColour3_Click(object sender, EventArgs e)
+        {
+            picPatternColour3.BackColor = showColourDialog(picPatternColour3.BackColor);
+            picPatternColour3.Tag = "color";
+            makePatternPreviewThumb();
+        }
+
+        private void picPatternColour4_Click(object sender, EventArgs e)
+        {
+            picPatternColour4.BackColor = showColourDialog(picPatternColour4.BackColor);
+            picPatternColour4.Tag = "color";
+            makePatternPreviewThumb();
+        }
+
+        private void cmbPatternSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1)
+            {
+                showPatternDetails(listView1.SelectedIndices[0]);
+            }
+
+        }
+
+        private void cmbPatternAType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cmbPatternAType.SelectedIndex)
+            {
+                case 0: // solidColour
+                    groupBox3.Visible = true;
+                    groupBox5.Visible = false;
+                    groupBox7.Visible = false;
+                    break;
+                case 1: // Coloured
+                    groupBox3.Visible = false;
+                    groupBox5.Visible = false;
+                    groupBox7.Visible = true;
+                    break;
+                case 2: // HSV
+                    groupBox3.Visible = false;
+                    groupBox5.Visible = true;
+                    groupBox7.Visible = false;
+                    cmbChannelSelect.SelectedIndex = 0;
+                    break;
+            }
+        }
+
+        private void cmbChannelSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            viewPatternChannelInfo();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            txtPatternAKey.Text = "key:0333406C:00000000:71D5EFB6C391BC17";
+            txtPatternAName.Text = "solidColor_1";
+            txtPatternARGBMask.Text = "";
+            txtPatternASpecular.Text = "";
+            txtPatternATiling.Text = "4.0000,4.0000";
+            txtPatternAFilename.Text = @"Materials\Miscellaneous\solidColor_1";
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+
+            //pBrowser.curCategory = this.patternBrowserCategory;
+            if (pBrowser.ShowDialog() == DialogResult.OK)
+            {
+                showPatternDetails(pBrowser.selectedPattern, false);
+            }
+
+            pBrowser.Hide();
+        }
+        #endregion
+
         private void btnReloadTextures_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
@@ -3752,16 +3011,7 @@ namespace CASPartEditor
                 renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
                 renderWindow1.loadTexture(KeyUtils.findKey(details.Multiplier), "baseTexture");
                 generate3DTexture(details);
-                /*
-                if (details.stencil.A.Enabled == "True")
-                {
-                    renderWindow1.loadTexture(findKey(details.stencil.A.key), "stencilA");
-                }
-                else
-                {
-                    renderWindow1.loadTexture(null, "stencilA");
-                }
-                */
+
                 renderWindow1.resetDevice();
 
                 DateTime stopTime = DateTime.Now;
@@ -3986,7 +3236,10 @@ namespace CASPartEditor
             saveAsToolStripMenuItem.Enabled = true;
 
             listView1.Items[listView1.Items.Count - 1].Selected = true;
-            //btnStart3D_Click(null, null);
+            if (renderWindow1.RenderEnabled)
+                btnReloadTextures_Click(null, null);
+            else
+                btnStart3D_Click(null, null);
         }
 
         private void addNewCopyLastToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4005,7 +3258,10 @@ namespace CASPartEditor
 
             listView1.Items.Add(item);
             listView1.Items[listView1.Items.Count - 1].Selected = true;
-            btnStart3D_Click(null, null);
+            if (renderWindow1.RenderEnabled)
+                btnReloadTextures_Click(null, null);
+            else
+                btnStart3D_Click(null, null);
         }
 
         private void copyDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4028,7 +3284,10 @@ namespace CASPartEditor
             }
             saveAsToolStripMenuItem.Enabled = true;
             listView1.Items[listView1.Items.Count - 1].Selected = true;
-            btnStart3D_Click(null, null);
+            if (renderWindow1.RenderEnabled)
+                btnReloadTextures_Click(null, null);
+            else
+                btnStart3D_Click(null, null);
         }
 
         private void cEnable3DPreview_CheckedChanged(object sender, EventArgs e)

@@ -234,6 +234,38 @@ namespace PatternBrowser
             if (this.customPatterns == null) this.customPatterns = new patterns();
         }
 
+        public Stream findPattern(patternsFile pattern)
+        {
+            if (File.Exists(pattern.subcategory))
+            {
+                Stream cast = File.Open(pattern.subcategory, FileMode.Open, FileAccess.Read, FileShare.Read);
+                MadScience.Wrappers.Database castdb = new MadScience.Wrappers.Database(cast, true);
+
+                MadScience.Wrappers.ResourceKey temp = new MadScience.Wrappers.ResourceKey(pattern.texturename);
+                Stream patternThumb = null;
+
+                try
+                {
+                    patternThumb = castdb.GetResourceStream(temp);
+                }
+                catch (System.Collections.Generic.KeyNotFoundException ex)
+                {
+                }
+                catch (Exception ex)
+                {
+                    Helpers.logMessageToFile(ex.Message);
+                }
+                cast.Close();
+
+                if (patternThumb != null)
+                {
+                    return patternThumb;
+                }
+            }
+
+            return Stream.Null;
+        }
+
         public patternsFile findPattern(string resKey)
         {
             // Get pattern details from XML
