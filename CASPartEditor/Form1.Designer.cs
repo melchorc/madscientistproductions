@@ -1613,7 +1613,6 @@
             this.grpPatternA.Size = new System.Drawing.Size(538, 592);
             this.grpPatternA.TabIndex = 2;
             this.grpPatternA.TabStop = false;
-            this.grpPatternA.Enter += new System.EventHandler(this.grpPatternA_Enter);
             // 
             // groupBox3
             // 

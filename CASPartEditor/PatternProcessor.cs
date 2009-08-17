@@ -9,6 +9,177 @@ namespace CASPartEditor
 {
     public static class PatternProcessor
     {
+        public static Bitmap ProcessMakeupTexture(
+                List<Stream> textures,
+                uint clothingType,
+                bool RGBA
+            )
+        {
+            Bitmap _Multiplier;
+            Bitmap _PartMask;
+            Bitmap _Overlay;
+            Bitmap output;
+
+            Color[] Pattern1Colors;
+            Color[] Pattern2Colors;
+            Color[] Pattern3Colors;
+            Color[] Pattern4Colors;
+
+            var d = new DdsFileTypePlugin.DdsFile();
+
+            Stream Multiplier = textures[0];
+            Console.WriteLine("Multiplier length: " + Multiplier.Length.ToString());
+            //If there is no multiplier return empty image
+            DateTime startTime = DateTime.Now;
+            if (Multiplier.Length == 0)
+            {
+                _Multiplier = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
+            }
+            else
+            {
+
+                //Load multiplier
+                d.Load(Multiplier);
+                _Multiplier = (Bitmap)d.Image(true, true, true, true);
+                Multiplier.Close();
+            }
+            DateTime stopTime = DateTime.Now;
+            TimeSpan duration = stopTime - startTime;
+            Console.WriteLine("Multiplier generation time: " + duration.TotalMilliseconds);
+
+            startTime = DateTime.Now;
+            Stream PartMask = textures[1];
+            Console.WriteLine("PartMask length: " + PartMask.Length.ToString());
+            //Load partmask
+            if ((PartMask.Length != 0))
+            {
+                d.Load(PartMask);
+                _PartMask = (Bitmap)d.Image(true, true, true, true);
+                PartMask.Close();
+            }
+            else
+            {
+                _PartMask = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
+            }
+            stopTime = DateTime.Now;
+            duration = stopTime - startTime;
+            Console.WriteLine("PartMask generation time: " + duration.TotalMilliseconds);
+
+            startTime = DateTime.Now;
+            Stream Overlay = textures[2];
+            Console.WriteLine("Overlay length: " + Overlay.Length.ToString());
+
+            //Load overlay
+            if ((Overlay.Length != 0))
+            {
+                d.Load(Overlay);
+                _Overlay = (Bitmap)d.Image(true, true, true, true);
+                Overlay.Close();
+            }
+            else
+            {
+                _Overlay = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
+            }
+            stopTime = DateTime.Now;
+            duration = stopTime - startTime;
+            Console.WriteLine("Overlay generation time: " + duration.TotalMilliseconds);
+
+            //create empty output bitmap
+            output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
+
+            //some error handling
+            if (_Multiplier.Width != 1024 || _Multiplier.Height != 1024)
+            {
+                ResizeBitmap(ref _Multiplier, 1024, 1024);
+            }
+
+            if (_PartMask.Width != 1024 || _PartMask.Height != 1024)
+            {
+                ResizeBitmap(ref _PartMask, 1024, 1024);
+            }
+
+            if (_Overlay.Width != 1024 || _Overlay.Height != 1024)
+            {
+                ResizeBitmap(ref _Overlay, 1024, 1024);
+            }
+
+            startTime = DateTime.Now;
+            BitmapData outputData = output.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData multiplierData = _Multiplier.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData maskData = _PartMask.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+            stopTime = DateTime.Now;
+            duration = stopTime - startTime;
+            Console.WriteLine("LockBits time: " + duration.TotalMilliseconds);
+            const int pixelSize = 4;
+            //process every pixel
+            unsafe
+            {
+                startTime = DateTime.Now;
+                for (int y = 0; y < 1024; y++)
+                {
+                    byte* outputRow = (byte*)outputData.Scan0 + (y * outputData.Stride);
+                    byte* multiplierRow = (byte*)multiplierData.Scan0 + (y * multiplierData.Stride);
+                    byte* maskRow = (byte*)maskData.Scan0 + (y * maskData.Stride);
+
+                    for (int x = 0; x < 1024; x++)
+                    {
+
+                        int pixelLocation = x * pixelSize;
+
+                        Color multiplierColor = Color.FromArgb(multiplierRow[pixelLocation + 3], multiplierRow[pixelLocation + 2], multiplierRow[pixelLocation + 1], multiplierRow[pixelLocation]);
+                        if (multiplierColor.A != 0)
+                        {
+                            Color maskColor = Color.FromArgb(maskRow[pixelLocation + 3], maskRow[pixelLocation + 2], maskRow[pixelLocation + 1], maskRow[pixelLocation]);
+
+                            int xs = x % 256;
+                            int pixelLocation2 = xs * pixelSize;
+
+                            Color pattern1Color = Color.Empty;
+                            Color pattern2Color = Color.Empty;
+                            Color pattern3Color = Color.Empty;
+                            Color pattern4Color = Color.Empty;
+
+                            if (RGBA)
+                            {
+                                //multiplierColor = ProcessPixelRGBA(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color, pattern4Color, Pattern1Colors, Pattern2Colors, Pattern3Colors, Pattern4Colors);
+                            }
+                            else
+                            {
+                                //multiplierColor = ProcessPixelRGB(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color, Pattern1Colors, Pattern2Colors, Pattern3Colors);
+                            }
+                            outputRow[pixelLocation] = (byte)multiplierColor.B;
+                            outputRow[pixelLocation + 1] = (byte)multiplierColor.G;
+                            outputRow[pixelLocation + 2] = (byte)multiplierColor.R;
+                            outputRow[pixelLocation + 3] = (byte)multiplierColor.A;
+                        }
+                    }
+                }
+
+                stopTime = DateTime.Now;
+                duration = stopTime - startTime;
+                Console.WriteLine("Loop time: " + duration.TotalMilliseconds);
+
+            }
+            output.UnlockBits(outputData);
+
+            //apply overlay and stencils
+            Graphics g = Graphics.FromImage(output);
+            g.DrawImage(_Overlay, 0, 0);
+            if ((textures[3] != null))
+            {
+                d.Load(textures[3]);
+                var _Stencil = d.Image(true, true, true, true);
+                if (_Stencil.Width == 1024 || _Stencil.Height == 1024)
+                {
+                    g.DrawImage(_Stencil, 0, 0);
+                }
+            }
+
+
+            return output;
+        }
+
         public static Bitmap ProcessTexture(
                 List<Stream> textures, 
                 Color[] Pattern1Colors, 

@@ -838,8 +838,6 @@ namespace CASPartEditor
 
 
             lstCasPartDetails.Items.Clear();
-            renderWindow1.DeInit();
-
             // Populate the CAS Part Details 
             addCasPartItem("Mesh Name", casPartSrc.meshName);
             addCasPartItem("Clothing Order", casPartSrc.clothingOrder.ToString());
@@ -1225,7 +1223,7 @@ namespace CASPartEditor
             {
                 addNewCopyLastToolStripMenuItem.Enabled = false;
             }
-            contextMenuStrip1.Show(PointToScreen(new Point(btnAddNewDesign.Left + btnAddNewDesign.Width + 3, btnAddNewDesign.Top + contextMenuStrip1.Height )));
+            contextMenuStrip1.Show(PointToScreen(new Point(btnAddNewDesign.Left + btnAddNewDesign.Width + 3, (btnAddNewDesign.Top - btnAddNewDesign.Height) + contextMenuStrip1.Height )));
 
         }
 
@@ -3788,76 +3786,7 @@ namespace CASPartEditor
 
                 DateTime startTime = DateTime.Now;
 
-                Stream meshStream = Stream.Null;
-
-                // Use the VPXY to get the mesh lod
-                Stream vpxyStream = KeyUtils.findKey(casPartNew.tgi64list[casPartNew.tgiIndexVPXY], 0);
-
-                if (vpxyStream != null)
-                {
-                    VPXYFile vpxyFile = new VPXYFile(vpxyStream);
-                    // Get the first VPXY internal link
-                    if (vpxyFile.vpxy.linkEntries.Count >= 1 && vpxyFile.vpxy.linkEntries[0].tgiList.Count >= 1 )
-                    {
-                        meshStream = KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[0], 0);
-                    }
-                    vpxyStream.Close();
-                }
-
-                /*
-                uint groupId = MadScience.StringHelpers.HashFNV24(txtMeshName.Text);
-                keyName lod0 = new keyName(0x15a1849, groupId, (ulong)MadScience.StringHelpers.HashFNV32(txtMeshName.Text + "_lod0"));
-                Console.WriteLine("Checking for lod0: " + lod0.ToString());
-                Stream meshStream = searchInPackage(Helpers.currentPackageFile, lod0.ToString());
-                if (meshStream == null)
-                {
-                    meshStream = KeyUtils.findKey(lod0.ToString(), 0);
-                }
-                if (meshStream == null)
-                {
-                    keyName lod1 = new keyName(0x15a1849, groupId, (ulong)MadScience.StringHelpers.HashFNV32(txtMeshName.Text + "_lod1"));
-                    Console.WriteLine("Checking for lod1: " + lod1.ToString());
-                    meshStream = KeyUtils.findKey(lod1.ToString(), 0);
-                }
-                */
-
-                if (meshStream != Stream.Null)
-                {
-
-                    MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStream);
-                    newModel.name = txtMeshName.Text;
-                    renderWindow1.BackgroundColour = MadScience.Helpers.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
-                    renderWindow1.loadDefaultTextures();
-                    renderWindow1.setModel(newModel);
-
-                    renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
-                    renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
-                    renderWindow1.loadTexture(KeyUtils.findKey(details.Multiplier), "baseTexture");
-                    generate3DTexture(details);
-
-                    /*
-                    if (details.stencil.A.Enabled == "True")
-                    {
-                        renderWindow1.loadTexture(findKey(details.stencil.A.key), "stencilA");
-                    }
-                    else
-                    {
-                        renderWindow1.loadTexture(null, "stencilA");
-                    }
-                    */
-
-                    renderWindow1.resetDevice();
-
-                    renderWindow1.RenderEnabled = true;
-
-
-                }
-                else
-                {
-                    renderWindow1.statusLabel.Text = "Sorry, we could not find a mesh!";
-                }
-
-                meshStream.Close();
+                startRender(details);
 
                 DateTime stopTime = DateTime.Now;
                 TimeSpan duration = stopTime - startTime;
@@ -3866,127 +3795,6 @@ namespace CASPartEditor
 
             }
 
-        }
-
-        private void generate3DTexture(xmlChunkDetails details)
-        {
-            renderWindow1.lblGeneratingTexture.Visible = true;
-            if (!bwGenTexture.IsBusy)
-                bwGenTexture.RunWorkerAsync(details);
-        }
-
-        private void bwGenTexture_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            xmlChunkDetails details = (xmlChunkDetails)e.Argument;
-            Bitmap b = composeMultiplier(details, details.filename != "CasRgbMask");
-            Object[] a = new Object[2];
-            a[0] = details;
-            a[1] = b;
-            e.Result = a;
-        }
-
-        private void bwGenTexture_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-        {
-            Object[] a = (Object[])e.Result;
-            if (renderWindow1.RenderEnabled)
-            {
-                renderWindow1.loadTextureFromBitmap((Bitmap)a[1], "baseTexture");
-                renderWindow1.resetDevice();
-                renderWindow1.RenderEnabled = true;
-                renderWindow1.lblGeneratingTexture.Visible = false;
-            }
-            //if the user changed the selection while processing, we need to restart
-            if (listView1.SelectedIndices.Count > 0)
-            {
-                if (a[0] != (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]])
-                    generate3DTexture((xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]]);
-            }
-        }
-
-        private Bitmap composeMultiplier(xmlChunkDetails details, bool RGBA)
-        {
-            Color[] pattern1colors = createColorArray(details.pattern[0]);
-            Color[] pattern2colors = createColorArray(details.pattern[1]);
-            Color[] pattern3colors = createColorArray(details.pattern[2]);
-            Color[] pattern4colors = createColorArray(details.pattern[3]);
-
-            List<Stream> stencils = new List<Stream>();
-
-            //Stream[] stencils = new Stream[6];
-            if (details.stencil.A.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.A.key));
-            if (details.stencil.B.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.B.key));
-            if (details.stencil.C.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.C.key));
-            if (details.stencil.D.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.D.key));
-            if (details.stencil.E.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.E.key));
-            if (details.stencil.F.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.F.key));
-
-            DateTime startTime2 = DateTime.Now;
-            List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Multiplier));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Mask));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[0].rgbmask));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[1].rgbmask));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[2].rgbmask));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[3].rgbmask));
-
-            List<Stream> textures = KeyUtils.findKey(tempList, 2);
-            DateTime stopTime2 = DateTime.Now;
-            TimeSpan duration2 = stopTime2 - startTime2;
-            Console.WriteLine("Key search time: " + duration2.TotalMilliseconds);
-
-            DateTime startTime = DateTime.Now;
-            Bitmap output =  PatternProcessor.ProcessTexture(
-                textures, 
-                pattern1colors, pattern2colors, pattern3colors, pattern4colors, stencils, RGBA);
-
-            DateTime stopTime = DateTime.Now;
-            TimeSpan duration = stopTime - startTime;
-            Console.WriteLine("Total Texture generation time: " + duration.TotalMilliseconds);
-            return output;
-        }
-
-        private Color[] createColorArray(patternDetails pDetail)
-        {
-            Color[] colors = new Color[1];
-
-            if (pDetail.Enabled.ToLower() == "false")
-            {
-                colors[0] = Color.Empty;
-                return colors;
-            }
-
-            if (pDetail.type == "solidColor")
-            {
-                colors[0] = MadScience.Helpers.convertColour( pDetail.Color);
-            }
-            if (pDetail.type == "HSV")
-            {
-                //unsupported
-                colors[0] = Color.Magenta;
-            }
-            if (pDetail.type == "Coloured")
-            {
-                // Always copy directly - we check individual colours in the pattern processor
-                colors = new Color[5];
-                colors[0] = MadScience.Helpers.convertColour(pDetail.ColorP[0], true);
-                colors[1] = MadScience.Helpers.convertColour(pDetail.ColorP[1], true);
-                colors[2] = MadScience.Helpers.convertColour(pDetail.ColorP[2], true);
-                colors[3] = MadScience.Helpers.convertColour(pDetail.ColorP[3], true);
-                colors[4] = MadScience.Helpers.convertColour(pDetail.ColorP[4], true);
-
-            }
-            return colors;
-        }
-
-        private void renderWindow1_Scroll(object sender, ScrollEventArgs e)
-        {
-            Console.WriteLine("Blah");
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            KeyUtils.findAndShowImage("key:00B2D882:00000000:75F8F21E0F143CAC");
         }
 
         private void updateLists(string searchText, string replaceValue)
@@ -4155,11 +3963,6 @@ namespace CASPartEditor
             
         }
 
-        private void grpPatternA_Enter(object sender, EventArgs e)
-        {
-
-        }
-
         private void addNewBlankToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ListViewItem item = new ListViewItem();
@@ -4183,7 +3986,7 @@ namespace CASPartEditor
             saveAsToolStripMenuItem.Enabled = true;
 
             listView1.Items[listView1.Items.Count - 1].Selected = true;
-            btnStart3D_Click(null, null);
+            //btnStart3D_Click(null, null);
         }
 
         private void addNewCopyLastToolStripMenuItem_Click(object sender, EventArgs e)
