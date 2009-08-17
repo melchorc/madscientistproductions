@@ -464,6 +464,7 @@ namespace CASPartEditor
 
             if (cmbMeshName.SelectedItem.ToString() != temp.Name)
             {
+                newToolStripMenuItem_Click(null, null);
                 for (int i = 0; i < cmbMeshName.Items.Count; i++)
                 {
                     if ((string)cmbMeshName.Items[i] == temp.Name)
@@ -3343,7 +3344,7 @@ namespace CASPartEditor
         }
 
     }
-
+    
     /// <remarks/>
     [System.Xml.Serialization.XmlRootAttribute()]
     public class files

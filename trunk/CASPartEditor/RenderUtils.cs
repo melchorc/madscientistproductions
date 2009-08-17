@@ -125,7 +125,7 @@ namespace CASPartEditor
 
             if ((casPartNew.typeFlag & 0x4) == 0x4)
             {
-                b = composeMakeup(details, casPartNew.clothingType, details.filename != "CasRgbMask");
+                b = composeMakeup(details, casPartNew.clothingType, false);
             }
             else
             {
@@ -142,9 +142,10 @@ namespace CASPartEditor
             Object[] a = (Object[])e.Result;
             if (renderWindow1.RenderEnabled)
             {
+                //
+                //renderWindow1.RenderEnabled = true;
                 renderWindow1.loadTextureFromBitmap((Bitmap)a[1], "baseTexture");
                 renderWindow1.resetDevice();
-                renderWindow1.RenderEnabled = true;
                 renderWindow1.lblGeneratingTexture.Visible = false;
             }
             //if the user changed the selection while processing, we need to restart
@@ -160,10 +161,9 @@ namespace CASPartEditor
 
             DateTime startTime2 = DateTime.Now;
             List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Multiplier));
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.faceOverlay));
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Mask));
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.faceOverlay));
 
             List<Stream> textures = KeyUtils.findKey(tempList, 2);
             DateTime stopTime2 = DateTime.Now;
@@ -174,6 +174,10 @@ namespace CASPartEditor
             Bitmap output = PatternProcessor.ProcessMakeupTexture(
                 textures,
                 casPartNew.clothingType,
+                details.tint.A,
+                details.tint.B,
+                details.tint.C,
+                details.tint.D,
                 RGBA);
 
             DateTime stopTime = DateTime.Now;
@@ -308,8 +312,9 @@ namespace CASPartEditor
 
             flags = highestAge;
 
+            //just default to male for now
             if ((ageGenderFlag & (uint)AgeGenderFlags.Male) == (uint)AgeGenderFlags.Male) flags += "m";
-            if ((ageGenderFlag & (uint)AgeGenderFlags.Female) == (uint)AgeGenderFlags.Female) flags += "f";
+            else if ((ageGenderFlag & (uint)AgeGenderFlags.Female) == (uint)AgeGenderFlags.Female) flags += "f";
 
             /*
             if ((casPartSrc.typeFlag & 0x1) == 0x1) checkedListType.SetItemChecked(0, true); // Hair
