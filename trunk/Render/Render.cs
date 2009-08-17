@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Microsoft.DirectX.Direct3D;
+using System.IO;
 
 namespace MadScience.Render
 {
@@ -10,11 +11,6 @@ namespace MadScience.Render
         {
             logMessageToFile("Initalising components...");
             InitializeComponent();
-            logMessageToFile("RenderEnabled: true");
-            renderWindow1.RenderEnabled = true;
-            logMessageToFile("loadDefaultTextures");
-            renderWindow1.loadDefaultTextures();
-            renderWindow1.resetDevice();
         }
 
         private void logMessageToFile(string message)
@@ -84,7 +80,26 @@ namespace MadScience.Render
 
         private void Render_Load(object sender, EventArgs e)
         {
+            if (Environment.GetCommandLineArgs().Length > 1)
+            {
+                //MessageBox.Show(Environment.GetCommandLineArgs()[0] + " " + Environment.GetCommandLineArgs()[1]);
+                Stream meshStream = File.OpenRead(Environment.GetCommandLineArgs()[1].ToString());
+                MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStream);
+                meshStream.Close();
 
+                renderWindow1.statusLabel.Text = "Loaded " + Environment.GetCommandLineArgs()[1].ToString();
+                renderWindow1.setModel(newModel);
+                renderWindow1.resetDevice();
+                renderWindow1.RenderEnabled = true;
+            }
+            else
+            {
+                logMessageToFile("RenderEnabled: true");
+                renderWindow1.RenderEnabled = true;
+                logMessageToFile("loadDefaultTextures");
+                //renderWindow1.loadDefaultTextures();
+                renderWindow1.resetDevice();
+            }
         }
     }
 

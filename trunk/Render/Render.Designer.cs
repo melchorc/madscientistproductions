@@ -83,7 +83,7 @@ namespace MadScience.Render
             // 
             // renderWindow1
             // 
-            this.renderWindow1.BackgroundColour = System.Drawing.Color.Empty;
+            //this.renderWindow1.BackgroundColour = System.Drawing.Color.Empty;
             this.renderWindow1.CurrentFillMode = 1;
             this.renderWindow1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.renderWindow1.Location = new System.Drawing.Point(0, 24);

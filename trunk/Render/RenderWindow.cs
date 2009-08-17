@@ -92,6 +92,11 @@ namespace MadScience.Render
         private ToolStripMenuItem solidWireframeToolStripMenuItem;
         public Label statusLabel;
         public Label lblGeneratingTexture;
+        private ToolStripMenuItem viewToolStripMenuItem;
+        private ToolStripMenuItem frontToolStripMenuItem;
+        private ToolStripMenuItem backToolStripMenuItem;
+        private ToolStripMenuItem leftSideToolStripMenuItem;
+        private ToolStripMenuItem rightToolStripMenuItem;
         //private System.ComponentModel.IContainer components;
 
         private int fillMode = 1;
@@ -376,6 +381,7 @@ namespace MadScience.Render
 
             device.RenderState.FillMode = getFillMode();
             device.RenderState.CullMode = Cull.None;
+            device.RenderState.ZBufferEnable = true;
 
             setupShaders();
 
@@ -393,8 +399,7 @@ namespace MadScience.Render
                 this.statusLabel.Text = "Model loaded.  (" + String.Format("{0:0} polygons, ", model.numPolygons) + String.Format("{0:0} vertices)", model.numVertices);
 
 
-                vertexDeclaration = new VertexDeclaration(device,
-                    MadScience.Render.vertex.Elements);
+                vertexDeclaration = new VertexDeclaration(device,  MadScience.Render.vertex.Elements);
                 vertexBuffer = new VertexBuffer(typeof(MadScience.Render.vertex),
                                                  (int)model.numVertices, device,
                                                  Usage.Dynamic | Usage.WriteOnly,
@@ -511,7 +516,7 @@ namespace MadScience.Render
 
         public void loadTexture(Stream textureInput, string outputTexture)
         {
-            if (textureInput != null && d3dDevice != null)
+            if (textureInput != null && textureInput != Stream.Null && d3dDevice != null)
             {
                 logMessageToFile("Load texture");
                 switch (outputTexture)
@@ -528,6 +533,16 @@ namespace MadScience.Render
                     case "stencilA":
                         this.model.textures.curStencil = TextureLoader.FromStream(d3dDevice, textureInput);
                         break;
+                    case "skinTexture":
+                        this.skinTexture = TextureLoader.FromStream(d3dDevice, textureInput);
+                        break;
+                    case "skinSpecular":
+                        this.skinSpecular = TextureLoader.FromStream(d3dDevice, textureInput);
+                        break;
+                    case "skinBumpmap":
+                        this.normalMapTexture = TextureLoader.FromStream(d3dDevice, textureInput);
+                        break;
+
                 }
 
             }
@@ -552,6 +567,15 @@ namespace MadScience.Render
                     case "stencilA":
                         this.model.textures.curStencil = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
                         break;
+                    case "skinTexture":
+                        this.skinTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        break;
+                    case "skinSpecular":
+                        this.skinSpecular = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        break;
+                    case "normalMap":
+                        this.normalMapTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.AutoGenerateMipMap, Pool.Managed);
+                        break;
                 }
 
             }
@@ -564,24 +588,32 @@ namespace MadScience.Render
             //else
             //    OnResetDevice(d3dDevice, null);
 
-            logMessageToFile("Load default skintone");
+            if (File.Exists(Path.Combine(Application.StartupPath, "body_m.dds")))
+            {
+                logMessageToFile("Load default skintone");
 
-            Stream skinTextureFile = File.OpenRead(Path.Combine(Application.StartupPath, "body_m.dds"));
-            skinTexture = TextureLoader.FromStream(d3dDevice, skinTextureFile);
-            skinTextureFile.Close();
+                Stream skinTextureFile = File.OpenRead(Path.Combine(Application.StartupPath, "body_m.dds"));
+                skinTexture = TextureLoader.FromStream(d3dDevice, skinTextureFile);
+                skinTextureFile.Close();
+            }
 
-            logMessageToFile("Load default skintone specular");
+            if (File.Exists(Path.Combine(Application.StartupPath, "body_s.dds")))
+            {
+                logMessageToFile("Load default skintone specular");
 
-            Stream skinSpecularFile = File.OpenRead(Path.Combine(Application.StartupPath, "body_s.dds"));
-            skinSpecular = TextureLoader.FromStream(d3dDevice, skinSpecularFile);
-            skinSpecularFile.Close();
+                Stream skinSpecularFile = File.OpenRead(Path.Combine(Application.StartupPath, "body_s.dds"));
+                skinSpecular = TextureLoader.FromStream(d3dDevice, skinSpecularFile);
+                skinSpecularFile.Close();
+            }
 
-            logMessageToFile("Load default skintone normal map");
+            if (File.Exists(Path.Combine(Application.StartupPath, "body_n.dds")))
+            {
+                logMessageToFile("Load default skintone normal map");
 
-            Stream normalMapTextureFile = File.OpenRead(Path.Combine(Application.StartupPath, "body_n.dds"));
-            normalMapTexture = TextureLoader.FromStream(d3dDevice, normalMapTextureFile);
-            normalMapTextureFile.Close();
-
+                Stream normalMapTextureFile = File.OpenRead(Path.Combine(Application.StartupPath, "body_n.dds"));
+                normalMapTexture = TextureLoader.FromStream(d3dDevice, normalMapTextureFile);
+                normalMapTextureFile.Close();
+            }
             //OnResetDevice(d3dDevice, null);
         }
 
@@ -592,7 +624,7 @@ namespace MadScience.Render
             if (d3dDevice == null)
             {
                 Init();
-                loadDefaultTextures();
+                //loadDefaultTextures();
                 Refresh();
             }
         }
@@ -700,8 +732,13 @@ namespace MadScience.Render
 
         public void ResetView()
         {
+            ResetView(180);
+        }
+
+        private void ResetView(int spX)
+        {
             height = model.bounds.mid.Y / 1.35f;
-            spinX = 180;
+            spinX = spX;
             spinY = 0;
             transZ = 0;
             transX = 0;
@@ -718,16 +755,22 @@ namespace MadScience.Render
             this.solidWireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusLabel = new System.Windows.Forms.Label();
             this.lblGeneratingTexture = new System.Windows.Forms.Label();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.frontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.leftSideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.renderModeToolStripMenuItem});
+            this.renderModeToolStripMenuItem,
+            this.viewToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(150, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 48);
             // 
             // renderModeToolStripMenuItem
             // 
@@ -736,27 +779,27 @@ namespace MadScience.Render
             this.solidToolStripMenuItem,
             this.solidWireframeToolStripMenuItem});
             this.renderModeToolStripMenuItem.Name = "renderModeToolStripMenuItem";
-            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.renderModeToolStripMenuItem.Text = "Render Mode";
             // 
             // wireframeToolStripMenuItem
             // 
             this.wireframeToolStripMenuItem.Name = "wireframeToolStripMenuItem";
-            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.wireframeToolStripMenuItem.Text = "Wireframe";
             this.wireframeToolStripMenuItem.Click += new System.EventHandler(this.wireframeToolStripMenuItem_Click);
             // 
             // solidToolStripMenuItem
             // 
             this.solidToolStripMenuItem.Name = "solidToolStripMenuItem";
-            this.solidToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.solidToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.solidToolStripMenuItem.Text = "Solid";
             this.solidToolStripMenuItem.Click += new System.EventHandler(this.solidToolStripMenuItem_Click);
             // 
             // solidWireframeToolStripMenuItem
             // 
             this.solidWireframeToolStripMenuItem.Name = "solidWireframeToolStripMenuItem";
-            this.solidWireframeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.solidWireframeToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.solidWireframeToolStripMenuItem.Text = "Solid+Wireframe";
             this.solidWireframeToolStripMenuItem.Click += new System.EventHandler(this.solidWireframeToolStripMenuItem_Click);
             // 
@@ -764,30 +807,72 @@ namespace MadScience.Render
             // 
             this.statusLabel.AutoSize = true;
             this.statusLabel.BackColor = System.Drawing.SystemColors.Menu;
-            this.statusLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.statusLabel.Location = new System.Drawing.Point(0, 124);
+            this.statusLabel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.statusLabel.Location = new System.Drawing.Point(318, 0);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(153, 13);
             this.statusLabel.TabIndex = 1;
             this.statusLabel.Text = "3d view currently not initialised.";
+            this.statusLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // lblGeneratingTexture
             // 
             this.lblGeneratingTexture.AutoSize = true;
             this.lblGeneratingTexture.BackColor = System.Drawing.SystemColors.Menu;
             this.lblGeneratingTexture.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblGeneratingTexture.Location = new System.Drawing.Point(0, 124);
+            this.lblGeneratingTexture.Location = new System.Drawing.Point(0, 233);
             this.lblGeneratingTexture.Name = "lblGeneratingTexture";
             this.lblGeneratingTexture.Size = new System.Drawing.Size(103, 13);
             this.lblGeneratingTexture.TabIndex = 2;
             this.lblGeneratingTexture.Text = "Generating texture...";
             this.lblGeneratingTexture.Visible = false;
             // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.frontToolStripMenuItem,
+            this.backToolStripMenuItem,
+            this.leftSideToolStripMenuItem,
+            this.rightToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // frontToolStripMenuItem
+            // 
+            this.frontToolStripMenuItem.Name = "frontToolStripMenuItem";
+            this.frontToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.frontToolStripMenuItem.Text = "Front";
+            this.frontToolStripMenuItem.Click += new System.EventHandler(this.frontToolStripMenuItem_Click);
+            // 
+            // backToolStripMenuItem
+            // 
+            this.backToolStripMenuItem.Name = "backToolStripMenuItem";
+            this.backToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.backToolStripMenuItem.Text = "Back";
+            this.backToolStripMenuItem.Click += new System.EventHandler(this.backToolStripMenuItem_Click);
+            // 
+            // leftSideToolStripMenuItem
+            // 
+            this.leftSideToolStripMenuItem.Name = "leftSideToolStripMenuItem";
+            this.leftSideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.leftSideToolStripMenuItem.Text = "Left";
+            this.leftSideToolStripMenuItem.Click += new System.EventHandler(this.leftSideToolStripMenuItem_Click);
+            // 
+            // rightToolStripMenuItem
+            // 
+            this.rightToolStripMenuItem.Name = "rightToolStripMenuItem";
+            this.rightToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.rightToolStripMenuItem.Text = "Right";
+            this.rightToolStripMenuItem.Click += new System.EventHandler(this.rightToolStripMenuItem_Click);
+            // 
             // RenderWindow
             // 
             this.Controls.Add(this.lblGeneratingTexture);
             this.Controls.Add(this.statusLabel);
             this.Name = "RenderWindow";
+            this.Size = new System.Drawing.Size(471, 246);
+            this.Load += new System.EventHandler(this.RenderWindow_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -816,6 +901,31 @@ namespace MadScience.Render
             solidToolStripMenuItem.Checked = false;
             wireframeToolStripMenuItem.Checked = false;
             solidWireframeToolStripMenuItem.Checked = true;
+        }
+
+        private void RenderWindow_Load(object sender, EventArgs e)
+        {
+            if (d3dDevice == null) Init();
+        }
+
+        private void frontToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResetView(180);
+        }
+
+        private void backToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResetView(0);
+        }
+
+        private void leftSideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResetView(90);
+        }
+
+        private void rightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResetView(270);
         }
 
     }

@@ -14,7 +14,10 @@ namespace MadScience.Render
 
         public static modelInfo geomToModel(Stream input)
         {
+
             modelInfo model = new modelInfo();
+
+            if (input.Length == 0) return model;
 
             BinaryReader reader = new BinaryReader(input);
             uint rcolVersion = reader.ReadUInt32();

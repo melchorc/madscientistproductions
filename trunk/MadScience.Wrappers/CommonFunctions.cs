@@ -18,6 +18,35 @@ namespace MadScience.Wrappers
         RightHanded = 0x200000,
     }
 
+    public enum casPartType : uint
+    {
+        Hair = 1,
+        Scalp = 2,
+        Face = 3,
+        Body = 4,
+        Top = 5,
+        Bottom = 6,
+        Shoes = 7,
+        Earrings = 11,
+        GlassesF = 12,
+        Bracelets = 13,
+        RingLeft = 14,
+        RingRight = 15,
+        Beard = 16,
+        Lipstick = 17,
+        Eyeshadow = 18,
+        Eyeliner = 19,
+        Blush = 20,
+        Makeup = 21,
+        Eyebrow = 22,
+        Glove = 24,
+        Socks = 25,
+        Mascara = 26,
+        Weathering = 29,
+        EarringLeft = 30,
+        EarringRight = 31,
+    }
+
     public class Vector3
     {
         public float x = 0f;
