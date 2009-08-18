@@ -25,6 +25,16 @@ namespace CASPartEditor
             renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
             renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
             renderWindow1.loadTexture(KeyUtils.findKey(details.Multiplier), "baseTexture");
+            renderWindow1.loadTexture(null, "stencilA");
+
+            if ((casPartNew.typeFlag & 0x4) == 0x4)
+            {
+                renderWindow1.shaderMode = 1;
+            }
+            else
+            {
+                renderWindow1.shaderMode = 0;
+            }
 
             generate3DTexture(details);
             
@@ -126,6 +136,7 @@ namespace CASPartEditor
                 else
                 {
                     renderWindow1.loadTextureFromBitmap((Bitmap)a[1], "baseTexture");
+                    loadStencils((xmlChunkDetails)a[0]);
                     renderWindow1.shaderMode = 0;
                 }
                 renderWindow1.resetDevice();
@@ -139,6 +150,26 @@ namespace CASPartEditor
             }
         }
 
+        private void loadStencils(xmlChunkDetails details)
+        {
+            List<Stream> stencils = new List<Stream>();
+
+            //Stream[] stencils = new Stream[6];
+            if (details.stencil.A.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.A.key));
+            if (details.stencil.B.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.B.key));
+            if (details.stencil.C.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.C.key));
+            if (details.stencil.D.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.D.key));
+            if (details.stencil.E.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.E.key));
+            if (details.stencil.F.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.F.key));
+
+            if (stencils.Count == 0)
+                return;
+            if (stencils.Count == 1)
+                renderWindow1.loadTexture(stencils[0],"stencilA");
+            if (stencils.Count > 1)
+                renderWindow1.loadTextureFromBitmap(PatternProcessor.mergeStencils(stencils), "stencilA");
+        }
+
         private Bitmap composeMakeup(xmlChunkDetails details, uint casPartType)
         {
             List<string> skinTextures = findDefaultTextures(casPartNew.ageGenderFlag, casPartNew.typeFlag);
@@ -146,7 +177,6 @@ namespace CASPartEditor
             List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.faceOverlay));
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Mask));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
 
             List<Stream> textures = KeyUtils.findKey(tempList, 2);
             DateTime stopTime2 = DateTime.Now;
@@ -193,16 +223,6 @@ namespace CASPartEditor
             Color[] pattern3colors = createColorArray(details.pattern[2]);
             Color[] pattern4colors = createColorArray(details.pattern[3]);
 
-            List<Stream> stencils = new List<Stream>();
-
-            //Stream[] stencils = new Stream[6];
-            if (details.stencil.A.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.A.key));
-            if (details.stencil.B.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.B.key));
-            if (details.stencil.C.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.C.key));
-            if (details.stencil.D.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.D.key));
-            if (details.stencil.E.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.E.key));
-            if (details.stencil.F.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.F.key));
-
             DateTime startTime2 = DateTime.Now;
             List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Multiplier));
@@ -241,7 +261,7 @@ namespace CASPartEditor
             DateTime startTime = DateTime.Now;
             Bitmap output = PatternProcessor.ProcessTexture(
                 textures,
-                pattern1colors, pattern2colors, pattern3colors, pattern4colors, stencils, RGBA);
+                pattern1colors, pattern2colors, pattern3colors, pattern4colors, RGBA);
 
             DateTime stopTime = DateTime.Now;
             TimeSpan duration = stopTime - startTime;
