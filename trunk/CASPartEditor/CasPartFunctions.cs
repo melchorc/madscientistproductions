@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Collections.Generic;
 using System.IO;
 
 using MadScience;
@@ -348,7 +349,7 @@ namespace CASPartEditor
             saveAsToolStripMenuItem.Enabled = true;
             btnDumpFromFullbuild2.Enabled = true;
 
-            listView3.Items.Clear();
+            lstStencilPool.Items.Clear();
 
             // Default all stencil boxes to blank
             for (int i = 1; i <= 15; i++)
@@ -356,7 +357,6 @@ namespace CASPartEditor
                 if (stencilPool.Count < i) { stencilPool.Add(new stencilDetails()); }
                 //updateStencilBoxes(i, new stencilDetails());
             }
-
 
 
             // Calculate all the stencils so we can build up the stencil pool
@@ -448,6 +448,26 @@ namespace CASPartEditor
 
         }
 
+        private List<bool> getHiddenSections()
+        {
+            List<bool> ret = new List<bool>();
+            ret.Add(true); // Texture Details
+            ret.Add(true); // Clothing Details
+            ret.Add(true); // Skin Details
+            ret.Add(false); // Face Overlay Details
+
+            if (checkedListClothingType.GetItemChecked(13) || checkedListClothingType.GetItemChecked(14) || checkedListClothingType.GetItemChecked(15) || checkedListClothingType.GetItemChecked(16) || checkedListClothingType.GetItemChecked(18)) 
+            {
+                ret[0] = false;
+                ret[1] = false;
+                ret[2] = false;
+                ret[3] = true;
+            }
+
+
+            return ret;
+        }
+
         private void showCasPart(int chunkNo)
         {
             // Just takes the first XML chunk and uses that
@@ -530,41 +550,45 @@ namespace CASPartEditor
             lstOtherDetails.Items.Clear();
             lstTextureDetails.Items.Clear();
 
-            addListHeader(lstTextureDetails, "Texture Details");
-            addListItem(lstTextureDetails, chunk.Multiplier, "Base Texture", "texture");
-            addListBlank(lstTextureDetails);
+            List<bool> showSection = getHiddenSections();
 
-            addListHeader(lstTextureDetails, "Clothing Details");
-            addListItem(lstTextureDetails, chunk.ClothingSpecular, "Clothing Specular", "texture");
-            addListItem(lstTextureDetails, chunk.ClothingAmbient, "Clothing Ambient", "texture");
-            addListBlank(lstTextureDetails);
-
-            if (checkedListClothingType.GetItemChecked(17) || checkedListType.GetItemChecked(2))
+            if (showSection[0])
             {
-                addListHeader(lstTextureDetails, "Face Overlay Details");
+                addListHeader(lstTextureDetails, "Texture Details");
+                addListItem(lstTextureDetails, chunk.Multiplier, "Base Texture", "texture");
+                addListBlank(lstTextureDetails);
+            }
+            if (showSection[1])
+            {
+                addListHeader(lstTextureDetails, "Clothing Details");
+                addListItem(lstTextureDetails, chunk.ClothingSpecular, "Clothing Specular", "texture");
+                addListItem(lstTextureDetails, chunk.ClothingAmbient, "Clothing Ambient", "texture");
+                addListBlank(lstTextureDetails);
             }
 
-            if (checkedListType.GetItemChecked(2))
+            if (showSection[3])
             {
-                if (checkedListClothingType.GetItemChecked(15)) // Eyeliner
+                addListHeader(lstTextureDetails, "Face Overlay Details");
+
+                if (checkedListClothingType.GetItemChecked(15) || checkedListClothingType.GetItemChecked(14) || checkedListClothingType.GetItemChecked(18)) // Eyeliner, Eyebrow, Eyeshadow
                 {
                     addListItem(lstTextureDetails, chunk.TintColor, "Tint Color", "color");
                     addListBlank(lstTextureDetails);
                 }
+                else
+                {
 
-                //if (checkedListClothingType.GetItemChecked(16) || checkedListClothingType.GetItemChecked(17)) // Blush
-                //{
-                addListItem(lstTextureDetails, chunk.TintColor, "Tint Color", "color");
-                addListItem(lstTextureDetails, chunk.tint.A.color, "Tint Color A", "color");
-                addListItem(lstTextureDetails, chunk.tint.B.color, "Tint Color B", "color");
-                addListItem(lstTextureDetails, chunk.tint.C.color, "Tint Color C", "color");
-                addListItem(lstTextureDetails, chunk.tint.D.color, "Tint Color D", "color");
-                addListItem(lstTextureDetails, chunk.tint.A.enabled, "Tint Color A Enabled", "");
-                addListItem(lstTextureDetails, chunk.tint.B.enabled, "Tint Color B Enabled", "");
-                addListItem(lstTextureDetails, chunk.tint.C.enabled, "Tint Color C Enabled", "");
-                addListItem(lstTextureDetails, chunk.tint.D.enabled, "Tint Color D Enabled", "");
+                    addListItem(lstTextureDetails, chunk.tint.A.color, "Tint Color A", "color");
+                    addListItem(lstTextureDetails, chunk.tint.B.color, "Tint Color B", "color");
+                    addListItem(lstTextureDetails, chunk.tint.C.color, "Tint Color C", "color");
+                    addListItem(lstTextureDetails, chunk.tint.D.color, "Tint Color D", "color");
+                    addListItem(lstTextureDetails, chunk.tint.A.enabled, "Tint Color A Enabled", "");
+                    addListItem(lstTextureDetails, chunk.tint.B.enabled, "Tint Color B Enabled", "");
+                    addListItem(lstTextureDetails, chunk.tint.C.enabled, "Tint Color C Enabled", "");
+                    addListItem(lstTextureDetails, chunk.tint.D.enabled, "Tint Color D Enabled", "");
+                }
                 addListBlank(lstTextureDetails);
-                //}
+                
                 addListItem(lstTextureDetails, chunk.faceOverlay, "Face Overlay", "texture");
                 addListItem(lstTextureDetails, chunk.faceSpecular, "Face Specular", "texture");
                 addListBlank(lstTextureDetails);
@@ -611,10 +635,12 @@ namespace CASPartEditor
 
             }
 
-            addListHeader(lstTextureDetails, "Skin Details");
-            addListItem(lstTextureDetails, chunk.SkinAmbient, "Skin Ambient", "texture");
-            addListItem(lstTextureDetails, chunk.SkinSpecular, "Skin Specular", "texture");
-
+            if (showSection[2])
+            {
+                addListHeader(lstTextureDetails, "Skin Details");
+                addListItem(lstTextureDetails, chunk.SkinAmbient, "Skin Ambient", "texture");
+                addListItem(lstTextureDetails, chunk.SkinSpecular, "Skin Specular", "texture");
+            }
             if (chunk.logo.enabled.ToLower() == "true") { chkLogoEnabled.Checked = true; }
             else { chkLogoEnabled.Checked = false; }
 
