@@ -166,6 +166,7 @@ namespace CASPartEditor
 
             if (meshStream != Stream.Null && meshStream != null)
             {
+                lstMeshTGILinks.Items.Clear();
                 SimGeomFile simgeomfile = new SimGeomFile(meshStream);
                 for (int i = 0; i < simgeomfile.simgeom.keytable.keys.Count; i++)
                 {

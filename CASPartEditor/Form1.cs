@@ -34,7 +34,8 @@ namespace CASPartEditor
 
             Helpers.logMessageToFile("Setting version number");
             Version vrs = new Version(Application.ProductVersion);
-            this.Text = this.Text + " v" + vrs.Major + "." + vrs.Minor + "." + vrs.Build + "." + vrs.Revision;
+            //this.Text = this.Text + " v" + vrs.Major + "." + vrs.Minor + "." + vrs.Build + "." + vrs.Revision;
+            this.Text = this.Text + " v" + vrs.Major + "." + vrs.Minor + " r79";
 
             Helpers.logMessageToFile("Checking debug mode");
             if (MadScience.Helpers.getRegistryValue("debugMode") == "True")
