@@ -19,10 +19,8 @@ namespace CASPartEditor
                 bool useMask
             )
         {
-            Bitmap _FaceTexture;
             Bitmap _Multiplier;
             Bitmap _PartMask;
-            Bitmap _Overlay;
             Bitmap output;
 
             Color color1 = Color.Empty;
@@ -67,21 +65,6 @@ namespace CASPartEditor
                 _PartMask = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
             }
 
-            Stream Overlay = textures[2];
-
-
-            //Load overlay
-            if ((Overlay.Length != 0))
-            {
-                d.Load(Overlay);
-                _Overlay = (Bitmap)d.Image(true, true, true, true);
-                Overlay.Close();
-            }
-            else
-            {
-                _Overlay = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
-            }
-
             //create empty output bitmap
             output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
 
@@ -89,11 +72,6 @@ namespace CASPartEditor
             if (_PartMask.Width != 1024 || _PartMask.Height != 1024)
             {
                 ResizeBitmap(ref _PartMask, 1024, 1024);
-            }
-
-            if (_Overlay.Width != 1024 || _Overlay.Height != 1024)
-            {
-                ResizeBitmap(ref _Overlay, 1024, 1024);
             }
 
             BitmapData outputData = output.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -119,13 +97,27 @@ namespace CASPartEditor
                             Color multiplierColor = Color.FromArgb(multiplierRow[pixelLocation + 3], multiplierRow[pixelLocation + 2], multiplierRow[pixelLocation + 1], multiplierRow[pixelLocation]);
                             if (multiplierColor.A != 0)
                             {
-                                if (useMask)
+                                if (color4.IsEmpty) // if color4 is disabled we ignore the alpha channel of the mask
                                 {
-                                    outputColor = ProcessMakeUpPixelRGBA(multiplierColor, maskColor, color1, color2, color3, color4);
+                                    if (useMask && maskColor.R > 0)
+                                    {
+                                        outputColor = ProcessMakeUpPixelRGB(multiplierColor, maskColor, color1, color2, color3);
+                                    }
+                                    else
+                                    {
+                                        outputColor = ProcessMakeUpPixelRGB(multiplierColor, Color.White, color1, color2, color3);
+                                    }
                                 }
                                 else
                                 {
-                                    outputColor = ProcessMakeUpPixelRGB(multiplierColor, Color.White, color1, color2, color3);
+                                    if (useMask && maskColor.R > 0)
+                                    {
+                                        outputColor = ProcessMakeUpPixelRGBA(multiplierColor, maskColor, color1, color2, color3, color4);
+                                    }
+                                    else
+                                    {
+                                        outputColor = ProcessMakeUpPixelRGBA(multiplierColor, Color.White, color1, color2, color3, color4);
+                                    }
                                 }
                                 outputRow[pixelLocation] = (byte)outputColor.B;
                                 outputRow[pixelLocation + 1] = (byte)outputColor.G;
@@ -134,25 +126,8 @@ namespace CASPartEditor
                             }
                     }
                 }
-
-
             }
             output.UnlockBits(outputData);
-
-            //apply overlay and stencils
-            Graphics g = Graphics.FromImage(output);
-            g.DrawImage(output, 0, 0);
-            g.DrawImage(_Overlay, 0, 0);
-            //if ((textures[2] != null))
-            //{
-            //    d.Load(textures[2]);
-            //    var _Stencil = d.Image(true, true, true, true);
-            //    if (_Stencil.Width == 1024 || _Stencil.Height == 1024)
-            //    {
-            //        g.DrawImage(_Stencil, 0, 0);
-            //    }
-            //}
-
 
             return output;
         }
@@ -163,13 +138,12 @@ namespace CASPartEditor
                 Color[] Pattern2Colors, 
                 Color[] Pattern3Colors,
                 Color[] Pattern4Colors, 
-                List<Stream> Stencils,
                 bool RGBA
             )
         {
             Bitmap _Multiplier;
             Bitmap _PartMask;
-            Bitmap _Overlay;
+            Bitmap _Overlay = null;
             Bitmap _Pattern1;
             Bitmap _Pattern2;
             Bitmap _Pattern3;
@@ -248,11 +222,12 @@ namespace CASPartEditor
                 d.Load(Overlay);
                 _Overlay = (Bitmap)d.Image(true, true, true, true);
                 Overlay.Close();
+                if (_Overlay.Width != 1024 || _Overlay.Height != 1024)
+                {
+                    ResizeBitmap(ref _Overlay, 1024, 1024);
+                }
             }
-            else
-            {
-                _Overlay = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
-            }
+
             stopTime = DateTime.Now;
             duration = stopTime - startTime;
             Console.WriteLine("Overlay generation time: " + duration.TotalMilliseconds);
@@ -344,11 +319,6 @@ namespace CASPartEditor
             if (_PartMask.Width != 1024 || _PartMask.Height != 1024)
             {
                 ResizeBitmap(ref _PartMask, 1024, 1024);
-            }
-
-            if (_Overlay.Width != 1024 || _Overlay.Height != 1024)
-            {
-                ResizeBitmap(ref _Overlay, 1024, 1024);
             }
 
             if (_Pattern1.Width != 256 || _Pattern1.Height != 256)
@@ -462,9 +432,21 @@ namespace CASPartEditor
             }
             output.UnlockBits(outputData);
 
-            //apply overlay and stencils
+            //apply overlay 
+            if (_Overlay != null)
+            {
+                Graphics g = Graphics.FromImage(output);
+                g.DrawImage(_Overlay, 0, 0);
+                g.Dispose();
+            }
+            return output;
+        }
+
+        public static Bitmap mergeStencils(List<Stream> Stencils)
+        {
+            Bitmap output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
             Graphics g = Graphics.FromImage(output);
-            g.DrawImage(_Overlay, 0, 0);
+            var d = new DdsFileTypePlugin.DdsFile();
             if ((Stencils != null))
             {
                 for (int i = 0; i < Stencils.Count; i++)
@@ -472,20 +454,19 @@ namespace CASPartEditor
                     if (Stencils[i].Length != 0)
                     {
                         d.Load(Stencils[i]);
-                        var _Stencil = d.Image(true, true, true, true);
+                        Bitmap _Stencil = (Bitmap)d.Image(true, true, true, true);
                         Stencils[i].Close();
-                        if (_Stencil.Width == 1024 || _Stencil.Height == 1024)
+                        if (!(_Stencil.Width == 1024 || _Stencil.Height == 1024))
                         {
-                            g.DrawImage(_Stencil, 0, 0);
+                            ResizeBitmap(ref _Stencil, 1024, 1024);
                         }
+                        g.DrawImage(_Stencil, 0, 0);
                     }
                 }
-                 
             }
+            g.Dispose();
             return output;
         }
-
-
         private static void ResizeBitmap(ref Bitmap bitmap, int width, int height)
         {
 
