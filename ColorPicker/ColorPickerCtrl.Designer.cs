@@ -30,8 +30,6 @@ namespace ColorPicker
 		{
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.m_colorWheel = new ColorPicker.ColorWheelCtrl();
-            this.m_opacitySlider = new ColorPicker.ColorSlider();
             this.m_tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.txtHexColor = new System.Windows.Forms.TextBox();
@@ -39,6 +37,8 @@ namespace ColorPicker
             this.m_colorSample = new ColorPicker.LabelRotate();
             this.m_infoLabel = new ColorPicker.LabelRotate();
             this.m_colorTable = new ColorPicker.ColorTable();
+            this.m_colorWheel = new ColorPicker.ColorWheelCtrl();
+            this.m_opacitySlider = new ColorPicker.ColorSlider();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,43 +52,6 @@ namespace ColorPicker
             this.panel1.Size = new System.Drawing.Size(254, 242);
             this.panel1.TabIndex = 9;
             // 
-            // m_colorWheel
-            // 
-            this.m_colorWheel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_colorWheel.BackColor = System.Drawing.Color.Transparent;
-            this.m_colorWheel.Location = new System.Drawing.Point(-1, 0);
-            this.m_colorWheel.Name = "m_colorWheel";
-            this.m_colorWheel.SelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(235)))), ((int)(((byte)(205)))));
-            this.m_colorWheel.Size = new System.Drawing.Size(254, 209);
-            this.m_colorWheel.TabIndex = 0;
-            // 
-            // m_opacitySlider
-            // 
-            this.m_opacitySlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_opacitySlider.BackColor = System.Drawing.Color.Transparent;
-            this.m_opacitySlider.BarPadding = new System.Windows.Forms.Padding(60, 12, 80, 25);
-            this.m_opacitySlider.Color1 = System.Drawing.Color.Black;
-            this.m_opacitySlider.Color2 = System.Drawing.Color.White;
-            this.m_opacitySlider.Color3 = System.Drawing.Color.White;
-            this.m_opacitySlider.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.m_opacitySlider.ForeColor = System.Drawing.Color.Black;
-            this.m_opacitySlider.Location = new System.Drawing.Point(2, 213);
-            this.m_opacitySlider.Name = "m_opacitySlider";
-            this.m_opacitySlider.NumberOfColors = ColorPicker.ColorSlider.eNumberOfColors.Use2Colors;
-            this.m_opacitySlider.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.m_opacitySlider.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.m_opacitySlider.Percent = 1F;
-            this.m_opacitySlider.RotatePointAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.m_opacitySlider.Size = new System.Drawing.Size(248, 28);
-            this.m_opacitySlider.TabIndex = 1;
-            this.m_opacitySlider.Text = "Alpha";
-            this.m_opacitySlider.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.m_opacitySlider.TextAngle = 0F;
-            this.m_opacitySlider.ValueOrientation = ColorPicker.ColorSlider.eValueOrientation.MinToMax;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -101,6 +64,7 @@ namespace ColorPicker
             // txtHexColor
             // 
             this.txtHexColor.Location = new System.Drawing.Point(177, 172);
+            this.txtHexColor.MaxLength = 6;
             this.txtHexColor.Name = "txtHexColor";
             this.txtHexColor.Size = new System.Drawing.Size(73, 20);
             this.txtHexColor.TabIndex = 11;
@@ -295,6 +259,43 @@ namespace ColorPicker
             this.m_colorTable.Text = "m_colorTable";
             this.m_colorTable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.m_colorTable.TextAngle = 0F;
+            // 
+            // m_colorWheel
+            // 
+            this.m_colorWheel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_colorWheel.BackColor = System.Drawing.Color.Transparent;
+            this.m_colorWheel.Location = new System.Drawing.Point(-1, 0);
+            this.m_colorWheel.Name = "m_colorWheel";
+            this.m_colorWheel.SelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(235)))), ((int)(((byte)(205)))));
+            this.m_colorWheel.Size = new System.Drawing.Size(254, 209);
+            this.m_colorWheel.TabIndex = 0;
+            // 
+            // m_opacitySlider
+            // 
+            this.m_opacitySlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_opacitySlider.BackColor = System.Drawing.Color.Transparent;
+            this.m_opacitySlider.BarPadding = new System.Windows.Forms.Padding(60, 12, 80, 25);
+            this.m_opacitySlider.Color1 = System.Drawing.Color.Black;
+            this.m_opacitySlider.Color2 = System.Drawing.Color.White;
+            this.m_opacitySlider.Color3 = System.Drawing.Color.White;
+            this.m_opacitySlider.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.m_opacitySlider.ForeColor = System.Drawing.Color.Black;
+            this.m_opacitySlider.Location = new System.Drawing.Point(2, 213);
+            this.m_opacitySlider.Name = "m_opacitySlider";
+            this.m_opacitySlider.NumberOfColors = ColorPicker.ColorSlider.eNumberOfColors.Use2Colors;
+            this.m_opacitySlider.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.m_opacitySlider.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.m_opacitySlider.Percent = 1F;
+            this.m_opacitySlider.RotatePointAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.m_opacitySlider.Size = new System.Drawing.Size(248, 28);
+            this.m_opacitySlider.TabIndex = 1;
+            this.m_opacitySlider.Text = "Alpha";
+            this.m_opacitySlider.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.m_opacitySlider.TextAngle = 0F;
+            this.m_opacitySlider.ValueOrientation = ColorPicker.ColorSlider.eValueOrientation.MinToMax;
             // 
             // ColorPickerCtrl
             // 
