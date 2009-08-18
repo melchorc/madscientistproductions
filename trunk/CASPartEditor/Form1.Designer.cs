@@ -300,7 +300,10 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button33 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
+            this.txtMeshNameCommit = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
             this.txtOtherBumpMap = new System.Windows.Forms.TextBox();
+            this.txtMeshName = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.button16 = new System.Windows.Forms.Button();
@@ -312,9 +315,6 @@
             this.txtMeshLod3 = new System.Windows.Forms.TextBox();
             this.txtMeshLod2 = new System.Windows.Forms.TextBox();
             this.txtMeshLod1 = new System.Windows.Forms.TextBox();
-            this.txtMeshNameCommit = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtMeshName = new System.Windows.Forms.TextBox();
             this.tabPage14 = new System.Windows.Forms.TabPage();
             this.btnDesignTypeCommit = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
@@ -2947,9 +2947,6 @@
             // 
             this.tabPage11.Controls.Add(this.groupBox4);
             this.tabPage11.Controls.Add(this.groupBox2);
-            this.tabPage11.Controls.Add(this.txtMeshNameCommit);
-            this.tabPage11.Controls.Add(this.label7);
-            this.tabPage11.Controls.Add(this.txtMeshName);
             this.tabPage11.Location = new System.Drawing.Point(4, 22);
             this.tabPage11.Name = "tabPage11";
             this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
@@ -3045,7 +3042,10 @@
             // 
             this.groupBox2.Controls.Add(this.button33);
             this.groupBox2.Controls.Add(this.button20);
+            this.groupBox2.Controls.Add(this.txtMeshNameCommit);
+            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.txtOtherBumpMap);
+            this.groupBox2.Controls.Add(this.txtMeshName);
             this.groupBox2.Controls.Add(this.label21);
             this.groupBox2.Controls.Add(this.label20);
             this.groupBox2.Controls.Add(this.button16);
@@ -3059,24 +3059,24 @@
             this.groupBox2.Controls.Add(this.txtMeshLod1);
             this.groupBox2.Location = new System.Drawing.Point(8, 217);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(469, 189);
+            this.groupBox2.Size = new System.Drawing.Size(488, 233);
             this.groupBox2.TabIndex = 25;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "New Mesh";
             // 
             // button33
             // 
-            this.button33.Location = new System.Drawing.Point(416, 144);
+            this.button33.Location = new System.Drawing.Point(420, 170);
             this.button33.Name = "button33";
-            this.button33.Size = new System.Drawing.Size(25, 23);
+            this.button33.Size = new System.Drawing.Size(43, 23);
             this.button33.TabIndex = 40;
-            this.button33.Text = "f";
+            this.button33.Text = "find";
             this.button33.UseVisualStyleBackColor = true;
             this.button33.Click += new System.EventHandler(this.button33_Click);
             // 
             // button20
             // 
-            this.button20.Location = new System.Drawing.Point(384, 144);
+            this.button20.Location = new System.Drawing.Point(388, 170);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(26, 23);
             this.button20.TabIndex = 39;
@@ -3084,112 +3084,9 @@
             this.button20.UseVisualStyleBackColor = true;
             this.button20.Click += new System.EventHandler(this.button20_Click);
             // 
-            // txtOtherBumpMap
-            // 
-            this.txtOtherBumpMap.Location = new System.Drawing.Point(88, 148);
-            this.txtOtherBumpMap.Name = "txtOtherBumpMap";
-            this.txtOtherBumpMap.Size = new System.Drawing.Size(290, 20);
-            this.txtOtherBumpMap.TabIndex = 38;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(22, 151);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(61, 13);
-            this.label21.TabIndex = 37;
-            this.label21.Text = "Bump Map:";
-            // 
-            // label20
-            // 
-            this.label20.Location = new System.Drawing.Point(6, 16);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(445, 33);
-            this.label20.TabIndex = 0;
-            this.label20.Text = "If you want this CAS Part to have a new mesh, please find your mesh LODs using th" +
-                "e boxes below.";
-            // 
-            // button16
-            // 
-            this.button16.Location = new System.Drawing.Point(384, 114);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(26, 23);
-            this.button16.TabIndex = 24;
-            this.button16.Text = "...";
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
-            // 
-            // button17
-            // 
-            this.button17.Location = new System.Drawing.Point(384, 80);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(26, 23);
-            this.button17.TabIndex = 23;
-            this.button17.Text = "...";
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(45, 55);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(38, 13);
-            this.label18.TabIndex = 14;
-            this.label18.Text = "LOD1:";
-            // 
-            // button18
-            // 
-            this.button18.Location = new System.Drawing.Point(384, 50);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(26, 23);
-            this.button18.TabIndex = 22;
-            this.button18.Text = "...";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(45, 85);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(38, 13);
-            this.label17.TabIndex = 15;
-            this.label17.Text = "LOD2:";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(45, 119);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(38, 13);
-            this.label16.TabIndex = 16;
-            this.label16.Text = "LOD3:";
-            // 
-            // txtMeshLod3
-            // 
-            this.txtMeshLod3.Location = new System.Drawing.Point(88, 116);
-            this.txtMeshLod3.Name = "txtMeshLod3";
-            this.txtMeshLod3.Size = new System.Drawing.Size(290, 20);
-            this.txtMeshLod3.TabIndex = 20;
-            // 
-            // txtMeshLod2
-            // 
-            this.txtMeshLod2.Location = new System.Drawing.Point(88, 82);
-            this.txtMeshLod2.Name = "txtMeshLod2";
-            this.txtMeshLod2.Size = new System.Drawing.Size(290, 20);
-            this.txtMeshLod2.TabIndex = 19;
-            // 
-            // txtMeshLod1
-            // 
-            this.txtMeshLod1.Location = new System.Drawing.Point(89, 52);
-            this.txtMeshLod1.Name = "txtMeshLod1";
-            this.txtMeshLod1.Size = new System.Drawing.Size(289, 20);
-            this.txtMeshLod1.TabIndex = 18;
-            // 
             // txtMeshNameCommit
             // 
-            this.txtMeshNameCommit.Location = new System.Drawing.Point(358, 10);
+            this.txtMeshNameCommit.Location = new System.Drawing.Point(360, 47);
             this.txtMeshNameCommit.Name = "txtMeshNameCommit";
             this.txtMeshNameCommit.Size = new System.Drawing.Size(75, 23);
             this.txtMeshNameCommit.TabIndex = 5;
@@ -3200,18 +3097,121 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(18, 15);
+            this.label7.Location = new System.Drawing.Point(20, 52);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(67, 13);
             this.label7.TabIndex = 4;
             this.label7.Text = "Mesh Name:";
             // 
+            // txtOtherBumpMap
+            // 
+            this.txtOtherBumpMap.Location = new System.Drawing.Point(92, 174);
+            this.txtOtherBumpMap.Name = "txtOtherBumpMap";
+            this.txtOtherBumpMap.Size = new System.Drawing.Size(290, 20);
+            this.txtOtherBumpMap.TabIndex = 38;
+            // 
             // txtMeshName
             // 
-            this.txtMeshName.Location = new System.Drawing.Point(91, 12);
+            this.txtMeshName.Location = new System.Drawing.Point(93, 49);
             this.txtMeshName.Name = "txtMeshName";
             this.txtMeshName.Size = new System.Drawing.Size(261, 20);
             this.txtMeshName.TabIndex = 3;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(26, 177);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(61, 13);
+            this.label21.TabIndex = 37;
+            this.label21.Text = "Bump Map:";
+            // 
+            // label20
+            // 
+            this.label20.Location = new System.Drawing.Point(6, 17);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(445, 33);
+            this.label20.TabIndex = 0;
+            this.label20.Text = "If you want this CAS Part to have a new mesh, please CHANGE the new, and find you" +
+                "r mesh LODs using the boxes below.";
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(388, 140);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(26, 23);
+            this.button16.TabIndex = 24;
+            this.button16.Text = "...";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(388, 106);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(26, 23);
+            this.button17.TabIndex = 23;
+            this.button17.Text = "...";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(49, 81);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(38, 13);
+            this.label18.TabIndex = 14;
+            this.label18.Text = "LOD1:";
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(388, 76);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(26, 23);
+            this.button18.TabIndex = 22;
+            this.button18.Text = "...";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(49, 111);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(38, 13);
+            this.label17.TabIndex = 15;
+            this.label17.Text = "LOD2:";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(49, 145);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(38, 13);
+            this.label16.TabIndex = 16;
+            this.label16.Text = "LOD3:";
+            // 
+            // txtMeshLod3
+            // 
+            this.txtMeshLod3.Location = new System.Drawing.Point(92, 142);
+            this.txtMeshLod3.Name = "txtMeshLod3";
+            this.txtMeshLod3.Size = new System.Drawing.Size(290, 20);
+            this.txtMeshLod3.TabIndex = 20;
+            // 
+            // txtMeshLod2
+            // 
+            this.txtMeshLod2.Location = new System.Drawing.Point(92, 108);
+            this.txtMeshLod2.Name = "txtMeshLod2";
+            this.txtMeshLod2.Size = new System.Drawing.Size(290, 20);
+            this.txtMeshLod2.TabIndex = 19;
+            // 
+            // txtMeshLod1
+            // 
+            this.txtMeshLod1.Location = new System.Drawing.Point(93, 78);
+            this.txtMeshLod1.Name = "txtMeshLod1";
+            this.txtMeshLod1.Size = new System.Drawing.Size(289, 20);
+            this.txtMeshLod1.TabIndex = 18;
             // 
             // tabPage14
             // 
@@ -3668,7 +3668,6 @@
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
             this.tabPage11.ResumeLayout(false);
-            this.tabPage11.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

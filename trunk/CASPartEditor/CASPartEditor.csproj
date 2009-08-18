@@ -57,6 +57,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CasPartFunctions.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ChunkFunctions.cs">
       <SubType>Form</SubType>
     </Compile>

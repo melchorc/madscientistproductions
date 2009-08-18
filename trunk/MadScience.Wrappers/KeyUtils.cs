@@ -201,8 +201,7 @@ namespace MadScience.Wrappers
 
         public override int GetHashCode()
         {
-            //return this.instanceId.GetHashCode() ^ ((int)(this.typeId ^ (this.groupId << 16)));
-            return this.instanceId.GetHashCode() ^ ((int)(this.typeId ^ (int)(this.groupId)));
+            return this.instanceId.GetHashCode() ^ ((int)(this.typeId ^ (this.groupId << 16)));
         }
 
         public void Save(Stream output)

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Text;
 using System.IO;
 using System.Drawing;
 using System.Xml.Serialization;
@@ -15,10 +14,26 @@ namespace CASPartEditor
 {
     public partial class Form1 : Form
     {
+        public void reloadTextures(xmlChunkDetails details)
+        {
+            List<string> textures = findDefaultTextures(casPartNew.ageGenderFlag, casPartNew.typeFlag);
+
+            renderWindow1.loadTexture(KeyUtils.findKey(textures[0]), "skinTexture");
+            renderWindow1.loadTexture(KeyUtils.findKey(textures[1]), "skinSpecular");
+            renderWindow1.loadTexture(KeyUtils.findKey(textures[2]), "normalMap");
+
+            renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
+            renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
+            renderWindow1.loadTexture(KeyUtils.findKey(details.Multiplier), "baseTexture");
+
+            generate3DTexture(details);
+            
+            renderWindow1.resetDevice();
+
+        }
+
         public void startRender(xmlChunkDetails details)
         {
-
-            List<string> textures = findDefaultTextures(casPartNew.ageGenderFlag, casPartNew.typeFlag);
 
             Stream meshStream = Stream.Null;
 
@@ -38,28 +53,8 @@ namespace CASPartEditor
 
             if (meshStream == Stream.Null)
             {
-                ResourceKey findKey = new ResourceKey();
-                findKey.typeId = 0x015A1849;
-                // Check the type - Makeup or Face, and load in the required mesh
-                if ((casPartNew.typeFlag & 0x4) == 0x4) // Face overlay
-                {
-                    if (((casPartNew.ageGenderFlag & (uint)AgeGenderFlags.Adult) == (uint)AgeGenderFlags.Adult) || ((casPartNew.ageGenderFlag & (uint)AgeGenderFlags.YoungAdult) == (uint)AgeGenderFlags.YoungAdult))
-                    {
-                        if ((casPartNew.ageGenderFlag & (uint)AgeGenderFlags.Female) == (uint)AgeGenderFlags.Female)
-                        {
-                            // Adult Female
-                            findKey.groupId = 0x00BEE823;
-                            findKey.instanceId = 0x00000000ECC7C68A;
-                        }
-                        if ((casPartNew.ageGenderFlag & (uint)AgeGenderFlags.Female) == (uint)AgeGenderFlags.Female)
-                        {
-                            // Adult Female
-                            findKey.groupId = 0x00BEE823;
-                            findKey.instanceId = 0x00000000ECC7C68A;
-                        }
-                    }
-                }
-
+                ResourceKey findKey = findDefaultMeshes(casPartNew.ageGenderFlag, casPartNew.typeFlag);
+                
                 if (findKey.groupId != 0 && findKey.instanceId != 0)
                 {
                     meshStream = KeyUtils.findKey(findKey, 0);
@@ -75,28 +70,7 @@ namespace CASPartEditor
                 //renderWindow1.loadDefaultTextures();
                 renderWindow1.setModel(newModel);
 
-                renderWindow1.loadTexture(KeyUtils.findKey(textures[0]), "skinTexture");
-                renderWindow1.loadTexture(KeyUtils.findKey(textures[1]), "skinSpecular");
-                renderWindow1.loadTexture(KeyUtils.findKey(textures[2]), "normalMap");
-
-                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
-                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
-                renderWindow1.loadTexture(KeyUtils.findKey(details.Multiplier), "baseTexture");
-
-                generate3DTexture(details);
-
-                /*
-                if (details.stencil.A.Enabled == "True")
-                {
-                    renderWindow1.loadTexture(findKey(details.stencil.A.key), "stencilA");
-                }
-                else
-                {
-                    renderWindow1.loadTexture(null, "stencilA");
-                }
-                */
-
-                renderWindow1.resetDevice();
+                reloadTextures(details);
 
                 renderWindow1.RenderEnabled = true;
 
@@ -144,7 +118,16 @@ namespace CASPartEditor
             {
                 //
                 //renderWindow1.RenderEnabled = true;
-                renderWindow1.loadTextureFromBitmap((Bitmap)a[1], "stencilA");
+                if ((casPartNew.typeFlag & 0x4) == 0x4)
+                {
+                    renderWindow1.loadTextureFromBitmap((Bitmap)a[1], "stencilA");
+                    renderWindow1.shaderMode = 1;
+                }
+                else
+                {
+                    renderWindow1.loadTextureFromBitmap((Bitmap)a[1], "baseTexture");
+                    renderWindow1.shaderMode = 0;
+                }
                 renderWindow1.resetDevice();
                 renderWindow1.lblGeneratingTexture.Visible = false;
             }
@@ -175,11 +158,11 @@ namespace CASPartEditor
             if (details.tint.A.enabled.ToLower() == "true")
             {
                 output = PatternProcessor.ProcessMakeupTexture(textures,
-                    casPartNew.clothingType,
-                    details.tint.A,
-                    details.tint.B,
-                    details.tint.C,
-                    details.tint.D,
+                casPartNew.clothingType,
+                details.tint.A,
+                details.tint.B,
+                details.tint.C,
+                details.tint.D,
                     true);
             }
             else if (details.TintColor != null)
@@ -299,15 +282,20 @@ namespace CASPartEditor
             return colors;
         }
 
+        public static Dictionary<string, string> defaultMeshes = new Dictionary<string, string>();
         public static ResourceKey findDefaultMeshes(uint ageGenderFlag, uint typeFlag)
         {
             ResourceKey ret = new ResourceKey();
 
             // Load in XML
-            TextReader r = new StreamReader(Path.Combine(Application.StartupPath, "xml\\defaultMeshes.xml"));
-            Dictionary<string, string> defaultMeshes = new Dictionary<string, string>();
-            Deserialize(r, defaultMeshes);
-            r.Close();
+            if (defaultMeshes.Count == 0)
+            {
+                // Load in XML
+                TextReader r = new StreamReader(Path.Combine(Application.StartupPath, "xml\\defaultMeshes.xml"));
+                XmlSerializer s = new XmlSerializer(typeof(meshesFile));
+                DeserializeMeshes(r, defaultMeshes);
+                r.Close();
+            }
 
             string flags = "";
             string highestAge = "";
@@ -334,14 +322,15 @@ namespace CASPartEditor
             // Accessory
             if ((typeFlag & 0x10) == 0x10) flags += "Accessory";
 
-            // Check in Dictionary - _m = multiplier, _s = specular, _n = normal map
-            //if (defaultTextures.ContainsKey(flags + "_m")) returnTextures[0] = "key:00B2D882:00000000:" + defaultTextures[flags + "_m"];
-            //if (defaultTextures.ContainsKey(flags + "_s")) returnTextures[1] = "key:00B2D882:00000000:" + defaultTextures[flags + "_s"];
-            //if (defaultTextures.ContainsKey(flags + "_n")) returnTextures[2] = "key:00B2D882:00000000:" + defaultTextures[flags + "_n"];
+            if (defaultMeshes.ContainsKey(flags))
+            {
+                ret = new ResourceKey(defaultMeshes[flags]);
+            }
 
             return ret;
         }
 
+        public static Dictionary<string, string> defaultTextures = new Dictionary<string, string>();
         public static List<string> findDefaultTextures(uint ageGenderFlag, uint typeFlag)
         {
 
@@ -354,11 +343,13 @@ namespace CASPartEditor
                 returnTextures.Add("");
             }
 
-            // Load in XML
-            TextReader r = new StreamReader(Path.Combine(Application.StartupPath, "xml\\defaultTextures.xml"));
-            Dictionary<string, string> defaultTextures = new Dictionary<string, string>();
-            Deserialize(r, defaultTextures);
-            r.Close();
+            if (defaultTextures.Count == 0)
+            {
+                // Load in XML
+                TextReader r = new StreamReader(Path.Combine(Application.StartupPath, "xml\\defaultTextures.xml"));
+                Deserialize(r, defaultTextures);
+                r.Close();
+            }
 
             string flags = "";
             string highestAge = "";
@@ -413,6 +404,18 @@ namespace CASPartEditor
             }
         }
 
+        static void DeserializeMeshes(TextReader reader, IDictionary dictionary)
+        {
+            dictionary.Clear();
+            XmlSerializer serializer = new XmlSerializer(typeof(meshesFile));
+            meshesFile tFile = (meshesFile)serializer.Deserialize(reader);
+
+            foreach (meshEntry entry in tFile.Items)
+            {
+                dictionary[entry.flags] = entry.value;
+            }
+        }
+
         /// <remarks/>
         [System.Xml.Serialization.XmlRootAttribute()]
         public class texturesFile
@@ -442,6 +445,38 @@ namespace CASPartEditor
             {
                 this.flags = flags;
                 this.instanceid = instanceid;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlRootAttribute()]
+        public class meshesFile
+        {
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlElementAttribute("mesh", Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = true)]
+            public List<meshEntry> Items = new List<meshEntry>();
+
+        }
+
+        public class meshEntry
+        {
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public string flags;
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public string value;
+
+            public meshEntry()
+            {
+            }
+
+            public meshEntry(string flags, string value)
+            {
+                this.flags = flags;
+                this.value = value;
             }
         }
 
