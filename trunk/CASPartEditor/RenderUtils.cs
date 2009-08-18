@@ -182,7 +182,7 @@ namespace CASPartEditor
 
             DateTime stopTime = DateTime.Now;
             TimeSpan duration = stopTime - startTime;
-            Console.WriteLine("Total Texture generation time: " + duration.TotalMilliseconds);
+            Console.WriteLine("Total Makeup Texture generation time: " + duration.TotalMilliseconds);
             return output;
         }
 
@@ -245,7 +245,7 @@ namespace CASPartEditor
 
             DateTime stopTime = DateTime.Now;
             TimeSpan duration = stopTime - startTime;
-            Console.WriteLine("Total Texture generation time: " + duration.TotalMilliseconds);
+            Console.WriteLine("Total Multiplier Texture generation time: " + duration.TotalMilliseconds);
             return output;
         }
 
