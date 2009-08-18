@@ -16,9 +16,10 @@ namespace CASPartEditor
                 MadScience.tintDetail tintb,
                 MadScience.tintDetail tintc,
                 MadScience.tintDetail tintd, 
-                bool RGBA
+                bool useMask
             )
         {
+            Bitmap _FaceTexture;
             Bitmap _Multiplier;
             Bitmap _PartMask;
             Bitmap _Overlay;
@@ -118,13 +119,13 @@ namespace CASPartEditor
                             Color multiplierColor = Color.FromArgb(multiplierRow[pixelLocation + 3], multiplierRow[pixelLocation + 2], multiplierRow[pixelLocation + 1], multiplierRow[pixelLocation]);
                             if (multiplierColor.A != 0)
                             {
-                                if (RGBA && !color4.IsEmpty)
+                                if (useMask)
                                 {
                                     outputColor = ProcessMakeUpPixelRGBA(multiplierColor, maskColor, color1, color2, color3, color4);
                                 }
                                 else
                                 {
-                                    outputColor = ProcessMakeUpPixelRGB(multiplierColor, maskColor, color1, color2, color3);
+                                    outputColor = ProcessMakeUpPixelRGB(multiplierColor, Color.White, color1, color2, color3);
                                 }
                                 outputRow[pixelLocation] = (byte)outputColor.B;
                                 outputRow[pixelLocation + 1] = (byte)outputColor.G;
@@ -140,7 +141,8 @@ namespace CASPartEditor
 
             //apply overlay and stencils
             Graphics g = Graphics.FromImage(output);
-            //g.DrawImage(_Overlay, 0, 0);
+            g.DrawImage(output, 0, 0);
+            g.DrawImage(_Overlay, 0, 0);
             //if ((textures[2] != null))
             //{
             //    d.Load(textures[2]);

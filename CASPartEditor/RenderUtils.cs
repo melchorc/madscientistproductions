@@ -125,7 +125,7 @@ namespace CASPartEditor
 
             if ((casPartNew.typeFlag & 0x4) == 0x4)
             {
-                b = composeMakeup(details, casPartNew.clothingType, true);
+                b = composeMakeup(details, casPartNew.clothingType);
             }
             else
             {
@@ -144,7 +144,7 @@ namespace CASPartEditor
             {
                 //
                 //renderWindow1.RenderEnabled = true;
-                renderWindow1.loadTextureFromBitmap((Bitmap)a[1], "baseTexture");
+                renderWindow1.loadTextureFromBitmap((Bitmap)a[1], "stencilA");
                 renderWindow1.resetDevice();
                 renderWindow1.lblGeneratingTexture.Visible = false;
             }
@@ -156,9 +156,9 @@ namespace CASPartEditor
             }
         }
 
-        private Bitmap composeMakeup(xmlChunkDetails details, uint casPartType, bool RGBA)
+        private Bitmap composeMakeup(xmlChunkDetails details, uint casPartType)
         {
-
+            List<string> skinTextures = findDefaultTextures(casPartNew.ageGenderFlag, casPartNew.typeFlag);
             DateTime startTime2 = DateTime.Now;
             List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.faceOverlay));
@@ -171,14 +171,31 @@ namespace CASPartEditor
             Console.WriteLine("Key search time: " + duration2.TotalMilliseconds);
 
             DateTime startTime = DateTime.Now;
-            Bitmap output = PatternProcessor.ProcessMakeupTexture(
-                textures,
-                casPartNew.clothingType,
-                details.tint.A,
-                details.tint.B,
-                details.tint.C,
-                details.tint.D,
-                RGBA);
+            Bitmap output = null;
+            if (details.tint.A.enabled.ToLower() == "true")
+            {
+                output = PatternProcessor.ProcessMakeupTexture(textures,
+                    casPartNew.clothingType,
+                    details.tint.A,
+                    details.tint.B,
+                    details.tint.C,
+                    details.tint.D,
+                    true);
+            }
+            else if (details.TintColor != null)
+            {
+                tintDetail t = new tintDetail();
+                tintDetail d = new tintDetail();
+                t.enabled = "True";
+                t.color = details.TintColor;
+                output = PatternProcessor.ProcessMakeupTexture(textures,
+                    casPartNew.clothingType,
+                    t,
+                    d,
+                    d,
+                    d,
+                    false);
+            }
 
             DateTime stopTime = DateTime.Now;
             TimeSpan duration = stopTime - startTime;
