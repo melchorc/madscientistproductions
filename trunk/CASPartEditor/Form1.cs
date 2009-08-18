@@ -34,8 +34,7 @@ namespace CASPartEditor
 
             Helpers.logMessageToFile("Setting version number");
             Version vrs = new Version(Application.ProductVersion);
-            //this.Text = this.Text + " v" + vrs.Major + "." + vrs.Minor + "." + vrs.Build + "." + vrs.Revision;
-            this.Text = this.Text + " v" + vrs.Major + "." + vrs.Minor + " r79";
+            this.Text = this.Text + " v" + vrs.Major + "." + vrs.Minor + "." + vrs.Build + "." + vrs.Revision;
 
             Helpers.logMessageToFile("Checking debug mode");
             if (MadScience.Helpers.getRegistryValue("debugMode") == "True")
@@ -2373,7 +2372,7 @@ namespace CASPartEditor
 
         private void btnDesignTypeCommit_Click(object sender, EventArgs e)
         {
-            if (checkedListBox1.GetItemChecked(0) == true)
+            if (chkDesignType.GetItemChecked(0) == true)
             {
                 updateLists("reskey", "key:0333406C:00000000:52E8BE209C703561");
                 updateLists("filename", "CasRgbMask");
@@ -2386,7 +2385,7 @@ namespace CASPartEditor
                     chunk.filename = "CasRgbMask";
                 }
             }
-            if (checkedListBox1.GetItemChecked(1) == true)
+            if (chkDesignType.GetItemChecked(1) == true)
             {
                 updateLists("reskey", "key:0333406C:00000000:E37696463F6B2D6E");
                 updateLists("filename", "CasRgbaMask");
@@ -2400,7 +2399,7 @@ namespace CASPartEditor
                     chunk.filename = "CasRgbaMask";
                 }
             }
-            if (checkedListBox1.GetItemChecked(2) == true)
+            if (chkDesignType.GetItemChecked(2) == true)
             {
                 updateLists("reskey", "key:0333406C:00000000:01625DDC220C08C6");
                 updateLists("filename", "CasSkinOverlayTintable");

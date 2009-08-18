@@ -318,7 +318,7 @@
             this.tabPage14 = new System.Windows.Forms.TabPage();
             this.btnDesignTypeCommit = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.chkDesignType = new System.Windows.Forms.CheckedListBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label113 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
@@ -3217,7 +3217,7 @@
             // 
             this.tabPage14.Controls.Add(this.btnDesignTypeCommit);
             this.tabPage14.Controls.Add(this.label22);
-            this.tabPage14.Controls.Add(this.checkedListBox1);
+            this.tabPage14.Controls.Add(this.chkDesignType);
             this.tabPage14.Location = new System.Drawing.Point(4, 22);
             this.tabPage14.Name = "tabPage14";
             this.tabPage14.Padding = new System.Windows.Forms.Padding(3);
@@ -3245,17 +3245,17 @@
             this.label22.TabIndex = 1;
             this.label22.Text = "Design type:";
             // 
-            // checkedListBox1
+            // chkDesignType
             // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Items.AddRange(new object[] {
+            this.chkDesignType.FormattingEnabled = true;
+            this.chkDesignType.Items.AddRange(new object[] {
             "3 channel RGB",
             "4 channel RGBA",
             "Tintable Overlay"});
-            this.checkedListBox1.Location = new System.Drawing.Point(88, 17);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(120, 94);
-            this.checkedListBox1.TabIndex = 0;
+            this.chkDesignType.Location = new System.Drawing.Point(88, 17);
+            this.chkDesignType.Name = "chkDesignType";
+            this.chkDesignType.Size = new System.Drawing.Size(120, 94);
+            this.chkDesignType.TabIndex = 0;
             // 
             // pictureBox1
             // 
@@ -3953,7 +3953,7 @@
         private System.Windows.Forms.TabPage tabPage14;
         private System.Windows.Forms.Button btnDesignTypeCommit;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.CheckedListBox chkDesignType;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem addNewBlankToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNewCopyLastToolStripMenuItem;

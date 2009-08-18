@@ -249,9 +249,9 @@ namespace CASPartEditor
                 addCasPartItem("#" + i.ToString(), cRepeat.ToString());
             }
 
-            for (int i = 0; i < checkedListBox1.Items.Count; i++)
+            for (int i = 0; i < chkDesignType.Items.Count; i++)
             {
-                checkedListBox1.SetItemChecked(i, true);
+                chkDesignType.SetItemChecked(i, false);
             }
 
             for (int i = 0; i < casPartSrc.count6; i++)
@@ -264,15 +264,15 @@ namespace CASPartEditor
                 {
                     if (tgi.instanceId == 0x52E8BE209C703561)
                     {
-                        checkedListBox1.SetItemChecked(0, true);
+                        chkDesignType.SetItemChecked(0, true);
                     }
                     if (tgi.instanceId == 0xE37696463F6B2D6E)
                     {
-                        checkedListBox1.SetItemChecked(1, true);
+                        chkDesignType.SetItemChecked(1, true);
                     }
                     if (tgi.instanceId == 0x01625DDC220C08C6)
                     {
-                        checkedListBox1.SetItemChecked(2, true);
+                        chkDesignType.SetItemChecked(2, true);
                     }
 
                 }
