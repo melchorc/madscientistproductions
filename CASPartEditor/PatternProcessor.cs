@@ -99,25 +99,18 @@ namespace CASPartEditor
                             {
                                 if (color4.IsEmpty) // if color4 is disabled we ignore the alpha channel of the mask
                                 {
-                                    if (useMask && maskColor.R > 0)
+                                    if (useMask)
                                     {
                                         outputColor = ProcessMakeUpPixelRGB(multiplierColor, maskColor, color1, color2, color3);
                                     }
                                     else
                                     {
-                                        outputColor = ProcessMakeUpPixelRGB(multiplierColor, Color.White, color1, color2, color3);
+                                        outputColor = ProcessMakeUpPixelRGB(multiplierColor, Color.Red, color1, color2, color3);
                                     }
                                 }
                                 else
                                 {
-                                    if (useMask && maskColor.R > 0)
-                                    {
-                                        outputColor = ProcessMakeUpPixelRGBA(multiplierColor, maskColor, color1, color2, color3, color4);
-                                    }
-                                    else
-                                    {
-                                        outputColor = ProcessMakeUpPixelRGBA(multiplierColor, Color.White, color1, color2, color3, color4);
-                                    }
+                                    outputColor = ProcessMakeUpPixelRGBA(multiplierColor, maskColor, color1, color2, color3, color4);
                                 }
                                 outputRow[pixelLocation] = (byte)outputColor.B;
                                 outputRow[pixelLocation + 1] = (byte)outputColor.G;
