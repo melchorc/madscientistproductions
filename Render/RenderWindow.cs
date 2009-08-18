@@ -153,10 +153,7 @@ namespace MadScience.Render
             this.model = newModel;
             if (d3dDevice == null) Init();
 
-            height = model.bounds.mid.Y / 1.35f;
-
-            Console.WriteLine("mid Y: " + model.bounds.mid.Y.ToString());
-            Console.WriteLine("camera height: " + height.ToString());
+            ResetView();
 
             //else
             //    OnResetDevice(d3dDevice, null);
@@ -401,8 +398,6 @@ namespace MadScience.Render
             if (model.numVertices > 0)
             {
 
-                Console.WriteLine(model.bounds.mid.X.ToString() + " : " + model.bounds.mid.Y.ToString() + " : " + model.bounds.mid.Z.ToString());
-                Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + transZ.ToString() + " : " + height.ToString());
                 Console.WriteLine("num vertices: " + model.numVertices.ToString());
 
                 this.statusLabel.Text = "Model loaded.  (" + String.Format("{0:0} polygons, ", model.numPolygons) + String.Format("{0:0} vertices)", model.numVertices);
@@ -696,7 +691,7 @@ namespace MadScience.Render
                 if (spinX > 359) spinX -= 360;
                 if (spinY > 359) spinY -= 360;
 
-                //Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + spinZ.ToString() + " : " + height.ToString());
+                Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + transX.ToString() + " : " + transZ.ToString() + " : " + height.ToString());
             }
 
             ptLastMousePosit = ptCurrentMousePosit;
@@ -773,11 +768,31 @@ namespace MadScience.Render
 
         private void ResetView(int spX)
         {
-            height = model.bounds.mid.Y / 1.35f;
+            Console.WriteLine("camera height: " + height.ToString());
+            if (model != null)
+            {
+                Console.WriteLine("Min: " + model.bounds.min.X.ToString() + " : " + model.bounds.min.Y.ToString() + " : " + model.bounds.min.Z.ToString());
+                Console.WriteLine("Mid: " + model.bounds.mid.X.ToString() + " : " + model.bounds.mid.Y.ToString() + " : " + model.bounds.mid.Z.ToString());
+                Console.WriteLine("Max: " + model.bounds.max.X.ToString() + " : " + model.bounds.max.Y.ToString() + " : " + model.bounds.max.Z.ToString());
+
+                height = model.bounds.mid.Y + ((model.bounds.max.Y - model.bounds.mid.Y) / 2f);
+                if (spX == 180 || spX == 0) transZ = model.bounds.max.X * 0.2f;
+                else transZ = model.bounds.max.Z * 0.2f;
+            }
+            else
+            {
+                height = 0;
+                transX = 0;
+                transZ = 0;
+            }
+
             spinX = spX;
             spinY = 0;
-            transZ = 0;
             transX = 0;
+
+            Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + transZ.ToString());
+
+
             Invalidate();
         }
 

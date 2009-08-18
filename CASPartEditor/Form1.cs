@@ -579,7 +579,7 @@ namespace CASPartEditor
                 label70.Visible = false;
                 btnDumpFromFullbuild2.Enabled = true;
                 button9.Enabled = true;
-                cmbMeshName.SelectedIndex = 0;
+                if (isNew) cmbMeshName.SelectedIndex = 0;
 
                 groupBox11.Text = "Quick Find (" + numFound.ToString() + " found)";
             }
@@ -767,13 +767,13 @@ namespace CASPartEditor
         private void updateStencilBoxes(int stencilBoxNo, stencilDetails stencil)
         {
 
-            addListHeader(listView3, "Stencil " + stencilBoxNo);
-            addListItem(listView3, stencil.key, "Texture", "texture");
-            addListItem(listView3, stencil.Rotation, "Rotation", "");
-            addListItem(listView3, stencil.Tiling, "Tiling", "");
-            addListBlank(listView3);
+            addListHeader(lstStencilPool, "Stencil " + stencilBoxNo);
+            addListItem(lstStencilPool, stencil.key, "Texture", "texture");
+            addListItem(lstStencilPool, stencil.Rotation, "Rotation", "");
+            addListItem(lstStencilPool, stencil.Tiling, "Tiling", "");
+            addListBlank(lstStencilPool);
 
-            stencil.Enabled = "True";
+            //stencil.Enabled = "True";
             stencilPool[stencilBoxNo - 1] = stencil;
         }
 
@@ -1887,7 +1887,7 @@ namespace CASPartEditor
 
         private void button12_Click(object sender, EventArgs e)
         {
-            listFindOrReplace(listView3, true);
+            listFindOrReplace(lstStencilPool, true);
         }
 
         private void listView3_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -1928,14 +1928,14 @@ namespace CASPartEditor
 
         private void button7_Click_1(object sender, EventArgs e)
         {
-            listFindOrReplace(listView3, false);
+            listFindOrReplace(lstStencilPool, false);
         }
 
         private void listView3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView3.SelectedItems.Count == 1)
+            if (lstStencilPool.SelectedItems.Count == 1)
             {
-                ListViewItem item = listView3.SelectedItems[0];
+                ListViewItem item = lstStencilPool.SelectedItems[0];
                 switch (item.Tag.ToString())
                 {
                     case "texture":
@@ -1963,9 +1963,9 @@ namespace CASPartEditor
             int curStencilNum = 0;
 
             stencilDetails stencil = new stencilDetails();
-            for (int i = 0; i < listView3.Items.Count; i++)
+            for (int i = 0; i < lstStencilPool.Items.Count; i++)
             {
-                ListViewItem item = listView3.Items[i];
+                ListViewItem item = lstStencilPool.Items[i];
 
                 switch (item.SubItems[1].Text)
                 {

@@ -75,12 +75,12 @@ namespace MadScience.Render
             }
 
             // Used for bounding box
-            float minX = 0;
-            float minY = 0;
-            float minZ = 0;
-            float maxX = 0;
-            float maxY = 0;
-            float maxZ = 0;
+            float minX = 50f;
+            float minY = 50f;
+            float minZ = 50f;
+            float maxX = -50f;
+            float maxY = -50f;
+            float maxZ = -50f;
 
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < numVerts; i++)
@@ -162,9 +162,9 @@ namespace MadScience.Render
             }
 
             // Go through the vertex lists again, this time normalising the values
-            float midX = maxX - minX;
-            float midY = maxY - minY;
-            float midZ = maxZ - minZ;
+            float midX = minX + ((maxX - minX) / 2);
+            float midY = minY + ((maxY - minY) / 2);
+            float midZ = minZ + ((maxZ - minZ) / 2);
 
             model.bounds.min = new Vector3(minX, minY, minZ);
             model.bounds.mid = new Vector3(midX, midY, midZ);

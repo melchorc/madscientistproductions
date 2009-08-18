@@ -30,42 +30,42 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup7 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup8 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup9 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup10 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup11 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup12 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup13 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup14 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup15 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup16 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup17 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup18 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup19 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup20 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup21 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup22 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup23 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup24 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup25 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup26 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup27 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup28 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup29 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup30 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup31 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup32 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup33 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup34 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup35 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup36 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup37 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup38 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup39 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup40 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup41 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup42 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup43 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup44 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup45 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup46 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup47 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup48 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup49 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup50 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup51 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup52 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup53 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup54 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup55 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup56 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup57 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup58 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup59 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup60 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup61 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup62 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup63 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup64 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup65 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup66 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup67 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup68 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup69 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup70 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup71 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup72 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -134,7 +134,7 @@
             this.label88 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.button13 = new System.Windows.Forms.Button();
-            this.listView3 = new System.Windows.Forms.ListView();
+            this.lstStencilPool = new System.Windows.Forms.ListView();
             this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
             this.button7 = new System.Windows.Forms.Button();
@@ -1101,7 +1101,7 @@
             // 
             this.tabPage4.AutoScroll = true;
             this.tabPage4.Controls.Add(this.button13);
-            this.tabPage4.Controls.Add(this.listView3);
+            this.tabPage4.Controls.Add(this.lstStencilPool);
             this.tabPage4.Controls.Add(this.button7);
             this.tabPage4.Controls.Add(this.button12);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
@@ -1123,26 +1123,26 @@
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
-            // listView3
+            // lstStencilPool
             // 
-            this.listView3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.lstStencilPool.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)));
-            this.listView3.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lstStencilPool.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader9,
             this.columnHeader10});
-            this.listView3.GridLines = true;
-            this.listView3.LabelEdit = true;
-            this.listView3.Location = new System.Drawing.Point(8, 6);
-            this.listView3.MultiSelect = false;
-            this.listView3.Name = "listView3";
-            this.listView3.ShowGroups = false;
-            this.listView3.Size = new System.Drawing.Size(556, 506);
-            this.listView3.TabIndex = 24;
-            this.listView3.UseCompatibleStateImageBehavior = false;
-            this.listView3.View = System.Windows.Forms.View.Details;
-            this.listView3.SelectedIndexChanged += new System.EventHandler(this.listView3_SelectedIndexChanged);
-            this.listView3.Enter += new System.EventHandler(this.listView3_Enter);
-            this.listView3.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView3_ItemSelectionChanged);
+            this.lstStencilPool.GridLines = true;
+            this.lstStencilPool.LabelEdit = true;
+            this.lstStencilPool.Location = new System.Drawing.Point(8, 6);
+            this.lstStencilPool.MultiSelect = false;
+            this.lstStencilPool.Name = "lstStencilPool";
+            this.lstStencilPool.ShowGroups = false;
+            this.lstStencilPool.Size = new System.Drawing.Size(556, 506);
+            this.lstStencilPool.TabIndex = 24;
+            this.lstStencilPool.UseCompatibleStateImageBehavior = false;
+            this.lstStencilPool.View = System.Windows.Forms.View.Details;
+            this.lstStencilPool.SelectedIndexChanged += new System.EventHandler(this.listView3_SelectedIndexChanged);
+            this.lstStencilPool.Enter += new System.EventHandler(this.listView3_Enter);
+            this.lstStencilPool.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView3_ItemSelectionChanged);
             // 
             // columnHeader9
             // 
@@ -2473,34 +2473,34 @@
             this.columnHeader7,
             this.columnHeader8});
             this.lstTextureDetails.GridLines = true;
-            listViewGroup1.Header = "Texture Details";
-            listViewGroup1.Name = "groupTextures";
-            listViewGroup2.Header = "Clothing Details";
-            listViewGroup2.Name = "groupClothing";
-            listViewGroup3.Header = "Face Overlay Details";
-            listViewGroup3.Name = "groupFaceOverlay";
-            listViewGroup4.Header = "Mask and Overlay Details";
-            listViewGroup4.Name = "groupMask";
-            listViewGroup5.Header = "Hair Details";
-            listViewGroup5.Name = "groupHair";
-            listViewGroup6.Header = "Skin Details";
-            listViewGroup6.Name = "groupSkin";
-            listViewGroup7.Header = "Logo Details";
-            listViewGroup7.Name = "groupLogo";
-            listViewGroup8.Header = "CAS Details";
-            listViewGroup8.Name = "groupCasDetails";
-            listViewGroup9.Header = "Misc. Details";
-            listViewGroup9.Name = "groupMisc";
+            listViewGroup37.Header = "Texture Details";
+            listViewGroup37.Name = "groupTextures";
+            listViewGroup38.Header = "Clothing Details";
+            listViewGroup38.Name = "groupClothing";
+            listViewGroup39.Header = "Face Overlay Details";
+            listViewGroup39.Name = "groupFaceOverlay";
+            listViewGroup40.Header = "Mask and Overlay Details";
+            listViewGroup40.Name = "groupMask";
+            listViewGroup41.Header = "Hair Details";
+            listViewGroup41.Name = "groupHair";
+            listViewGroup42.Header = "Skin Details";
+            listViewGroup42.Name = "groupSkin";
+            listViewGroup43.Header = "Logo Details";
+            listViewGroup43.Name = "groupLogo";
+            listViewGroup44.Header = "CAS Details";
+            listViewGroup44.Name = "groupCasDetails";
+            listViewGroup45.Header = "Misc. Details";
+            listViewGroup45.Name = "groupMisc";
             this.lstTextureDetails.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2,
-            listViewGroup3,
-            listViewGroup4,
-            listViewGroup5,
-            listViewGroup6,
-            listViewGroup7,
-            listViewGroup8,
-            listViewGroup9});
+            listViewGroup37,
+            listViewGroup38,
+            listViewGroup39,
+            listViewGroup40,
+            listViewGroup41,
+            listViewGroup42,
+            listViewGroup43,
+            listViewGroup44,
+            listViewGroup45});
             this.lstTextureDetails.LabelEdit = true;
             this.lstTextureDetails.Location = new System.Drawing.Point(3, 8);
             this.lstTextureDetails.MultiSelect = false;
@@ -2605,34 +2605,34 @@
             this.columnHeader5,
             this.columnHeader6});
             this.lstOtherDetails.GridLines = true;
-            listViewGroup10.Header = "Texture Details";
-            listViewGroup10.Name = "groupTextures";
-            listViewGroup11.Header = "Clothing Details";
-            listViewGroup11.Name = "groupClothing";
-            listViewGroup12.Header = "Face Overlay Details";
-            listViewGroup12.Name = "groupFaceOverlay";
-            listViewGroup13.Header = "Mask and Overlay Details";
-            listViewGroup13.Name = "groupMask";
-            listViewGroup14.Header = "Hair Details";
-            listViewGroup14.Name = "groupHair";
-            listViewGroup15.Header = "Skin Details";
-            listViewGroup15.Name = "groupSkin";
-            listViewGroup16.Header = "Logo Details";
-            listViewGroup16.Name = "groupLogo";
-            listViewGroup17.Header = "CAS Details";
-            listViewGroup17.Name = "groupCasDetails";
-            listViewGroup18.Header = "Misc. Details";
-            listViewGroup18.Name = "groupMisc";
+            listViewGroup46.Header = "Texture Details";
+            listViewGroup46.Name = "groupTextures";
+            listViewGroup47.Header = "Clothing Details";
+            listViewGroup47.Name = "groupClothing";
+            listViewGroup48.Header = "Face Overlay Details";
+            listViewGroup48.Name = "groupFaceOverlay";
+            listViewGroup49.Header = "Mask and Overlay Details";
+            listViewGroup49.Name = "groupMask";
+            listViewGroup50.Header = "Hair Details";
+            listViewGroup50.Name = "groupHair";
+            listViewGroup51.Header = "Skin Details";
+            listViewGroup51.Name = "groupSkin";
+            listViewGroup52.Header = "Logo Details";
+            listViewGroup52.Name = "groupLogo";
+            listViewGroup53.Header = "CAS Details";
+            listViewGroup53.Name = "groupCasDetails";
+            listViewGroup54.Header = "Misc. Details";
+            listViewGroup54.Name = "groupMisc";
             this.lstOtherDetails.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup10,
-            listViewGroup11,
-            listViewGroup12,
-            listViewGroup13,
-            listViewGroup14,
-            listViewGroup15,
-            listViewGroup16,
-            listViewGroup17,
-            listViewGroup18});
+            listViewGroup46,
+            listViewGroup47,
+            listViewGroup48,
+            listViewGroup49,
+            listViewGroup50,
+            listViewGroup51,
+            listViewGroup52,
+            listViewGroup53,
+            listViewGroup54});
             this.lstOtherDetails.LabelEdit = true;
             this.lstOtherDetails.Location = new System.Drawing.Point(3, 8);
             this.lstOtherDetails.MultiSelect = false;
@@ -2975,34 +2975,34 @@
             this.columnHeader12});
             this.lstMeshTGILinks.FullRowSelect = true;
             this.lstMeshTGILinks.GridLines = true;
-            listViewGroup19.Header = "Texture Details";
-            listViewGroup19.Name = "groupTextures";
-            listViewGroup20.Header = "Clothing Details";
-            listViewGroup20.Name = "groupClothing";
-            listViewGroup21.Header = "Face Overlay Details";
-            listViewGroup21.Name = "groupFaceOverlay";
-            listViewGroup22.Header = "Mask and Overlay Details";
-            listViewGroup22.Name = "groupMask";
-            listViewGroup23.Header = "Hair Details";
-            listViewGroup23.Name = "groupHair";
-            listViewGroup24.Header = "Skin Details";
-            listViewGroup24.Name = "groupSkin";
-            listViewGroup25.Header = "Logo Details";
-            listViewGroup25.Name = "groupLogo";
-            listViewGroup26.Header = "CAS Details";
-            listViewGroup26.Name = "groupCasDetails";
-            listViewGroup27.Header = "Misc. Details";
-            listViewGroup27.Name = "groupMisc";
+            listViewGroup55.Header = "Texture Details";
+            listViewGroup55.Name = "groupTextures";
+            listViewGroup56.Header = "Clothing Details";
+            listViewGroup56.Name = "groupClothing";
+            listViewGroup57.Header = "Face Overlay Details";
+            listViewGroup57.Name = "groupFaceOverlay";
+            listViewGroup58.Header = "Mask and Overlay Details";
+            listViewGroup58.Name = "groupMask";
+            listViewGroup59.Header = "Hair Details";
+            listViewGroup59.Name = "groupHair";
+            listViewGroup60.Header = "Skin Details";
+            listViewGroup60.Name = "groupSkin";
+            listViewGroup61.Header = "Logo Details";
+            listViewGroup61.Name = "groupLogo";
+            listViewGroup62.Header = "CAS Details";
+            listViewGroup62.Name = "groupCasDetails";
+            listViewGroup63.Header = "Misc. Details";
+            listViewGroup63.Name = "groupMisc";
             this.lstMeshTGILinks.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup19,
-            listViewGroup20,
-            listViewGroup21,
-            listViewGroup22,
-            listViewGroup23,
-            listViewGroup24,
-            listViewGroup25,
-            listViewGroup26,
-            listViewGroup27});
+            listViewGroup55,
+            listViewGroup56,
+            listViewGroup57,
+            listViewGroup58,
+            listViewGroup59,
+            listViewGroup60,
+            listViewGroup61,
+            listViewGroup62,
+            listViewGroup63});
             this.lstMeshTGILinks.HideSelection = false;
             this.lstMeshTGILinks.Location = new System.Drawing.Point(9, 19);
             this.lstMeshTGILinks.MultiSelect = false;
@@ -3310,34 +3310,34 @@
             this.columnHeader3,
             this.columnHeader4});
             this.listView2.GridLines = true;
-            listViewGroup28.Header = "Texture Details";
-            listViewGroup28.Name = "groupTextures";
-            listViewGroup29.Header = "Clothing Details";
-            listViewGroup29.Name = "groupClothing";
-            listViewGroup30.Header = "Face Overlay Details";
-            listViewGroup30.Name = "groupFaceOverlay";
-            listViewGroup31.Header = "Mask and Overlay Details";
-            listViewGroup31.Name = "groupMask";
-            listViewGroup32.Header = "Hair Details";
-            listViewGroup32.Name = "groupHair";
-            listViewGroup33.Header = "Skin Details";
-            listViewGroup33.Name = "groupSkin";
-            listViewGroup34.Header = "Logo Details";
-            listViewGroup34.Name = "groupLogo";
-            listViewGroup35.Header = "CAS Details";
-            listViewGroup35.Name = "groupCasDetails";
-            listViewGroup36.Header = "Misc. Details";
-            listViewGroup36.Name = "groupMisc";
+            listViewGroup64.Header = "Texture Details";
+            listViewGroup64.Name = "groupTextures";
+            listViewGroup65.Header = "Clothing Details";
+            listViewGroup65.Name = "groupClothing";
+            listViewGroup66.Header = "Face Overlay Details";
+            listViewGroup66.Name = "groupFaceOverlay";
+            listViewGroup67.Header = "Mask and Overlay Details";
+            listViewGroup67.Name = "groupMask";
+            listViewGroup68.Header = "Hair Details";
+            listViewGroup68.Name = "groupHair";
+            listViewGroup69.Header = "Skin Details";
+            listViewGroup69.Name = "groupSkin";
+            listViewGroup70.Header = "Logo Details";
+            listViewGroup70.Name = "groupLogo";
+            listViewGroup71.Header = "CAS Details";
+            listViewGroup71.Name = "groupCasDetails";
+            listViewGroup72.Header = "Misc. Details";
+            listViewGroup72.Name = "groupMisc";
             this.listView2.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup28,
-            listViewGroup29,
-            listViewGroup30,
-            listViewGroup31,
-            listViewGroup32,
-            listViewGroup33,
-            listViewGroup34,
-            listViewGroup35,
-            listViewGroup36});
+            listViewGroup64,
+            listViewGroup65,
+            listViewGroup66,
+            listViewGroup67,
+            listViewGroup68,
+            listViewGroup69,
+            listViewGroup70,
+            listViewGroup71,
+            listViewGroup72});
             this.listView2.LabelEdit = true;
             this.listView2.Location = new System.Drawing.Point(3, 8);
             this.listView2.MultiSelect = false;
@@ -3909,7 +3909,7 @@
         private System.Windows.Forms.ListView listView2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ListView listView3;
+        private System.Windows.Forms.ListView lstStencilPool;
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.Button button7;
