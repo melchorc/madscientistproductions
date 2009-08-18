@@ -69,6 +69,11 @@ namespace CASPartEditor
             output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
 
             //some error handling
+            if (_Multiplier.Width != 1024 || _Multiplier.Height != 1024)
+            {
+                ResizeBitmap(ref _Multiplier, 1024, 1024);
+            }
+
             if (_PartMask.Width != 1024 || _PartMask.Height != 1024)
             {
                 ResizeBitmap(ref _PartMask, 1024, 1024);
