@@ -1,87 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <meshesFile>
-  <mesh flags="cmfBody" groupid="" instanceid="A50790B91BBD15A1" />
-  <mesh flags="cmfFace" groupid="" instanceid="A50790B91BBD15A2" />
 
-  <!-- Female -->
-  <mesh flags="pfBody" groupid="" instanceid="19D137BA2DC4D6CC" />
-  <mesh flags="pfFace" groupid="" instanceid="19D137BA2DC4D6CF" />
+  <mesh flags="pfBody" value="key:015A1849:" />
+  <mesh flags="pfFace" value="key:015A1849:" />
 
-  <mesh flags="cfBody" groupid="" instanceid="A50790B91BBD15A1" />
-  <mesh flags="cfFace" groupid="" instanceid="A50790B91BBD15A2" />
+  <mesh flags="pmBody" value="key:015A1849:" />
+  <mesh flags="pmFace" value="key:015A1849:" />
 
-  <mesh flags="tfBody" groupid="" instanceid="659D7229A87C7A03" />
-  <mesh flags="tfFace" groupid="" instanceid="B4CDC208D8D51BF3" /> <!-- Same as yf, for now -->
+  <mesh flags="cfBody" value="key:015A1849:" />
+  <mesh flags="cfFace" value="key:015A1849:" />
   
-  <mesh flags="yfBody" groupid="" instanceid="B4CDC208D8D51BF0" />
-  <mesh flags="yfFace" groupid="" instanceid="B4CDC208D8D51BF3" />
+  <mesh flags="cmBody" value="key:015A1849:" />
+  <mesh flags="cmFace" value="key:015A1849:" />
+  
+  <mesh flags="cmfBody" value="key:015A1849:" />
+  <mesh flags="cmfFace" value="key:015A1849:" />
 
-  <mesh flags="afBody" groupid="" instanceid="B4CDC208D8D51BF0" />
-  <mesh flags="afFace" groupid="" instanceid="B4CDC208D8D51BF3" />
+  <mesh flags="tfBody" value="key:015A1849:" />
+  <mesh flags="tfFace" value="key:015A1849:" /> <!-- Same as yf, for now -->
 
-  <mesh flags="efBody" groupid="" instanceid="798410349B50700C" />
-  <mesh flags="efFace" groupid="" instanceid="798410349B50700F" />
+  <mesh flags="tmBody" value="key:015A1849:" /> <!-- Same as adult -->
+  <mesh flags="tmFace" value="key:015A1849:" /> <!-- Same as adult -->
   
-  
-  <mesh flags="cmBody" groupid="" instanceid="A50790B91BBD15A1" />
-  <mesh flags="cmFace" groupid="" instanceid="A50790B91BBD15A2" />
-  
+  <mesh flags="yfBody" value="key:015A1849:" />
+  <mesh flags="yfFace" value="key:015A1849:" />
 
-  <mesh flags="pmBody" groupid="" instanceid="19D137BA2DC4D6CC" />
-  <mesh flags="pmFace" groupid="" instanceid="19D137BA2DC4D6CF" />
+  <mesh flags="ymBody" value="key:015A1849:" /> <!-- Same as adult -->
+  <mesh flags="ymFace" value="key:015A1849:" /> <!-- Same as adult -->
   
-  
-  <mesh flags="tmBody" groupid="" instanceid="4DB46D1662895FC3" /> <!-- Same as adult -->
-  <mesh flags="tmFace" groupid="" instanceid="4DB46D1662895FC0" /> <!-- Same as adult -->
-  
+  <mesh flags="afBody" value="key:015A1849:" />
+  <mesh flags="afFace" value="key:015A1849:00BEE823:00000000ECC7C68A" />
 
-  <mesh flags="ymBody" groupid="" instanceid="4DB46D1662895FC3" /> <!-- Same as adult -->
-  <mesh flags="ymFace" groupid="" instanceid="4DB46D1662895FC0" /> <!-- Same as adult -->
+  <mesh flags="amBody" value="key:015A1849:" />
+  <mesh flags="amFace" value="key:015A1849:" />
   
+  <mesh flags="efBody" value="key:015A1849:" />
+  <mesh flags="efFace" value="key:015A1849:" />
 
-  <mesh flags="amBody" groupid="" instanceid="4DB46D1662895FC3" />
-  <mesh flags="amFace" groupid="" instanceid="4DB46D1662895FC0" />
-
-
-  <mesh flags="emBody" groupid="" instanceid="9121FA3B0B65C88F" />
-  <mesh flags="emFace" groupid="" instanceid="9121FA3B0B65C88C" />
-  
-  
-  <mesh flags="pmBody" groupid="" instanceid="F27771ADAE43381F" />
-  <mesh flags="pmFace" groupid="" instanceid="F27771ADAE43381C" />
-  
-  <mesh flags="cfBody" groupid="" instanceid="8ACF6FE36D35C202" />
-  <mesh flags="cfFace" groupid="" instanceid="8ACF6FE36D35C201" />
-
-  <mesh flags="cmBody" groupid="" instanceid="8ACF6FE36D35C202" />
-  <mesh flags="cmFace" groupid="" instanceid="8ACF6FE36D35C201" />
-  
-  <mesh flags="cmfBody" groupid="" instanceid="8ACF6FE36D35C202" />
-  <mesh flags="cmfFace" groupid="" instanceid="8ACF6FE36D35C201" />
-
-  <mesh flags="tfBody" groupid="" instanceid="40E5744B0DBFC323" /> <!-- Same as adult -->
-  <mesh flags="tfFace" groupid="" instanceid="40E5744B0DBFC320" /> <!-- Same as adult -->
-
-  <mesh flags="tmBody" groupid="" instanceid="6F853F0E35157E24" /> <!-- Same as adult -->
-  <mesh flags="tmFace" groupid="" instanceid="6F853F0E35157E27" /> <!-- Same as adult -->
-
-  <mesh flags="yfBody" groupid="" instanceid="66F8047C00C00CBB" />
-  <mesh flags="yfFace" groupid="" instanceid="66F8047C00C00CB8" />
-
-  <mesh flags="ymBody" groupid="" instanceid="598325880B644F6C" />
-  <mesh flags="ymFace" groupid="" instanceid="598325880B644F6F" />
-  
-  <mesh flags="afBody" groupid="" instanceid="40E5744B0DBFC323" />
-  <mesh flags="afFace" groupid="" instanceid="40E5744B0DBFC320" />
-  
-  <mesh flags="amBody" groupid="" instanceid="6F853F0E35157E24" />
-  <mesh flags="amFace" groupid="" instanceid="6F853F0E35157E27" />
-  
-  <mesh flags="efBody" groupid="" instanceid="503C527E546E8C5F" />
-  <mesh flags="efFace" groupid="" instanceid="503C527E546E8C5C" />
-
-  <mesh flags="emBody" groupid="" instanceid="6F853F0E35157E24" /> <!-- Same as adult -->
-  <mesh flags="emFace" groupid="" instanceid="6F853F0E35157E27" /> <!-- Same as adult -->
-  
-  
+  <mesh flags="emBody" value="key:015A1849:" />
+  <mesh flags="emFace" value="key:015A1849:" />
+    
 </meshesFile>

@@ -142,28 +142,6 @@ float gPhongExp <
 
 /*********** TEXTURES ***************/
 
-texture gMultiplyTexture : DIFFUSE;
-
-sampler2D gMultiplySampler = sampler_state {
-    Texture = <gMultiplyTexture>;
-    MinFilter = Linear;
-    MipFilter = Linear;
-    MagFilter = Linear;
-    AddressU = Wrap;
-    AddressV = Wrap;
-};
-
-texture gSpecularTexture : DIFFUSE;
-
-sampler2D gSpecularSampler = sampler_state {
-    Texture = <gSpecularTexture>;
-    MinFilter = Linear;
-    MipFilter = Linear;
-    MagFilter = Linear;
-    AddressU = Wrap;
-    AddressV = Wrap;
-};
-
 texture gStencilTexture : DIFFUSE;
 
 sampler2D gStencilSampler = sampler_state {
@@ -270,8 +248,6 @@ float4 normal_mapPS(VertexOutput IN,
 		    uniform float3 SurfaceColor,
 		    uniform sampler2D SkinSampler,
 		    uniform sampler2D SkinSpecularSampler,
-		    uniform sampler2D MultiplySampler,
-		    uniform sampler2D SpecularSampler,
 		    uniform sampler2D StencilSampler,
 		    uniform sampler2D ReliefSampler,
 		    uniform float PhongExp,
@@ -284,7 +260,7 @@ float4 normal_mapPS(VertexOutput IN,
 	
 	// Diffuse color
 	// Load in the diffuse textures
-	float4 texCol1 = tex2D(MultiplySampler,IN.UV);
+	float4 texCol1 = float4(1, 1, 1, 1);
 	float4 texCol2 = float4(1, 1, 1, 1);
 	if (UseStencil)
 	{
@@ -295,9 +271,9 @@ float4 normal_mapPS(VertexOutput IN,
 	// Start with white
 	float4 diffuseColor = float4(1, 1, 1, 1);
 	// Mask off by the multiplier (Should also apply masks at this point)
-	diffuseColor.a = texCol1.a;
+	//diffuseColor.a = texCol1.a;
 	// Perform color blending srcblend = destcolor and destblend=srccolor
-	diffuseColor.rgb = float3(diffuseColor.r * texCol1.r, diffuseColor.g * texCol1.g, diffuseColor.b * texCol1.b) * 2;
+	//diffuseColor.rgb = float3(diffuseColor.r * texCol1.r, diffuseColor.g * texCol1.g, diffuseColor.b * texCol1.b) * 2;
 	if (UseStencil)
 	{
 		// Alpha blending of the stencil
@@ -307,7 +283,7 @@ float4 normal_mapPS(VertexOutput IN,
     float3 texCol = texCol3 * (1 - diffuseColor.a) + diffuseColor.xyz * diffuseColor.a;
     
     // Specular map influence - alpha blend the shirt specular onto the skin specular
-    float specular = tex2D(SkinSpecularSampler,IN.UV).b * (1 - diffuseColor.a) + tex2D(SpecularSampler,IN.UV).b * texCol1.b * 2 * diffuseColor.a;
+    float specular = tex2D(SkinSpecularSampler,IN.UV).b * (1 - diffuseColor.a); // + tex2D(SpecularSampler,IN.UV).b * texCol1.b * 2 * diffuseColor.a;
 
 	////////////////// Pixel rendering
 
@@ -363,8 +339,6 @@ technique normal_mapping <
 						gSurfaceColor,
 						gSkinSampler,
 						gSkinSpecularSampler,
-						gMultiplySampler,
-						gSpecularSampler,
 						gStencilSampler,
 						gReliefSampler,
 						gPhongExp,

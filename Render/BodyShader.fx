@@ -49,6 +49,12 @@ To learn more about shading, shaders, and to bounce ideas off other shader
 /*** Potentially predefined by varying host environments *********/
 /*****************************************************************/
 
+int global : SasGlobal
+<
+	bool SasUiVisible = false;
+	int3 SasVersion = {1,0,0};
+>;
+
 // #define _XSI_		/* predefined when running in XSI */
 // #define TORQUE		/* predefined in TGEA 1.7 and up */
 // #define _3DSMAX_		/* predefined in 3DS Max */
@@ -92,6 +98,8 @@ float4x4 gViewXf : View <string UIWidget="none";>;
 float4x4 gWorldViewXf : WorldView <string UIWidget="none";>;
 
 /////////////// Tweakables //////////
+
+bool gUseStencil = false;
 
 float3 gLamp0Pos : POSITION <
     string Object = "PointLight0";
@@ -268,7 +276,8 @@ float4 normal_mapPS(VertexOutput IN,
 		    uniform sampler2D ReliefSampler,
 		    uniform float PhongExp,
 		    uniform float3 SpecColor,
-		    uniform float3 AmbiColor
+		    uniform float3 AmbiColor,
+			uniform bool UseStencil
 ) : COLOR
 {
 	////////////////// Texture compositing
@@ -276,7 +285,11 @@ float4 normal_mapPS(VertexOutput IN,
 	// Diffuse color
 	// Load in the diffuse textures
 	float4 texCol1 = tex2D(MultiplySampler,IN.UV);
-	float4 texCol2 = tex2D(StencilSampler,IN.UV);
+	float4 texCol2 = float4(1, 1, 1, 1);
+	if (UseStencil)
+	{
+	  texCol2 = tex2D(StencilSampler,IN.UV);
+	}
 	float3 texCol3 = tex2D(SkinSampler,IN.UV).rgb;
 	
 	// Start with white
@@ -285,8 +298,11 @@ float4 normal_mapPS(VertexOutput IN,
 	diffuseColor.a = texCol1.a;
 	// Perform color blending srcblend = destcolor and destblend=srccolor
 	diffuseColor.rgb = float3(diffuseColor.r * texCol1.r, diffuseColor.g * texCol1.g, diffuseColor.b * texCol1.b) * 2;
-	// Alpha blending of the stencil
-	diffuseColor = texCol2 * texCol2.a + diffuseColor * (1 - texCol2.a);
+	if (UseStencil)
+	{
+		// Alpha blending of the stencil
+		diffuseColor = texCol2 * texCol2.a + diffuseColor * (1 - texCol2.a);
+	}
 	// Alpha blend the shirt onto the skin texture
     float3 texCol = texCol3 * (1 - diffuseColor.a) + diffuseColor.xyz * diffuseColor.a;
     
@@ -352,7 +368,8 @@ technique normal_mapping <
 						gReliefSampler,
 						gPhongExp,
 						gSpecColor,
-						gAmbiColor);
+						gAmbiColor,
+						gUseStencil);
     }
 }
 
