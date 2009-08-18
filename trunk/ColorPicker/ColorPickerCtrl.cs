@@ -171,7 +171,7 @@ namespace ColorPicker
 
         private void txtHexColor_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (txtHexColor.Text.Length > 5) e.Handled = true;
+            //if (txtHexColor.Text.Length > 5) e.Handled = true;
             if (!System.Text.RegularExpressions.Regex.IsMatch(e.KeyChar.ToString(), "[abcdefABCDEF0123456789]")) e.Handled = true;
             if (e.KeyChar == 3) e.Handled = false;
             if (e.KeyChar == 8) e.Handled = false;

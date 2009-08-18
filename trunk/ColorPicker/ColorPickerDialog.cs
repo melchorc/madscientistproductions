@@ -55,5 +55,10 @@ namespace ColorPicker
                 //this._Alpha = m_colorPicker.SelectedAlpha;
         }
 
+        private void m_colorPicker_Load(object sender, EventArgs e)
+        {
+
+        }
+
 	}
 }

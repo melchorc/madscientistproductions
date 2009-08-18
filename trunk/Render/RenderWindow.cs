@@ -821,7 +821,7 @@ namespace MadScience.Render
             this.viewToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(150, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 48);
             // 
             // renderModeToolStripMenuItem
             // 
@@ -830,27 +830,27 @@ namespace MadScience.Render
             this.solidToolStripMenuItem,
             this.solidWireframeToolStripMenuItem});
             this.renderModeToolStripMenuItem.Name = "renderModeToolStripMenuItem";
-            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.renderModeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.renderModeToolStripMenuItem.Text = "Render Mode";
             // 
             // wireframeToolStripMenuItem
             // 
             this.wireframeToolStripMenuItem.Name = "wireframeToolStripMenuItem";
-            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.wireframeToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.wireframeToolStripMenuItem.Text = "Wireframe";
             this.wireframeToolStripMenuItem.Click += new System.EventHandler(this.wireframeToolStripMenuItem_Click);
             // 
             // solidToolStripMenuItem
             // 
             this.solidToolStripMenuItem.Name = "solidToolStripMenuItem";
-            this.solidToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.solidToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.solidToolStripMenuItem.Text = "Solid";
             this.solidToolStripMenuItem.Click += new System.EventHandler(this.solidToolStripMenuItem_Click);
             // 
             // solidWireframeToolStripMenuItem
             // 
             this.solidWireframeToolStripMenuItem.Name = "solidWireframeToolStripMenuItem";
-            this.solidWireframeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.solidWireframeToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.solidWireframeToolStripMenuItem.Text = "Solid+Wireframe";
             this.solidWireframeToolStripMenuItem.Click += new System.EventHandler(this.solidWireframeToolStripMenuItem_Click);
             // 
@@ -862,34 +862,34 @@ namespace MadScience.Render
             this.leftSideToolStripMenuItem,
             this.rightToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // frontToolStripMenuItem
             // 
             this.frontToolStripMenuItem.Name = "frontToolStripMenuItem";
-            this.frontToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.frontToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.frontToolStripMenuItem.Text = "Front";
             this.frontToolStripMenuItem.Click += new System.EventHandler(this.frontToolStripMenuItem_Click);
             // 
             // backToolStripMenuItem
             // 
             this.backToolStripMenuItem.Name = "backToolStripMenuItem";
-            this.backToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.backToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.backToolStripMenuItem.Text = "Back";
             this.backToolStripMenuItem.Click += new System.EventHandler(this.backToolStripMenuItem_Click);
             // 
             // leftSideToolStripMenuItem
             // 
             this.leftSideToolStripMenuItem.Name = "leftSideToolStripMenuItem";
-            this.leftSideToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.leftSideToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.leftSideToolStripMenuItem.Text = "Left";
             this.leftSideToolStripMenuItem.Click += new System.EventHandler(this.leftSideToolStripMenuItem_Click);
             // 
             // rightToolStripMenuItem
             // 
             this.rightToolStripMenuItem.Name = "rightToolStripMenuItem";
-            this.rightToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.rightToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.rightToolStripMenuItem.Text = "Right";
             this.rightToolStripMenuItem.Click += new System.EventHandler(this.rightToolStripMenuItem_Click);
             // 
