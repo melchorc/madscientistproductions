@@ -125,7 +125,7 @@ namespace CASPartEditor
 
             if ((casPartNew.typeFlag & 0x4) == 0x4)
             {
-                b = composeMakeup(details, casPartNew.clothingType, false);
+                b = composeMakeup(details, casPartNew.clothingType, true);
             }
             else
             {

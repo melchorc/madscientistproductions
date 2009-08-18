@@ -254,8 +254,6 @@ namespace ColorPicker
 			get { return m_selectedColor; }
 			set
 			{
-				if (m_selectedColor == value)
-					return;
 				m_selectedColor = value;
 				value.Lightness = 0.5;
 				Color2 = Color.FromArgb(255, value.Color);
@@ -266,15 +264,19 @@ namespace ColorPicker
 
 		protected override void SetPercent(PointF mousepoint)
 		{
-			base.SetPercent(mousepoint);
-			m_selectedColor.Lightness = Percent;
+            RectangleF cr = ClientRectangleF;
+            RectangleF br = BarRectangle;
+            mousepoint.X += cr.X - br.X;
+            mousepoint.Y += cr.Y - br.Y;
+            m_selectedColor.Lightness = GetPercentSet(BarRectangle, Orientation, mousepoint);
+            SelectedHSLColor = m_selectedColor;
 			Refresh();
 		}
 		protected override void SetPercent(float percent)
 		{
-			base.SetPercent(percent);
 			m_selectedColor.Lightness = percent / 100;
 			SelectedHSLColor = m_selectedColor;
+            base.SetPercent(percent);
 		}
 	}
 }
