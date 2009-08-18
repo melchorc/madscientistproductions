@@ -854,7 +854,7 @@ namespace CASPartEditor
                 vpxyStream.Close();
             }
 
-            if (meshStream != null)
+            if (meshStream != null && meshStream != Stream.Null)
             {
                 SimGeomFile simgeomfile = new SimGeomFile(meshStream);
                 for (int i = 0; i < simgeomfile.simgeom.keytable.keys.Count; i++)
