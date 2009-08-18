@@ -703,6 +703,7 @@ namespace CASPartEditor
 
         private void cmbMeshName_SelectedIndexChanged(object sender, EventArgs e)
         {
+            renderWindow1.DeInit();
             showMeshDetails();
         }
 
