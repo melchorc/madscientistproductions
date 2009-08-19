@@ -153,9 +153,9 @@ namespace CASPartEditor
 
             if (pDetails.type == "HSV")
             {
-                if (File.Exists(Application.StartupPath + "\\patterncache\\" + pDetails.name + ".png"))
+                if (File.Exists(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pDetails.name + ".png"))))
                 {
-                    Stream pngThumb = File.OpenRead(Application.StartupPath + "\\patterncache\\" + pDetails.name + ".png");
+                    Stream pngThumb = File.OpenRead(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pDetails.name + ".png")));
                     picPatternThumb.Image = Image.FromStream(pngThumb);
                     pngThumb.Close();
                     picPatternThumb.Visible = true;
