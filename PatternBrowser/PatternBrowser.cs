@@ -199,17 +199,18 @@ namespace PatternBrowser
             Console.WriteLine("Done");
 
         }
+
         patterns patterns;
         patterns customPatterns;
+
         int imageWidth = 128;
         int imageHeight = 128;
-        
-        private patternsFile _selectedPattern = new patternsFile();
-        //public patternsFile selectedPattern = new patternsFile();
-        //private patternDetails _selectedPattern = new patternDetails();
-        public patternDetails selectedPattern = new patternDetails();
+        int numFound = 0;
+        int vertical = 0;
+        int horizontal = 0;
 
-        //Dictionary<ulong, MadScience.Wrappers.ResourceKey> castEntries = new Dictionary<ulong, MadScience.Wrappers.ResourceKey>();
+        private patternsFile _selectedPattern = new patternsFile();
+        public patternDetails selectedPattern = new patternDetails();
 
         public int curCategory = 0;
 
@@ -303,174 +304,13 @@ namespace PatternBrowser
 
             return temp;
         }
-
+        /*
         public Image makePatternThumb(string resKey)
         {
-            return makePatternThumb(findPattern(resKey), true, null);
+            return makePatternThumb(findPattern(resKey), null);
         }
-        public Image makePatternThumb(patternsFile pattern, bool saveImage, patternsFile pOverride)
-        {
-            //keyName patternXML = new keyName(resKey);
-
-            PictureBox picBox = new PictureBox();
-            picBox.BackColor = System.Drawing.Color.White;
-            picBox.Size = new System.Drawing.Size(this.imageWidth, this.imageHeight);
-            picBox.SizeMode = PictureBoxSizeMode.StretchImage;
-
-            if (pattern.isCustom)
-            {
-                /*
-                            bool hasMatch = false;
-
-                            for (int i = 0; i < this.customPatterns.Items.Count; i++)
-                            {
-                                patternsFile pattern = this.customPatterns.Items[i];
-
-                                if (MadScience.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && MadScience.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && MadScience.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
-                                {
-                                    hasMatch = true;
-                 */
-                if (File.Exists(pattern.subcategory))
-                {
-                    Stream cast = File.Open(pattern.subcategory, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    MadScience.Wrappers.Database castdb = new MadScience.Wrappers.Database(cast, true);
-
-                    keyName temp = new keyName(pattern.texturename);
-                    Stream patternThumb = null;
-
-                    try
-                    {
-                        patternThumb = castdb.GetResourceStream(temp.ToResourceKey());
-                    }
-                    catch (System.Collections.Generic.KeyNotFoundException ex)
-                    {
-                    }
-                    catch (Exception ex)
-                    {
-                        Helpers.logMessageToFile(ex.Message);
-                    }
-
-                    if (patternThumb != null)
-                    {
-                        if (pOverride != null)
-                        {
-                            // Only use the pattern colours
-                            pattern.color0 = pOverride.color0;
-                            pattern.color1 = pOverride.color1;
-                            pattern.color2 = pOverride.color2;
-                            pattern.color3 = pOverride.color3;
-                            pattern.color4 = pOverride.color4;
-                            pattern.HBg = pOverride.HBg;
-                            pattern.SBg = pOverride.SBg;
-                            pattern.VBg = pOverride.VBg;
-                        }
-
-
-                        picBox.Image = makePatternThumb(patternThumb, pattern);
-                        if (saveImage)
-                        {
-                            try
-                            {
-                                picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache",  pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
-                            }
-                            catch (Exception ex)
-                            {
-                            }
-                        }
-                    }
-
-                    cast.Close();
-                }
-                /*
-                    break;
-                }
-                 */
-            }
-            else 
-            {
-                string s3root = MadScience.Helpers.findSims3Root();
-                string thumbnailPackage = @"\GameData\Shared\Packages\FullBuild2.package";
-
-                Console.WriteLine("Starting at: " + DateTime.Now.ToString());
-
-                Stream cast2 = File.Open(s3root + thumbnailPackage, FileMode.Open, FileAccess.Read, FileShare.Read);
-                MadScience.Wrappers.Database castdb2 = new MadScience.Wrappers.Database(cast2);
-
-                /*
-                for (int i = 0; i < this.patterns.Items.Count; i++)
-                {
-                    patternsFile pattern = this.patterns.Items[i];
-
-                    if (MadScience.StringHelpers.ParseHex32(pattern.typeid) == patternXML.typeId && MadScience.StringHelpers.ParseHex32(pattern.groupid) == patternXML.groupId && MadScience.StringHelpers.ParseHex64(pattern.instanceid) == patternXML.instanceId)
-                    {
-                        hasMatch = true;
-                */
-                        ulong instanceid = MadScience.StringHelpers.HashFNV64(pattern.casPart);
-                        keyName temp = new keyName(0x00B2D882, 0x00000000, instanceid);
-                        Stream patternThumb = null;
-
-                        try
-                        {
-                            patternThumb = castdb2.GetResourceStream(temp.ToResourceKey());
-                        }
-                        catch (System.Collections.Generic.KeyNotFoundException ex)
-                        {
-                            temp.instanceId = MadScience.StringHelpers.HashFNV64(pattern.texturename);
-                            try
-                            {
-                                patternThumb = castdb2.GetResourceStream(temp.ToResourceKey());
-                            }
-                            catch (System.Collections.Generic.KeyNotFoundException kex)
-                            {
-                            }
-                            catch (Exception ex2)
-                            {
-                                Helpers.logMessageToFile(ex.Message);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Helpers.logMessageToFile(ex.Message);
-                        }
-
-                        if (patternThumb != null)
-                        {
-                            if (pOverride != null)
-                            {
-                                // Only use the pattern colours
-                                pattern.color0 = pOverride.color0;
-                                pattern.color1 = pOverride.color1;
-                                pattern.color2 = pOverride.color2;
-                                pattern.color3 = pOverride.color3;
-                                pattern.color4 = pOverride.color4;
-                                pattern.HBg = pOverride.HBg;
-                                pattern.SBg = pOverride.SBg;
-                                pattern.VBg = pOverride.VBg;
-                            }
-
-                            picBox.Image = makePatternThumb(patternThumb, pattern);
-                            if (saveImage)
-                            {
-                                try
-                                {
-                                    picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
-                                }
-                                catch (Exception ex)
-                                {
-                                }
-                            }
-                        }
-                /*
-                        break;
-                    }
-
-                }
-                 */
-            }
-
-            return picBox.Image;
-        }
-
+        */
+        /*
         public patternsFile pDetailsTopFile(patternDetails pDetails)
         {
             patternsFile pFile = new patternsFile();
@@ -494,56 +334,7 @@ namespace PatternBrowser
 
             return pFile;
         }
-
-        public Image makePatternThumb(Stream patternThumb, patternsFile pattern)
-        {
-            // Save original DDS file too
-
-            //Stream patternDDS = File.OpenWrite(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".dds");
-            //Helpers.CopyStream(patternThumb, patternDDS, true);
-            //patternDDS.Close();
-
-            Image temp;
-
-            DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
-            ddsP.Load(patternThumb);
-            
-            // Figure out colour channels
-            if (pattern.color1 == null && pattern.color2 == null && pattern.color3 == null && pattern.color4 == null)
-            {
-                if (pattern.HBg == "" && pattern.SBg == "" && pattern.VBg == "")
-                {
-                    if (pattern.HSVShiftBg == "")
-                    {
-                        temp = ddsP.Image();
-                    }
-                    else
-                    {
-                        temp = ddsP.Image();
-                    }
-                }
-                else
-                {
-                    HSVColor bg = new HSVColor(double.Parse(pattern.HBg)*360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
-                    HSVColor basebg = new HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
-                    HSVColor shift = new HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
-                    temp = HSVPatternProcessor.createHSVPattern(patternThumb, bg, basebg, shift);
-                    //picBox.Image = ddsP.Image(Color.Black, Helpers.HsvToRgb(-Convert.ToDouble(pattern.HBg), -Convert.ToDouble(pattern.SBg), -Convert.ToDouble(pattern.VBg)));
-                }
-
-            }
-            else
-            {
-                Color bgColor = Helpers.convertColour(pattern.color0, true);
-                if (bgColor == Color.Empty)
-                {
-                    bgColor = Color.Black;
-                }
-                temp = ddsP.Image(bgColor, Helpers.convertColour(pattern.color1, true), Helpers.convertColour(pattern.color2, true), Helpers.convertColour(pattern.color3, true), Helpers.convertColour(pattern.color4, true));
-                //picBox.Image = Helpers.imagePreview(ddsP.Image(), Color.Black, Helpers.convertColour(pattern.color1, true), Helpers.convertColour(pattern.color2, true), Helpers.convertColour(pattern.color3, true), Helpers.convertColour(pattern.color4, true));
-            }
-            return temp;
-        }
+        */
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -554,18 +345,14 @@ namespace PatternBrowser
             label2.Text = "Loading patterns... Please wait...";
             label2.Refresh();
 
-            int numFound = 0;
-            int horizontal = 0;
-            int vertical = 0;
+            numFound = 0;
+            horizontal = 0;
+            vertical = 0;
 
             bool hasFound = false;
 
             ToolTip tt = new ToolTip();
 
-            int curWidth = panel1.Width;
-
-            int maxAcross = curWidth / imageWidth;
-            if ((maxAcross * (imageWidth + 6)) > curWidth) maxAcross--;
 
             DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
 
@@ -582,11 +369,7 @@ namespace PatternBrowser
 
                         PictureBox picBox = new PictureBox();
                         picBox.BackColor = System.Drawing.Color.White;
-                        picBox.Location = new System.Drawing.Point(horizontal, vertical);
                         picBox.Name = pattern.casPart;
-                        picBox.Size = new System.Drawing.Size(this.imageWidth, this.imageHeight);
-                        picBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                        picBox.Click += new System.EventHandler(pictureBox_Click);
 
                         string toolTip = pattern.category + "\\";
                         //if (pattern.subcategory != "")
@@ -607,53 +390,33 @@ namespace PatternBrowser
                         {
                             if (File.Exists(pattern.subcategory))
                             {
-                                Stream cast = File.Open(pattern.subcategory, FileMode.Open, FileAccess.Read, FileShare.Read);
-                                MadScience.Wrappers.Database castdb = new MadScience.Wrappers.Database(cast, true);
+                                if (pattern.typeid.StartsWith("0x")) pattern.typeid = pattern.typeid.Remove(0, 2);
+                                if (pattern.groupid.StartsWith("0x")) pattern.groupid = pattern.groupid.Remove(0, 2);
+                                if (pattern.instanceid.StartsWith("0x")) pattern.instanceid = pattern.instanceid.Remove(0, 2);
 
-                                keyName temp = new keyName(pattern.texturename);
-                                Stream patternThumb = null;
-
-                                try
+                                Stream patternXml = KeyUtils.searchForKey("key:" + pattern.typeid + ":" + pattern.groupid + ":" + pattern.instanceid, pattern.subcategory);
+                                if (Helpers.isValidStream(patternXml))
                                 {
-                                    patternThumb = castdb.GetResourceStream(temp.ToResourceKey());
+                                    patternDetails pDetails = Patterns.parsePatternComplate(patternXml);
+                                    //Stream patternThumb = KeyUtils.searchForKey(pattern.texturename, pattern.subcategory);
+                                    //if (Helpers.isValidStream(patternThumb))
+                                    //{
+                                        //picBox.Image = Patterns.makePatternThumb(patternThumb, pDetails);
+                                    picBox.Image = Patterns.makePatternThumb(pDetails);
+                                        try
+                                        {
+                                            picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                        }
+                                    //}
                                 }
-                                catch (System.Collections.Generic.KeyNotFoundException ex)
-                                {
-                                }
-                                catch (Exception ex)
-                                {
-                                    Helpers.logMessageToFile(ex.Message);
-                                }
-
-                                if (patternThumb != null)
-                                {
-                                    picBox.Image = makePatternThumb(patternThumb, pattern);
-                                    try
-                                    {
-                                        picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                    }
-                                }
-
-                                cast.Close();
                             }
 
                         }
 
-                        // Add picturebox to panel
-                        panel1.Controls.Add(picBox);
-
-                        // Calc picture box horizontal and vertical
-                        if ((numFound % maxAcross) == 0)
-                        {
-                            vertical += imageHeight + 6; horizontal = 0;
-                        }
-                        else
-                        {
-                            horizontal += imageWidth + 6;
-                        }
+                        addToPanel(picBox);
                     //}
 
                 }
@@ -670,6 +433,10 @@ namespace PatternBrowser
                 Stream cast = File.Open(s3root + thumbnailPackage, FileMode.Open, FileAccess.Read, FileShare.Read);
                 MadScience.Wrappers.Database castdb = new MadScience.Wrappers.Database(cast);
 
+                Stream fullBuild0 = File.Open(s3root + @"\GameData\Shared\Packages\FullBuild0.package", FileMode.Open, FileAccess.Read, FileShare.Read);
+                MadScience.Wrappers.Database xmldb = new MadScience.Wrappers.Database(fullBuild0);
+
+
                 for (int i = 0; i < this.patterns.Items.Count; i++)
                 {
                     patternsFile pattern = this.patterns.Items[i];
@@ -680,11 +447,8 @@ namespace PatternBrowser
 
                         PictureBox picBox = new PictureBox();
                         picBox.BackColor = System.Drawing.Color.White;
-                        picBox.Location = new System.Drawing.Point(horizontal, vertical);
                         picBox.Name = pattern.casPart;
-                        picBox.Size = new System.Drawing.Size(this.imageWidth, this.imageHeight);
-                        picBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                        picBox.Click += new System.EventHandler(pictureBox_Click);
+
 
                         string toolTip = pattern.category + "\\";
                         if (pattern.subcategory != "")
@@ -703,59 +467,33 @@ namespace PatternBrowser
                         }
                         else
                         {
-                            ulong instanceid = MadScience.StringHelpers.HashFNV64(pattern.casPart);
-                            keyName temp = new keyName(0x00B2D882, 0x00000000, instanceid);
-                            Stream patternThumb = null;
+                            Console.WriteLine(pattern.casPart);
 
-                            try
+                            Stream patternXml = KeyUtils.findKey(new MadScience.Wrappers.ResourceKey("key:" + pattern.typeid + ":" + pattern.groupid + ":" + pattern.instanceid), 0, xmldb);
+                            if (Helpers.isValidStream(patternXml))
                             {
-                                patternThumb = castdb.GetResourceStream(temp.ToResourceKey());
-                            }
-                            catch (System.Collections.Generic.KeyNotFoundException ex)
-                            {
-                                temp.instanceId = MadScience.StringHelpers.HashFNV64(pattern.texturename);
-                                try
-                                {
-                                    patternThumb = castdb.GetResourceStream(temp.ToResourceKey());
-                                }
-                                catch (System.Collections.Generic.KeyNotFoundException kex)
-                                {
-                                }
-                                catch (Exception ex2)
-                                {
-                                    Helpers.logMessageToFile(ex.Message);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Helpers.logMessageToFile(ex.Message);
-                            }
-
-                            if (patternThumb != null)
-                            {
-                                picBox.Image = makePatternThumb(patternThumb, pattern);
-                                try
-                                {
-                                    picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine ("patterncache", pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
-                                }
-                                catch (Exception ex)
-                                {
-                                }
+                                patternDetails pDetails2 = Patterns.parsePatternComplate(patternXml);
+                                //Stream patternThumb = KeyUtils.findKey(new MadScience.Wrappers.ResourceKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails2.name).ToString("X16")), 0, castdb);
+                                //if (!Helpers.isValidStream(patternThumb))
+                                //{
+                                //    patternThumb = KeyUtils.findKey(new MadScience.Wrappers.ResourceKey(pDetails2.BackgroundImage), 0, castdb);
+                                //}
+                                //if (Helpers.isValidStream(patternThumb))
+                                //{
+                                    picBox.Image = Patterns.makePatternThumb(pDetails2, castdb);
+                                    try
+                                    {
+                                        picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                    }
+                                //}
                             }
                         }
 
-                        // Add picturebox to panel
-                        panel1.Controls.Add(picBox);
+                        addToPanel(picBox);
 
-                        // Calc picture box horizontal and vertical
-                        if ((numFound % maxAcross) == 0)
-                        {
-                            vertical += imageHeight + 6; horizontal = 0;
-                        }
-                        else
-                        {
-                            horizontal += imageWidth + 6;
-                        }
                     }
 
                 }
@@ -855,8 +593,8 @@ namespace PatternBrowser
 
         private void panel1_Resize(object sender, EventArgs e)
         {
-            int horizontal = 0;
-            int vertical = 0;
+            horizontal = 0;
+            vertical = 0;
 
             int curWidth = panel1.Width;
 
@@ -891,19 +629,19 @@ namespace PatternBrowser
 
             //this.selectedPattern = this._selectedPattern;
 
-            string instanceid = this._selectedPattern.instanceid.Remove(0, 2);
-            string typeid = this._selectedPattern.typeid.Remove(0, 2);
-            string groupid = this._selectedPattern.groupid.Remove(0, 2);
+            //string instanceid = this._selectedPattern.instanceid.Remove(0, 2);
+            //string typeid = this._selectedPattern.typeid.Remove(0, 2);
+            //string groupid = this._selectedPattern.groupid.Remove(0, 2);
 
-            string reskey = "key:" + typeid + ":" + groupid + ":" + instanceid;
+            string reskey = "key:" + _selectedPattern.typeid + ":" + _selectedPattern.groupid + ":" + _selectedPattern.instanceid;
 
             if (_selectedPattern.isCustom == false)
             {
-                this.selectedPattern = Helpers.parsePatternComplate(KeyUtils.findKey(reskey, 0));
+                this.selectedPattern = Patterns.parsePatternComplate(KeyUtils.findKey(reskey, 0));
             }
             else
             {
-                this.selectedPattern = Helpers.parsePatternComplate(KeyUtils.searchForKey(reskey, _selectedPattern.subcategory));
+                this.selectedPattern = Patterns.parsePatternComplate(KeyUtils.searchForKey(reskey, _selectedPattern.subcategory));
             }
             this.selectedPattern.key = reskey;
 
@@ -922,6 +660,34 @@ namespace PatternBrowser
 
         }
 
+        private void addToPanel(PictureBox picBox)
+        {
+
+            int curWidth = panel1.Width;
+
+            int maxAcross = curWidth / imageWidth;
+            if ((maxAcross * (imageWidth + 6)) > curWidth) maxAcross--;
+
+            picBox.Size = new System.Drawing.Size(this.imageWidth, this.imageHeight);
+            picBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            picBox.Click += new System.EventHandler(pictureBox_Click);
+
+            picBox.Location = new System.Drawing.Point(horizontal, vertical);
+
+            // Add picturebox to panel
+            panel1.Controls.Add(picBox);
+
+            // Calc picture box horizontal and vertical
+            if ((numFound % maxAcross) == 0)
+            {
+                vertical += imageHeight + 6; horizontal = 0;
+            }
+            else
+            {
+                horizontal += imageWidth + 6;
+            }
+        }
+
         private void btnLoadCustom_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "Sims 3 Package|*.package";
@@ -932,212 +698,89 @@ namespace PatternBrowser
 
                 // Open XML file 
                 string patternTexture = "";
-                patternsFile cPattern = new patternsFile();
+                //patternsFile cPattern = new patternsFile();
+                patternDetails pDetails = new patternDetails();
 
                 foreach (MadScience.Wrappers.ResourceKey key in castdb._Entries.Keys)
                 {
                     if ((key.groupId == 0x00000000) && (key.typeId == 0x0333406C))
                     {
-                        Stream mem = castdb.GetResourceStream(key);
-                        XmlTextReader xtr = new XmlTextReader(mem);
-                        while (xtr.Read())
+                        pDetails = Patterns.parsePatternComplate(castdb.GetResourceStream(key));
+                        patternsFile cPattern = new patternsFile();
+
+                        MadScience.Wrappers.ResourceKey rKey = new MadScience.Wrappers.ResourceKey(pDetails.key);
+
+                        cPattern.typeid = rKey.typeId.ToString("X8");
+                        cPattern.groupid = rKey.groupId.ToString("X8");
+                        cPattern.instanceid = rKey.instanceId.ToString("X16");
+
+                        if (!Helpers.isValidStream(KeyUtils.findKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.name.Substring(pDetails.name.LastIndexOf("\\") + 1)).ToString("X16"))))
                         {
-                            if (xtr.NodeType == XmlNodeType.Element)
-                            {
-                                switch (xtr.Name)
-                                {
-
-                                    case "complate":
-                                        xtr.MoveToAttribute("category");
-                                        cPattern.category = xtr.Value;
-                                        xtr.MoveToAttribute("name");
-                                        cPattern.casPart = xtr.Value;
-                                        break;
-                                    case "step":
-                                        xtr.MoveToAttribute("type");
-                                        if (xtr.Value == "ColorFill")
-                                        {
-                                            if (xtr.AttributeCount == 2)
-                                            {
-                                                xtr.MoveToAttribute("color");
-                                                cPattern.color0 = xtr.Value;
-                                            }
-                                        }
-                                        break;
-                                    case "param":
-                                        xtr.MoveToAttribute("type");
-                                        if (xtr.Value == "texture")
-                                        {
-                                            xtr.MoveToAttribute("name");
-                                            if (xtr.Value == "rgbmask")
-                                            {
-                                                xtr.MoveToAttribute("default");
-                                                if (patternTexture == "") patternTexture = xtr.Value;
-                                            }
-                                            if (xtr.Value == "Background Image")
-                                            {
-                                                xtr.MoveToAttribute("default");
-                                                patternTexture = xtr.Value;
-                                            }
-                                        }
-                                        if (xtr.Value == "float")
-                                        {
-                                            xtr.MoveToAttribute("name");
-                                            if (xtr.Value == "H Bg")
-                                            {
-                                                xtr.MoveToAttribute("default");
-                                                cPattern.HBg = xtr.Value;
-                                            }
-                                            if (xtr.Value == "S Bg")
-                                            {
-                                                xtr.MoveToAttribute("default");
-                                                cPattern.SBg = xtr.Value;
-                                            }
-                                            if (xtr.Value == "V Bg")
-                                            {
-                                                xtr.MoveToAttribute("default");
-                                                cPattern.VBg = xtr.Value;
-                                            }
-                                        }
-                                        if (xtr.Value == "string")
-                                        {
-                                            xtr.MoveToAttribute("name");
-                                            if (xtr.Value == "HSVShift Bg")
-                                            {
-                                                xtr.MoveToAttribute("default");
-                                                cPattern.HSVShiftBg = xtr.Value;
-                                            }
-                                        }
-                                        if (xtr.Value == "color")
-                                        {
-                                            xtr.MoveToAttribute("name");
-                                            if (xtr.Value == "Color 0")
-                                            {
-                                                xtr.MoveToAttribute("default");
-                                                cPattern.color1 = xtr.Value;
-                                            }
-                                            if (xtr.Value == "Color 1")
-                                            {
-                                                xtr.MoveToAttribute("default");
-                                                cPattern.color2 = xtr.Value;
-                                            }
-                                            if (xtr.Value == "Color 2")
-                                            {
-                                                xtr.MoveToAttribute("default");
-                                                cPattern.color3 = xtr.Value;
-                                            }
-                                            if (xtr.Value == "Color 3")
-                                            {
-                                                xtr.MoveToAttribute("default");
-                                                cPattern.color4 = xtr.Value;
-                                            }
-
-                                        }
-                                        break;
-                                }
-                            }
+                            cPattern.texturename = pDetails.BackgroundImage;
                         }
-
-                        if (patternTexture != "")
+                        else
                         {
-                            cPattern.typeid = "0x" + key.typeId.ToString("X8");
-                            cPattern.groupid = "0x" + key.groupId.ToString("X8");
-                            cPattern.instanceid = "0x" + key.instanceId.ToString("X16");
-                            cPattern.texturename = patternTexture;
-                            cPattern.isCustom = true;
-                            cPattern.subcategory = openFileDialog1.FileName;
+                            cPattern.texturename = "key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.name.Substring(pDetails.name.LastIndexOf("\\") + 1)).ToString("X16");
+                        }
+                        cPattern.casPart = pDetails.name.Substring(pDetails.name.LastIndexOf("\\") + 1);
 
-                            customPatterns.Items.Add(cPattern);
+                        cPattern.subcategory = openFileDialog1.FileName;
+                        pDetails.customFilename = openFileDialog1.FileName;
+                        cPattern.isCustom = true;
+                        pDetails.isCustom = true;
+
+                        customPatterns.Items.Add(cPattern);
 
                             TextWriter r = new StreamWriter(Path.Combine(Application.StartupPath, Path.Combine("xml", "customPatterns.xml")));
                             XmlSerializer s = new XmlSerializer(typeof(patterns));
                             s.Serialize(r, customPatterns);
                             r.Close();
 
-                            keyName temp = new keyName(cPattern.texturename);
-                            foreach (MadScience.Wrappers.ResourceKey key2 in castdb._Entries.Keys)
-                            {
-                                if ((key2.groupId == temp.groupId) && (key2.typeId == temp.typeId) && (key2.instanceId == temp.instanceId))
-                                {
-
-                                    int horizontal = 0;
-                                    int vertical = 0;
-
-                                    int curWidth = panel1.Width;
-
-                                    int maxAcross = curWidth / imageWidth;
-                                    if ((maxAcross * (imageWidth + 6)) > curWidth) maxAcross--;
-                                    //            Console.WriteLine(curWidth + " " + imageWidth + " " + maxAcross );
-
-
-                                    for (int i = 1; i <= panel1.Controls.Count; i++)
-                                    {
-                                        // Calc picture box horizontal and vertical
-                                        if ((i % maxAcross) == 0)
-                                        {
-                                            vertical += imageHeight + 6; horizontal = 0;
-                                        }
-                                        else
-                                        {
-                                            horizontal += imageWidth + 6;
-                                        }
-
-                                    }
-
-                                    // Extract texture
-                                    //DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
-                                    Stream patternThumb = castdb.GetResourceStream(key2);
-
-                                    Stream patternDDS = File.OpenWrite(Path.Combine(Application.StartupPath, Path.Combine("patterncache", cPattern.casPart + ".dds")));
-                                    Helpers.CopyStream(patternThumb, patternDDS, true);
-                                    patternDDS.Close();
-
-                                    patternThumb.Seek(0, SeekOrigin.Begin);
-                                    //ddsP.Load(patternThumb);
-
-                                    PictureBox picBox = new PictureBox();
-                                    picBox.BackColor = System.Drawing.Color.White;
-                                    picBox.Location = new System.Drawing.Point(horizontal, vertical);
-                                    picBox.Name = cPattern.casPart;
-                                    picBox.Size = new System.Drawing.Size(this.imageWidth, this.imageHeight);
-                                    picBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                                    picBox.Click += new System.EventHandler(pictureBox_Click);
-
-                                    string toolTip = cPattern.category + "\\";
-                                    ToolTip tt = new ToolTip();
-                                    toolTip += cPattern.casPart;
-                                    tt.SetToolTip(picBox, toolTip);
-
-
-                                    picBox.Image = makePatternThumb(patternThumb, cPattern);
-                                    //picBox.Image =     castdb.GetResourceStream(entry.Key);
-                                    try
-                                    {
-                                        picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", cPattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                    }
-
-                                    panel1.Controls.Add(picBox);
-
-
-                                    break;
-                                }
-                            }
-
-                            //Console.WriteLine(lookupList.Items[i].fullCasPartname);
-                            
-                            //Console.WriteLine("<file groupid=\"" + key.GroupId + "\" instanceid=\"" + key.InstanceId + "\" typeid=\"" + key.TypeId + "\" category=\"" + category + "\" subcategory=\"" + subCategory + "\" texturename=\"" + cPattern.texturename + "\" color0=\"" + color0 + "\" color1=\"" + color1 + "\" color2=\"" + color2 + "\" color3=\"" + color3 + "\" color4=\"" + color4 + "\">" + cPattern.casPart + "</file>");
-
-                        }
-                        xtr.Close();
-                        mem.Close();
-
                         break;
-
                     }
                 }
+                cast.Close();
+
+                //Stream patternThumb = KeyUtils.searchForKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.name), openFileDialog1.FileName);
+                //if (!Helpers.isValidStream(patternThumb))
+                //{
+                //    patternThumb = KeyUtils.searchForKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.BackgroundImage), openFileDialog1.FileName);
+                //}
+
+                //if (Helpers.isValidStream(patternThumb))
+                //{
+                    //Stream patternDDS = File.OpenWrite(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pDetails.name + ".dds")));
+                    //Helpers.CopyStream(patternThumb, patternDDS, true);
+                    //patternDDS.Close();
+
+                    //patternThumb.Seek(0, SeekOrigin.Begin);
+
+                    PictureBox picBox = new PictureBox();
+                    picBox.BackColor = System.Drawing.Color.White;
+                    //picBox.Location = new System.Drawing.Point(horizontal, vertical);
+                    picBox.Name = pDetails.name;
+
+
+                    string toolTip = pDetails.category + "\\";
+                    ToolTip tt = new ToolTip();
+                    toolTip += pDetails.name;
+                    tt.SetToolTip(picBox, toolTip);
+
+                    picBox.Image = Patterns.makePatternThumb(pDetails);
+                    //picBox.Image =     castdb.GetResourceStream(entry.Key);
+                    try
+                    {
+                        picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pDetails.name + ".png")), System.Drawing.Imaging.ImageFormat.Png);
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+
+                    addToPanel(picBox);
+
+                    //picBox.Dispose();
+
+                //}
 
                 comboBox1.SelectedIndex = 15;
             }

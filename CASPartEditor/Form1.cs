@@ -60,10 +60,10 @@ namespace CASPartEditor
 
             if (String.IsNullOrEmpty(MadScience.Helpers.getRegistryValue("renderBackgroundColour")))
             {
-                MadScience.Helpers.saveRegistryValue("renderBackgroundColour", MadScience.Helpers.convertColour(Color.SlateBlue));
+                MadScience.Helpers.saveRegistryValue("renderBackgroundColour", MadScience.Colours.convertColour(Color.SlateBlue));
             }
 
-            renderWindow1.BackColor = MadScience.Helpers.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
+            renderWindow1.BackColor = MadScience.Colours.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
 
             lookupTypes();
 
@@ -1024,7 +1024,7 @@ namespace CASPartEditor
                     case "Highlight Color":
                     case "Tip Color":
                         picLstOtherColour.Enabled = true;
-                        picLstOtherColour.BackColor = Helpers.convertColour(item.SubItems[0].Text);
+                        picLstOtherColour.BackColor = Colours.convertColour(item.SubItems[0].Text);
                         break;
                     default:
                         btnListOtherFind.Enabled = false;
@@ -1084,7 +1084,7 @@ namespace CASPartEditor
                 if (txtLogoKey.Text.Trim() != "") { chunk.logo.key = txtLogoKey.Text; }
                 if (txtLogoUpperLeft.Text.Trim() != "") { chunk.logo.upperLeft = txtLogoUpperLeft.Text; }
                 if (txtLogoLowerRight.Text.Trim() != "") { chunk.logo.lowerRight = txtLogoLowerRight.Text; }
-                //chunk.logo.Color = MadScience.Helpers.convertColour(picLogoColour.BackColor);
+                //chunk.logo.Color = MadScience.Colours.convertColour(picLogoColour.BackColor);
             }
         }
 
@@ -1302,7 +1302,7 @@ namespace CASPartEditor
 
                 ListViewItem item = lstOtherDetails.SelectedItems[0];
                 
-                item.SubItems[0].Text = MadScience.Helpers.convertColour(picLstOtherColour.BackColor);
+                item.SubItems[0].Text = MadScience.Colours.convertColour(picLstOtherColour.BackColor);
                 item.Text = item.SubItems[0].Text;
             }
 
@@ -1812,7 +1812,7 @@ namespace CASPartEditor
                         btnListTextureFind.Enabled = false;
                         btnListTextureReplace.Enabled = false;
                         picLstTextureColour.Enabled = true;
-                        picLstTextureColour.BackColor = Helpers.convertColour(item.SubItems[0].Text);
+                        picLstTextureColour.BackColor = Colours.convertColour(item.SubItems[0].Text);
                         break;
                     default:
                         btnListTextureFind.Enabled = false;
@@ -1876,7 +1876,7 @@ namespace CASPartEditor
 
                 ListViewItem item = lstTextureDetails.SelectedItems[0];
 
-                item.SubItems[0].Text = MadScience.Helpers.convertColour(picLstTextureColour.BackColor);
+                item.SubItems[0].Text = MadScience.Colours.convertColour(picLstTextureColour.BackColor);
                 item.Text = item.SubItems[0].Text;
             }
 
@@ -2593,7 +2593,7 @@ namespace CASPartEditor
                         btnListTextureReplace.Enabled = false;
                         picLstTextureColour.Enabled = true;
                         label14.Enabled = true;
-                        picLstTextureColour.BackColor = Helpers.convertColour(item.SubItems[0].Text);
+                        picLstTextureColour.BackColor = Colours.convertColour(item.SubItems[0].Text);
                         editToolStripMenuItem.Enabled = true;
                         editColourToolStripMenuItem.Enabled = true;
                         findImageToolStripMenuItem.Enabled = false;
@@ -2734,7 +2734,7 @@ namespace CASPartEditor
                         btnListOtherFind.Enabled = false;
                         btnLstOtherReplace.Enabled = false;
                         picLstOtherColour.Enabled = true;
-                        picLstOtherColour.BackColor = Helpers.convertColour(item.SubItems[0].Text);
+                        picLstOtherColour.BackColor = Colours.convertColour(item.SubItems[0].Text);
 
                         editToolStripMenuItem.Enabled = true;
                         editColourToolStripMenuItem.Enabled = true;
@@ -2806,7 +2806,7 @@ namespace CASPartEditor
         {
             picHSVColorBG.BackColor = showColourDialog(picHSVColorBG.BackColor);
 
-            PatternBrowser.HSVColor hsv = new PatternBrowser.HSVColor(picHSVColorBG.BackColor);
+            Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorBG.BackColor);
             hsv.Hue -= double.Parse(txtPatternABaseHBg.Text) * 360;
             hsv.Saturation -= double.Parse(txtPatternABaseSBg.Text);
             hsv.Value -= double.Parse(txtPatternABaseVBg.Text);
@@ -2816,6 +2816,11 @@ namespace CASPartEditor
             txtPatternAVBg.Text = MadScience.Helpers.numberToString(hsv.Value);
 
             makePatternPreviewThumb();
+        }
+
+        private void Form1_ResizeBegin(object sender, EventArgs e)
+        {
+            Console.WriteLine("Resize Begin");
         }
 
     }

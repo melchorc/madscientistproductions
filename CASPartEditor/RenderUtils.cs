@@ -76,7 +76,7 @@ namespace CASPartEditor
 
                 MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStream);
                 newModel.name = txtMeshName.Text;
-                renderWindow1.BackgroundColour = MadScience.Helpers.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
+                renderWindow1.BackgroundColour = MadScience.Colours.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
                 //renderWindow1.loadDefaultTextures();
                 renderWindow1.setModel(newModel);
 
@@ -240,31 +240,46 @@ namespace CASPartEditor
             // If any of the patterns can't be found, then check if they are a custom pattern and load them
             if (textures[3].Length == 0 && details.pattern[0].Enabled == "True")
             {
-                textures[3] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[0].key));
+                textures[3] = Patterns.findPattern(details.pattern[0]);
             }
             if (textures[4].Length == 0 && details.pattern[1].Enabled == "True")
             {
-                textures[4] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[1].key));
+                //textures[4] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[1].key));
+                textures[4] = Patterns.findPattern(details.pattern[1]);
             }
             if (textures[5].Length == 0 && details.pattern[2].Enabled == "True")
             {
-                textures[5] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[2].key));
+                //textures[5] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[2].key));
+                textures[5] = Patterns.findPattern(details.pattern[2]);
             }
             if (textures[6].Length == 0 && details.pattern[3].Enabled == "True")
             {
-                textures[6] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[3].key));
+                //textures[6] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[3].key));
+                textures[6] = Patterns.findPattern(details.pattern[3]);
             }
 
             //process hsv Patterns
 
             if (details.pattern[0].type == "HSV")
-                hsvPatterns[0] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[0].key), false, pBrowser.pDetailsTopFile(details.pattern[0]));
+            {
+                //hsvPatterns[0] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[0].key), pBrowser.pDetailsTopFile(details.pattern[0]));
+                hsvPatterns[0] = (Bitmap)Patterns.makePatternThumb(details.pattern[0]);
+            }
             if (details.pattern[1].type == "HSV")
-                hsvPatterns[1] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[1].key), false, pBrowser.pDetailsTopFile(details.pattern[1]));
+            {
+                //hsvPatterns[1] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[1].key), pBrowser.pDetailsTopFile(details.pattern[1]));
+                hsvPatterns[1] = (Bitmap)Patterns.makePatternThumb(details.pattern[1]);
+            }
             if (details.pattern[2].type == "HSV")
-                hsvPatterns[2] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[2].key), false, pBrowser.pDetailsTopFile(details.pattern[2]));
+            {
+                //hsvPatterns[2] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[2].key), pBrowser.pDetailsTopFile(details.pattern[2]));
+                hsvPatterns[2] = (Bitmap)Patterns.makePatternThumb(details.pattern[2]);
+            }
             if (details.pattern[3].type == "HSV")
-                hsvPatterns[3] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[3].key), false, pBrowser.pDetailsTopFile(details.pattern[3]));
+            {
+                //hsvPatterns[3] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[3].key), pBrowser.pDetailsTopFile(details.pattern[3]));
+                hsvPatterns[3] = (Bitmap)Patterns.makePatternThumb(details.pattern[3]);
+            }
 
             DateTime stopTime2 = DateTime.Now;
             TimeSpan duration2 = stopTime2 - startTime2;
@@ -294,7 +309,7 @@ namespace CASPartEditor
 
             if (pDetail.type == "solidColor")
             {
-                colors[0] = MadScience.Helpers.convertColour(pDetail.Color);
+                colors[0] = MadScience.Colours.convertColour(pDetail.Color);
             }
             if (pDetail.type == "HSV")
             {
@@ -305,11 +320,11 @@ namespace CASPartEditor
             {
                 // Always copy directly - we check individual colours in the pattern processor
                 colors = new Color[5];
-                colors[0] = MadScience.Helpers.convertColour(pDetail.ColorP[0], true);
-                colors[1] = MadScience.Helpers.convertColour(pDetail.ColorP[1], true);
-                colors[2] = MadScience.Helpers.convertColour(pDetail.ColorP[2], true);
-                colors[3] = MadScience.Helpers.convertColour(pDetail.ColorP[3], true);
-                colors[4] = MadScience.Helpers.convertColour(pDetail.ColorP[4], true);
+                colors[0] = MadScience.Colours.convertColour(pDetail.ColorP[0], true);
+                colors[1] = MadScience.Colours.convertColour(pDetail.ColorP[1], true);
+                colors[2] = MadScience.Colours.convertColour(pDetail.ColorP[2], true);
+                colors[3] = MadScience.Colours.convertColour(pDetail.ColorP[3], true);
+                colors[4] = MadScience.Colours.convertColour(pDetail.ColorP[4], true);
 
             }
             return colors;

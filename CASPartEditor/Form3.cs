@@ -19,7 +19,7 @@ namespace CASPartEditor
         private void Form3_Load(object sender, EventArgs e)
         {
             lblSims3RootFolder.Text = MadScience.Helpers.findSims3Root();
-            picRenderBackground.BackColor = MadScience.Helpers.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
+            picRenderBackground.BackColor = MadScience.Colours.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -34,7 +34,7 @@ namespace CASPartEditor
             if (cpd.ShowDialog() == DialogResult.OK)
             {
                 picRenderBackground.BackColor = cpd.Color;
-                MadScience.Helpers.saveRegistryValue("renderBackgroundColour", MadScience.Helpers.convertColour(picRenderBackground.BackColor));
+                MadScience.Helpers.saveRegistryValue("renderBackgroundColour", MadScience.Colours.convertColour(picRenderBackground.BackColor));
             }
         }
     }
