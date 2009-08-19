@@ -358,7 +358,7 @@ technique normal_mapping <
 		ZWriteEnable = true;
 		ZFunc = LessEqual;
 		AlphaBlendEnable = false;
-		CullMode = Cw;
+		CullMode = None;
         PixelShader = compile ps_2_0 normal_mapPS(
 						gSurfaceColor,
 						gSkinSampler,
