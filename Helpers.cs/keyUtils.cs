@@ -221,6 +221,10 @@ namespace MadScience
                 ddsP.loadDDS(foundChunk);
                 ddsP.ShowDialog();
             }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Could not find an image with " + keyName + "!");
+            }
         }
 
         public static Stream findKey(string keyName)

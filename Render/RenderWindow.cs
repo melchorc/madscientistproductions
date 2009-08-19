@@ -329,40 +329,49 @@ namespace MadScience.Render
         {
             logMessageToFile("Setup shaders");
             // Load and initialize shader effect
-            string error = "";
-            if (shaderMode == 0)
+            if (d3dDevice == null) return;
+
+            try
             {
-                shader = Effect.FromFile(d3dDevice, Path.Combine(Application.StartupPath, "BodyShader.fx"), null, ShaderFlags.None, null, out error);
+                string error = "";
+                if (shaderMode == 0)
+                {
+                    shader = Effect.FromFile(d3dDevice, Path.Combine(Application.StartupPath, "BodyShader.fx"), null, ShaderFlags.None, null, out error);
+                }
+                if (shaderMode == 1)
+                {
+                    shader = Effect.FromFile(d3dDevice, Path.Combine(Application.StartupPath, "FaceShader.fx"), null, ShaderFlags.None, null, out error);
+                }
+                if (shader == null)
+                {
+                    MessageBox.Show(error);
+                }
+                else
+                {
+                    shader.SetValue(EffectHandle.FromString("gSkinTexture"), skinTexture);
+                    shader.SetValue(EffectHandle.FromString("gSkinSpecular"), skinSpecular);
+                    if (shaderMode == 0) shader.SetValue(EffectHandle.FromString("gMultiplyTexture"), model.textures.baseTexture);
+                    shader.SetValue(EffectHandle.FromString("gStencilTexture"), model.textures.curStencil);
+                    if (model.textures.curStencil != null) shader.SetValue(EffectHandle.FromString("gUseStencil"), true);
+                    if (shaderMode == 0) shader.SetValue(EffectHandle.FromString("gSpecularTexture"), model.textures.specularTexture);
+                    shader.SetValue(EffectHandle.FromString("gReliefTexture"), normalMapTexture);
+                    shader.SetValue(EffectHandle.FromString("gTileCount"), 1.0f);
+                    shader.SetValue(EffectHandle.FromString("gAmbiColor"), new ColorValue(0.6f, 0.6f, 0.6f));
+                    shader.SetValue(EffectHandle.FromString("gLamp0Pos"), new Vector4(-10f, 10f, -10f, 1.0f));
+                    shader.SetValue(EffectHandle.FromString("gPhongExp"), 10.0f);
+                    shader.SetValue(EffectHandle.FromString("gPhongExp"), 10.0f);
+                    shader.SetValue(EffectHandle.FromString("gSpecColor"), new ColorValue(0.2f, 0.2f, 0.2f));
+                    shader.SetValue(EffectHandle.FromString("gSurfaceColor"), new ColorValue(0.5f, 0.5f, 0.5f));
+                    shader.Technique = shader.GetTechnique("normal_mapping");
+                }
+                wireframe = Effect.FromFile(d3dDevice, Path.Combine(Application.StartupPath, "Wireframe.fx"), null, ShaderFlags.None, null, out error);
+                wireframe.SetValue(EffectHandle.FromString("gColor"), new ColorValue((int)wireframeColour.R, (int)wireframeColour.G, (int)wireframeColour.B));
+                wireframe.Technique = wireframe.GetTechnique("wireframe");
             }
-            if (shaderMode == 1)
+            catch (Exception ex)
             {
-                shader = Effect.FromFile(d3dDevice, Path.Combine(Application.StartupPath, "FaceShader.fx"), null, ShaderFlags.None, null, out error);
+                logMessageToFile(ex.Message + Environment.NewLine + ex.StackTrace);
             }
-            if (shader == null)
-            {
-                MessageBox.Show(error);
-            }
-            else
-            {
-                shader.SetValue(EffectHandle.FromString("gSkinTexture"), skinTexture);
-                shader.SetValue(EffectHandle.FromString("gSkinSpecular"), skinSpecular);
-                if (shaderMode == 0) shader.SetValue(EffectHandle.FromString("gMultiplyTexture"), model.textures.baseTexture);
-                shader.SetValue(EffectHandle.FromString("gStencilTexture"), model.textures.curStencil);
-                if (model.textures.curStencil != null) shader.SetValue(EffectHandle.FromString("gUseStencil"), true);
-                if (shaderMode == 0) shader.SetValue(EffectHandle.FromString("gSpecularTexture"), model.textures.specularTexture);
-                shader.SetValue(EffectHandle.FromString("gReliefTexture"), normalMapTexture);
-                shader.SetValue(EffectHandle.FromString("gTileCount"), 1.0f);
-                shader.SetValue(EffectHandle.FromString("gAmbiColor"), new ColorValue(0.6f, 0.6f, 0.6f));
-                shader.SetValue(EffectHandle.FromString("gLamp0Pos"), new Vector4(-10f, 10f, -10f, 1.0f));
-                shader.SetValue(EffectHandle.FromString("gPhongExp"), 10.0f);
-                shader.SetValue(EffectHandle.FromString("gPhongExp"), 10.0f);
-                shader.SetValue(EffectHandle.FromString("gSpecColor"), new ColorValue(0.2f, 0.2f, 0.2f));
-                shader.SetValue(EffectHandle.FromString("gSurfaceColor"), new ColorValue(0.5f, 0.5f, 0.5f));
-                shader.Technique = shader.GetTechnique("normal_mapping");
-            }
-            wireframe = Effect.FromFile(d3dDevice, Path.Combine(Application.StartupPath, "Wireframe.fx"), null, ShaderFlags.None, null, out error);
-            wireframe.SetValue(EffectHandle.FromString("gColor"), new ColorValue((int)wireframeColour.R, (int)wireframeColour.G, (int)wireframeColour.B));
-            wireframe.Technique = wireframe.GetTechnique("wireframe");
         }
 
         public void resetDevice()
@@ -520,7 +529,7 @@ namespace MadScience.Render
 
         public void loadTexture(Stream textureInput, string outputTexture)
         {
-            if (textureInput != null && textureInput != Stream.Null && d3dDevice != null)
+            if (textureInput != null && textureInput.Length > 0 && textureInput != Stream.Null && d3dDevice != null)
             {
                 logMessageToFile("Load texture");
                 switch (outputTexture)
