@@ -28,10 +28,10 @@ namespace CASPartEditor
             Color color3 = Color.Empty;
             Color color4 = Color.Empty;
 
-            if (tinta.enabled.ToLower() == "true") color1 = MadScience.Helpers.convertColour(tinta.color);
-            if (tintb.enabled.ToLower() == "true") color2 = MadScience.Helpers.convertColour(tintb.color);
-            if (tintc.enabled.ToLower() == "true") color3 = MadScience.Helpers.convertColour(tintc.color);
-            if (tintd.enabled.ToLower() == "true") color4 = MadScience.Helpers.convertColour(tintd.color);
+            if (tinta.enabled.ToLower() == "true") color1 = MadScience.Colours.convertColour(tinta.color);
+            if (tintb.enabled.ToLower() == "true") color2 = MadScience.Colours.convertColour(tintb.color);
+            if (tintc.enabled.ToLower() == "true") color3 = MadScience.Colours.convertColour(tintc.color);
+            if (tintd.enabled.ToLower() == "true") color4 = MadScience.Colours.convertColour(tintd.color);
 
             var d = new DdsFileTypePlugin.DdsFile();
 

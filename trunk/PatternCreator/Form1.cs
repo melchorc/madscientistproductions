@@ -560,10 +560,10 @@ namespace PatternCreator
                 sb.AppendLine("  <variables>");
 
                 // Convert color boxes into 0 to 1 style colours
-                if (numChans >= 1) { sb.AppendLine("    <param type=\"color\" name=\"Color 0\" default=\"" + MadScience.Helpers.convertColour(lblPalette1.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
-                if (numChans >= 2) { sb.AppendLine("    <param type=\"color\" name=\"Color 1\" default=\"" + MadScience.Helpers.convertColour(lblPalette2.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
-                if (numChans >= 3) { sb.AppendLine("    <param type=\"color\" name=\"Color 2\" default=\"" + MadScience.Helpers.convertColour(lblPalette3.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
-                if (numChans == 4) { sb.AppendLine("    <param type=\"color\" name=\"Color 3\" default=\"" + MadScience.Helpers.convertColour(lblPalette4.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
+                if (numChans >= 1) { sb.AppendLine("    <param type=\"color\" name=\"Color 0\" default=\"" + MadScience.Colours.convertColour(lblPalette1.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
+                if (numChans >= 2) { sb.AppendLine("    <param type=\"color\" name=\"Color 1\" default=\"" + MadScience.Colours.convertColour(lblPalette2.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
+                if (numChans >= 3) { sb.AppendLine("    <param type=\"color\" name=\"Color 2\" default=\"" + MadScience.Colours.convertColour(lblPalette3.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
+                if (numChans == 4) { sb.AppendLine("    <param type=\"color\" name=\"Color 3\" default=\"" + MadScience.Colours.convertColour(lblPalette4.BackColor) + "\" uiEditor=\"Medator.Color4TypeEditor, Medator\" uiCategory=\"Colors\" />"); }
 
                 sb.AppendLine("    <param type=\"texture\" name=\"rgbmask\" uiVisible=\"false\" default=\"key:00b2d882:" + groupId.ToString("X8").ToLower() + ":" + instanceId.ToString("X16").ToLower() + "\" />");
                 if (chkUseDefaultSpecular.Checked)
@@ -580,7 +580,7 @@ namespace PatternCreator
                 sb.AppendLine("    <destination>");
                 if (!chkAllowDecal.Checked)
                 {
-                    sb.AppendLine("      <step type=\"ColorFill\" color=\"" + MadScience.Helpers.convertColour(lblBackgroundColour.BackColor) + "\" />");
+                    sb.AppendLine("      <step type=\"ColorFill\" color=\"" + MadScience.Colours.convertColour(lblBackgroundColour.BackColor) + "\" />");
                 }
                 // 2 lines per channel
                 if (numChans >= 1)

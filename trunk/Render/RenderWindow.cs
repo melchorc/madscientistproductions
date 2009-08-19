@@ -134,6 +134,7 @@ namespace MadScience.Render
 
         private void logMessageToFile(string message)
         {
+
             System.IO.StreamWriter sw = System.IO.File.AppendText(Path.Combine(Application.StartupPath, "renderWindow.log"));
             try
             {
@@ -933,6 +934,8 @@ namespace MadScience.Render
             this.Name = "RenderWindow";
             this.Size = new System.Drawing.Size(471, 246);
             this.Load += new System.EventHandler(this.RenderWindow_Load);
+            this.VisibleChanged += new System.EventHandler(this.RenderWindow_VisibleChanged);
+            this.Resize += new System.EventHandler(this.RenderWindow_Resize);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -986,6 +989,16 @@ namespace MadScience.Render
         private void rightToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ResetView(270);
+        }
+
+        private void RenderWindow_Resize(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RenderWindow_VisibleChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("Test2");
         }
 
     }

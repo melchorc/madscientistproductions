@@ -1516,6 +1516,9 @@ namespace MadScience
         public string key = "";
         public string category = "";
 
+        public bool isCustom = false;
+        public string customFilename = "";
+
         public string nameHigh = "";
 
         public string material = "";

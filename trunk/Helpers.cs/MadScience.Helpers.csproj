@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EA40DDB1-1C28-4323-90B3-5B99071F0B78}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -47,6 +47,7 @@
     <Compile Include="casPartFile.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Colours.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DatabasePackedFile.cs" />
     <Compile Include="DdsFile.cs" />
@@ -67,6 +68,7 @@
       <DependentUpon>licenseForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ListViewSorter.cs" />
+    <Compile Include="Patterns.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -239,7 +239,7 @@ namespace MadScience
             List<MadScience.Wrappers.ResourceKey> resourceKeys = new List<MadScience.Wrappers.ResourceKey>();
             resourceKeys.Add(new MadScience.Wrappers.ResourceKey(keyName));
 
-            return findKey(resourceKeys, fullBuildNum)[0];
+            return findKey(resourceKeys, fullBuildNum, null)[0];
         }
 
         public static Stream findKey(MadScience.Wrappers.ResourceKey resourceKey)
@@ -252,10 +252,23 @@ namespace MadScience
             List<MadScience.Wrappers.ResourceKey> resourceKeys = new List<MadScience.Wrappers.ResourceKey>();
             resourceKeys.Add(resourceKey);
 
-            return findKey(resourceKeys, fullBuildNum)[0];
+            return findKey(resourceKeys, fullBuildNum, null)[0];
         }
-         
+
+        public static Stream findKey(MadScience.Wrappers.ResourceKey resourceKey, int fullBuildNum, Wrappers.Database db)
+        {
+            List<MadScience.Wrappers.ResourceKey> resourceKeys = new List<MadScience.Wrappers.ResourceKey>();
+            resourceKeys.Add(resourceKey);
+
+            return findKey(resourceKeys, fullBuildNum, db)[0];
+        }
+
         public static List<Stream> findKey(List<MadScience.Wrappers.ResourceKey> resourceKeys, int fullBuildNum)
+        {
+            return findKey(resourceKeys, fullBuildNum, null);
+        }
+
+        public static List<Stream> findKey(List<MadScience.Wrappers.ResourceKey> resourceKeys, int fullBuildNum, MadScience.Wrappers.Database db)
         {
             List<Stream> tempChunks = new List<Stream>();
 
@@ -308,8 +321,13 @@ namespace MadScience
                 }
             }
 
-            Stream input = File.OpenRead(Helpers.findSims3Root() + "\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package");
-            MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(input, true);
+            // If input stream isn't null then we use that, otherwise open the fullbuild we want...
+            Stream input = Stream.Null;
+            if (db == null)
+            {
+                input = File.OpenRead(Helpers.findSims3Root() + "\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package");
+                db = new MadScience.Wrappers.Database(input, true);
+            }
 
             for (int i = 0; i < resourceKeys.Count; i++)
             {
@@ -331,8 +349,10 @@ namespace MadScience
                     }
                 }
             }
-            input.Close();
-
+            if (db == null)
+            {
+                input.Close();
+            }
 
             return tempChunks;
         }
