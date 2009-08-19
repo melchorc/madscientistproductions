@@ -222,6 +222,7 @@ namespace CASPartEditor
             Color[] pattern2colors = createColorArray(details.pattern[1]);
             Color[] pattern3colors = createColorArray(details.pattern[2]);
             Color[] pattern4colors = createColorArray(details.pattern[3]);
+            Bitmap[] hsvPatterns = new Bitmap[4];
 
             DateTime startTime2 = DateTime.Now;
             List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
@@ -254,6 +255,17 @@ namespace CASPartEditor
                 textures[6] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[3].key));
             }
 
+            //process hsv Patterns
+
+            if (details.pattern[0].type == "HSV")
+                hsvPatterns[0] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[0].key), false, pBrowser.pDetailsTopFile(details.pattern[0]));
+            if (details.pattern[1].type == "HSV")
+                hsvPatterns[1] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[1].key), false, pBrowser.pDetailsTopFile(details.pattern[1]));
+            if (details.pattern[2].type == "HSV")
+                hsvPatterns[2] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[2].key), false, pBrowser.pDetailsTopFile(details.pattern[2]));
+            if (details.pattern[3].type == "HSV")
+                hsvPatterns[3] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[3].key), false, pBrowser.pDetailsTopFile(details.pattern[3]));
+
             DateTime stopTime2 = DateTime.Now;
             TimeSpan duration2 = stopTime2 - startTime2;
             Console.WriteLine("Key search time: " + duration2.TotalMilliseconds);
@@ -261,6 +273,7 @@ namespace CASPartEditor
             DateTime startTime = DateTime.Now;
             Bitmap output = PatternProcessor.ProcessTexture(
                 textures,
+                hsvPatterns,
                 pattern1colors, pattern2colors, pattern3colors, pattern4colors, RGBA);
 
             DateTime stopTime = DateTime.Now;
@@ -285,8 +298,8 @@ namespace CASPartEditor
             }
             if (pDetail.type == "HSV")
             {
-                //unsupported
-                colors[0] = Color.Magenta;
+                //we process the pattern in the pattern preview code, so we multiplicate it with white so that there is no change
+                colors[0] = Color.White;
             }
             if (pDetail.type == "Coloured")
             {

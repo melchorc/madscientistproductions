@@ -132,6 +132,7 @@ namespace CASPartEditor
 
         public static Bitmap ProcessTexture(
                 List<Stream> textures, 
+                Bitmap[] HSVPatterns,
                 Color[] Pattern1Colors, 
                 Color[] Pattern2Colors, 
                 Color[] Pattern3Colors,
@@ -169,7 +170,7 @@ namespace CASPartEditor
             {
                 Pattern4Enabled = false;
             }
-            
+
             var d = new DdsFileTypePlugin.DdsFile();
 
             Stream Multiplier = textures[0];
@@ -236,15 +237,22 @@ namespace CASPartEditor
             Console.WriteLine("Pattern1 length: " + Pattern1.Length.ToString());
 
             //Load patterns
-            if ((Pattern1.Length != 0))
+            if (HSVPatterns[0] == null)
             {
-                d.Load(Pattern1);
-                _Pattern1 = (Bitmap)d.Image(true, true, true, true);
-                Pattern1.Close();
+                if ((Pattern1.Length != 0))
+                {
+                    d.Load(Pattern1);
+                    _Pattern1 = (Bitmap)d.Image(true, true, true, true);
+                    Pattern1.Close();
+                }
+                else
+                {
+                    _Pattern1 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
+                }
             }
             else
             {
-                _Pattern1 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
+                _Pattern1 = HSVPatterns[0];
             }
             stopTime = DateTime.Now;
             duration = stopTime - startTime;
@@ -254,16 +262,22 @@ namespace CASPartEditor
             Stream Pattern2 = textures[4];
             Console.WriteLine("Pattern2 length: " + Pattern2.Length.ToString());
 
-            if ((Pattern2.Length != 0))
+            if (HSVPatterns[1] == null)
             {
-                d.Load(Pattern2);
-                _Pattern2 = (Bitmap)d.Image(true, true, true, true);
-                Pattern2.Close();
+                if ((Pattern2.Length != 0))
+                {
+                    d.Load(Pattern2);
+                    _Pattern2 = (Bitmap)d.Image(true, true, true, true);
+                    Pattern2.Close();
+                }
+                else
+                {
+                    _Pattern2 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
+                }
             }
-
             else
             {
-                _Pattern2 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
+                _Pattern2 = HSVPatterns[1];
             }
             stopTime = DateTime.Now;
             duration = stopTime - startTime;
@@ -273,15 +287,22 @@ namespace CASPartEditor
             Stream Pattern3 = textures[5];
             Console.WriteLine("Pattern3 length: " + Pattern3.Length.ToString());
 
-            if ((Pattern3.Length != 0))
+            if (HSVPatterns[2] == null)
             {
-                d.Load(Pattern3);
-                _Pattern3 = (Bitmap)d.Image(true, true, true, true);
-                Pattern3.Close();
+                if ((Pattern3.Length != 0))
+                {
+                    d.Load(Pattern3);
+                    _Pattern3 = (Bitmap)d.Image(true, true, true, true);
+                    Pattern3.Close();
+                }
+                else
+                {
+                    _Pattern3 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
+                }
             }
             else
             {
-                _Pattern3 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
+                _Pattern3 = HSVPatterns[2];
             }
             stopTime = DateTime.Now;
             duration = stopTime - startTime;
@@ -291,15 +312,22 @@ namespace CASPartEditor
             Stream Pattern4 = textures[6];
             Console.WriteLine("Pattern4 length: " + Pattern4.Length.ToString());
 
-            if ((Pattern4.Length != 0))
+            if (HSVPatterns[3] == null)
             {
-                d.Load(Pattern4);
-                _Pattern4 = (Bitmap)d.Image(true, true, true, true);
-                Pattern4.Close();
+                if ((Pattern4.Length != 0))
+                {
+                    d.Load(Pattern4);
+                    _Pattern4 = (Bitmap)d.Image(true, true, true, true);
+                    Pattern4.Close();
+                }
+                else
+                {
+                    _Pattern4 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
+                }
             }
             else
             {
-                _Pattern4 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
+                _Pattern4 = HSVPatterns[3];
             }
             stopTime = DateTime.Now;
             duration = stopTime - startTime;
@@ -407,13 +435,22 @@ namespace CASPartEditor
                                 if (Pattern3Enabled) pattern3Color = Color.FromArgb(pattern3Row[pixelLocation2 + 3], pattern3Row[pixelLocation2 + 2], pattern3Row[pixelLocation2 + 1], pattern3Row[pixelLocation2]);
                                 if (RGBA && Pattern4Enabled) pattern4Color = Color.FromArgb(pattern4Row[pixelLocation2 + 3], pattern4Row[pixelLocation2 + 2], pattern4Row[pixelLocation2 + 1], pattern4Row[pixelLocation2]);
 
+                                if (HSVPatterns[0] == null)
+                                    pattern1Color = ColorFromPattern(pattern1Color, Pattern1Colors);
+                                if (HSVPatterns[1] == null)
+                                    pattern2Color = ColorFromPattern(pattern2Color, Pattern2Colors);
+                                if (HSVPatterns[2] == null)
+                                    pattern3Color = ColorFromPattern(pattern3Color, Pattern3Colors);
+                                if (HSVPatterns[3] == null)
+                                    pattern4Color = ColorFromPattern(pattern4Color, Pattern4Colors);
+
                                 if (RGBA)
                                 {
-                                    multiplierColor = ProcessPixelRGBA(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color, pattern4Color, Pattern1Colors, Pattern2Colors, Pattern3Colors, Pattern4Colors);
+                                    multiplierColor = ProcessPixelRGBA(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color, pattern4Color);
                                 }
                                 else
                                 {
-                                    multiplierColor = ProcessPixelRGB(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color, Pattern1Colors, Pattern2Colors, Pattern3Colors);
+                                    multiplierColor = ProcessPixelRGB(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color);
                                 }
                                 outputRow[pixelLocation] = (byte)multiplierColor.B;
                                 outputRow[pixelLocation + 1] = (byte)multiplierColor.G;
@@ -439,6 +476,7 @@ namespace CASPartEditor
             }
             return output;
         }
+
 
         public static Bitmap mergeStencils(List<Stream> Stencils)
         {
@@ -496,23 +534,23 @@ namespace CASPartEditor
             return output;
         }
 
-        private static Color ProcessPixelRGB(Color multiplier, Color mask, Color pattern1mask, Color pattern2mask, Color pattern3mask, Color[] colors1, Color[] colors2, Color[] colors3)
+        private static Color ProcessPixelRGB(Color multiplier, Color mask, Color pattern1color, Color pattern2color, Color pattern3color)
         {
             Color output;
             output = multiplier;
-            if (!pattern1mask.IsEmpty) output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, ColorFromPattern(pattern1mask, colors1)));
-            if (!pattern2mask.IsEmpty) output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, ColorFromPattern(pattern2mask, colors2)));
-            if (!pattern3mask.IsEmpty) output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, ColorFromPattern(pattern3mask, colors3)));
+            if (!pattern1color.IsEmpty) output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, pattern1color));
+            if (!pattern2color.IsEmpty) output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, pattern2color));
+            if (!pattern3color.IsEmpty) output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, pattern3color));
             return output;
         }
 
-        private static Color ProcessPixelRGBA(Color multiplier, Color mask, Color pattern1mask, Color pattern2mask, Color pattern3mask, Color pattern4mask, Color[] colors1, Color[] colors2, Color[] colors3, Color[] colors4)
+        private static Color ProcessPixelRGBA(Color multiplier, Color mask, Color pattern1color, Color pattern2color, Color pattern3color, Color pattern4color)
         {
             Color output = multiplier;
-            if (!pattern1mask.IsEmpty) output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, ColorFromPattern(pattern1mask, colors1)));
-            if (!pattern2mask.IsEmpty) output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, ColorFromPattern(pattern2mask, colors2)));
-            if (!pattern3mask.IsEmpty) output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, ColorFromPattern(pattern3mask, colors3)));
-            if (!pattern4mask.IsEmpty) output = ColorOverlay(mask.A, output, ColorMultiply(multiplier, ColorFromPattern(pattern4mask, colors4)));
+            if (!pattern1color.IsEmpty) output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, pattern1color));
+            if (!pattern2color.IsEmpty) output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, pattern2color));
+            if (!pattern3color.IsEmpty) output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, pattern3color));
+            if (!pattern4color.IsEmpty) output = ColorOverlay(mask.A, output, ColorMultiply(multiplier, pattern4color));
             return output;
         }
 
@@ -566,4 +604,6 @@ namespace CASPartEditor
             return output;
         }
     }
+
+
 }
