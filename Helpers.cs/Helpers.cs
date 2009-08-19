@@ -1284,10 +1284,12 @@ namespace MadScience
                 {
                     pDetail.type = "HSV";
                 }
-                if (pDetail.ColorP[0] != null || pDetail.ColorP[1] != null)
+                if (pDetail.ColorP[1] != null)
                 {
                     pDetail.type = "Coloured";
                 }
+                // If we have no type, default to Coloured to be on the safe side
+                if (String.IsNullOrEmpty(pDetail.type)) pDetail.type = "Coloured";
                 //Console.WriteLine("Pattern " + i + ": " + xcd.pattern[i].name + " - " + xcd.pattern[i].type);
             }
 

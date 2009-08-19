@@ -43,9 +43,9 @@ namespace CASPartEditor
             }
 
             Helpers.logMessageToFile("Creating cache folder");
-            if (!Directory.Exists(Application.StartupPath + "\\cache\\"))
+            if (!Directory.Exists(Path.Combine(Application.StartupPath, "cache")))
             {
-                Directory.CreateDirectory(Application.StartupPath + "\\cache\\");
+                Directory.CreateDirectory(Path.Combine(Application.StartupPath, "cache"));
             }
 
             if (MadScience.Helpers.getRegistryValue("show3dRender") == "True")
@@ -68,7 +68,7 @@ namespace CASPartEditor
             lookupTypes();
 
             Helpers.logMessageToFile("Populating types list");
-            MadScience.Helpers.lookupTypes(Application.StartupPath + "\\xml\\metaTypes.xml");
+            MadScience.Helpers.lookupTypes(Path.Combine(Application.StartupPath, Path.Combine("xml", "metaTypes.xml")));
 
             Helpers.logMessageToFile("Finished Initialisation");
         }
@@ -82,7 +82,7 @@ namespace CASPartEditor
         public bool isNew = false;
         public bool fromPackage = false;
 
-        string logPath = Helpers.logPath(Application.StartupPath + "\\" + Application.ProductName + ".log", true);
+        string logPath = Helpers.logPath(Path.Combine(Application.StartupPath , Application.ProductName + ".log"), true);
 
         //public string filename;
 
@@ -96,7 +96,7 @@ namespace CASPartEditor
 
             Helpers.logMessageToFile("LookupTypes");
 
-            TextReader r = new StreamReader(Application.StartupPath + "\\xml\\casPartList.xml");
+            TextReader r = new StreamReader(Path.Combine(Application.StartupPath, Path.Combine("xml", "casPartList.xml")));
             XmlSerializer s = new XmlSerializer(typeof(files));
             this.lookupList = (files)s.Deserialize(r);
             lookupList.makeCTypes();
@@ -500,13 +500,13 @@ namespace CASPartEditor
             if ((maxAcross * (128 + 6)) > curWidth) maxAcross--;
 
             // Find thumbnail
-            if (!File.Exists(Application.StartupPath + "\\cache\\" + meshName + ".png"))
+            if (!File.Exists(Path.Combine(Application.StartupPath, Path.Combine("cache", meshName + ".png"))))
             {
                 picBox.Image = extractCASThumbnail(meshName);
             }
             else
             {
-                Stream picBoxImage = File.OpenRead(Application.StartupPath + "\\cache\\" + meshName + ".png");
+                Stream picBoxImage = File.OpenRead(Path.Combine(Application.StartupPath, Path.Combine("cache", meshName + ".png")));
                 picBox.Image = Image.FromStream(picBoxImage);
                 picBoxImage.Close();
             }
@@ -659,7 +659,7 @@ namespace CASPartEditor
                     tempImage = Image.FromStream(castdb.GetResourceStream(temp));
                     try
                     {
-                        tempImage.Save(Application.StartupPath + "\\cache\\" + meshName + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                        tempImage.Save(Path.Combine(Application.StartupPath, Path.Combine("cache", meshName + ".png")), System.Drawing.Imaging.ImageFormat.Png);
                     }
                     catch (Exception ex)
                     {
@@ -981,6 +981,7 @@ namespace CASPartEditor
 
         private void lstOtherDetails_SelectedIndexChanged(object sender, EventArgs e)
         {
+            /*
             if (lstOtherDetails.SelectedItems.Count == 1)
             {
                 ListViewItem item = lstOtherDetails.SelectedItems[0];
@@ -1029,6 +1030,7 @@ namespace CASPartEditor
                         break;
                 }
             }
+             */
         }
 
         private void chkLogoEnabled_CheckedChanged(object sender, EventArgs e)
@@ -1724,7 +1726,7 @@ namespace CASPartEditor
                 filesFile temp = lookupList.Items[i];
 
                 casPartFile cFile = new casPartFile();
-                Stream cFileOrig = File.OpenRead(Application.StartupPath + "\\casparts\\" + temp.fullCasPartname + ".caspart");
+                Stream cFileOrig = File.OpenRead(Path.Combine(Application.StartupPath, Path.Combine("casparts", temp.fullCasPartname + ".caspart")));
                 cFile.Load(cFileOrig);
                 cFileOrig.Close();
 
@@ -1735,8 +1737,8 @@ namespace CASPartEditor
                     cFile.cFile.xmlChunkRaw.Add(complate);
                     cFile.parseRawXML(1);
 
-                    File.Delete(Application.StartupPath + "\\casparts\\" + temp.fullCasPartname + ".caspart");
-                    Stream casPartSave = File.OpenWrite(Application.StartupPath + "\\casparts\\" + temp.fullCasPartname + ".caspart");
+                    File.Delete(Path.Combine(Application.StartupPath, Path.Combine("casparts", temp.fullCasPartname + ".caspart")));
+                    Stream casPartSave = File.OpenWrite(Path.Combine(Application.StartupPath, Path.Combine("casparts", temp.fullCasPartname + ".caspart")));
                     cFile.Save(casPartSave, cFile.cFile, false);
                     casPartSave.Close();
 
@@ -1760,16 +1762,16 @@ namespace CASPartEditor
                 statusStrip1.Refresh();
 
                 filesFile temp = lookupList.Items[i];
-                if (File.Exists(Application.StartupPath + "\\cache\\" + temp.fullCasPartname + ".png"))
+                if (File.Exists(Path.Combine(Application.StartupPath, Path.Combine("casparts", temp.fullCasPartname + ".png"))))
                 {
-                    File.Delete(Application.StartupPath + "\\cache\\" + temp.fullCasPartname + ".png");
+                    File.Delete(Path.Combine(Application.StartupPath, Path.Combine("casparts", temp.fullCasPartname + ".png")));
                 }
                 Image img = extractCASThumbnail(temp.fullCasPartname);
                 if (img != null)
                 {
                     try
                     {
-                        img.Save(Application.StartupPath + "\\cache\\" + temp.fullCasPartname + ".png");
+                        img.Save(Path.Combine(Application.StartupPath, Path.Combine("casparts", temp.fullCasPartname + ".png")));
                     }
                     catch (Exception ex)
                     {
@@ -1792,6 +1794,7 @@ namespace CASPartEditor
 
         private void lstTextureDetails_SelectedIndexChanged(object sender, EventArgs e)
         {
+            /*
             if (lstTextureDetails.SelectedItems.Count == 1)
             {
                 ListViewItem item = lstTextureDetails.SelectedItems[0];
@@ -1800,8 +1803,11 @@ namespace CASPartEditor
                     case "texture":
                         btnListTextureFind.Enabled = true;
                         btnListTextureReplace.Enabled = true;
+                        picLstTextureColour.Enabled = false;
                         break;
                     case "color":
+                        btnListTextureFind.Enabled = false;
+                        btnListTextureReplace.Enabled = false;
                         picLstTextureColour.Enabled = true;
                         picLstTextureColour.BackColor = Helpers.convertColour(item.SubItems[0].Text);
                         break;
@@ -1812,6 +1818,7 @@ namespace CASPartEditor
                         break;
                 }
             }
+             */
         }
 
         private void listFindOrReplace(object sender, bool isFind)
@@ -2558,6 +2565,222 @@ namespace CASPartEditor
         private void btnMeshTGILinksFind_Click(object sender, EventArgs e)
         {
             listFindOrReplace(lstMeshTGILinks, true);
+        }
+
+        ListView curListView;
+        private void lstTextureDetails_MouseClick(object sender, MouseEventArgs e)
+        {
+            ListView lView = (ListView)sender;
+            if (lView.SelectedItems.Count == 1)
+            {
+                ListViewItem item = lView.SelectedItems[0];
+                switch (item.Tag.ToString())
+                {
+                    case "texture":
+                        if (!String.IsNullOrEmpty(item.Text)) btnListTextureFind.Enabled = true;
+                        btnListTextureReplace.Enabled = true;
+                        picLstTextureColour.Enabled = false;
+                        label14.Enabled = false;
+                        editToolStripMenuItem.Enabled = true;
+                        editColourToolStripMenuItem.Enabled = false;
+                        findImageToolStripMenuItem.Enabled = true;
+                        replaceImageToolStripMenuItem.Enabled = true;
+                        break;
+                    case "color":
+                        btnListTextureFind.Enabled = false;
+                        btnListTextureReplace.Enabled = false;
+                        picLstTextureColour.Enabled = true;
+                        label14.Enabled = true;
+                        picLstTextureColour.BackColor = Helpers.convertColour(item.SubItems[0].Text);
+                        editToolStripMenuItem.Enabled = true;
+                        editColourToolStripMenuItem.Enabled = true;
+                        findImageToolStripMenuItem.Enabled = false;
+                        replaceImageToolStripMenuItem.Enabled = false;
+                        break;
+                    default:
+                        btnListTextureFind.Enabled = false;
+                        btnListTextureReplace.Enabled = false;
+                        picLstTextureColour.Enabled = false;
+                        label14.Enabled = false;
+                        editToolStripMenuItem.Enabled = true;
+                        editColourToolStripMenuItem.Enabled = false;
+                        findImageToolStripMenuItem.Enabled = false;
+                        replaceImageToolStripMenuItem.Enabled = false;
+                        break;
+                }
+
+                if (e.Button == MouseButtons.Right)
+                {
+                    curListView = lView;
+                    contextMenuStrip2.Show(lView, new Point(e.X, e.Y));
+                }
+            }
+
+        }
+
+        private void lstTextureDetails_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            ListView lView = (ListView)sender;
+            if (e.Button == MouseButtons.Left && lView.SelectedItems.Count == 1)
+            {
+                ListViewItem item = lView.SelectedItems[0];
+                switch (item.Tag.ToString())
+                {
+                    case "truefalse":
+                        if (item.Text.ToLower() == "true") item.Text = "False";
+                        else item.Text = "True";
+                        item.Font = new Font(item.Font.FontFamily, item.Font.Size, FontStyle.Bold); 
+                        break;
+                    case "texture":
+                        if (!String.IsNullOrEmpty(item.Text)) btnListTextureFind_Click(sender, null);
+                        break;
+                    case "color":
+                        if (!String.IsNullOrEmpty(item.Text)) picListTextureColour_Click(sender, null);
+                        break;
+                }
+            }
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            doContextMenuClick("edit");
+        }
+
+        private void doContextMenuClick(string clickType)
+        {
+            if (curListView != null)
+            {
+                if (curListView.SelectedItems.Count == 1)
+                {
+                    ListViewItem item = curListView.SelectedItems[0];
+                    if (curListView.Name == "lstTextureDetails")
+                    {
+                        switch (clickType)
+                        {
+                            case "edit":
+                                item.BeginEdit();
+                                break;
+                            case "find":
+                                btnListTextureFind_Click(null, null);
+                                break;
+                            case "replace":
+                                btnListTextureReplace_Click(null, null);
+                                break;
+                            case "colour":
+                                picListTextureColour_Click(null, null);
+                                break;
+
+                        }
+                    }
+                    if (curListView.Name == "lstOtherDetails")
+                    {
+                        switch (clickType)
+                        {
+                            case "edit":
+                                item.BeginEdit();
+                                break;
+                            case "find":
+                                btnListOtherFind_Click(null, null);
+                                break;
+                            case "replace":
+                                btnLstOtherReplace_Click(null, null);
+                                break;
+                            case "colour":
+                                picLstOtherColour_Click(null, null);
+                                break;
+
+                        }
+                    }
+                }
+            }
+        }
+
+        private void findImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            doContextMenuClick("find");
+        }
+
+        private void replaceImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            doContextMenuClick("replace");
+        }
+
+        private void editColourToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            doContextMenuClick("colour");
+        }
+
+        private void lstOtherDetails_MouseClick(object sender, MouseEventArgs e)
+        {
+            ListView lView = (ListView)sender;
+            if (lView.SelectedItems.Count == 1)
+            {
+                ListViewItem item = lView.SelectedItems[0];
+                switch (item.Tag.ToString())
+                {
+                    case "texture":
+                        if (!String.IsNullOrEmpty(item.Text)) btnListOtherFind.Enabled = true;
+                        btnLstOtherReplace.Enabled = true;
+                        picLstOtherColour.Enabled = false;
+
+                        editToolStripMenuItem.Enabled = true;
+                        editColourToolStripMenuItem.Enabled = false;
+                        findImageToolStripMenuItem.Enabled = true;
+                        replaceImageToolStripMenuItem.Enabled = true;
+                        break;
+                    case "color":
+                        btnListOtherFind.Enabled = false;
+                        btnLstOtherReplace.Enabled = false;
+                        picLstOtherColour.Enabled = true;
+                        picLstOtherColour.BackColor = Helpers.convertColour(item.SubItems[0].Text);
+
+                        editToolStripMenuItem.Enabled = true;
+                        editColourToolStripMenuItem.Enabled = true;
+                        findImageToolStripMenuItem.Enabled = false;
+                        replaceImageToolStripMenuItem.Enabled = false;
+                        break;
+                    default:
+                        btnListOtherFind.Enabled = false;
+                        btnLstOtherReplace.Enabled = false;
+                        picLstOtherColour.Enabled = false;
+
+                        editToolStripMenuItem.Enabled = true;
+                        editColourToolStripMenuItem.Enabled = false;
+                        findImageToolStripMenuItem.Enabled = false;
+                        replaceImageToolStripMenuItem.Enabled = false;
+                        break;
+                }
+
+                if (e.Button == MouseButtons.Right)
+                {
+                    curListView = lView;
+                    contextMenuStrip2.Show(lView, new Point(e.X, e.Y));
+                }
+            }
+
+        }
+
+        private void lstOtherDetails_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            ListView lView = (ListView)sender;
+            if (e.Button == MouseButtons.Left && lView.SelectedItems.Count == 1)
+            {
+                ListViewItem item = lView.SelectedItems[0];
+                switch (item.Tag.ToString())
+                {
+                    case "truefalse":
+                        if (item.Text.ToLower() == "true") item.Text = "False";
+                        else item.Text = "True";
+                        item.Font = new Font(item.Font.FontFamily, item.Font.Size, FontStyle.Bold);
+                        break;
+                    case "texture":
+                        if (!String.IsNullOrEmpty(item.Text)) btnListOtherFind_Click(sender, null);
+                        break;
+                    case "color":
+                        if (!String.IsNullOrEmpty(item.Text)) picLstOtherColour_Click(sender, null);
+                        break;
+                }
+            }
         }
 
     }

@@ -15,7 +15,7 @@ namespace MadScience.Render
 
         private void logMessageToFile(string message)
         {
-            System.IO.StreamWriter sw = System.IO.File.AppendText(Application.StartupPath + "\\renderWindow.log");
+            System.IO.StreamWriter sw = System.IO.File.AppendText(Path.Combine(Application.StartupPath, "renderWindow.log"));
             try
             {
                 string logLine = System.String.Format(

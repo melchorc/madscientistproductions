@@ -22,9 +22,9 @@ namespace PatternBrowser
                 InitializeComponent();
 
                 Helpers.logMessageToFile("Creating cache folder");
-                if (!Directory.Exists(Application.StartupPath + "\\patterncache\\"))
+                if (!Directory.Exists(Path.Combine(Application.StartupPath, "\\patterncache\\")))
                 {
-                    Directory.CreateDirectory(Application.StartupPath + "\\patterncache\\");
+                    Directory.CreateDirectory(Path.Combine(Application.StartupPath, "patterncache"));
                 }
 
                 loadPatternList();
@@ -216,16 +216,16 @@ namespace PatternBrowser
         private void loadPatternList()
         {
             Helpers.logMessageToFile("Loading patternList.xml");
-            TextReader r = new StreamReader(Application.StartupPath + "\\xml\\patternList.xml");
+            TextReader r = new StreamReader(Path.Combine(Application.StartupPath,  Path.Combine("xml", "patternList.xml")));
             XmlSerializer s = new XmlSerializer(typeof(patterns));
             this.patterns = (patterns)s.Deserialize(r);
             r.Close();
             Helpers.logMessageToFile(patterns.Items.Count + " patterns found");
 
-            if (File.Exists(Application.StartupPath + "\\xml\\customPatterns.xml"))
+            if (File.Exists(Path.Combine(Application.StartupPath, Path.Combine("xml", "customPatterns.xml"))))
             {
                 Helpers.logMessageToFile("Loading customPatterns.xml");
-                TextReader r2 = new StreamReader(Application.StartupPath + "\\xml\\customPatterns.xml");
+                TextReader r2 = new StreamReader(Path.Combine(Application.StartupPath, Path.Combine("xml", "customPatterns.xml")));
                 XmlSerializer s2 = new XmlSerializer(typeof(patterns));
                 this.customPatterns = (patterns)s2.Deserialize(r2);
                 r2.Close();
@@ -371,7 +371,7 @@ namespace PatternBrowser
                         {
                             try
                             {
-                                picBox.Image.Save(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                                picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache",  pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
                             }
                             catch (Exception ex)
                             {
@@ -453,7 +453,7 @@ namespace PatternBrowser
                             {
                                 try
                                 {
-                                    picBox.Image.Save(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                                    picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
                                 }
                                 catch (Exception ex)
                                 {
@@ -594,9 +594,9 @@ namespace PatternBrowser
                         tt.SetToolTip(picBox, toolTip);
 
                         // Find thumbnail
-                        if (File.Exists(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png"))
+                        if (File.Exists(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png"))))
                         {
-                            Stream tmpImage = File.OpenRead(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png");
+                            Stream tmpImage = File.OpenRead(Path.Combine(Application.StartupPath, Path.Combine("patterncache",  pattern.casPart + ".png")));
                             picBox.Image = Image.FromStream(tmpImage);
                             tmpImage.Close();
                         }
@@ -627,7 +627,7 @@ namespace PatternBrowser
                                     picBox.Image = makePatternThumb(patternThumb, pattern);
                                     try
                                     {
-                                        picBox.Image.Save(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                                        picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
                                     }
                                     catch (Exception ex)
                                     {
@@ -692,9 +692,9 @@ namespace PatternBrowser
                         tt.SetToolTip(picBox, toolTip);
 
                         // Find thumbnail
-                        if (File.Exists(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png"))
+                        if (File.Exists(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png"))))
                         {
-                            Stream tmpImage = File.OpenRead(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png");
+                            Stream tmpImage = File.OpenRead(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png")));
                             picBox.Image = Image.FromStream(tmpImage);
                             tmpImage.Close();
                         }
@@ -733,7 +733,7 @@ namespace PatternBrowser
                                 picBox.Image = makePatternThumb(patternThumb, pattern);
                                 try
                                 {
-                                    picBox.Image.Save(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                                    picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine ("patterncache", pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
                                 }
                                 catch (Exception ex)
                                 {
@@ -1046,7 +1046,7 @@ namespace PatternBrowser
 
                             customPatterns.Items.Add(cPattern);
 
-                            TextWriter r = new StreamWriter(Application.StartupPath + "\\xml\\customPatterns.xml");
+                            TextWriter r = new StreamWriter(Path.Combine(Application.StartupPath, Path.Combine("xml", "customPatterns.xml")));
                             XmlSerializer s = new XmlSerializer(typeof(patterns));
                             s.Serialize(r, customPatterns);
                             r.Close();
@@ -1085,7 +1085,7 @@ namespace PatternBrowser
                                     //DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
                                     Stream patternThumb = castdb.GetResourceStream(key2);
 
-                                    Stream patternDDS = File.OpenWrite(Application.StartupPath + "\\patterncache\\" + cPattern.casPart + ".dds");
+                                    Stream patternDDS = File.OpenWrite(Path.Combine(Application.StartupPath, Path.Combine("patterncache", cPattern.casPart + ".dds")));
                                     Helpers.CopyStream(patternThumb, patternDDS, true);
                                     patternDDS.Close();
 
@@ -1110,7 +1110,7 @@ namespace PatternBrowser
                                     //picBox.Image =     castdb.GetResourceStream(entry.Key);
                                     try
                                     {
-                                        picBox.Image.Save(Application.StartupPath + "\\patterncache\\" + cPattern.casPart + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                                        picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", cPattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
                                     }
                                     catch (Exception ex)
                                     {
@@ -1144,10 +1144,10 @@ namespace PatternBrowser
         {
             foreach (patternsFile pattern in customPatterns.Items)
             {
-                if (File.Exists(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png"))
+                if (File.Exists(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png"))))
                 {
                     try {
-                        File.Delete(Application.StartupPath + "\\patterncache\\" + pattern.casPart + ".png");
+                        File.Delete(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png")));
                     }
                     catch(Exception ex)
                     {
@@ -1157,7 +1157,7 @@ namespace PatternBrowser
 
 
             customPatterns.Items.Clear();
-            TextWriter r = new StreamWriter(Application.StartupPath + "\\xml\\customPatterns.xml");
+            TextWriter r = new StreamWriter(Path.Combine(Application.StartupPath, Path.Combine("xml", "customPatterns.xml")));
             XmlSerializer s = new XmlSerializer(typeof(patterns));
             s.Serialize(r, customPatterns);
             r.Close();

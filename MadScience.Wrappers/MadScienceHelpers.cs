@@ -73,7 +73,7 @@ namespace MadScienceSmall
 
         public static void logMessageToFile(string message)
         {
-            System.IO.StreamWriter sw = System.IO.File.AppendText(Application.StartupPath + "\\" + Application.ProductName + ".log");
+            System.IO.StreamWriter sw = System.IO.File.AppendText(Path.Combine(Application.StartupPath, Application.ProductName + ".log"));
             try
             {
                 string logLine = System.String.Format(

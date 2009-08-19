@@ -101,9 +101,9 @@ namespace CASPartEditor
                 picMeshPreview.Invalidate();
 
                 // Find thumbnail
-                if (File.Exists(Application.StartupPath + "\\cache\\" + meshName + ".png"))
+                if (File.Exists(Path.Combine(Application.StartupPath, Path.Combine("cache", meshName + ".png"))))
                 {
-                    Stream picMeshPreviewStream = File.OpenRead(Application.StartupPath + "\\cache\\" + meshName + ".png");
+                    Stream picMeshPreviewStream = File.OpenRead(Path.Combine(Application.StartupPath, Path.Combine("cache", meshName + ".png")));
                     picMeshPreview.Image = Image.FromStream(picMeshPreviewStream);
                     picMeshPreviewStream.Close();
                 }
@@ -116,7 +116,7 @@ namespace CASPartEditor
             if (this.isNew == true)
             {
                 // Attempt to load the existing caspart into memory so we can extract data later.
-                Stream casPartFile = File.Open(Application.StartupPath + "\\casparts\\" + txtCasPartName.Text + ".caspart", FileMode.Open, FileAccess.Read, FileShare.Read);
+                Stream casPartFile = File.Open(Path.Combine(Application.StartupPath, Path.Combine("casparts", txtCasPartName.Text + ".caspart")), FileMode.Open, FileAccess.Read, FileShare.Read);
                 casPartFile cPartFile = new casPartFile();
                 this.casPartSrc = cPartFile.Load(casPartFile);
                 casPartFile.Close();
@@ -587,10 +587,10 @@ namespace CASPartEditor
                     addListItem(lstTextureDetails, chunk.tint.B.color, "Tint Color B", "color");
                     addListItem(lstTextureDetails, chunk.tint.C.color, "Tint Color C", "color");
                     addListItem(lstTextureDetails, chunk.tint.D.color, "Tint Color D", "color");
-                    addListItem(lstTextureDetails, chunk.tint.A.enabled, "Tint Color A Enabled", "");
-                    addListItem(lstTextureDetails, chunk.tint.B.enabled, "Tint Color B Enabled", "");
-                    addListItem(lstTextureDetails, chunk.tint.C.enabled, "Tint Color C Enabled", "");
-                    addListItem(lstTextureDetails, chunk.tint.D.enabled, "Tint Color D Enabled", "");
+                    addListItem(lstTextureDetails, chunk.tint.A.enabled, "Tint Color A Enabled", "truefalse");
+                    addListItem(lstTextureDetails, chunk.tint.B.enabled, "Tint Color B Enabled", "truefalse");
+                    addListItem(lstTextureDetails, chunk.tint.C.enabled, "Tint Color C Enabled", "truefalse");
+                    addListItem(lstTextureDetails, chunk.tint.D.enabled, "Tint Color D Enabled", "truefalse");
                 }
                 addListBlank(lstTextureDetails);
                 
@@ -631,9 +631,9 @@ namespace CASPartEditor
                 addListBlank(lstTextureDetails);
 
                 addListHeader(lstOtherDetails, "Hair Details");
-                addListItem(lstOtherDetails, chunk.IsHat, "IsHat", "");
-                addListItem(lstOtherDetails, chunk.DrawsOnFace, "DrawsOnFace", "");
-                addListItem(lstOtherDetails, chunk.DrawsOnScalp, "DrawsOnScalp", "");
+                addListItem(lstOtherDetails, chunk.IsHat, "IsHat", "truefalse");
+                addListItem(lstOtherDetails, chunk.DrawsOnFace, "DrawsOnFace", "truefalse");
+                addListItem(lstOtherDetails, chunk.DrawsOnScalp, "DrawsOnScalp", "truefalse");
                 addListItem(lstOtherDetails, chunk.hair.ScalpAO, "Scalp AO", "texture");
                 addListItem(lstOtherDetails, chunk.hair.FaceAO, "Face AO", "texture");
                 addListBlank(lstTextureDetails);
@@ -656,8 +656,8 @@ namespace CASPartEditor
             txtLogoName.Text = chunk.logo.name;
 
             addListHeader(lstOtherDetails, "CAS Details");
-            addListItem(lstOtherDetails, chunk.IsNaked, "IsNaked", "");
-            addListItem(lstOtherDetails, chunk.IsNotNaked, "IsNotNaked", "");
+            addListItem(lstOtherDetails, chunk.IsNaked, "IsNaked", "truefalse");
+            addListItem(lstOtherDetails, chunk.IsNotNaked, "IsNotNaked", "truefalse");
             addListItem(lstOtherDetails, chunk.partType, "partType", "");
             addListItem(lstOtherDetails, chunk.age, "age", "");
             addListItem(lstOtherDetails, chunk.gender, "gender", "");
