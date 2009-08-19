@@ -509,7 +509,7 @@ namespace PatternBrowser
             ddsP.Load(patternThumb);
             
             // Figure out colour channels
-            if (pattern.color1 == "" && pattern.color2 == "" && pattern.color3 == "" && pattern.color4 == "")
+            if (pattern.color1 == null && pattern.color2 == null && pattern.color3 == null && pattern.color4 == null)
             {
                 if (pattern.HBg == "" && pattern.SBg == "" && pattern.VBg == "")
                 {
@@ -524,7 +524,10 @@ namespace PatternBrowser
                 }
                 else
                 {
-                    temp = ddsP.Image();
+                    HSVColor bg = new HSVColor(double.Parse(pattern.HBg)*360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
+                    HSVColor basebg = new HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
+                    HSVColor shift = new HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
+                    temp = HSVPatternProcessor.createHSVPattern(patternThumb, bg, basebg, shift);
                     //picBox.Image = ddsP.Image(Color.Black, Helpers.HsvToRgb(-Convert.ToDouble(pattern.HBg), -Convert.ToDouble(pattern.SBg), -Convert.ToDouble(pattern.VBg)));
                 }
 

@@ -153,18 +153,25 @@ namespace CASPartEditor
 
             if (pDetails.type == "HSV")
             {
-                if (File.Exists(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pDetails.name + ".png"))))
-                {
-                    Stream pngThumb = File.OpenRead(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pDetails.name + ".png")));
-                    picPatternThumb.Image = Image.FromStream(pngThumb);
-                    pngThumb.Close();
-                    picPatternThumb.Visible = true;
-                }
-                else
-                {
-                    picPatternThumb.Image = this.pBrowser.makePatternThumb(pDetails.key);
-                    picPatternThumb.Visible = true;
-                }
+                PatternBrowser.HSVColor hsv = new PatternBrowser.HSVColor();
+                hsv.Hue = double.Parse(pDetails.HBg)*360 + double.Parse(pDetails.BaseHBg) * 360;
+                hsv.Saturation = double.Parse(pDetails.SBg) + double.Parse(pDetails.BaseSBg);
+                hsv.Value = double.Parse(pDetails.VBg) + double.Parse(pDetails.BaseVBg);
+                picHSVColorBG.BackColor = hsv.Color;
+                makePatternPreviewThumb();
+
+                //if (File.Exists(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pDetails.name + ".png"))))
+                //{
+                //    Stream pngThumb = File.OpenRead(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pDetails.name + ".png")));
+                //    picPatternThumb.Image = Image.FromStream(pngThumb);
+                //    pngThumb.Close();
+                //    picPatternThumb.Visible = true;
+                //}
+                //else
+                //{
+                //    picPatternThumb.Image = this.pBrowser.makePatternThumb(pDetails.key);
+                //    picPatternThumb.Visible = true;
+                //}
             }
 
             Color temp;

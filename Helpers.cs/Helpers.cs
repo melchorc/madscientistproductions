@@ -350,6 +350,11 @@ namespace MadScience
 
         }
 
+        public static string numberToString(double num)
+        {
+            return String.Format(CultureInfo.InvariantCulture, "{0:0.0000000}", num); ;
+        }
+
         public static String ColorToHex(Color actColor)
         {
             return "#" + actColor.R.ToString("X2") + actColor.G.ToString("X2") + actColor.B.ToString("X2");

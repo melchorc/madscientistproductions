@@ -463,15 +463,18 @@ namespace CASPartEditor
             //toolStripStatusLabel1.Text = temp.Name;
             temp.BorderStyle = BorderStyle.FixedSingle;
 
-            if (cmbMeshName.SelectedItem.ToString() != temp.Name)
+            if (cmbMeshName.SelectedItem != null)
             {
-                newToolStripMenuItem_Click(null, null);
-                for (int i = 0; i < cmbMeshName.Items.Count; i++)
+                if (cmbMeshName.SelectedItem.ToString() != temp.Name)
                 {
-                    if ((string)cmbMeshName.Items[i] == temp.Name)
+                    newToolStripMenuItem_Click(null, null);
+                    for (int i = 0; i < cmbMeshName.Items.Count; i++)
                     {
-                        cmbMeshName.SelectedIndex = i;
-                        break;
+                        if ((string)cmbMeshName.Items[i] == temp.Name)
+                        {
+                            cmbMeshName.SelectedIndex = i;
+                            break;
+                        }
                     }
                 }
             }
@@ -2058,7 +2061,6 @@ namespace CASPartEditor
         {
             if (listView1.SelectedItems.Count == 1)
             {
-
                 int chunkNo = cmbPatternSelect.SelectedIndex;
 
                 xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
@@ -2781,6 +2783,39 @@ namespace CASPartEditor
                         break;
                 }
             }
+        }
+
+        private void btnDebugHSVRefresh_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1)
+            {
+                makePatternPreviewThumb();
+                //PatternBrowser.HSVColor basehsv = new PatternBrowser.HSVColor();
+                //basehsv.Hue = double.Parse(p.BaseHBg) * 360;
+                //basehsv.Saturation = double.Parse(p.BaseSBg);
+                //basehsv.Value = double.Parse(p.BaseVBg);
+                //PatternBrowser.HSVColor hsv = new PatternBrowser.HSVColor();
+                //hsv.Hue = double.Parse(p.HBg)*360;
+                //hsv.Saturation = double.Parse(p.SBg);
+                //hsv.Value = double.Parse(p.VBg);
+                //picHSVColorBG.BackColor = (hsv+basehsv).Color;
+            }
+        }
+
+        private void picHSVColorBG_Click(object sender, EventArgs e)
+        {
+            picHSVColorBG.BackColor = showColourDialog(picHSVColorBG.BackColor);
+
+            PatternBrowser.HSVColor hsv = new PatternBrowser.HSVColor(picHSVColorBG.BackColor);
+            hsv.Hue -= double.Parse(txtPatternABaseHBg.Text) * 360;
+            hsv.Saturation -= double.Parse(txtPatternABaseSBg.Text);
+            hsv.Value -= double.Parse(txtPatternABaseVBg.Text);
+            
+            txtPatternAHBg.Text = MadScience.Helpers.numberToString(hsv.Hue / 360);
+            txtPatternASBg.Text = MadScience.Helpers.numberToString(hsv.Saturation);
+            txtPatternAVBg.Text = MadScience.Helpers.numberToString(hsv.Value);
+
+            makePatternPreviewThumb();
         }
 
     }
