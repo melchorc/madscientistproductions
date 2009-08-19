@@ -464,6 +464,10 @@ namespace CASPartEditor
                 ret[2] = false;
                 ret[3] = true;
             }
+            if (checkedListClothingType.GetItemChecked(17))
+            {
+                ret[3] = true;
+            }
 
 
             return ret;
