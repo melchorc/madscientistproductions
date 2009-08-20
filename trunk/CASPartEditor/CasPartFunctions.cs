@@ -675,10 +675,7 @@ namespace CASPartEditor
             toolStripStatusLabel1.Text = "Initialising 3d view... please wait...";
             statusStrip1.Refresh();
 
-            if (renderWindow1.RenderEnabled)
-                btnReloadTextures_Click(null, null);
-            else
-                btnStart3D_Click(null, null);
+            refreshDisplay();
 
             toolStripStatusLabel1.Text = "";
 

@@ -81,11 +81,7 @@ namespace CASPartEditor
                 picPatternThumb.Image = Patterns.makePatternThumb(chunk.pattern[patternNo]);
                 picPatternThumb.Visible = true;
 
-
-                if (renderWindow1.RenderEnabled)
-                    btnReloadTextures_Click(null, null);
-                else
-                    btnStart3D_Click(null, null);
+                refreshDisplay();
             }
 
         }

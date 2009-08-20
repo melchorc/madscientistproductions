@@ -30,24 +30,24 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup7 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup8 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup9 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup10 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup11 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup12 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup13 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup14 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup15 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup16 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup17 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup18 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup19 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup20 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup21 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup22 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup23 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup24 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup25 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup26 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup27 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup28 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup29 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup30 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup31 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup32 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup33 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup34 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup35 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup36 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -148,10 +148,6 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.cmbPatternSelect = new System.Windows.Forms.ComboBox();
             this.grpPatternA = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button8 = new System.Windows.Forms.Button();
-            this.label42 = new System.Windows.Forms.Label();
-            this.picPatternSolidColour = new System.Windows.Forms.PictureBox();
             this.picPatternThumb = new System.Windows.Forms.PictureBox();
             this.btnBrowsePatterns = new System.Windows.Forms.Button();
             this.label40 = new System.Windows.Forms.Label();
@@ -174,6 +170,20 @@
             this.chkPatternALinked = new System.Windows.Forms.CheckBox();
             this.label38 = new System.Windows.Forms.Label();
             this.txtPatternATiling = new System.Windows.Forms.TextBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.label68 = new System.Windows.Forms.Label();
+            this.picPatternColour4 = new System.Windows.Forms.PictureBox();
+            this.label67 = new System.Windows.Forms.Label();
+            this.picPatternColour2 = new System.Windows.Forms.PictureBox();
+            this.label66 = new System.Windows.Forms.Label();
+            this.picPatternColour3 = new System.Windows.Forms.PictureBox();
+            this.label65 = new System.Windows.Forms.Label();
+            this.picPatternColourBg = new System.Windows.Forms.PictureBox();
+            this.label64 = new System.Windows.Forms.Label();
+            this.picPatternColour1 = new System.Windows.Forms.PictureBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label42 = new System.Windows.Forms.Label();
+            this.picPatternSolidColour = new System.Windows.Forms.PictureBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.picHSVColorBG = new System.Windows.Forms.PictureBox();
             this.label50 = new System.Windows.Forms.Label();
@@ -215,17 +225,6 @@
             this.txtPatternAHSVShiftBG = new System.Windows.Forms.TextBox();
             this.cmbChannelSelect = new System.Windows.Forms.ComboBox();
             this.label53 = new System.Windows.Forms.Label();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.label68 = new System.Windows.Forms.Label();
-            this.picPatternColour4 = new System.Windows.Forms.PictureBox();
-            this.label67 = new System.Windows.Forms.Label();
-            this.picPatternColour2 = new System.Windows.Forms.PictureBox();
-            this.label66 = new System.Windows.Forms.Label();
-            this.picPatternColour3 = new System.Windows.Forms.PictureBox();
-            this.label65 = new System.Windows.Forms.Label();
-            this.picPatternColourBg = new System.Windows.Forms.PictureBox();
-            this.label64 = new System.Windows.Forms.Label();
-            this.picPatternColour1 = new System.Windows.Forms.PictureBox();
             this.label37 = new System.Windows.Forms.Label();
             this.btnPatternACommit = new System.Windows.Forms.Button();
             this.tabPage13 = new System.Windows.Forms.TabPage();
@@ -358,18 +357,18 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.grpPatternA.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternThumb)).BeginInit();
-            this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picHSVColorBG)).BeginInit();
-            this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColourBg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour1)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picHSVColorBG)).BeginInit();
+            this.groupBox6.SuspendLayout();
             this.tabPage13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLstTextureColour)).BeginInit();
             this.tabPage3.SuspendLayout();
@@ -1608,56 +1607,15 @@
             this.grpPatternA.Controls.Add(this.chkPatternALinked);
             this.grpPatternA.Controls.Add(this.label38);
             this.grpPatternA.Controls.Add(this.txtPatternATiling);
-            this.grpPatternA.Controls.Add(this.groupBox7);
             this.grpPatternA.Controls.Add(this.groupBox3);
             this.grpPatternA.Controls.Add(this.groupBox5);
+            this.grpPatternA.Controls.Add(this.groupBox7);
             this.grpPatternA.Enabled = false;
             this.grpPatternA.Location = new System.Drawing.Point(5, 38);
             this.grpPatternA.Name = "grpPatternA";
             this.grpPatternA.Size = new System.Drawing.Size(523, 592);
             this.grpPatternA.TabIndex = 2;
             this.grpPatternA.TabStop = false;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.button8);
-            this.groupBox3.Controls.Add(this.label42);
-            this.groupBox3.Controls.Add(this.picPatternSolidColour);
-            this.groupBox3.Location = new System.Drawing.Point(5, 232);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(512, 60);
-            this.groupBox3.TabIndex = 40;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Solid Colour Options";
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(390, 19);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(116, 23);
-            this.button8.TabIndex = 11;
-            this.button8.Text = "Populate details";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(6, 27);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(40, 13);
-            this.label42.TabIndex = 9;
-            this.label42.Text = "Colour:";
-            // 
-            // picPatternSolidColour
-            // 
-            this.picPatternSolidColour.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternSolidColour.Location = new System.Drawing.Point(47, 22);
-            this.picPatternSolidColour.Name = "picPatternSolidColour";
-            this.picPatternSolidColour.Size = new System.Drawing.Size(36, 30);
-            this.picPatternSolidColour.TabIndex = 10;
-            this.picPatternSolidColour.TabStop = false;
-            this.picPatternSolidColour.Click += new System.EventHandler(this.picPatternAColor_Click);
             // 
             // picPatternThumb
             // 
@@ -1870,6 +1828,156 @@
             this.txtPatternATiling.Size = new System.Drawing.Size(192, 20);
             this.txtPatternATiling.TabIndex = 0;
             this.txtPatternATiling.TextChanged += new System.EventHandler(this.txtPatternATiling_TextChanged);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.label68);
+            this.groupBox7.Controls.Add(this.picPatternColour4);
+            this.groupBox7.Controls.Add(this.label67);
+            this.groupBox7.Controls.Add(this.picPatternColour2);
+            this.groupBox7.Controls.Add(this.label66);
+            this.groupBox7.Controls.Add(this.picPatternColour3);
+            this.groupBox7.Controls.Add(this.label65);
+            this.groupBox7.Controls.Add(this.picPatternColourBg);
+            this.groupBox7.Controls.Add(this.label64);
+            this.groupBox7.Controls.Add(this.picPatternColour1);
+            this.groupBox7.Location = new System.Drawing.Point(5, 232);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(512, 105);
+            this.groupBox7.TabIndex = 42;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Pattern (Coloured) Options";
+            this.groupBox7.Visible = false;
+            // 
+            // label68
+            // 
+            this.label68.AutoSize = true;
+            this.label68.Location = new System.Drawing.Point(307, 19);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(52, 13);
+            this.label68.TabIndex = 24;
+            this.label68.Text = "Palette 4:";
+            // 
+            // picPatternColour4
+            // 
+            this.picPatternColour4.BackColor = System.Drawing.Color.Transparent;
+            this.picPatternColour4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picPatternColour4.Location = new System.Drawing.Point(310, 41);
+            this.picPatternColour4.Name = "picPatternColour4";
+            this.picPatternColour4.Size = new System.Drawing.Size(42, 42);
+            this.picPatternColour4.TabIndex = 25;
+            this.picPatternColour4.TabStop = false;
+            this.picPatternColour4.Click += new System.EventHandler(this.picPatternColour4_Click);
+            // 
+            // label67
+            // 
+            this.label67.AutoSize = true;
+            this.label67.Location = new System.Drawing.Point(173, 19);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(52, 13);
+            this.label67.TabIndex = 21;
+            this.label67.Text = "Palette 2:";
+            // 
+            // picPatternColour2
+            // 
+            this.picPatternColour2.BackColor = System.Drawing.Color.Transparent;
+            this.picPatternColour2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picPatternColour2.Location = new System.Drawing.Point(176, 41);
+            this.picPatternColour2.Name = "picPatternColour2";
+            this.picPatternColour2.Size = new System.Drawing.Size(42, 42);
+            this.picPatternColour2.TabIndex = 22;
+            this.picPatternColour2.TabStop = false;
+            this.picPatternColour2.Click += new System.EventHandler(this.picPatternColour2_Click);
+            // 
+            // label66
+            // 
+            this.label66.AutoSize = true;
+            this.label66.Location = new System.Drawing.Point(240, 19);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(52, 13);
+            this.label66.TabIndex = 18;
+            this.label66.Text = "Palette 3:";
+            // 
+            // picPatternColour3
+            // 
+            this.picPatternColour3.BackColor = System.Drawing.Color.Transparent;
+            this.picPatternColour3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picPatternColour3.Location = new System.Drawing.Point(244, 41);
+            this.picPatternColour3.Name = "picPatternColour3";
+            this.picPatternColour3.Size = new System.Drawing.Size(42, 42);
+            this.picPatternColour3.TabIndex = 19;
+            this.picPatternColour3.TabStop = false;
+            this.picPatternColour3.Click += new System.EventHandler(this.picPatternColour3_Click);
+            // 
+            // label65
+            // 
+            this.label65.AutoSize = true;
+            this.label65.Location = new System.Drawing.Point(5, 19);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(56, 13);
+            this.label65.TabIndex = 15;
+            this.label65.Text = "Colour Bg:";
+            // 
+            // picPatternColourBg
+            // 
+            this.picPatternColourBg.BackColor = System.Drawing.Color.Transparent;
+            this.picPatternColourBg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picPatternColourBg.Location = new System.Drawing.Point(9, 41);
+            this.picPatternColourBg.Name = "picPatternColourBg";
+            this.picPatternColourBg.Size = new System.Drawing.Size(42, 42);
+            this.picPatternColourBg.TabIndex = 16;
+            this.picPatternColourBg.TabStop = false;
+            this.picPatternColourBg.Click += new System.EventHandler(this.picPatternColourBg_Click);
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Location = new System.Drawing.Point(106, 19);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(52, 13);
+            this.label64.TabIndex = 12;
+            this.label64.Text = "Palette 1:";
+            // 
+            // picPatternColour1
+            // 
+            this.picPatternColour1.BackColor = System.Drawing.Color.Transparent;
+            this.picPatternColour1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picPatternColour1.Location = new System.Drawing.Point(108, 41);
+            this.picPatternColour1.Name = "picPatternColour1";
+            this.picPatternColour1.Size = new System.Drawing.Size(42, 42);
+            this.picPatternColour1.TabIndex = 13;
+            this.picPatternColour1.TabStop = false;
+            this.picPatternColour1.Click += new System.EventHandler(this.picPatternColour1_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label42);
+            this.groupBox3.Controls.Add(this.picPatternSolidColour);
+            this.groupBox3.Location = new System.Drawing.Point(5, 232);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(512, 60);
+            this.groupBox3.TabIndex = 40;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Solid Colour Options";
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(6, 27);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(40, 13);
+            this.label42.TabIndex = 9;
+            this.label42.Text = "Colour:";
+            // 
+            // picPatternSolidColour
+            // 
+            this.picPatternSolidColour.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picPatternSolidColour.Location = new System.Drawing.Point(47, 22);
+            this.picPatternSolidColour.Name = "picPatternSolidColour";
+            this.picPatternSolidColour.Size = new System.Drawing.Size(36, 30);
+            this.picPatternSolidColour.TabIndex = 10;
+            this.picPatternSolidColour.TabStop = false;
+            this.picPatternSolidColour.Click += new System.EventHandler(this.picPatternAColor_Click);
             // 
             // groupBox5
             // 
@@ -2265,126 +2373,6 @@
             this.label53.Size = new System.Drawing.Size(69, 13);
             this.label53.TabIndex = 29;
             this.label53.Text = "HSVShift Bg:";
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.label68);
-            this.groupBox7.Controls.Add(this.picPatternColour4);
-            this.groupBox7.Controls.Add(this.label67);
-            this.groupBox7.Controls.Add(this.picPatternColour2);
-            this.groupBox7.Controls.Add(this.label66);
-            this.groupBox7.Controls.Add(this.picPatternColour3);
-            this.groupBox7.Controls.Add(this.label65);
-            this.groupBox7.Controls.Add(this.picPatternColourBg);
-            this.groupBox7.Controls.Add(this.label64);
-            this.groupBox7.Controls.Add(this.picPatternColour1);
-            this.groupBox7.Location = new System.Drawing.Point(5, 232);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(512, 105);
-            this.groupBox7.TabIndex = 42;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Pattern (Coloured) Options";
-            this.groupBox7.Visible = false;
-            // 
-            // label68
-            // 
-            this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(307, 19);
-            this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(52, 13);
-            this.label68.TabIndex = 24;
-            this.label68.Text = "Palette 4:";
-            // 
-            // picPatternColour4
-            // 
-            this.picPatternColour4.BackColor = System.Drawing.Color.Transparent;
-            this.picPatternColour4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternColour4.Location = new System.Drawing.Point(310, 41);
-            this.picPatternColour4.Name = "picPatternColour4";
-            this.picPatternColour4.Size = new System.Drawing.Size(42, 42);
-            this.picPatternColour4.TabIndex = 25;
-            this.picPatternColour4.TabStop = false;
-            this.picPatternColour4.Click += new System.EventHandler(this.picPatternColour4_Click);
-            // 
-            // label67
-            // 
-            this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(173, 19);
-            this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(52, 13);
-            this.label67.TabIndex = 21;
-            this.label67.Text = "Palette 2:";
-            // 
-            // picPatternColour2
-            // 
-            this.picPatternColour2.BackColor = System.Drawing.Color.Transparent;
-            this.picPatternColour2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternColour2.Location = new System.Drawing.Point(176, 41);
-            this.picPatternColour2.Name = "picPatternColour2";
-            this.picPatternColour2.Size = new System.Drawing.Size(42, 42);
-            this.picPatternColour2.TabIndex = 22;
-            this.picPatternColour2.TabStop = false;
-            this.picPatternColour2.Click += new System.EventHandler(this.picPatternColour2_Click);
-            // 
-            // label66
-            // 
-            this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(240, 19);
-            this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(52, 13);
-            this.label66.TabIndex = 18;
-            this.label66.Text = "Palette 3:";
-            // 
-            // picPatternColour3
-            // 
-            this.picPatternColour3.BackColor = System.Drawing.Color.Transparent;
-            this.picPatternColour3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternColour3.Location = new System.Drawing.Point(244, 41);
-            this.picPatternColour3.Name = "picPatternColour3";
-            this.picPatternColour3.Size = new System.Drawing.Size(42, 42);
-            this.picPatternColour3.TabIndex = 19;
-            this.picPatternColour3.TabStop = false;
-            this.picPatternColour3.Click += new System.EventHandler(this.picPatternColour3_Click);
-            // 
-            // label65
-            // 
-            this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(5, 19);
-            this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(56, 13);
-            this.label65.TabIndex = 15;
-            this.label65.Text = "Colour Bg:";
-            // 
-            // picPatternColourBg
-            // 
-            this.picPatternColourBg.BackColor = System.Drawing.Color.Transparent;
-            this.picPatternColourBg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternColourBg.Location = new System.Drawing.Point(9, 41);
-            this.picPatternColourBg.Name = "picPatternColourBg";
-            this.picPatternColourBg.Size = new System.Drawing.Size(42, 42);
-            this.picPatternColourBg.TabIndex = 16;
-            this.picPatternColourBg.TabStop = false;
-            this.picPatternColourBg.Click += new System.EventHandler(this.picPatternColourBg_Click);
-            // 
-            // label64
-            // 
-            this.label64.AutoSize = true;
-            this.label64.Location = new System.Drawing.Point(106, 19);
-            this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(52, 13);
-            this.label64.TabIndex = 12;
-            this.label64.Text = "Palette 1:";
-            // 
-            // picPatternColour1
-            // 
-            this.picPatternColour1.BackColor = System.Drawing.Color.Transparent;
-            this.picPatternColour1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternColour1.Location = new System.Drawing.Point(108, 41);
-            this.picPatternColour1.Name = "picPatternColour1";
-            this.picPatternColour1.Size = new System.Drawing.Size(42, 42);
-            this.picPatternColour1.TabIndex = 13;
-            this.picPatternColour1.TabStop = false;
-            this.picPatternColour1.Click += new System.EventHandler(this.picPatternColour1_Click);
             // 
             // label37
             // 
@@ -2939,34 +2927,34 @@
             this.columnHeader12});
             this.lstMeshTGILinks.FullRowSelect = true;
             this.lstMeshTGILinks.GridLines = true;
-            listViewGroup1.Header = "Texture Details";
-            listViewGroup1.Name = "groupTextures";
-            listViewGroup2.Header = "Clothing Details";
-            listViewGroup2.Name = "groupClothing";
-            listViewGroup3.Header = "Face Overlay Details";
-            listViewGroup3.Name = "groupFaceOverlay";
-            listViewGroup4.Header = "Mask and Overlay Details";
-            listViewGroup4.Name = "groupMask";
-            listViewGroup5.Header = "Hair Details";
-            listViewGroup5.Name = "groupHair";
-            listViewGroup6.Header = "Skin Details";
-            listViewGroup6.Name = "groupSkin";
-            listViewGroup7.Header = "Logo Details";
-            listViewGroup7.Name = "groupLogo";
-            listViewGroup8.Header = "CAS Details";
-            listViewGroup8.Name = "groupCasDetails";
-            listViewGroup9.Header = "Misc. Details";
-            listViewGroup9.Name = "groupMisc";
+            listViewGroup19.Header = "Texture Details";
+            listViewGroup19.Name = "groupTextures";
+            listViewGroup20.Header = "Clothing Details";
+            listViewGroup20.Name = "groupClothing";
+            listViewGroup21.Header = "Face Overlay Details";
+            listViewGroup21.Name = "groupFaceOverlay";
+            listViewGroup22.Header = "Mask and Overlay Details";
+            listViewGroup22.Name = "groupMask";
+            listViewGroup23.Header = "Hair Details";
+            listViewGroup23.Name = "groupHair";
+            listViewGroup24.Header = "Skin Details";
+            listViewGroup24.Name = "groupSkin";
+            listViewGroup25.Header = "Logo Details";
+            listViewGroup25.Name = "groupLogo";
+            listViewGroup26.Header = "CAS Details";
+            listViewGroup26.Name = "groupCasDetails";
+            listViewGroup27.Header = "Misc. Details";
+            listViewGroup27.Name = "groupMisc";
             this.lstMeshTGILinks.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2,
-            listViewGroup3,
-            listViewGroup4,
-            listViewGroup5,
-            listViewGroup6,
-            listViewGroup7,
-            listViewGroup8,
-            listViewGroup9});
+            listViewGroup19,
+            listViewGroup20,
+            listViewGroup21,
+            listViewGroup22,
+            listViewGroup23,
+            listViewGroup24,
+            listViewGroup25,
+            listViewGroup26,
+            listViewGroup27});
             this.lstMeshTGILinks.HideSelection = false;
             this.lstMeshTGILinks.Location = new System.Drawing.Point(9, 19);
             this.lstMeshTGILinks.MultiSelect = false;
@@ -3306,34 +3294,34 @@
             this.columnHeader3,
             this.columnHeader4});
             this.listView2.GridLines = true;
-            listViewGroup10.Header = "Texture Details";
-            listViewGroup10.Name = "groupTextures";
-            listViewGroup11.Header = "Clothing Details";
-            listViewGroup11.Name = "groupClothing";
-            listViewGroup12.Header = "Face Overlay Details";
-            listViewGroup12.Name = "groupFaceOverlay";
-            listViewGroup13.Header = "Mask and Overlay Details";
-            listViewGroup13.Name = "groupMask";
-            listViewGroup14.Header = "Hair Details";
-            listViewGroup14.Name = "groupHair";
-            listViewGroup15.Header = "Skin Details";
-            listViewGroup15.Name = "groupSkin";
-            listViewGroup16.Header = "Logo Details";
-            listViewGroup16.Name = "groupLogo";
-            listViewGroup17.Header = "CAS Details";
-            listViewGroup17.Name = "groupCasDetails";
-            listViewGroup18.Header = "Misc. Details";
-            listViewGroup18.Name = "groupMisc";
+            listViewGroup28.Header = "Texture Details";
+            listViewGroup28.Name = "groupTextures";
+            listViewGroup29.Header = "Clothing Details";
+            listViewGroup29.Name = "groupClothing";
+            listViewGroup30.Header = "Face Overlay Details";
+            listViewGroup30.Name = "groupFaceOverlay";
+            listViewGroup31.Header = "Mask and Overlay Details";
+            listViewGroup31.Name = "groupMask";
+            listViewGroup32.Header = "Hair Details";
+            listViewGroup32.Name = "groupHair";
+            listViewGroup33.Header = "Skin Details";
+            listViewGroup33.Name = "groupSkin";
+            listViewGroup34.Header = "Logo Details";
+            listViewGroup34.Name = "groupLogo";
+            listViewGroup35.Header = "CAS Details";
+            listViewGroup35.Name = "groupCasDetails";
+            listViewGroup36.Header = "Misc. Details";
+            listViewGroup36.Name = "groupMisc";
             this.listView2.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup10,
-            listViewGroup11,
-            listViewGroup12,
-            listViewGroup13,
-            listViewGroup14,
-            listViewGroup15,
-            listViewGroup16,
-            listViewGroup17,
-            listViewGroup18});
+            listViewGroup28,
+            listViewGroup29,
+            listViewGroup30,
+            listViewGroup31,
+            listViewGroup32,
+            listViewGroup33,
+            listViewGroup34,
+            listViewGroup35,
+            listViewGroup36});
             this.listView2.LabelEdit = true;
             this.listView2.Location = new System.Drawing.Point(3, 8);
             this.listView2.MultiSelect = false;
@@ -3656,15 +3644,7 @@
             this.tabPage2.PerformLayout();
             this.grpPatternA.ResumeLayout(false);
             this.grpPatternA.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternThumb)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picHSVColorBG)).EndInit();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour4)).EndInit();
@@ -3672,6 +3652,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColourBg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour1)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picHSVColorBG)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.tabPage13.ResumeLayout(false);
             this.tabPage13.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLstTextureColour)).EndInit();
@@ -3889,7 +3877,6 @@
         private System.Windows.Forms.Label label105;
         private System.Windows.Forms.ComboBox cmbPatternStencil3;
         private System.Windows.Forms.Button btnDesignStencilCommit;
-        private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button btnGetNewXML;
         private System.Windows.Forms.Button btnBrowsePatterns;

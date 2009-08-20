@@ -63,6 +63,10 @@ namespace PatternBrowser
                 string HSVShiftBg = "";
 
                 Stream mem = File.OpenRead(@"P:\Stuart\Desktop\FullBuild0\config\xml\root\" + lookupList.Items[i].fullCasPartname + ".xml");
+
+                patternDetails pDetail = Patterns.parsePatternComplate(mem);
+
+                /*
                 XmlTextReader xtr = new XmlTextReader(mem);
                 while (xtr.Read() )
                 {
@@ -193,10 +197,11 @@ namespace PatternBrowser
 
                 }
                 xtr.Close();
+                 */
                 mem.Close();
             }
 
-            Clipboard.SetText(sb.ToString());
+            //Clipboard.SetText(sb.ToString());
             Console.WriteLine("Done");
 
         }
@@ -634,9 +639,9 @@ namespace PatternBrowser
 
             //this.selectedPattern = this._selectedPattern;
 
-            //string instanceid = this._selectedPattern.instanceid.Remove(0, 2);
-            //string typeid = this._selectedPattern.typeid.Remove(0, 2);
-            //string groupid = this._selectedPattern.groupid.Remove(0, 2);
+            if (_selectedPattern.typeid.StartsWith("0x")) _selectedPattern.typeid = _selectedPattern.typeid.Remove(0, 2);
+            if (_selectedPattern.groupid.StartsWith("0x")) _selectedPattern.groupid = _selectedPattern.groupid.Remove(0, 2);
+            if (_selectedPattern.instanceid.StartsWith("0x")) _selectedPattern.instanceid = _selectedPattern.instanceid.Remove(0, 2);
 
             string reskey = "key:" + _selectedPattern.typeid + ":" + _selectedPattern.groupid + ":" + _selectedPattern.instanceid;
 

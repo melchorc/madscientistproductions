@@ -303,7 +303,7 @@ namespace CASPartEditor
 
                     displayCasPartFile();
 
-                    btnStart3D_Click(null, null);
+                    refreshDisplay(0);
                 }
                 else
                 {
@@ -1416,7 +1416,7 @@ namespace CASPartEditor
                 if (cmbPatternStencil5.SelectedIndex == 0) { chunk.stencil.E = blank; } else { chunk.stencil.E = stencilPool[cmbPatternStencil5.SelectedIndex - 1]; chunk.stencil.E.Enabled = "True"; }
                 if (cmbPatternStencil6.SelectedIndex == 0) { chunk.stencil.F = blank; } else { chunk.stencil.F = stencilPool[cmbPatternStencil6.SelectedIndex - 1]; chunk.stencil.F.Enabled = "True"; }
 
-                btnReloadTextures_Click(sender, null);
+                refreshDisplay();
             }
         
         }
@@ -1892,7 +1892,7 @@ namespace CASPartEditor
 
                 updateChunkFromLists(lstTextureDetails, chunk);
 
-                btnReloadTextures_Click(sender, null);
+                refreshDisplay();
             }
         }
 
@@ -2100,10 +2100,7 @@ namespace CASPartEditor
             picPatternSolidColour.BackColor = showColourDialog(picPatternSolidColour.BackColor);
             commitPatternDetails("Color", Colours.convertColour(picPatternSolidColour.BackColor));
 
-            if (renderWindow1.RenderEnabled)
-                btnReloadTextures_Click(null, null);
-            else
-                btnStart3D_Click(null, null);
+            refreshDisplay();
         }
 
         private void btnPatternChannelTextureFind_Click(object sender, EventArgs e)
@@ -2204,12 +2201,37 @@ namespace CASPartEditor
                     groupBox3.Visible = true;
                     groupBox5.Visible = false;
                     groupBox7.Visible = false;
+
+                    int patternNo = cmbPatternSelect.SelectedIndex;
+                    int channelNo = cmbChannelSelect.SelectedIndex;
+                    xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+                    if (chunk.pattern[patternNo].type != "solidColor")
+                    {
+
+                        // Automatically set the details to solidColour1
+                        txtPatternAKey.Text = "key:0333406C:00000000:71D5EFB6C391BC17";
+                        txtPatternAName.Text = "solidColor_1";
+                        txtPatternARGBMask.Text = "";
+                        txtPatternASpecular.Text = "";
+                        txtPatternATiling.Text = "4.0000,4.0000";
+                        txtPatternAFilename.Text = @"Materials\Miscellaneous\solidColor_1";
+                    }
+                    picPatternThumb.Visible = false;
+
                     commitPatternDetails("type", "solidColor");
+
+                    // Get the first colour of the previous pattern
+                    picPatternSolidColour.BackColor = picPatternColour1.BackColor;
+                    commitPatternDetails("Color", Colours.convertColour(picPatternSolidColour.BackColor));
+
+                    refreshDisplay();
+
                     break;
                 case 1: // Coloured
                     groupBox3.Visible = false;
                     groupBox5.Visible = false;
                     groupBox7.Visible = true;
+                    picPatternThumb.Visible = true;
                     commitPatternDetails("type", "Coloured");
                     break;
                 case 2: // HSV
@@ -2217,6 +2239,7 @@ namespace CASPartEditor
                     groupBox5.Visible = true;
                     groupBox7.Visible = false;
                     cmbChannelSelect.SelectedIndex = 0;
+                    picPatternThumb.Visible = true;
                     commitPatternDetails("type", "HSV");
                     break;
             }
@@ -2259,10 +2282,7 @@ namespace CASPartEditor
                     xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
                     chunk.pattern[patternNo] = (patternDetails)pBrowser.selectedPattern.Copy();
 
-                    if (renderWindow1.RenderEnabled)
-                        btnReloadTextures_Click(null, null);
-                    else
-                        btnStart3D_Click(null, null);
+                    refreshDisplay();
 
                 }
             }
@@ -2271,14 +2291,41 @@ namespace CASPartEditor
         }
         #endregion
 
-        private void btnReloadTextures_Click(object sender, EventArgs e)
+        private void refreshDisplay()
         {
-            reloadTextures();
+            // Default to only refresh textures
+            refreshDisplay(1);
         }
 
-        private void btnStart3D_Click(object sender, EventArgs e)
+        private void refreshDisplay(int refreshType)
+        {
+            if (renderWindow1.RenderEnabled && refreshType == 1)
+            {
+                if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
         {
 
+                    xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+
+                    renderWindow1.RenderEnabled = false;
+
+                    DateTime startTime = DateTime.Now;
+                    toolStripStatusLabel1.Text = "Reloading 3d view... please wait...";
+                    statusStrip1.Refresh();
+
+                    reloadTextures(details);
+
+                    DateTime stopTime = DateTime.Now;
+                    TimeSpan duration = stopTime - startTime;
+
+                    toolStripStatusLabel1.Text = "Reloaded 3D in " + duration.Milliseconds + "ms";
+
+                    renderWindow1.RenderEnabled = true;
+                }
+
+                
+            }
+            else
+            {
             if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
             {
                 xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
@@ -2297,6 +2344,17 @@ namespace CASPartEditor
 
             }
 
+        }
+        }
+
+        private void btnReloadTextures_Click(object sender, EventArgs e)
+        {
+            refreshDisplay(1);
+        }
+
+        private void btnStart3D_Click(object sender, EventArgs e)
+        {
+            refreshDisplay(0);
         }
 
         private void updateLists(string searchText, string replaceValue)
@@ -2467,10 +2525,8 @@ namespace CASPartEditor
 
             listView1.Items[listView1.Items.Count - 1].Selected = true;
             
-            if (renderWindow1.RenderEnabled)
-                btnReloadTextures_Click(null, null);
-            else
-                btnStart3D_Click(null, null);
+            refreshDisplay();
+
         }
 
         private void addNewCopyLastToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2491,10 +2547,8 @@ namespace CASPartEditor
 
             listView1.Items.Add(item);
             listView1.Items[listView1.Items.Count - 1].Selected = true;
-            if (renderWindow1.RenderEnabled)
-                btnReloadTextures_Click(null, null);
-            else
-                btnStart3D_Click(null, null);
+
+            refreshDisplay();
         }
 
         private void copyDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2519,10 +2573,8 @@ namespace CASPartEditor
             }
             saveAsToolStripMenuItem.Enabled = true;
             listView1.Items[listView1.Items.Count - 1].Selected = true;
-            if (renderWindow1.RenderEnabled)
-                btnReloadTextures_Click(null, null);
-            else
-                btnStart3D_Click(null, null);
+
+            refreshDisplay();
         }
 
         private void cEnable3DPreview_CheckedChanged(object sender, EventArgs e)
@@ -2536,7 +2588,8 @@ namespace CASPartEditor
                 btnReloadTextures.Visible = true;
                 btnResetView.Visible = true;
                 renderWindow1.Visible = true;
-                btnStart3D_Click(null,null);
+
+                refreshDisplay(0);
             }
             else
             {
