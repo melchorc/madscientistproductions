@@ -2273,28 +2273,7 @@ namespace CASPartEditor
 
         private void btnReloadTextures_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
-            {
-
-                xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-
-                renderWindow1.RenderEnabled = false;
-
-                DateTime startTime = DateTime.Now;
-                toolStripStatusLabel1.Text = "Reloading 3d view... please wait...";
-                statusStrip1.Refresh();
-
-                reloadTextures(details);
-                
-
-                DateTime stopTime = DateTime.Now;
-                TimeSpan duration = stopTime - startTime;
-
-                toolStripStatusLabel1.Text = "Reloaded 3D in " + duration.Milliseconds + "ms";
-
-                renderWindow1.RenderEnabled = true;
-            }
-
+            reloadTextures();
         }
 
         private void btnStart3D_Click(object sender, EventArgs e)
@@ -2552,7 +2531,7 @@ namespace CASPartEditor
             if (cEnable3DPreview.Checked)
             {
                 MadScience.Helpers.saveRegistryValue("show3dRender", "True");
-                this.MinimumSize=new Size(1000,650);
+                this.MinimumSize = new Size(1000, 650);
                 btnStart3D.Visible = true;
                 btnReloadTextures.Visible = true;
                 btnResetView.Visible = true;
@@ -2570,6 +2549,7 @@ namespace CASPartEditor
                 btnResetView.Visible = false;
                 renderWindow1.Visible = false;
                 renderWindow1.RenderEnabled = false;
+                renderWindow1.DeInit();
             }
         }
 
@@ -2902,6 +2882,11 @@ namespace CASPartEditor
         private void txtPatternBGImage_TextChanged(object sender, EventArgs e)
         {
             commitPatternDetails("bgimage", txtPatternBGImage.Text);
+        }
+
+        private void renderWindow1_RequireNewTextures(object sender, EventArgs e)
+        {
+            reloadTextures();
         }
 
     }
