@@ -2047,10 +2047,6 @@ namespace CASPartEditor
         }
 
         #region Pattern tab 
-        private void btnPatternAReplaceBGImage_Click(object sender, EventArgs e)
-        {
-            txtPatternBGImage.Text = replaceImageKey(txtPatternBGImage.Text);
-        }
 
         private void btnPatternAReplaceRGBMask_Click(object sender, EventArgs e)
         {
@@ -2075,11 +2071,6 @@ namespace CASPartEditor
             }
         }
 
-        private void btnPatternAFindBGImage_Click(object sender, EventArgs e)
-        {
-            KeyUtils.findAndShowImage(txtPatternBGImage.Text);
-        }
-
         private void btnPatternAFindRGBMask_Click(object sender, EventArgs e)
         {
             KeyUtils.findAndShowImage(txtPatternARGBMask.Text);
@@ -2101,16 +2092,7 @@ namespace CASPartEditor
             commitPatternDetails("Color", Colours.convertColour(picPatternSolidColour.BackColor));
 
             refreshDisplay();
-        }
-
-        private void btnPatternChannelTextureFind_Click(object sender, EventArgs e)
-        {
-            KeyUtils.findAndShowImage(txtPatternChannelTexture.Text);
-        }
-
-        private void btnPatternChannelTextureReplace_Click(object sender, EventArgs e)
-        {
-            txtPatternChannelTexture.Text = replaceImageKey(txtPatternChannelTexture.Text);
+            makePatternPreviewThumb();
         }
 
         private void btnPatternChannelCommit_Click(object sender, EventArgs e)
@@ -2119,26 +2101,16 @@ namespace CASPartEditor
             {
 
                 int patternNo = cmbPatternSelect.SelectedIndex;
-                int channelNo = cmbChannelSelect.SelectedIndex;
                 xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
 
-                if (chkPatternChannelEnabled.Checked)
-                {
-                    chunk.pattern[patternNo].ChannelEnabled[channelNo] = "True";
-                }
-                else
-                {
-                    chunk.pattern[patternNo].ChannelEnabled[channelNo] = "False";
-                }
-
-                chunk.pattern[patternNo].Channel[channelNo] = txtPatternChannelTexture.Text;
-                chunk.pattern[patternNo].H[channelNo] = txtPatternChannelH.Text;
-                chunk.pattern[patternNo].S[channelNo] = txtPatternChannelS.Text;
-                chunk.pattern[patternNo].V[channelNo] = txtPatternChannelV.Text;
-                chunk.pattern[patternNo].BaseH[channelNo] = txtPatternChannelBaseH.Text;
-                chunk.pattern[patternNo].BaseS[channelNo] = txtPatternChannelBaseS.Text;
-                chunk.pattern[patternNo].BaseV[channelNo] = txtPatternChannelBaseV.Text;
-                chunk.pattern[patternNo].HSVShift[channelNo] = txtPatternChannelBaseHSVShift.Text;
+                //chunk.pattern[patternNo].Channel[channelNo] = txtPatternChannelTexture.Text;
+                //chunk.pattern[patternNo].H[channelNo] = txtPatternChannelH.Text;
+                //chunk.pattern[patternNo].S[channelNo] = txtPatternChannelS.Text;
+                //chunk.pattern[patternNo].V[channelNo] = txtPatternChannelV.Text;
+                //chunk.pattern[patternNo].BaseH[channelNo] = txtPatternChannelBaseH.Text;
+                //chunk.pattern[patternNo].BaseS[channelNo] = txtPatternChannelBaseS.Text;
+                //chunk.pattern[patternNo].BaseV[channelNo] = txtPatternChannelBaseV.Text;
+                //chunk.pattern[patternNo].HSVShift[channelNo] = txtPatternChannelBaseHSVShift.Text;
 
             }
         }
@@ -2203,7 +2175,6 @@ namespace CASPartEditor
                     groupBox7.Visible = false;
 
                     int patternNo = cmbPatternSelect.SelectedIndex;
-                    int channelNo = cmbChannelSelect.SelectedIndex;
                     xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
                     if (chunk.pattern[patternNo].type != "solidColor")
                     {
@@ -2238,22 +2209,9 @@ namespace CASPartEditor
                     groupBox3.Visible = false;
                     groupBox5.Visible = true;
                     groupBox7.Visible = false;
-                    cmbChannelSelect.SelectedIndex = 0;
                     picPatternThumb.Visible = true;
                     commitPatternDetails("type", "HSV");
                     break;
-            }
-        }
-
-        private void cmbChannelSelect_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count == 1)
-            {
-
-                int patternNo = cmbPatternSelect.SelectedIndex;
-                int channelNo = cmbChannelSelect.SelectedIndex;
-                xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-                viewPatternChannelInfo(chunk.pattern[patternNo]);
             }
         }
 
@@ -2854,35 +2812,78 @@ namespace CASPartEditor
             }
         }
 
-        private void btnDebugHSVRefresh_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count == 1)
-            {
-                makePatternPreviewThumb();
-                //PatternBrowser.HSVColor basehsv = new PatternBrowser.HSVColor();
-                //basehsv.Hue = double.Parse(p.BaseHBg) * 360;
-                //basehsv.Saturation = double.Parse(p.BaseSBg);
-                //basehsv.Value = double.Parse(p.BaseVBg);
-                //PatternBrowser.HSVColor hsv = new PatternBrowser.HSVColor();
-                //hsv.Hue = double.Parse(p.HBg)*360;
-                //hsv.Saturation = double.Parse(p.SBg);
-                //hsv.Value = double.Parse(p.VBg);
-                //picHSVColorBG.BackColor = (hsv+basehsv).Color;
-            }
-        }
-
         private void picHSVColorBG_Click(object sender, EventArgs e)
         {
+            int patternNo = cmbPatternSelect.SelectedIndex;
+            xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+            patternDetails pDetail = chunk.pattern[patternNo];
             picHSVColorBG.BackColor = showColourDialog(picHSVColorBG.BackColor);
 
             Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorBG.BackColor);
-            hsv.Hue -= double.Parse(txtPatternABaseHBg.Text) * 360;
-            hsv.Saturation -= double.Parse(txtPatternABaseSBg.Text);
-            hsv.Value -= double.Parse(txtPatternABaseVBg.Text);
-            
-            txtPatternAHBg.Text = MadScience.Helpers.numberToString(hsv.Hue / 360);
-            txtPatternASBg.Text = MadScience.Helpers.numberToString(hsv.Saturation);
-            txtPatternAVBg.Text = MadScience.Helpers.numberToString(hsv.Value);
+            hsv.Hue -= double.Parse(pDetail.BaseHBg) * 360;
+            hsv.Saturation -= double.Parse(pDetail.BaseSBg);
+            hsv.Value -= double.Parse(pDetail.BaseVBg);
+
+            pDetail.HBg = MadScience.Helpers.numberToString(hsv.Hue / 360);
+            pDetail.SBg = MadScience.Helpers.numberToString(hsv.Saturation);
+            pDetail.VBg = MadScience.Helpers.numberToString(hsv.Value);
+
+            makePatternPreviewThumb();
+        }
+
+        private void picHSVColorChannel1_Click(object sender, EventArgs e)
+        {
+            int patternNo = cmbPatternSelect.SelectedIndex;
+            xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+            patternDetails pDetail = chunk.pattern[patternNo];
+            picHSVColorChannel1.BackColor = showColourDialog(picHSVColorChannel1.BackColor);
+
+            Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorChannel1.BackColor);
+            hsv.Hue -= double.Parse(pDetail.BaseH[0]) * 360;
+            hsv.Saturation -= double.Parse(pDetail.BaseS[0]);
+            hsv.Value -= double.Parse(pDetail.BaseV[0]);
+
+            pDetail.H[0] = MadScience.Helpers.numberToString(hsv.Hue / 360);
+            pDetail.S[0] = MadScience.Helpers.numberToString(hsv.Saturation);
+            pDetail.V[0] = MadScience.Helpers.numberToString(hsv.Value);
+
+            makePatternPreviewThumb();
+        }
+
+        private void picHSVColorChannel2_Click(object sender, EventArgs e)
+        {
+            int patternNo = cmbPatternSelect.SelectedIndex;
+            xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+            patternDetails pDetail = chunk.pattern[patternNo];
+            picHSVColorChannel2.BackColor = showColourDialog(picHSVColorChannel2.BackColor);
+
+            Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorChannel2.BackColor);
+            hsv.Hue -= double.Parse(pDetail.BaseH[1]) * 360;
+            hsv.Saturation -= double.Parse(pDetail.BaseS[1]);
+            hsv.Value -= double.Parse(pDetail.BaseV[1]);
+
+            pDetail.H[1] = MadScience.Helpers.numberToString(hsv.Hue / 360);
+            pDetail.S[1] = MadScience.Helpers.numberToString(hsv.Saturation);
+            pDetail.V[1] = MadScience.Helpers.numberToString(hsv.Value);
+
+            makePatternPreviewThumb();
+        }
+
+        private void picHSVColorChannel3_Click(object sender, EventArgs e)
+        {
+            int patternNo = cmbPatternSelect.SelectedIndex;
+            xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+            patternDetails pDetail = chunk.pattern[patternNo];
+            picHSVColorChannel3.BackColor = showColourDialog(picHSVColorChannel3.BackColor);
+
+            Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorChannel3.BackColor);
+            hsv.Hue -= double.Parse(pDetail.BaseH[2]) * 360;
+            hsv.Saturation -= double.Parse(pDetail.BaseS[2]);
+            hsv.Value -= double.Parse(pDetail.BaseV[2]);
+
+            pDetail.H[2] = MadScience.Helpers.numberToString(hsv.Hue / 360);
+            pDetail.S[2] = MadScience.Helpers.numberToString(hsv.Saturation);
+            pDetail.V[2] = MadScience.Helpers.numberToString(hsv.Value);
 
             makePatternPreviewThumb();
         }
@@ -2930,11 +2931,6 @@ namespace CASPartEditor
         private void txtPatternASpecular_TextChanged(object sender, EventArgs e)
         {
             commitPatternDetails("specular", txtPatternASpecular.Text);
-        }
-
-        private void txtPatternBGImage_TextChanged(object sender, EventArgs e)
-        {
-            commitPatternDetails("bgimage", txtPatternBGImage.Text);
         }
 
         private void renderWindow1_RequireNewTextures(object sender, EventArgs e)

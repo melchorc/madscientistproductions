@@ -30,45 +30,7 @@ namespace CASPartEditor
         }
 
 
-        private void viewPatternChannelInfo(patternDetails pDetail)
-        {
-            int channelNo = cmbChannelSelect.SelectedIndex;
-            if (pDetail.ChannelEnabled[channelNo] != null)
-            {
-                //if (chunk.pattern[patternNo].ChannelEnabled[channelNo] == "True")
-                if (pDetail.ChannelEnabled[channelNo].ToLower() == "true")
-                {
-                    chkPatternChannelEnabled.Checked = true;
-                }
-                else
-                {
-                    chkPatternChannelEnabled.Checked = false;
-                }
-            }
-            else
-            {
-                chkPatternChannelEnabled.Checked = false;
-            }
-            if (pDetail.Channel[channelNo] != null) txtPatternChannelTexture.Text = pDetail.Channel[channelNo];
-            else txtPatternChannelTexture.Text = "";
-            if (pDetail.H[channelNo] != null) txtPatternChannelH.Text = pDetail.H[channelNo];
-            else txtPatternChannelH.Text = "";
-            if (pDetail.S[channelNo] != null) txtPatternChannelS.Text = pDetail.S[channelNo];
-            else txtPatternChannelS.Text = "";
-            if (pDetail.V[channelNo] != null) txtPatternChannelV.Text = pDetail.V[channelNo];
-            else txtPatternChannelV.Text = "";
-            if (pDetail.BaseH[channelNo] != null) txtPatternChannelBaseH.Text = pDetail.BaseH[channelNo];
-            else txtPatternChannelBaseH.Text = "";
-            if (pDetail.BaseS[channelNo] != null) txtPatternChannelBaseS.Text = pDetail.BaseS[channelNo];
-            else txtPatternChannelBaseS.Text = "";
-            if (pDetail.BaseV[channelNo] != null) txtPatternChannelBaseV.Text = pDetail.BaseV[channelNo];
-            else txtPatternChannelBaseV.Text = "";
-            if (pDetail.HSVShift[channelNo] != null) txtPatternChannelBaseHSVShift.Text = pDetail.HSVShift[channelNo];
-            else txtPatternChannelBaseHSVShift.Text = "";
-
-        }
-
-        private void makePatternPreviewThumb()
+       private void makePatternPreviewThumb()
         {
             if (listView1.SelectedItems.Count == 1)
             {
@@ -109,9 +71,6 @@ namespace CASPartEditor
 
         private void showPatternDetails(patternDetails pDetails, bool doEnable)
         {
-
-            picPatternThumb.Visible = false;
-
             txtPatternAFilename.Text = pDetails.filename;
             txtPatternAKey.Text = pDetails.key;
             txtPatternAName.Text = pDetails.name;
@@ -127,27 +86,66 @@ namespace CASPartEditor
                 case "solidColor":
                     cmbPatternAType.SelectedIndex = 0;
                     picPatternSolidColour.BackColor = MadScience.Colours.convertColour(pDetails.Color);
+
+                    picPatternThumb.Image = Patterns.makePatternThumb(pDetails);
+
                     break;
                 case "HSV":
                     cmbPatternAType.SelectedIndex = 2;
 
-                    txtPatternABaseHBg.Text = pDetails.BaseHBg;
-                    txtPatternABaseSBg.Text = pDetails.BaseSBg;
-                    txtPatternABaseVBg.Text = pDetails.BaseVBg;
-                    txtPatternBGImage.Text = pDetails.BackgroundImage;
-                    txtPatternAFilename.Text = pDetails.filename;
-                    txtPatternAHBg.Text = pDetails.HBg;
-                    txtPatternASBg.Text = pDetails.SBg;
-                    txtPatternAVBg.Text = pDetails.VBg;
-                    txtPatternAHSVShiftBG.Text = pDetails.HSVShiftBg;
 
-                    viewPatternChannelInfo(pDetails);
                     Colours.HSVColor hsv = new Colours.HSVColor();
                     hsv.Hue = double.Parse(pDetails.HBg) * 360 + double.Parse(pDetails.BaseHBg) * 360;
                     hsv.Saturation = double.Parse(pDetails.SBg) + double.Parse(pDetails.BaseSBg);
                     hsv.Value = double.Parse(pDetails.VBg) + double.Parse(pDetails.BaseVBg);
                     picHSVColorBG.BackColor = hsv.Color;
-                    makePatternPreviewThumb();
+
+                    if ((pDetails.Channel[0] != null) && (pDetails.ChannelEnabled[0].ToLower() == "true"))
+                    {
+                        hsv.Hue = double.Parse(pDetails.H[0]) * 360 + double.Parse(pDetails.BaseH[0]) * 360;
+                        hsv.Saturation = double.Parse(pDetails.S[0]) + double.Parse(pDetails.BaseS[0]);
+                        hsv.Value = double.Parse(pDetails.V[0]) + double.Parse(pDetails.BaseV[0]);
+                        picHSVColorChannel1.BackColor = hsv.Color;
+                        picHSVColorChannel1.Visible = true;
+                        label23.Visible = true;
+                    }
+                    else
+                    {
+                        picHSVColorChannel1.Visible = false;
+                        label23.Visible = false;
+                    }
+
+                    if ((pDetails.Channel[1] != null) && (pDetails.ChannelEnabled[1].ToLower() == "true"))
+                    {
+                        hsv.Hue = double.Parse(pDetails.H[1]) * 360 + double.Parse(pDetails.BaseH[1]) * 360;
+                        hsv.Saturation = double.Parse(pDetails.S[1]) + double.Parse(pDetails.BaseS[1]);
+                        hsv.Value = double.Parse(pDetails.V[1]) + double.Parse(pDetails.BaseV[1]);
+                        picHSVColorChannel2.BackColor = hsv.Color;
+                        picHSVColorChannel2.Visible = true;
+                        label24.Visible = true;
+                    }
+                    else
+                    {
+                        picHSVColorChannel2.Visible = false;
+                        label24.Visible = false;
+                    }
+
+                    if ((pDetails.Channel[2] != null) && (pDetails.ChannelEnabled[2].ToLower() == "true"))
+                    {
+                        hsv.Hue = double.Parse(pDetails.H[2]) * 360 + double.Parse(pDetails.BaseH[2]) * 360;
+                        hsv.Saturation = double.Parse(pDetails.S[2]) + double.Parse(pDetails.BaseS[2]);
+                        hsv.Value = double.Parse(pDetails.V[2]) + double.Parse(pDetails.BaseV[2]);
+                        picHSVColorChannel3.BackColor = hsv.Color;
+                        picHSVColorChannel3.Visible = true;
+                        label25.Visible = true;
+                    }
+                    else
+                    {
+                        picHSVColorChannel3.Visible = false;
+                        label25.Visible = false;
+                    }
+
+                    picPatternThumb.Image = Patterns.makePatternThumb(pDetails);
 
                     break;
                 case "Coloured":
@@ -165,8 +163,10 @@ namespace CASPartEditor
                     else
                     {
                         picPatternColourBg.Tag = "color";
-                        picPatternColourBg.Visible = true;
-                        label65.Visible = true;
+                        //picPatternColourBg.Visible = true;
+                        //label65.Visible = true;
+                        picPatternColourBg.Visible = false;
+                        label65.Visible = false;
                     }
 
                     temp = MadScience.Colours.convertColour(pDetails.ColorP[1], true);
@@ -230,7 +230,6 @@ namespace CASPartEditor
                     }
 
                     picPatternThumb.Image = Patterns.makePatternThumb(pDetails);
-                    picPatternThumb.Visible = true;
 
                     break;
             }

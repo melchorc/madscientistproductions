@@ -30,24 +30,24 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.ListViewGroup listViewGroup19 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup20 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup21 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup22 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup23 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup24 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup25 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup26 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup27 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup28 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup29 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup30 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup31 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup32 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup33 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup34 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup35 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup36 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup73 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup74 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup75 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup76 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup77 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup78 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup79 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup80 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup81 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup82 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup83 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup84 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup85 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup86 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup87 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup88 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup89 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup90 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -170,6 +170,10 @@
             this.chkPatternALinked = new System.Windows.Forms.CheckBox();
             this.label38 = new System.Windows.Forms.Label();
             this.txtPatternATiling = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button8 = new System.Windows.Forms.Button();
+            this.label42 = new System.Windows.Forms.Label();
+            this.picPatternSolidColour = new System.Windows.Forms.PictureBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label68 = new System.Windows.Forms.Label();
             this.picPatternColour4 = new System.Windows.Forms.PictureBox();
@@ -181,50 +185,15 @@
             this.picPatternColourBg = new System.Windows.Forms.PictureBox();
             this.label64 = new System.Windows.Forms.Label();
             this.picPatternColour1 = new System.Windows.Forms.PictureBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label42 = new System.Windows.Forms.Label();
-            this.picPatternSolidColour = new System.Windows.Forms.PictureBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.picHSVColorChannel3 = new System.Windows.Forms.PictureBox();
+            this.picHSVColorChannel2 = new System.Windows.Forms.PictureBox();
+            this.picHSVColorChannel1 = new System.Windows.Forms.PictureBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.picHSVColorBG = new System.Windows.Forms.PictureBox();
-            this.label50 = new System.Windows.Forms.Label();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.btnPatternChannelTextureFind = new System.Windows.Forms.Button();
-            this.btnPatternChannelTextureReplace = new System.Windows.Forms.Button();
-            this.btnPatternChannelCommit = new System.Windows.Forms.Button();
-            this.label51 = new System.Windows.Forms.Label();
-            this.label62 = new System.Windows.Forms.Label();
-            this.label63 = new System.Windows.Forms.Label();
-            this.txtPatternChannelBaseHSVShift = new System.Windows.Forms.TextBox();
-            this.label49 = new System.Windows.Forms.Label();
-            this.txtPatternChannelTexture = new System.Windows.Forms.TextBox();
-            this.label61 = new System.Windows.Forms.Label();
-            this.label60 = new System.Windows.Forms.Label();
-            this.label59 = new System.Windows.Forms.Label();
-            this.txtPatternChannelBaseV = new System.Windows.Forms.TextBox();
-            this.txtPatternChannelBaseS = new System.Windows.Forms.TextBox();
-            this.txtPatternChannelBaseH = new System.Windows.Forms.TextBox();
-            this.txtPatternChannelV = new System.Windows.Forms.TextBox();
-            this.txtPatternChannelS = new System.Windows.Forms.TextBox();
-            this.txtPatternChannelH = new System.Windows.Forms.TextBox();
-            this.chkPatternChannelEnabled = new System.Windows.Forms.CheckBox();
-            this.label57 = new System.Windows.Forms.Label();
-            this.label56 = new System.Windows.Forms.Label();
-            this.label45 = new System.Windows.Forms.Label();
-            this.txtPatternBGImage = new System.Windows.Forms.TextBox();
-            this.btnPatternAFindBGImage = new System.Windows.Forms.Button();
-            this.btnPatternAReplaceBGImage = new System.Windows.Forms.Button();
-            this.txtPatternABaseHBg = new System.Windows.Forms.TextBox();
-            this.txtPatternABaseSBg = new System.Windows.Forms.TextBox();
-            this.txtPatternABaseVBg = new System.Windows.Forms.TextBox();
-            this.txtPatternAHBg = new System.Windows.Forms.TextBox();
-            this.txtPatternASBg = new System.Windows.Forms.TextBox();
-            this.txtPatternAVBg = new System.Windows.Forms.TextBox();
-            this.label46 = new System.Windows.Forms.Label();
-            this.label47 = new System.Windows.Forms.Label();
-            this.label48 = new System.Windows.Forms.Label();
-            this.txtPatternAHSVShiftBG = new System.Windows.Forms.TextBox();
-            this.cmbChannelSelect = new System.Windows.Forms.ComboBox();
-            this.label53 = new System.Windows.Forms.Label();
             this.label37 = new System.Windows.Forms.Label();
             this.btnPatternACommit = new System.Windows.Forms.Button();
             this.tabPage13 = new System.Windows.Forms.TabPage();
@@ -358,17 +327,19 @@
             this.tabPage2.SuspendLayout();
             this.grpPatternA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternThumb)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).BeginInit();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColourBg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour1)).BeginInit();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).BeginInit();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picHSVColorChannel3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picHSVColorChannel2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picHSVColorChannel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHSVColorBG)).BeginInit();
-            this.groupBox6.SuspendLayout();
             this.tabPage13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLstTextureColour)).BeginInit();
             this.tabPage3.SuspendLayout();
@@ -1607,13 +1578,13 @@
             this.grpPatternA.Controls.Add(this.chkPatternALinked);
             this.grpPatternA.Controls.Add(this.label38);
             this.grpPatternA.Controls.Add(this.txtPatternATiling);
-            this.grpPatternA.Controls.Add(this.groupBox3);
-            this.grpPatternA.Controls.Add(this.groupBox5);
             this.grpPatternA.Controls.Add(this.groupBox7);
+            this.grpPatternA.Controls.Add(this.groupBox5);
+            this.grpPatternA.Controls.Add(this.groupBox3);
             this.grpPatternA.Enabled = false;
             this.grpPatternA.Location = new System.Drawing.Point(5, 38);
             this.grpPatternA.Name = "grpPatternA";
-            this.grpPatternA.Size = new System.Drawing.Size(523, 592);
+            this.grpPatternA.Size = new System.Drawing.Size(523, 346);
             this.grpPatternA.TabIndex = 2;
             this.grpPatternA.TabStop = false;
             // 
@@ -1829,6 +1800,47 @@
             this.txtPatternATiling.TabIndex = 0;
             this.txtPatternATiling.TextChanged += new System.EventHandler(this.txtPatternATiling_TextChanged);
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.button8);
+            this.groupBox3.Controls.Add(this.label42);
+            this.groupBox3.Controls.Add(this.picPatternSolidColour);
+            this.groupBox3.Location = new System.Drawing.Point(5, 232);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(512, 105);
+            this.groupBox3.TabIndex = 40;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Solid Colour Options";
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(390, 19);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(116, 23);
+            this.button8.TabIndex = 11;
+            this.button8.Text = "Populate details";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(22, 22);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(40, 13);
+            this.label42.TabIndex = 9;
+            this.label42.Text = "Colour:";
+            // 
+            // picPatternSolidColour
+            // 
+            this.picPatternSolidColour.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picPatternSolidColour.Location = new System.Drawing.Point(25, 39);
+            this.picPatternSolidColour.Name = "picPatternSolidColour";
+            this.picPatternSolidColour.Size = new System.Drawing.Size(42, 42);
+            this.picPatternSolidColour.TabIndex = 10;
+            this.picPatternSolidColour.TabStop = false;
+            this.picPatternSolidColour.Click += new System.EventHandler(this.picPatternAColor_Click);
+            // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.label68);
@@ -1852,7 +1864,7 @@
             // label68
             // 
             this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(307, 19);
+            this.label68.Location = new System.Drawing.Point(224, 22);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(52, 13);
             this.label68.TabIndex = 24;
@@ -1862,7 +1874,7 @@
             // 
             this.picPatternColour4.BackColor = System.Drawing.Color.Transparent;
             this.picPatternColour4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternColour4.Location = new System.Drawing.Point(310, 41);
+            this.picPatternColour4.Location = new System.Drawing.Point(227, 39);
             this.picPatternColour4.Name = "picPatternColour4";
             this.picPatternColour4.Size = new System.Drawing.Size(42, 42);
             this.picPatternColour4.TabIndex = 25;
@@ -1872,7 +1884,7 @@
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(173, 19);
+            this.label67.Location = new System.Drawing.Point(90, 22);
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(52, 13);
             this.label67.TabIndex = 21;
@@ -1882,7 +1894,7 @@
             // 
             this.picPatternColour2.BackColor = System.Drawing.Color.Transparent;
             this.picPatternColour2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternColour2.Location = new System.Drawing.Point(176, 41);
+            this.picPatternColour2.Location = new System.Drawing.Point(93, 39);
             this.picPatternColour2.Name = "picPatternColour2";
             this.picPatternColour2.Size = new System.Drawing.Size(42, 42);
             this.picPatternColour2.TabIndex = 22;
@@ -1892,7 +1904,7 @@
             // label66
             // 
             this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(240, 19);
+            this.label66.Location = new System.Drawing.Point(157, 22);
             this.label66.Name = "label66";
             this.label66.Size = new System.Drawing.Size(52, 13);
             this.label66.TabIndex = 18;
@@ -1902,7 +1914,7 @@
             // 
             this.picPatternColour3.BackColor = System.Drawing.Color.Transparent;
             this.picPatternColour3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternColour3.Location = new System.Drawing.Point(244, 41);
+            this.picPatternColour3.Location = new System.Drawing.Point(160, 39);
             this.picPatternColour3.Name = "picPatternColour3";
             this.picPatternColour3.Size = new System.Drawing.Size(42, 42);
             this.picPatternColour3.TabIndex = 19;
@@ -1912,27 +1924,29 @@
             // label65
             // 
             this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(5, 19);
+            this.label65.Location = new System.Drawing.Point(387, 24);
             this.label65.Name = "label65";
             this.label65.Size = new System.Drawing.Size(56, 13);
             this.label65.TabIndex = 15;
             this.label65.Text = "Colour Bg:";
+            this.label65.Visible = false;
             // 
             // picPatternColourBg
             // 
             this.picPatternColourBg.BackColor = System.Drawing.Color.Transparent;
             this.picPatternColourBg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternColourBg.Location = new System.Drawing.Point(9, 41);
+            this.picPatternColourBg.Location = new System.Drawing.Point(390, 41);
             this.picPatternColourBg.Name = "picPatternColourBg";
             this.picPatternColourBg.Size = new System.Drawing.Size(42, 42);
             this.picPatternColourBg.TabIndex = 16;
             this.picPatternColourBg.TabStop = false;
+            this.picPatternColourBg.Visible = false;
             this.picPatternColourBg.Click += new System.EventHandler(this.picPatternColourBg_Click);
             // 
             // label64
             // 
             this.label64.AutoSize = true;
-            this.label64.Location = new System.Drawing.Point(106, 19);
+            this.label64.Location = new System.Drawing.Point(22, 22);
             this.label64.Name = "label64";
             this.label64.Size = new System.Drawing.Size(52, 13);
             this.label64.TabIndex = 12;
@@ -1942,437 +1956,110 @@
             // 
             this.picPatternColour1.BackColor = System.Drawing.Color.Transparent;
             this.picPatternColour1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternColour1.Location = new System.Drawing.Point(108, 41);
+            this.picPatternColour1.Location = new System.Drawing.Point(25, 39);
             this.picPatternColour1.Name = "picPatternColour1";
             this.picPatternColour1.Size = new System.Drawing.Size(42, 42);
             this.picPatternColour1.TabIndex = 13;
             this.picPatternColour1.TabStop = false;
             this.picPatternColour1.Click += new System.EventHandler(this.picPatternColour1_Click);
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label42);
-            this.groupBox3.Controls.Add(this.picPatternSolidColour);
-            this.groupBox3.Location = new System.Drawing.Point(5, 232);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(512, 60);
-            this.groupBox3.TabIndex = 40;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Solid Colour Options";
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(6, 27);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(40, 13);
-            this.label42.TabIndex = 9;
-            this.label42.Text = "Colour:";
-            // 
-            // picPatternSolidColour
-            // 
-            this.picPatternSolidColour.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternSolidColour.Location = new System.Drawing.Point(47, 22);
-            this.picPatternSolidColour.Name = "picPatternSolidColour";
-            this.picPatternSolidColour.Size = new System.Drawing.Size(36, 30);
-            this.picPatternSolidColour.TabIndex = 10;
-            this.picPatternSolidColour.TabStop = false;
-            this.picPatternSolidColour.Click += new System.EventHandler(this.picPatternAColor_Click);
-            // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.label25);
+            this.groupBox5.Controls.Add(this.label24);
+            this.groupBox5.Controls.Add(this.label23);
+            this.groupBox5.Controls.Add(this.picHSVColorChannel3);
+            this.groupBox5.Controls.Add(this.picHSVColorChannel2);
+            this.groupBox5.Controls.Add(this.picHSVColorChannel1);
+            this.groupBox5.Controls.Add(this.label19);
             this.groupBox5.Controls.Add(this.picHSVColorBG);
-            this.groupBox5.Controls.Add(this.label50);
-            this.groupBox5.Controls.Add(this.groupBox6);
-            this.groupBox5.Controls.Add(this.label57);
-            this.groupBox5.Controls.Add(this.label56);
-            this.groupBox5.Controls.Add(this.label45);
-            this.groupBox5.Controls.Add(this.txtPatternBGImage);
-            this.groupBox5.Controls.Add(this.btnPatternAFindBGImage);
-            this.groupBox5.Controls.Add(this.btnPatternAReplaceBGImage);
-            this.groupBox5.Controls.Add(this.txtPatternABaseHBg);
-            this.groupBox5.Controls.Add(this.txtPatternABaseSBg);
-            this.groupBox5.Controls.Add(this.txtPatternABaseVBg);
-            this.groupBox5.Controls.Add(this.txtPatternAHBg);
-            this.groupBox5.Controls.Add(this.txtPatternASBg);
-            this.groupBox5.Controls.Add(this.txtPatternAVBg);
-            this.groupBox5.Controls.Add(this.label46);
-            this.groupBox5.Controls.Add(this.label47);
-            this.groupBox5.Controls.Add(this.label48);
-            this.groupBox5.Controls.Add(this.txtPatternAHSVShiftBG);
-            this.groupBox5.Controls.Add(this.cmbChannelSelect);
-            this.groupBox5.Controls.Add(this.label53);
             this.groupBox5.Location = new System.Drawing.Point(5, 232);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(512, 341);
+            this.groupBox5.Size = new System.Drawing.Size(512, 105);
             this.groupBox5.TabIndex = 41;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Pattern (HSV) Options";
             this.groupBox5.Visible = false;
             // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(224, 22);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(52, 13);
+            this.label25.TabIndex = 64;
+            this.label25.Text = "Palette 4:";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(157, 22);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(52, 13);
+            this.label24.TabIndex = 63;
+            this.label24.Text = "Palette 3:";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(90, 22);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(52, 13);
+            this.label23.TabIndex = 62;
+            this.label23.Text = "Palette 2:";
+            // 
+            // picHSVColorChannel3
+            // 
+            this.picHSVColorChannel3.BackColor = System.Drawing.Color.Transparent;
+            this.picHSVColorChannel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picHSVColorChannel3.Location = new System.Drawing.Point(227, 39);
+            this.picHSVColorChannel3.Name = "picHSVColorChannel3";
+            this.picHSVColorChannel3.Size = new System.Drawing.Size(42, 42);
+            this.picHSVColorChannel3.TabIndex = 61;
+            this.picHSVColorChannel3.TabStop = false;
+            this.picHSVColorChannel3.Click += new System.EventHandler(this.picHSVColorChannel3_Click);
+            // 
+            // picHSVColorChannel2
+            // 
+            this.picHSVColorChannel2.BackColor = System.Drawing.Color.Transparent;
+            this.picHSVColorChannel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picHSVColorChannel2.Location = new System.Drawing.Point(160, 39);
+            this.picHSVColorChannel2.Name = "picHSVColorChannel2";
+            this.picHSVColorChannel2.Size = new System.Drawing.Size(42, 42);
+            this.picHSVColorChannel2.TabIndex = 60;
+            this.picHSVColorChannel2.TabStop = false;
+            this.picHSVColorChannel2.Click += new System.EventHandler(this.picHSVColorChannel2_Click);
+            // 
+            // picHSVColorChannel1
+            // 
+            this.picHSVColorChannel1.BackColor = System.Drawing.Color.Transparent;
+            this.picHSVColorChannel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picHSVColorChannel1.Location = new System.Drawing.Point(93, 39);
+            this.picHSVColorChannel1.Name = "picHSVColorChannel1";
+            this.picHSVColorChannel1.Size = new System.Drawing.Size(42, 42);
+            this.picHSVColorChannel1.TabIndex = 59;
+            this.picHSVColorChannel1.TabStop = false;
+            this.picHSVColorChannel1.Click += new System.EventHandler(this.picHSVColorChannel1_Click);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(22, 22);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(52, 13);
+            this.label19.TabIndex = 58;
+            this.label19.Text = "Palette 1:";
+            // 
             // picHSVColorBG
             // 
             this.picHSVColorBG.BackColor = System.Drawing.Color.Transparent;
             this.picHSVColorBG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picHSVColorBG.Location = new System.Drawing.Point(327, 67);
+            this.picHSVColorBG.Location = new System.Drawing.Point(25, 39);
             this.picHSVColorBG.Name = "picHSVColorBG";
             this.picHSVColorBG.Size = new System.Drawing.Size(42, 42);
             this.picHSVColorBG.TabIndex = 57;
             this.picHSVColorBG.TabStop = false;
             this.picHSVColorBG.Click += new System.EventHandler(this.picHSVColorBG_Click);
-            // 
-            // label50
-            // 
-            this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(22, 143);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(49, 13);
-            this.label50.TabIndex = 55;
-            this.label50.Text = "Channel:";
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.btnPatternChannelTextureFind);
-            this.groupBox6.Controls.Add(this.btnPatternChannelTextureReplace);
-            this.groupBox6.Controls.Add(this.btnPatternChannelCommit);
-            this.groupBox6.Controls.Add(this.label51);
-            this.groupBox6.Controls.Add(this.label62);
-            this.groupBox6.Controls.Add(this.label63);
-            this.groupBox6.Controls.Add(this.txtPatternChannelBaseHSVShift);
-            this.groupBox6.Controls.Add(this.label49);
-            this.groupBox6.Controls.Add(this.txtPatternChannelTexture);
-            this.groupBox6.Controls.Add(this.label61);
-            this.groupBox6.Controls.Add(this.label60);
-            this.groupBox6.Controls.Add(this.label59);
-            this.groupBox6.Controls.Add(this.txtPatternChannelBaseV);
-            this.groupBox6.Controls.Add(this.txtPatternChannelBaseS);
-            this.groupBox6.Controls.Add(this.txtPatternChannelBaseH);
-            this.groupBox6.Controls.Add(this.txtPatternChannelV);
-            this.groupBox6.Controls.Add(this.txtPatternChannelS);
-            this.groupBox6.Controls.Add(this.txtPatternChannelH);
-            this.groupBox6.Controls.Add(this.chkPatternChannelEnabled);
-            this.groupBox6.Location = new System.Drawing.Point(7, 167);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(499, 168);
-            this.groupBox6.TabIndex = 54;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Channel:";
-            // 
-            // btnPatternChannelTextureFind
-            // 
-            this.btnPatternChannelTextureFind.Location = new System.Drawing.Point(391, 38);
-            this.btnPatternChannelTextureFind.Name = "btnPatternChannelTextureFind";
-            this.btnPatternChannelTextureFind.Size = new System.Drawing.Size(36, 23);
-            this.btnPatternChannelTextureFind.TabIndex = 78;
-            this.btnPatternChannelTextureFind.Text = "find";
-            this.btnPatternChannelTextureFind.UseVisualStyleBackColor = true;
-            this.btnPatternChannelTextureFind.Click += new System.EventHandler(this.btnPatternChannelTextureFind_Click);
-            // 
-            // btnPatternChannelTextureReplace
-            // 
-            this.btnPatternChannelTextureReplace.Location = new System.Drawing.Point(433, 38);
-            this.btnPatternChannelTextureReplace.Name = "btnPatternChannelTextureReplace";
-            this.btnPatternChannelTextureReplace.Size = new System.Drawing.Size(51, 23);
-            this.btnPatternChannelTextureReplace.TabIndex = 79;
-            this.btnPatternChannelTextureReplace.Text = "replace";
-            this.btnPatternChannelTextureReplace.UseVisualStyleBackColor = true;
-            this.btnPatternChannelTextureReplace.Click += new System.EventHandler(this.btnPatternChannelTextureReplace_Click);
-            // 
-            // btnPatternChannelCommit
-            // 
-            this.btnPatternChannelCommit.Location = new System.Drawing.Point(389, 134);
-            this.btnPatternChannelCommit.Name = "btnPatternChannelCommit";
-            this.btnPatternChannelCommit.Size = new System.Drawing.Size(95, 23);
-            this.btnPatternChannelCommit.TabIndex = 77;
-            this.btnPatternChannelCommit.Text = "Commit Channel";
-            this.btnPatternChannelCommit.UseVisualStyleBackColor = true;
-            this.btnPatternChannelCommit.Click += new System.EventHandler(this.btnPatternChannelCommit_Click);
-            // 
-            // label51
-            // 
-            this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(98, 65);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(18, 13);
-            this.label51.TabIndex = 74;
-            this.label51.Text = "H:";
-            // 
-            // label62
-            // 
-            this.label62.AutoSize = true;
-            this.label62.Location = new System.Drawing.Point(184, 65);
-            this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(17, 13);
-            this.label62.TabIndex = 75;
-            this.label62.Text = "S:";
-            // 
-            // label63
-            // 
-            this.label63.AutoSize = true;
-            this.label63.Location = new System.Drawing.Point(271, 65);
-            this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(17, 13);
-            this.label63.TabIndex = 76;
-            this.label63.Text = "V:";
-            // 
-            // txtPatternChannelBaseHSVShift
-            // 
-            this.txtPatternChannelBaseHSVShift.Location = new System.Drawing.Point(67, 131);
-            this.txtPatternChannelBaseHSVShift.Name = "txtPatternChannelBaseHSVShift";
-            this.txtPatternChannelBaseHSVShift.Size = new System.Drawing.Size(186, 20);
-            this.txtPatternChannelBaseHSVShift.TabIndex = 73;
-            // 
-            // label49
-            // 
-            this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(11, 134);
-            this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(53, 13);
-            this.label49.TabIndex = 72;
-            this.label49.Text = "HSVShift:";
-            // 
-            // txtPatternChannelTexture
-            // 
-            this.txtPatternChannelTexture.Location = new System.Drawing.Point(67, 40);
-            this.txtPatternChannelTexture.Name = "txtPatternChannelTexture";
-            this.txtPatternChannelTexture.Size = new System.Drawing.Size(318, 20);
-            this.txtPatternChannelTexture.TabIndex = 71;
-            // 
-            // label61
-            // 
-            this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(18, 43);
-            this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(46, 13);
-            this.label61.TabIndex = 70;
-            this.label61.Text = "Texture:";
-            // 
-            // label60
-            // 
-            this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(32, 84);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(32, 13);
-            this.label60.TabIndex = 69;
-            this.label60.Text = "HSV:";
-            // 
-            // label59
-            // 
-            this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(14, 108);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(50, 13);
-            this.label59.TabIndex = 68;
-            this.label59.Text = "Base Bg:";
-            // 
-            // txtPatternChannelBaseV
-            // 
-            this.txtPatternChannelBaseV.Location = new System.Drawing.Point(236, 105);
-            this.txtPatternChannelBaseV.Name = "txtPatternChannelBaseV";
-            this.txtPatternChannelBaseV.Size = new System.Drawing.Size(78, 20);
-            this.txtPatternChannelBaseV.TabIndex = 64;
-            // 
-            // txtPatternChannelBaseS
-            // 
-            this.txtPatternChannelBaseS.Location = new System.Drawing.Point(152, 105);
-            this.txtPatternChannelBaseS.Name = "txtPatternChannelBaseS";
-            this.txtPatternChannelBaseS.Size = new System.Drawing.Size(78, 20);
-            this.txtPatternChannelBaseS.TabIndex = 63;
-            // 
-            // txtPatternChannelBaseH
-            // 
-            this.txtPatternChannelBaseH.Location = new System.Drawing.Point(67, 105);
-            this.txtPatternChannelBaseH.Name = "txtPatternChannelBaseH";
-            this.txtPatternChannelBaseH.Size = new System.Drawing.Size(81, 20);
-            this.txtPatternChannelBaseH.TabIndex = 62;
-            // 
-            // txtPatternChannelV
-            // 
-            this.txtPatternChannelV.Location = new System.Drawing.Point(236, 81);
-            this.txtPatternChannelV.Name = "txtPatternChannelV";
-            this.txtPatternChannelV.Size = new System.Drawing.Size(78, 20);
-            this.txtPatternChannelV.TabIndex = 60;
-            // 
-            // txtPatternChannelS
-            // 
-            this.txtPatternChannelS.Location = new System.Drawing.Point(152, 81);
-            this.txtPatternChannelS.Name = "txtPatternChannelS";
-            this.txtPatternChannelS.Size = new System.Drawing.Size(78, 20);
-            this.txtPatternChannelS.TabIndex = 59;
-            // 
-            // txtPatternChannelH
-            // 
-            this.txtPatternChannelH.Location = new System.Drawing.Point(67, 81);
-            this.txtPatternChannelH.Name = "txtPatternChannelH";
-            this.txtPatternChannelH.Size = new System.Drawing.Size(81, 20);
-            this.txtPatternChannelH.TabIndex = 58;
-            // 
-            // chkPatternChannelEnabled
-            // 
-            this.chkPatternChannelEnabled.AutoSize = true;
-            this.chkPatternChannelEnabled.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkPatternChannelEnabled.Location = new System.Drawing.Point(13, 19);
-            this.chkPatternChannelEnabled.Name = "chkPatternChannelEnabled";
-            this.chkPatternChannelEnabled.Size = new System.Drawing.Size(68, 17);
-            this.chkPatternChannelEnabled.TabIndex = 57;
-            this.chkPatternChannelEnabled.Text = "Enabled:";
-            this.chkPatternChannelEnabled.UseVisualStyleBackColor = true;
-            // 
-            // label57
-            // 
-            this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(48, 70);
-            this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(23, 13);
-            this.label57.TabIndex = 37;
-            this.label57.Text = "Bg:";
-            // 
-            // label56
-            // 
-            this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(21, 92);
-            this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(50, 13);
-            this.label56.TabIndex = 36;
-            this.label56.Text = "Base Bg:";
-            // 
-            // label45
-            // 
-            this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(16, 22);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(57, 13);
-            this.label45.TabIndex = 11;
-            this.label45.Text = "BG Image:";
-            // 
-            // txtPatternBGImage
-            // 
-            this.txtPatternBGImage.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPatternBGImage.Location = new System.Drawing.Point(74, 18);
-            this.txtPatternBGImage.Name = "txtPatternBGImage";
-            this.txtPatternBGImage.Size = new System.Drawing.Size(328, 20);
-            this.txtPatternBGImage.TabIndex = 24;
-            this.txtPatternBGImage.TextChanged += new System.EventHandler(this.txtPatternBGImage_TextChanged);
-            // 
-            // btnPatternAFindBGImage
-            // 
-            this.btnPatternAFindBGImage.Location = new System.Drawing.Point(408, 17);
-            this.btnPatternAFindBGImage.Name = "btnPatternAFindBGImage";
-            this.btnPatternAFindBGImage.Size = new System.Drawing.Size(36, 23);
-            this.btnPatternAFindBGImage.TabIndex = 25;
-            this.btnPatternAFindBGImage.Text = "find";
-            this.btnPatternAFindBGImage.UseVisualStyleBackColor = true;
-            this.btnPatternAFindBGImage.Click += new System.EventHandler(this.btnPatternAFindBGImage_Click);
-            // 
-            // btnPatternAReplaceBGImage
-            // 
-            this.btnPatternAReplaceBGImage.Location = new System.Drawing.Point(450, 17);
-            this.btnPatternAReplaceBGImage.Name = "btnPatternAReplaceBGImage";
-            this.btnPatternAReplaceBGImage.Size = new System.Drawing.Size(51, 23);
-            this.btnPatternAReplaceBGImage.TabIndex = 35;
-            this.btnPatternAReplaceBGImage.Text = "replace";
-            this.btnPatternAReplaceBGImage.UseVisualStyleBackColor = true;
-            this.btnPatternAReplaceBGImage.Click += new System.EventHandler(this.btnPatternAReplaceBGImage_Click);
-            // 
-            // txtPatternABaseHBg
-            // 
-            this.txtPatternABaseHBg.Location = new System.Drawing.Point(75, 89);
-            this.txtPatternABaseHBg.Name = "txtPatternABaseHBg";
-            this.txtPatternABaseHBg.Size = new System.Drawing.Size(80, 20);
-            this.txtPatternABaseHBg.TabIndex = 15;
-            // 
-            // txtPatternABaseSBg
-            // 
-            this.txtPatternABaseSBg.Location = new System.Drawing.Point(159, 89);
-            this.txtPatternABaseSBg.Name = "txtPatternABaseSBg";
-            this.txtPatternABaseSBg.Size = new System.Drawing.Size(78, 20);
-            this.txtPatternABaseSBg.TabIndex = 16;
-            // 
-            // txtPatternABaseVBg
-            // 
-            this.txtPatternABaseVBg.Location = new System.Drawing.Point(243, 89);
-            this.txtPatternABaseVBg.Name = "txtPatternABaseVBg";
-            this.txtPatternABaseVBg.Size = new System.Drawing.Size(78, 20);
-            this.txtPatternABaseVBg.TabIndex = 17;
-            // 
-            // txtPatternAHBg
-            // 
-            this.txtPatternAHBg.Location = new System.Drawing.Point(75, 67);
-            this.txtPatternAHBg.Name = "txtPatternAHBg";
-            this.txtPatternAHBg.Size = new System.Drawing.Size(80, 20);
-            this.txtPatternAHBg.TabIndex = 12;
-            // 
-            // txtPatternASBg
-            // 
-            this.txtPatternASBg.Location = new System.Drawing.Point(159, 67);
-            this.txtPatternASBg.Name = "txtPatternASBg";
-            this.txtPatternASBg.Size = new System.Drawing.Size(78, 20);
-            this.txtPatternASBg.TabIndex = 13;
-            // 
-            // txtPatternAVBg
-            // 
-            this.txtPatternAVBg.Location = new System.Drawing.Point(243, 67);
-            this.txtPatternAVBg.Name = "txtPatternAVBg";
-            this.txtPatternAVBg.Size = new System.Drawing.Size(78, 20);
-            this.txtPatternAVBg.TabIndex = 14;
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(101, 48);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(18, 13);
-            this.label46.TabIndex = 18;
-            this.label46.Text = "H:";
-            // 
-            // label47
-            // 
-            this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(187, 48);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(17, 13);
-            this.label47.TabIndex = 19;
-            this.label47.Text = "S:";
-            // 
-            // label48
-            // 
-            this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(274, 48);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(17, 13);
-            this.label48.TabIndex = 20;
-            this.label48.Text = "V:";
-            // 
-            // txtPatternAHSVShiftBG
-            // 
-            this.txtPatternAHSVShiftBG.Location = new System.Drawing.Point(74, 113);
-            this.txtPatternAHSVShiftBG.Name = "txtPatternAHSVShiftBG";
-            this.txtPatternAHSVShiftBG.Size = new System.Drawing.Size(186, 20);
-            this.txtPatternAHSVShiftBG.TabIndex = 30;
-            // 
-            // cmbChannelSelect
-            // 
-            this.cmbChannelSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbChannelSelect.FormattingEnabled = true;
-            this.cmbChannelSelect.Items.AddRange(new object[] {
-            "Channel 1",
-            "Channel 2",
-            "Channel 3",
-            "Channel 4"});
-            this.cmbChannelSelect.Location = new System.Drawing.Point(74, 140);
-            this.cmbChannelSelect.Name = "cmbChannelSelect";
-            this.cmbChannelSelect.Size = new System.Drawing.Size(121, 21);
-            this.cmbChannelSelect.TabIndex = 53;
-            this.cmbChannelSelect.SelectedIndexChanged += new System.EventHandler(this.cmbChannelSelect_SelectedIndexChanged);
-            // 
-            // label53
-            // 
-            this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(2, 116);
-            this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(69, 13);
-            this.label53.TabIndex = 29;
-            this.label53.Text = "HSVShift Bg:";
             // 
             // label37
             // 
@@ -2927,34 +2614,34 @@
             this.columnHeader12});
             this.lstMeshTGILinks.FullRowSelect = true;
             this.lstMeshTGILinks.GridLines = true;
-            listViewGroup19.Header = "Texture Details";
-            listViewGroup19.Name = "groupTextures";
-            listViewGroup20.Header = "Clothing Details";
-            listViewGroup20.Name = "groupClothing";
-            listViewGroup21.Header = "Face Overlay Details";
-            listViewGroup21.Name = "groupFaceOverlay";
-            listViewGroup22.Header = "Mask and Overlay Details";
-            listViewGroup22.Name = "groupMask";
-            listViewGroup23.Header = "Hair Details";
-            listViewGroup23.Name = "groupHair";
-            listViewGroup24.Header = "Skin Details";
-            listViewGroup24.Name = "groupSkin";
-            listViewGroup25.Header = "Logo Details";
-            listViewGroup25.Name = "groupLogo";
-            listViewGroup26.Header = "CAS Details";
-            listViewGroup26.Name = "groupCasDetails";
-            listViewGroup27.Header = "Misc. Details";
-            listViewGroup27.Name = "groupMisc";
+            listViewGroup73.Header = "Texture Details";
+            listViewGroup73.Name = "groupTextures";
+            listViewGroup74.Header = "Clothing Details";
+            listViewGroup74.Name = "groupClothing";
+            listViewGroup75.Header = "Face Overlay Details";
+            listViewGroup75.Name = "groupFaceOverlay";
+            listViewGroup76.Header = "Mask and Overlay Details";
+            listViewGroup76.Name = "groupMask";
+            listViewGroup77.Header = "Hair Details";
+            listViewGroup77.Name = "groupHair";
+            listViewGroup78.Header = "Skin Details";
+            listViewGroup78.Name = "groupSkin";
+            listViewGroup79.Header = "Logo Details";
+            listViewGroup79.Name = "groupLogo";
+            listViewGroup80.Header = "CAS Details";
+            listViewGroup80.Name = "groupCasDetails";
+            listViewGroup81.Header = "Misc. Details";
+            listViewGroup81.Name = "groupMisc";
             this.lstMeshTGILinks.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup19,
-            listViewGroup20,
-            listViewGroup21,
-            listViewGroup22,
-            listViewGroup23,
-            listViewGroup24,
-            listViewGroup25,
-            listViewGroup26,
-            listViewGroup27});
+            listViewGroup73,
+            listViewGroup74,
+            listViewGroup75,
+            listViewGroup76,
+            listViewGroup77,
+            listViewGroup78,
+            listViewGroup79,
+            listViewGroup80,
+            listViewGroup81});
             this.lstMeshTGILinks.HideSelection = false;
             this.lstMeshTGILinks.Location = new System.Drawing.Point(9, 19);
             this.lstMeshTGILinks.MultiSelect = false;
@@ -3294,34 +2981,34 @@
             this.columnHeader3,
             this.columnHeader4});
             this.listView2.GridLines = true;
-            listViewGroup28.Header = "Texture Details";
-            listViewGroup28.Name = "groupTextures";
-            listViewGroup29.Header = "Clothing Details";
-            listViewGroup29.Name = "groupClothing";
-            listViewGroup30.Header = "Face Overlay Details";
-            listViewGroup30.Name = "groupFaceOverlay";
-            listViewGroup31.Header = "Mask and Overlay Details";
-            listViewGroup31.Name = "groupMask";
-            listViewGroup32.Header = "Hair Details";
-            listViewGroup32.Name = "groupHair";
-            listViewGroup33.Header = "Skin Details";
-            listViewGroup33.Name = "groupSkin";
-            listViewGroup34.Header = "Logo Details";
-            listViewGroup34.Name = "groupLogo";
-            listViewGroup35.Header = "CAS Details";
-            listViewGroup35.Name = "groupCasDetails";
-            listViewGroup36.Header = "Misc. Details";
-            listViewGroup36.Name = "groupMisc";
+            listViewGroup82.Header = "Texture Details";
+            listViewGroup82.Name = "groupTextures";
+            listViewGroup83.Header = "Clothing Details";
+            listViewGroup83.Name = "groupClothing";
+            listViewGroup84.Header = "Face Overlay Details";
+            listViewGroup84.Name = "groupFaceOverlay";
+            listViewGroup85.Header = "Mask and Overlay Details";
+            listViewGroup85.Name = "groupMask";
+            listViewGroup86.Header = "Hair Details";
+            listViewGroup86.Name = "groupHair";
+            listViewGroup87.Header = "Skin Details";
+            listViewGroup87.Name = "groupSkin";
+            listViewGroup88.Header = "Logo Details";
+            listViewGroup88.Name = "groupLogo";
+            listViewGroup89.Header = "CAS Details";
+            listViewGroup89.Name = "groupCasDetails";
+            listViewGroup90.Header = "Misc. Details";
+            listViewGroup90.Name = "groupMisc";
             this.listView2.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup28,
-            listViewGroup29,
-            listViewGroup30,
-            listViewGroup31,
-            listViewGroup32,
-            listViewGroup33,
-            listViewGroup34,
-            listViewGroup35,
-            listViewGroup36});
+            listViewGroup82,
+            listViewGroup83,
+            listViewGroup84,
+            listViewGroup85,
+            listViewGroup86,
+            listViewGroup87,
+            listViewGroup88,
+            listViewGroup89,
+            listViewGroup90});
             this.listView2.LabelEdit = true;
             this.listView2.Location = new System.Drawing.Point(3, 8);
             this.listView2.MultiSelect = false;
@@ -3645,6 +3332,9 @@
             this.grpPatternA.ResumeLayout(false);
             this.grpPatternA.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternThumb)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour4)).EndInit();
@@ -3652,14 +3342,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColourBg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour1)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picHSVColorChannel3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picHSVColorChannel2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picHSVColorChannel1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHSVColorBG)).EndInit();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.tabPage13.ResumeLayout(false);
             this.tabPage13.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLstTextureColour)).EndInit();
@@ -3742,45 +3430,6 @@
         private System.Windows.Forms.Label label64;
         private System.Windows.Forms.PictureBox picPatternColour1;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Label label50;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Button btnPatternChannelTextureFind;
-        private System.Windows.Forms.Button btnPatternChannelTextureReplace;
-        private System.Windows.Forms.Button btnPatternChannelCommit;
-        private System.Windows.Forms.Label label51;
-        private System.Windows.Forms.Label label62;
-        private System.Windows.Forms.Label label63;
-        private System.Windows.Forms.TextBox txtPatternChannelBaseHSVShift;
-        private System.Windows.Forms.Label label49;
-        private System.Windows.Forms.TextBox txtPatternChannelTexture;
-        private System.Windows.Forms.Label label61;
-        private System.Windows.Forms.Label label60;
-        private System.Windows.Forms.Label label59;
-        private System.Windows.Forms.TextBox txtPatternChannelBaseV;
-        private System.Windows.Forms.TextBox txtPatternChannelBaseS;
-        private System.Windows.Forms.TextBox txtPatternChannelBaseH;
-        private System.Windows.Forms.TextBox txtPatternChannelV;
-        private System.Windows.Forms.TextBox txtPatternChannelS;
-        private System.Windows.Forms.TextBox txtPatternChannelH;
-        private System.Windows.Forms.CheckBox chkPatternChannelEnabled;
-        private System.Windows.Forms.Label label57;
-        private System.Windows.Forms.Label label56;
-        private System.Windows.Forms.Label label45;
-        private System.Windows.Forms.TextBox txtPatternBGImage;
-        private System.Windows.Forms.Button btnPatternAFindBGImage;
-        private System.Windows.Forms.Button btnPatternAReplaceBGImage;
-        private System.Windows.Forms.TextBox txtPatternABaseHBg;
-        private System.Windows.Forms.TextBox txtPatternABaseSBg;
-        private System.Windows.Forms.TextBox txtPatternABaseVBg;
-        private System.Windows.Forms.TextBox txtPatternAHBg;
-        private System.Windows.Forms.TextBox txtPatternASBg;
-        private System.Windows.Forms.TextBox txtPatternAVBg;
-        private System.Windows.Forms.Label label46;
-        private System.Windows.Forms.Label label47;
-        private System.Windows.Forms.Label label48;
-        private System.Windows.Forms.TextBox txtPatternAHSVShiftBG;
-        private System.Windows.Forms.ComboBox cmbChannelSelect;
-        private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label label40;
         private System.Windows.Forms.TextBox txtPatternAFilename;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -3877,6 +3526,7 @@
         private System.Windows.Forms.Label label105;
         private System.Windows.Forms.ComboBox cmbPatternStencil3;
         private System.Windows.Forms.Button btnDesignStencilCommit;
+        private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button btnGetNewXML;
         private System.Windows.Forms.Button btnBrowsePatterns;
@@ -3984,6 +3634,13 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem editColourToolStripMenuItem;
         private System.Windows.Forms.PictureBox picHSVColorBG;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.PictureBox picHSVColorChannel3;
+        private System.Windows.Forms.PictureBox picHSVColorChannel2;
+        private System.Windows.Forms.PictureBox picHSVColorChannel1;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
     }
 }
 
