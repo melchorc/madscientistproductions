@@ -30,15 +30,15 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.ListViewGroup listViewGroup19 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup20 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup21 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup22 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup23 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup24 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup25 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup26 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup27 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup7 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup8 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup9 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1569,9 +1569,9 @@
             this.grpPatternA.Controls.Add(this.chkPatternALinked);
             this.grpPatternA.Controls.Add(this.label38);
             this.grpPatternA.Controls.Add(this.txtPatternATiling);
+            this.grpPatternA.Controls.Add(this.groupBox3);
             this.grpPatternA.Controls.Add(this.groupBox7);
             this.grpPatternA.Controls.Add(this.groupBox5);
-            this.grpPatternA.Controls.Add(this.groupBox3);
             this.grpPatternA.Enabled = false;
             this.grpPatternA.Location = new System.Drawing.Point(5, 38);
             this.grpPatternA.Name = "grpPatternA";
@@ -2606,34 +2606,34 @@
             this.columnHeader12});
             this.lstMeshTGILinks.FullRowSelect = true;
             this.lstMeshTGILinks.GridLines = true;
-            listViewGroup19.Header = "Texture Details";
-            listViewGroup19.Name = "groupTextures";
-            listViewGroup20.Header = "Clothing Details";
-            listViewGroup20.Name = "groupClothing";
-            listViewGroup21.Header = "Face Overlay Details";
-            listViewGroup21.Name = "groupFaceOverlay";
-            listViewGroup22.Header = "Mask and Overlay Details";
-            listViewGroup22.Name = "groupMask";
-            listViewGroup23.Header = "Hair Details";
-            listViewGroup23.Name = "groupHair";
-            listViewGroup24.Header = "Skin Details";
-            listViewGroup24.Name = "groupSkin";
-            listViewGroup25.Header = "Logo Details";
-            listViewGroup25.Name = "groupLogo";
-            listViewGroup26.Header = "CAS Details";
-            listViewGroup26.Name = "groupCasDetails";
-            listViewGroup27.Header = "Misc. Details";
-            listViewGroup27.Name = "groupMisc";
+            listViewGroup1.Header = "Texture Details";
+            listViewGroup1.Name = "groupTextures";
+            listViewGroup2.Header = "Clothing Details";
+            listViewGroup2.Name = "groupClothing";
+            listViewGroup3.Header = "Face Overlay Details";
+            listViewGroup3.Name = "groupFaceOverlay";
+            listViewGroup4.Header = "Mask and Overlay Details";
+            listViewGroup4.Name = "groupMask";
+            listViewGroup5.Header = "Hair Details";
+            listViewGroup5.Name = "groupHair";
+            listViewGroup6.Header = "Skin Details";
+            listViewGroup6.Name = "groupSkin";
+            listViewGroup7.Header = "Logo Details";
+            listViewGroup7.Name = "groupLogo";
+            listViewGroup8.Header = "CAS Details";
+            listViewGroup8.Name = "groupCasDetails";
+            listViewGroup9.Header = "Misc. Details";
+            listViewGroup9.Name = "groupMisc";
             this.lstMeshTGILinks.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup19,
-            listViewGroup20,
-            listViewGroup21,
-            listViewGroup22,
-            listViewGroup23,
-            listViewGroup24,
-            listViewGroup25,
-            listViewGroup26,
-            listViewGroup27});
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3,
+            listViewGroup4,
+            listViewGroup5,
+            listViewGroup6,
+            listViewGroup7,
+            listViewGroup8,
+            listViewGroup9});
             this.lstMeshTGILinks.HideSelection = false;
             this.lstMeshTGILinks.Location = new System.Drawing.Point(9, 19);
             this.lstMeshTGILinks.MultiSelect = false;
@@ -2994,7 +2994,117 @@
             this.columnHeader4.Text = "Name";
             this.columnHeader4.Width = 160;
             // 
-
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(0, 0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 0;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(0, 0);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 0;
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(0, 0);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(75, 23);
+            this.button10.TabIndex = 0;
+            // 
+            // txtLOD3
+            // 
+            this.txtLOD3.Location = new System.Drawing.Point(0, 0);
+            this.txtLOD3.Name = "txtLOD3";
+            this.txtLOD3.Size = new System.Drawing.Size(100, 20);
+            this.txtLOD3.TabIndex = 0;
+            // 
+            // txtLOD0
+            // 
+            this.txtLOD0.Location = new System.Drawing.Point(0, 0);
+            this.txtLOD0.Name = "txtLOD0";
+            this.txtLOD0.Size = new System.Drawing.Size(100, 20);
+            this.txtLOD0.TabIndex = 0;
+            // 
+            // label9
+            // 
+            this.label9.Location = new System.Drawing.Point(0, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(100, 23);
+            this.label9.TabIndex = 0;
+            // 
+            // button24
+            // 
+            this.button24.Location = new System.Drawing.Point(0, 0);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(75, 23);
+            this.button24.TabIndex = 0;
+            // 
+            // button22
+            // 
+            this.button22.Location = new System.Drawing.Point(0, 0);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(75, 23);
+            this.button22.TabIndex = 0;
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(0, 0);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(75, 23);
+            this.button14.TabIndex = 0;
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(0, 0);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(75, 23);
+            this.button15.TabIndex = 0;
+            // 
+            // txtLOD2
+            // 
+            this.txtLOD2.Location = new System.Drawing.Point(0, 0);
+            this.txtLOD2.Name = "txtLOD2";
+            this.txtLOD2.Size = new System.Drawing.Size(100, 20);
+            this.txtLOD2.TabIndex = 0;
+            // 
+            // txtLOD1
+            // 
+            this.txtLOD1.Location = new System.Drawing.Point(0, 0);
+            this.txtLOD1.Name = "txtLOD1";
+            this.txtLOD1.Size = new System.Drawing.Size(100, 20);
+            this.txtLOD1.TabIndex = 0;
+            // 
+            // label10
+            // 
+            this.label10.Location = new System.Drawing.Point(0, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(100, 23);
+            this.label10.TabIndex = 0;
+            // 
+            // label12
+            // 
+            this.label12.Location = new System.Drawing.Point(0, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(100, 23);
+            this.label12.TabIndex = 0;
+            // 
+            // label13
+            // 
+            this.label13.Location = new System.Drawing.Point(0, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(100, 23);
+            this.label13.TabIndex = 0;
+            // 
+            // label14
+            // 
+            this.label14.Location = new System.Drawing.Point(0, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(100, 23);
+            this.label14.TabIndex = 0;
             // 
             // bwGenTexture
             // 
