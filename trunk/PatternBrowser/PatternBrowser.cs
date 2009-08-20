@@ -37,6 +37,7 @@ namespace PatternBrowser
             }
         }
 
+        #region import pattern list
         private void button1_Click(object sender, EventArgs e)
         {
             TextReader r = new StreamReader(@"P:\Stuart\Desktop\fullPatternList.xml");
@@ -199,6 +200,7 @@ namespace PatternBrowser
             Console.WriteLine("Done");
 
         }
+        #endregion
 
         patterns patterns;
         patterns customPatterns;
@@ -235,6 +237,7 @@ namespace PatternBrowser
             if (this.customPatterns == null) this.customPatterns = new patterns();
         }
 
+        /*
         public Stream findPattern(patternsFile pattern)
         {
             if (File.Exists(pattern.subcategory))
@@ -266,7 +269,8 @@ namespace PatternBrowser
 
             return Stream.Null;
         }
-
+        */
+        /*
         public patternsFile findPattern(string resKey)
         {
             // Get pattern details from XML
@@ -304,6 +308,7 @@ namespace PatternBrowser
 
             return temp;
         }
+        */
         /*
         public Image makePatternThumb(string resKey)
         {
