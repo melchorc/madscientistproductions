@@ -199,7 +199,7 @@ namespace MadScience
             {
 
                 installLocation = Helpers.getCommonRegistryValue("sims3root");
-                if (installLocation != "") return installLocation;
+                if (!String.IsNullOrEmpty(installLocation)) return installLocation;
 
                 string path32 = "Software\\Sims\\The Sims 3";
                 string path64 = "Software\\Wow6432Node\\Sims\\The Sims 3";
@@ -240,7 +240,7 @@ namespace MadScience
 
             // Check to see if FullBuild0.package exists within this root
             bool getManualPath = false;
-            if (installLocation != "")
+            if (!String.IsNullOrEmpty(installLocation))
             {
                 if (File.Exists(installLocation + "\\GameData\\Shared\\Packages\\FullBuild0.package"))
                 {

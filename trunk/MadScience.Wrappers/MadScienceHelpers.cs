@@ -49,7 +49,7 @@ namespace MadScienceSmall
         {
             bool retVal = true;
 
-            if (keyString.Trim() == "")
+            if (String.IsNullOrEmpty(keyString))
             {
                 return false;
             }

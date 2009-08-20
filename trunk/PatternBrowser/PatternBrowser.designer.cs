@@ -55,7 +55,6 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Make XML";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // comboBox1
@@ -142,6 +141,7 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoScroll = true;
+            this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Location = new System.Drawing.Point(0, 53);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(558, 337);

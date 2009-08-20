@@ -524,7 +524,7 @@ namespace PatternCreator
             saveFileDialog1.Title = "Save Pattern As....";
             saveFileDialog1.FileName = "";
             saveFileDialog1.OverwritePrompt = true;
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK && saveFileDialog1.FileName.Trim() != "")
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK && !String.IsNullOrEmpty(saveFileDialog1.FileName))
             {
 
                 // Check for .package on the end - if it exists, strip it
