@@ -148,6 +148,32 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.cmbPatternSelect = new System.Windows.Forms.ComboBox();
             this.grpPatternA = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button8 = new System.Windows.Forms.Button();
+            this.label42 = new System.Windows.Forms.Label();
+            this.picPatternSolidColour = new System.Windows.Forms.PictureBox();
+            this.picPatternThumb = new System.Windows.Forms.PictureBox();
+            this.btnBrowsePatterns = new System.Windows.Forms.Button();
+            this.label40 = new System.Windows.Forms.Label();
+            this.txtPatternAFilename = new System.Windows.Forms.TextBox();
+            this.label39 = new System.Windows.Forms.Label();
+            this.cmbPatternAType = new System.Windows.Forms.ComboBox();
+            this.txtPatternAName = new System.Windows.Forms.TextBox();
+            this.label55 = new System.Windows.Forms.Label();
+            this.btnPatternAReplaceSpec = new System.Windows.Forms.Button();
+            this.btnPatternAReplaceRGBMask = new System.Windows.Forms.Button();
+            this.chkPatternAEnabled = new System.Windows.Forms.CheckBox();
+            this.btnPatternAFindSpec = new System.Windows.Forms.Button();
+            this.txtPatternASpecular = new System.Windows.Forms.TextBox();
+            this.label54 = new System.Windows.Forms.Label();
+            this.btnPatternAFindRGBMask = new System.Windows.Forms.Button();
+            this.txtPatternARGBMask = new System.Windows.Forms.TextBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
+            this.txtPatternAKey = new System.Windows.Forms.TextBox();
+            this.chkPatternALinked = new System.Windows.Forms.CheckBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.txtPatternATiling = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.picHSVColorBG = new System.Windows.Forms.PictureBox();
             this.label50 = new System.Windows.Forms.Label();
@@ -189,10 +215,6 @@
             this.txtPatternAHSVShiftBG = new System.Windows.Forms.TextBox();
             this.cmbChannelSelect = new System.Windows.Forms.ComboBox();
             this.label53 = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button8 = new System.Windows.Forms.Button();
-            this.label42 = new System.Windows.Forms.Label();
-            this.picPatternSolidColour = new System.Windows.Forms.PictureBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label68 = new System.Windows.Forms.Label();
             this.picPatternColour4 = new System.Windows.Forms.PictureBox();
@@ -204,28 +226,6 @@
             this.picPatternColourBg = new System.Windows.Forms.PictureBox();
             this.label64 = new System.Windows.Forms.Label();
             this.picPatternColour1 = new System.Windows.Forms.PictureBox();
-            this.picPatternThumb = new System.Windows.Forms.PictureBox();
-            this.btnBrowsePatterns = new System.Windows.Forms.Button();
-            this.label40 = new System.Windows.Forms.Label();
-            this.txtPatternAFilename = new System.Windows.Forms.TextBox();
-            this.label39 = new System.Windows.Forms.Label();
-            this.cmbPatternAType = new System.Windows.Forms.ComboBox();
-            this.txtPatternAName = new System.Windows.Forms.TextBox();
-            this.label55 = new System.Windows.Forms.Label();
-            this.btnPatternAReplaceSpec = new System.Windows.Forms.Button();
-            this.btnPatternAReplaceRGBMask = new System.Windows.Forms.Button();
-            this.chkPatternAEnabled = new System.Windows.Forms.CheckBox();
-            this.btnPatternAFindSpec = new System.Windows.Forms.Button();
-            this.txtPatternASpecular = new System.Windows.Forms.TextBox();
-            this.label54 = new System.Windows.Forms.Label();
-            this.btnPatternAFindRGBMask = new System.Windows.Forms.Button();
-            this.txtPatternARGBMask = new System.Windows.Forms.TextBox();
-            this.label52 = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
-            this.txtPatternAKey = new System.Windows.Forms.TextBox();
-            this.chkPatternALinked = new System.Windows.Forms.CheckBox();
-            this.label38 = new System.Windows.Forms.Label();
-            this.txtPatternATiling = new System.Windows.Forms.TextBox();
             this.label37 = new System.Windows.Forms.Label();
             this.btnPatternACommit = new System.Windows.Forms.Button();
             this.tabPage13 = new System.Windows.Forms.TabPage();
@@ -335,7 +335,6 @@
             this.btnReloadTextures = new System.Windows.Forms.Button();
             this.cEnable3DPreview = new System.Windows.Forms.CheckBox();
             this.btnResetView = new System.Windows.Forms.Button();
-            this.renderWindow1 = new MadScience.Render.RenderWindow();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
@@ -343,6 +342,7 @@
             this.replaceImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.editColourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renderWindow1 = new MadScience.Render.RenderWindow();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl3.SuspendLayout();
@@ -358,18 +358,18 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.grpPatternA.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picPatternThumb)).BeginInit();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picHSVColorBG)).BeginInit();
             this.groupBox6.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).BeginInit();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColourBg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picPatternThumb)).BeginInit();
             this.tabPage13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLstTextureColour)).BeginInit();
             this.tabPage3.SuspendLayout();
@@ -1586,9 +1586,6 @@
             // 
             // grpPatternA
             // 
-            this.grpPatternA.Controls.Add(this.groupBox5);
-            this.grpPatternA.Controls.Add(this.groupBox3);
-            this.grpPatternA.Controls.Add(this.groupBox7);
             this.grpPatternA.Controls.Add(this.picPatternThumb);
             this.grpPatternA.Controls.Add(this.btnBrowsePatterns);
             this.grpPatternA.Controls.Add(this.label40);
@@ -1611,12 +1608,268 @@
             this.grpPatternA.Controls.Add(this.chkPatternALinked);
             this.grpPatternA.Controls.Add(this.label38);
             this.grpPatternA.Controls.Add(this.txtPatternATiling);
+            this.grpPatternA.Controls.Add(this.groupBox7);
+            this.grpPatternA.Controls.Add(this.groupBox3);
+            this.grpPatternA.Controls.Add(this.groupBox5);
             this.grpPatternA.Enabled = false;
             this.grpPatternA.Location = new System.Drawing.Point(5, 38);
             this.grpPatternA.Name = "grpPatternA";
             this.grpPatternA.Size = new System.Drawing.Size(523, 592);
             this.grpPatternA.TabIndex = 2;
             this.grpPatternA.TabStop = false;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.button8);
+            this.groupBox3.Controls.Add(this.label42);
+            this.groupBox3.Controls.Add(this.picPatternSolidColour);
+            this.groupBox3.Location = new System.Drawing.Point(5, 232);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(512, 60);
+            this.groupBox3.TabIndex = 40;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Solid Colour Options";
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(390, 19);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(116, 23);
+            this.button8.TabIndex = 11;
+            this.button8.Text = "Populate details";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(6, 27);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(40, 13);
+            this.label42.TabIndex = 9;
+            this.label42.Text = "Colour:";
+            // 
+            // picPatternSolidColour
+            // 
+            this.picPatternSolidColour.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picPatternSolidColour.Location = new System.Drawing.Point(47, 22);
+            this.picPatternSolidColour.Name = "picPatternSolidColour";
+            this.picPatternSolidColour.Size = new System.Drawing.Size(36, 30);
+            this.picPatternSolidColour.TabIndex = 10;
+            this.picPatternSolidColour.TabStop = false;
+            this.picPatternSolidColour.Click += new System.EventHandler(this.picPatternAColor_Click);
+            // 
+            // picPatternThumb
+            // 
+            this.picPatternThumb.Location = new System.Drawing.Point(389, 41);
+            this.picPatternThumb.Name = "picPatternThumb";
+            this.picPatternThumb.Size = new System.Drawing.Size(128, 128);
+            this.picPatternThumb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picPatternThumb.TabIndex = 44;
+            this.picPatternThumb.TabStop = false;
+            // 
+            // btnBrowsePatterns
+            // 
+            this.btnBrowsePatterns.Location = new System.Drawing.Point(424, 12);
+            this.btnBrowsePatterns.Name = "btnBrowsePatterns";
+            this.btnBrowsePatterns.Size = new System.Drawing.Size(93, 23);
+            this.btnBrowsePatterns.TabIndex = 43;
+            this.btnBrowsePatterns.Text = "Browse Patterns";
+            this.btnBrowsePatterns.UseVisualStyleBackColor = true;
+            this.btnBrowsePatterns.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(17, 89);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(38, 13);
+            this.label40.TabIndex = 6;
+            this.label40.Text = "Name:";
+            // 
+            // txtPatternAFilename
+            // 
+            this.txtPatternAFilename.Location = new System.Drawing.Point(61, 113);
+            this.txtPatternAFilename.Name = "txtPatternAFilename";
+            this.txtPatternAFilename.Size = new System.Drawing.Size(322, 20);
+            this.txtPatternAFilename.TabIndex = 3;
+            this.txtPatternAFilename.TextChanged += new System.EventHandler(this.txtPatternAFilename_TextChanged);
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(3, 117);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(52, 13);
+            this.label39.TabIndex = 4;
+            this.label39.Text = "Filename:";
+            // 
+            // cmbPatternAType
+            // 
+            this.cmbPatternAType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPatternAType.FormattingEnabled = true;
+            this.cmbPatternAType.Items.AddRange(new object[] {
+            "Solid Colour",
+            "Pattern (Coloured)",
+            "Pattern (HSV)"});
+            this.cmbPatternAType.Location = new System.Drawing.Point(61, 57);
+            this.cmbPatternAType.Name = "cmbPatternAType";
+            this.cmbPatternAType.Size = new System.Drawing.Size(121, 21);
+            this.cmbPatternAType.TabIndex = 39;
+            this.cmbPatternAType.SelectedIndexChanged += new System.EventHandler(this.cmbPatternAType_SelectedIndexChanged);
+            // 
+            // txtPatternAName
+            // 
+            this.txtPatternAName.Location = new System.Drawing.Point(61, 85);
+            this.txtPatternAName.Name = "txtPatternAName";
+            this.txtPatternAName.Size = new System.Drawing.Size(321, 20);
+            this.txtPatternAName.TabIndex = 5;
+            this.txtPatternAName.TextChanged += new System.EventHandler(this.txtPatternAName_TextChanged);
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Location = new System.Drawing.Point(21, 61);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(34, 13);
+            this.label55.TabIndex = 38;
+            this.label55.Text = "Type:";
+            // 
+            // btnPatternAReplaceSpec
+            // 
+            this.btnPatternAReplaceSpec.Location = new System.Drawing.Point(443, 200);
+            this.btnPatternAReplaceSpec.Name = "btnPatternAReplaceSpec";
+            this.btnPatternAReplaceSpec.Size = new System.Drawing.Size(51, 23);
+            this.btnPatternAReplaceSpec.TabIndex = 37;
+            this.btnPatternAReplaceSpec.Text = "replace";
+            this.btnPatternAReplaceSpec.UseVisualStyleBackColor = true;
+            this.btnPatternAReplaceSpec.Click += new System.EventHandler(this.btnPatternAReplaceSpec_Click);
+            // 
+            // btnPatternAReplaceRGBMask
+            // 
+            this.btnPatternAReplaceRGBMask.Location = new System.Drawing.Point(443, 171);
+            this.btnPatternAReplaceRGBMask.Name = "btnPatternAReplaceRGBMask";
+            this.btnPatternAReplaceRGBMask.Size = new System.Drawing.Size(51, 23);
+            this.btnPatternAReplaceRGBMask.TabIndex = 36;
+            this.btnPatternAReplaceRGBMask.Text = "replace";
+            this.btnPatternAReplaceRGBMask.UseVisualStyleBackColor = true;
+            this.btnPatternAReplaceRGBMask.Click += new System.EventHandler(this.btnPatternAReplaceRGBMask_Click);
+            // 
+            // chkPatternAEnabled
+            // 
+            this.chkPatternAEnabled.AutoSize = true;
+            this.chkPatternAEnabled.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkPatternAEnabled.Enabled = false;
+            this.chkPatternAEnabled.Location = new System.Drawing.Point(9, 12);
+            this.chkPatternAEnabled.Name = "chkPatternAEnabled";
+            this.chkPatternAEnabled.Size = new System.Drawing.Size(65, 17);
+            this.chkPatternAEnabled.TabIndex = 1;
+            this.chkPatternAEnabled.Text = "Enabled";
+            this.chkPatternAEnabled.UseVisualStyleBackColor = true;
+            this.chkPatternAEnabled.CheckedChanged += new System.EventHandler(this.chkPatternAEnabled_CheckedChanged);
+            // 
+            // btnPatternAFindSpec
+            // 
+            this.btnPatternAFindSpec.Location = new System.Drawing.Point(401, 200);
+            this.btnPatternAFindSpec.Name = "btnPatternAFindSpec";
+            this.btnPatternAFindSpec.Size = new System.Drawing.Size(36, 23);
+            this.btnPatternAFindSpec.TabIndex = 33;
+            this.btnPatternAFindSpec.Text = "find";
+            this.btnPatternAFindSpec.UseVisualStyleBackColor = true;
+            this.btnPatternAFindSpec.Click += new System.EventHandler(this.btnPatternAFindSpec_Click);
+            // 
+            // txtPatternASpecular
+            // 
+            this.txtPatternASpecular.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPatternASpecular.Location = new System.Drawing.Point(62, 200);
+            this.txtPatternASpecular.Name = "txtPatternASpecular";
+            this.txtPatternASpecular.Size = new System.Drawing.Size(321, 20);
+            this.txtPatternASpecular.TabIndex = 32;
+            this.txtPatternASpecular.TextChanged += new System.EventHandler(this.txtPatternASpecular_TextChanged);
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(4, 202);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(52, 13);
+            this.label54.TabIndex = 31;
+            this.label54.Text = "Specular:";
+            // 
+            // btnPatternAFindRGBMask
+            // 
+            this.btnPatternAFindRGBMask.Location = new System.Drawing.Point(401, 171);
+            this.btnPatternAFindRGBMask.Name = "btnPatternAFindRGBMask";
+            this.btnPatternAFindRGBMask.Size = new System.Drawing.Size(36, 23);
+            this.btnPatternAFindRGBMask.TabIndex = 28;
+            this.btnPatternAFindRGBMask.Text = "find";
+            this.btnPatternAFindRGBMask.UseVisualStyleBackColor = true;
+            this.btnPatternAFindRGBMask.Click += new System.EventHandler(this.btnPatternAFindRGBMask_Click);
+            // 
+            // txtPatternARGBMask
+            // 
+            this.txtPatternARGBMask.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPatternARGBMask.Location = new System.Drawing.Point(62, 171);
+            this.txtPatternARGBMask.Name = "txtPatternARGBMask";
+            this.txtPatternARGBMask.Size = new System.Drawing.Size(321, 20);
+            this.txtPatternARGBMask.TabIndex = 27;
+            this.txtPatternARGBMask.TextChanged += new System.EventHandler(this.txtPatternARGBMask_TextChanged);
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(4, 175);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(59, 13);
+            this.label52.TabIndex = 26;
+            this.label52.Text = "RGBMask:";
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(27, 33);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(28, 13);
+            this.label41.TabIndex = 8;
+            this.label41.Text = "Key:";
+            // 
+            // txtPatternAKey
+            // 
+            this.txtPatternAKey.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPatternAKey.Location = new System.Drawing.Point(61, 32);
+            this.txtPatternAKey.Name = "txtPatternAKey";
+            this.txtPatternAKey.Size = new System.Drawing.Size(322, 20);
+            this.txtPatternAKey.TabIndex = 7;
+            this.txtPatternAKey.TextChanged += new System.EventHandler(this.txtPatternAKey_TextChanged);
+            // 
+            // chkPatternALinked
+            // 
+            this.chkPatternALinked.AutoSize = true;
+            this.chkPatternALinked.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkPatternALinked.Location = new System.Drawing.Point(87, 12);
+            this.chkPatternALinked.Name = "chkPatternALinked";
+            this.chkPatternALinked.Size = new System.Drawing.Size(58, 17);
+            this.chkPatternALinked.TabIndex = 2;
+            this.chkPatternALinked.Text = "Linked";
+            this.chkPatternALinked.UseVisualStyleBackColor = true;
+            this.chkPatternALinked.CheckedChanged += new System.EventHandler(this.chkPatternALinked_CheckedChanged);
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(20, 146);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(35, 13);
+            this.label38.TabIndex = 1;
+            this.label38.Text = "Tiling:";
+            // 
+            // txtPatternATiling
+            // 
+            this.txtPatternATiling.Location = new System.Drawing.Point(61, 142);
+            this.txtPatternATiling.Name = "txtPatternATiling";
+            this.txtPatternATiling.Size = new System.Drawing.Size(192, 20);
+            this.txtPatternATiling.TabIndex = 0;
+            this.txtPatternATiling.TextChanged += new System.EventHandler(this.txtPatternATiling_TextChanged);
             // 
             // groupBox5
             // 
@@ -1891,6 +2144,7 @@
             this.txtPatternBGImage.Name = "txtPatternBGImage";
             this.txtPatternBGImage.Size = new System.Drawing.Size(328, 20);
             this.txtPatternBGImage.TabIndex = 24;
+            this.txtPatternBGImage.TextChanged += new System.EventHandler(this.txtPatternBGImage_TextChanged);
             // 
             // btnPatternAFindBGImage
             // 
@@ -2012,47 +2266,6 @@
             this.label53.TabIndex = 29;
             this.label53.Text = "HSVShift Bg:";
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.button8);
-            this.groupBox3.Controls.Add(this.label42);
-            this.groupBox3.Controls.Add(this.picPatternSolidColour);
-            this.groupBox3.Location = new System.Drawing.Point(5, 232);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(512, 60);
-            this.groupBox3.TabIndex = 40;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Solid Colour Options";
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(390, 19);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(116, 23);
-            this.button8.TabIndex = 11;
-            this.button8.Text = "Populate details";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(6, 27);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(40, 13);
-            this.label42.TabIndex = 9;
-            this.label42.Text = "Colour:";
-            // 
-            // picPatternSolidColour
-            // 
-            this.picPatternSolidColour.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternSolidColour.Location = new System.Drawing.Point(47, 22);
-            this.picPatternSolidColour.Name = "picPatternSolidColour";
-            this.picPatternSolidColour.Size = new System.Drawing.Size(36, 30);
-            this.picPatternSolidColour.TabIndex = 10;
-            this.picPatternSolidColour.TabStop = false;
-            this.picPatternSolidColour.Click += new System.EventHandler(this.picPatternAColor_Click);
-            // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.label68);
@@ -2173,210 +2386,6 @@
             this.picPatternColour1.TabStop = false;
             this.picPatternColour1.Click += new System.EventHandler(this.picPatternColour1_Click);
             // 
-            // picPatternThumb
-            // 
-            this.picPatternThumb.Location = new System.Drawing.Point(389, 41);
-            this.picPatternThumb.Name = "picPatternThumb";
-            this.picPatternThumb.Size = new System.Drawing.Size(128, 128);
-            this.picPatternThumb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picPatternThumb.TabIndex = 44;
-            this.picPatternThumb.TabStop = false;
-            // 
-            // btnBrowsePatterns
-            // 
-            this.btnBrowsePatterns.Location = new System.Drawing.Point(424, 12);
-            this.btnBrowsePatterns.Name = "btnBrowsePatterns";
-            this.btnBrowsePatterns.Size = new System.Drawing.Size(93, 23);
-            this.btnBrowsePatterns.TabIndex = 43;
-            this.btnBrowsePatterns.Text = "Browse Patterns";
-            this.btnBrowsePatterns.UseVisualStyleBackColor = true;
-            this.btnBrowsePatterns.Click += new System.EventHandler(this.button11_Click);
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(17, 89);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(38, 13);
-            this.label40.TabIndex = 6;
-            this.label40.Text = "Name:";
-            // 
-            // txtPatternAFilename
-            // 
-            this.txtPatternAFilename.Location = new System.Drawing.Point(61, 113);
-            this.txtPatternAFilename.Name = "txtPatternAFilename";
-            this.txtPatternAFilename.Size = new System.Drawing.Size(322, 20);
-            this.txtPatternAFilename.TabIndex = 3;
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(3, 117);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(52, 13);
-            this.label39.TabIndex = 4;
-            this.label39.Text = "Filename:";
-            // 
-            // cmbPatternAType
-            // 
-            this.cmbPatternAType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPatternAType.FormattingEnabled = true;
-            this.cmbPatternAType.Items.AddRange(new object[] {
-            "Solid Colour",
-            "Pattern (Coloured)",
-            "Pattern (HSV)"});
-            this.cmbPatternAType.Location = new System.Drawing.Point(61, 57);
-            this.cmbPatternAType.Name = "cmbPatternAType";
-            this.cmbPatternAType.Size = new System.Drawing.Size(121, 21);
-            this.cmbPatternAType.TabIndex = 39;
-            this.cmbPatternAType.SelectedIndexChanged += new System.EventHandler(this.cmbPatternAType_SelectedIndexChanged);
-            // 
-            // txtPatternAName
-            // 
-            this.txtPatternAName.Location = new System.Drawing.Point(61, 85);
-            this.txtPatternAName.Name = "txtPatternAName";
-            this.txtPatternAName.Size = new System.Drawing.Size(321, 20);
-            this.txtPatternAName.TabIndex = 5;
-            // 
-            // label55
-            // 
-            this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(21, 61);
-            this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(34, 13);
-            this.label55.TabIndex = 38;
-            this.label55.Text = "Type:";
-            // 
-            // btnPatternAReplaceSpec
-            // 
-            this.btnPatternAReplaceSpec.Location = new System.Drawing.Point(443, 200);
-            this.btnPatternAReplaceSpec.Name = "btnPatternAReplaceSpec";
-            this.btnPatternAReplaceSpec.Size = new System.Drawing.Size(51, 23);
-            this.btnPatternAReplaceSpec.TabIndex = 37;
-            this.btnPatternAReplaceSpec.Text = "replace";
-            this.btnPatternAReplaceSpec.UseVisualStyleBackColor = true;
-            this.btnPatternAReplaceSpec.Click += new System.EventHandler(this.btnPatternAReplaceSpec_Click);
-            // 
-            // btnPatternAReplaceRGBMask
-            // 
-            this.btnPatternAReplaceRGBMask.Location = new System.Drawing.Point(443, 171);
-            this.btnPatternAReplaceRGBMask.Name = "btnPatternAReplaceRGBMask";
-            this.btnPatternAReplaceRGBMask.Size = new System.Drawing.Size(51, 23);
-            this.btnPatternAReplaceRGBMask.TabIndex = 36;
-            this.btnPatternAReplaceRGBMask.Text = "replace";
-            this.btnPatternAReplaceRGBMask.UseVisualStyleBackColor = true;
-            this.btnPatternAReplaceRGBMask.Click += new System.EventHandler(this.btnPatternAReplaceRGBMask_Click);
-            // 
-            // chkPatternAEnabled
-            // 
-            this.chkPatternAEnabled.AutoSize = true;
-            this.chkPatternAEnabled.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkPatternAEnabled.Enabled = false;
-            this.chkPatternAEnabled.Location = new System.Drawing.Point(9, 12);
-            this.chkPatternAEnabled.Name = "chkPatternAEnabled";
-            this.chkPatternAEnabled.Size = new System.Drawing.Size(65, 17);
-            this.chkPatternAEnabled.TabIndex = 1;
-            this.chkPatternAEnabled.Text = "Enabled";
-            this.chkPatternAEnabled.UseVisualStyleBackColor = true;
-            // 
-            // btnPatternAFindSpec
-            // 
-            this.btnPatternAFindSpec.Location = new System.Drawing.Point(401, 200);
-            this.btnPatternAFindSpec.Name = "btnPatternAFindSpec";
-            this.btnPatternAFindSpec.Size = new System.Drawing.Size(36, 23);
-            this.btnPatternAFindSpec.TabIndex = 33;
-            this.btnPatternAFindSpec.Text = "find";
-            this.btnPatternAFindSpec.UseVisualStyleBackColor = true;
-            this.btnPatternAFindSpec.Click += new System.EventHandler(this.btnPatternAFindSpec_Click);
-            // 
-            // txtPatternASpecular
-            // 
-            this.txtPatternASpecular.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPatternASpecular.Location = new System.Drawing.Point(62, 200);
-            this.txtPatternASpecular.Name = "txtPatternASpecular";
-            this.txtPatternASpecular.Size = new System.Drawing.Size(321, 20);
-            this.txtPatternASpecular.TabIndex = 32;
-            // 
-            // label54
-            // 
-            this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(4, 202);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(52, 13);
-            this.label54.TabIndex = 31;
-            this.label54.Text = "Specular:";
-            // 
-            // btnPatternAFindRGBMask
-            // 
-            this.btnPatternAFindRGBMask.Location = new System.Drawing.Point(401, 171);
-            this.btnPatternAFindRGBMask.Name = "btnPatternAFindRGBMask";
-            this.btnPatternAFindRGBMask.Size = new System.Drawing.Size(36, 23);
-            this.btnPatternAFindRGBMask.TabIndex = 28;
-            this.btnPatternAFindRGBMask.Text = "find";
-            this.btnPatternAFindRGBMask.UseVisualStyleBackColor = true;
-            this.btnPatternAFindRGBMask.Click += new System.EventHandler(this.btnPatternAFindRGBMask_Click);
-            // 
-            // txtPatternARGBMask
-            // 
-            this.txtPatternARGBMask.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPatternARGBMask.Location = new System.Drawing.Point(62, 171);
-            this.txtPatternARGBMask.Name = "txtPatternARGBMask";
-            this.txtPatternARGBMask.Size = new System.Drawing.Size(321, 20);
-            this.txtPatternARGBMask.TabIndex = 27;
-            // 
-            // label52
-            // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(4, 175);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(59, 13);
-            this.label52.TabIndex = 26;
-            this.label52.Text = "RGBMask:";
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(27, 33);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(28, 13);
-            this.label41.TabIndex = 8;
-            this.label41.Text = "Key:";
-            // 
-            // txtPatternAKey
-            // 
-            this.txtPatternAKey.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPatternAKey.Location = new System.Drawing.Point(61, 32);
-            this.txtPatternAKey.Name = "txtPatternAKey";
-            this.txtPatternAKey.Size = new System.Drawing.Size(322, 20);
-            this.txtPatternAKey.TabIndex = 7;
-            // 
-            // chkPatternALinked
-            // 
-            this.chkPatternALinked.AutoSize = true;
-            this.chkPatternALinked.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkPatternALinked.Location = new System.Drawing.Point(87, 12);
-            this.chkPatternALinked.Name = "chkPatternALinked";
-            this.chkPatternALinked.Size = new System.Drawing.Size(58, 17);
-            this.chkPatternALinked.TabIndex = 2;
-            this.chkPatternALinked.Text = "Linked";
-            this.chkPatternALinked.UseVisualStyleBackColor = true;
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(20, 146);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(35, 13);
-            this.label38.TabIndex = 1;
-            this.label38.Text = "Tiling:";
-            // 
-            // txtPatternATiling
-            // 
-            this.txtPatternATiling.Location = new System.Drawing.Point(61, 142);
-            this.txtPatternATiling.Name = "txtPatternATiling";
-            this.txtPatternATiling.Size = new System.Drawing.Size(192, 20);
-            this.txtPatternATiling.TabIndex = 0;
-            // 
             // label37
             // 
             this.label37.AutoSize = true;
@@ -2395,6 +2404,7 @@
             this.btnPatternACommit.TabIndex = 34;
             this.btnPatternACommit.Text = "Commit Changes";
             this.btnPatternACommit.UseVisualStyleBackColor = true;
+            this.btnPatternACommit.Visible = false;
             this.btnPatternACommit.Click += new System.EventHandler(this.btnPatternACommit_Click);
             // 
             // tabPage13
@@ -3537,20 +3547,6 @@
             this.btnResetView.Visible = false;
             this.btnResetView.Click += new System.EventHandler(this.btnResetView_Click);
             // 
-            // renderWindow1
-            // 
-            this.renderWindow1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.renderWindow1.BackgroundColour = System.Drawing.Color.Empty;
-            this.renderWindow1.CurrentFillMode = 1;
-            this.renderWindow1.Location = new System.Drawing.Point(579, 47);
-            this.renderWindow1.Name = "renderWindow1";
-            this.renderWindow1.RenderEnabled = false;
-            this.renderWindow1.Size = new System.Drawing.Size(411, 548);
-            this.renderWindow1.TabIndex = 25;
-            this.renderWindow1.WireframeColour = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
-            // 
             // contextMenuStrip2
             // 
             this.contextMenuStrip2.BackColor = System.Drawing.SystemColors.Menu;
@@ -3603,6 +3599,20 @@
             this.editColourToolStripMenuItem.Text = "Edit Colour";
             this.editColourToolStripMenuItem.Click += new System.EventHandler(this.editColourToolStripMenuItem_Click);
             // 
+            // renderWindow1
+            // 
+            this.renderWindow1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.renderWindow1.BackgroundColour = System.Drawing.Color.Empty;
+            this.renderWindow1.CurrentFillMode = 1;
+            this.renderWindow1.Location = new System.Drawing.Point(579, 47);
+            this.renderWindow1.Name = "renderWindow1";
+            this.renderWindow1.RenderEnabled = false;
+            this.renderWindow1.Size = new System.Drawing.Size(411, 548);
+            this.renderWindow1.TabIndex = 25;
+            this.renderWindow1.WireframeColour = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3645,14 +3655,15 @@
             this.tabPage2.PerformLayout();
             this.grpPatternA.ResumeLayout(false);
             this.grpPatternA.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picPatternThumb)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picHSVColorBG)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour4)).EndInit();
@@ -3660,7 +3671,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColourBg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picPatternThumb)).EndInit();
             this.tabPage13.ResumeLayout(false);
             this.tabPage13.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLstTextureColour)).EndInit();

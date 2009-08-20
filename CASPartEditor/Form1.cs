@@ -2061,6 +2061,7 @@ namespace CASPartEditor
         {
             if (listView1.SelectedItems.Count == 1)
             {
+                /*
                 int chunkNo = cmbPatternSelect.SelectedIndex;
 
                 xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
@@ -2070,6 +2071,7 @@ namespace CASPartEditor
                     btnReloadTextures_Click(null, null);
                 else
                     btnStart3D_Click(null, null);
+                 */
             }
         }
 
@@ -2096,6 +2098,12 @@ namespace CASPartEditor
         private void picPatternAColor_Click(object sender, EventArgs e)
         {
             picPatternSolidColour.BackColor = showColourDialog(picPatternSolidColour.BackColor);
+            commitPatternDetails("Color", Colours.convertColour(picPatternSolidColour.BackColor));
+
+            if (renderWindow1.RenderEnabled)
+                btnReloadTextures_Click(null, null);
+            else
+                btnStart3D_Click(null, null);
         }
 
         private void btnPatternChannelTextureFind_Click(object sender, EventArgs e)
@@ -2143,7 +2151,7 @@ namespace CASPartEditor
         {
             picPatternColourBg.BackColor = showColourDialog(picPatternColourBg.BackColor);
             picPatternColourBg.Tag = "color";
-
+            commitPatternDetails("ColorP0", Colours.convertColour(picPatternColourBg.BackColor));
             makePatternPreviewThumb();
         }
 
@@ -2151,6 +2159,7 @@ namespace CASPartEditor
         {
             picPatternColour1.BackColor = showColourDialog(picPatternColour1.BackColor);
             picPatternColour1.Tag = "color";
+            commitPatternDetails("ColorP1", Colours.convertColour(picPatternColour1.BackColor));
             makePatternPreviewThumb();
         }
 
@@ -2158,6 +2167,7 @@ namespace CASPartEditor
         {
             picPatternColour2.BackColor = showColourDialog(picPatternColour2.BackColor);
             picPatternColour2.Tag = "color";
+            commitPatternDetails("ColorP2", Colours.convertColour(picPatternColour2.BackColor));
             makePatternPreviewThumb();
         }
 
@@ -2165,6 +2175,7 @@ namespace CASPartEditor
         {
             picPatternColour3.BackColor = showColourDialog(picPatternColour3.BackColor);
             picPatternColour3.Tag = "color";
+            commitPatternDetails("ColorP3", Colours.convertColour(picPatternColour3.BackColor));
             makePatternPreviewThumb();
         }
 
@@ -2172,6 +2183,7 @@ namespace CASPartEditor
         {
             picPatternColour4.BackColor = showColourDialog(picPatternColour4.BackColor);
             picPatternColour4.Tag = "color";
+            commitPatternDetails("ColorP4", Colours.convertColour(picPatternColour4.BackColor));
             makePatternPreviewThumb();
         }
 
@@ -2192,24 +2204,34 @@ namespace CASPartEditor
                     groupBox3.Visible = true;
                     groupBox5.Visible = false;
                     groupBox7.Visible = false;
+                    commitPatternDetails("type", "solidColor");
                     break;
                 case 1: // Coloured
                     groupBox3.Visible = false;
                     groupBox5.Visible = false;
                     groupBox7.Visible = true;
+                    commitPatternDetails("type", "Coloured");
                     break;
                 case 2: // HSV
                     groupBox3.Visible = false;
                     groupBox5.Visible = true;
                     groupBox7.Visible = false;
                     cmbChannelSelect.SelectedIndex = 0;
+                    commitPatternDetails("type", "HSV");
                     break;
             }
         }
 
         private void cmbChannelSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
-            viewPatternChannelInfo();
+            if (listView1.SelectedItems.Count == 1)
+            {
+
+                int patternNo = cmbPatternSelect.SelectedIndex;
+                int channelNo = cmbChannelSelect.SelectedIndex;
+                xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+                viewPatternChannelInfo(chunk.pattern[patternNo]);
+            }
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -2229,6 +2251,20 @@ namespace CASPartEditor
             if (pBrowser.ShowDialog() == DialogResult.OK)
             {
                 showPatternDetails(pBrowser.selectedPattern, false);
+                // Commit pattern here
+                if (listView1.SelectedItems.Count == 1)
+                {
+
+                    int patternNo = cmbPatternSelect.SelectedIndex;
+                    xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+                    chunk.pattern[patternNo] = (patternDetails)pBrowser.selectedPattern.Copy();
+
+                    if (renderWindow1.RenderEnabled)
+                        btnReloadTextures_Click(null, null);
+                    else
+                        btnStart3D_Click(null, null);
+
+                }
             }
 
             pBrowser.Hide();
@@ -2821,6 +2857,51 @@ namespace CASPartEditor
         private void Form1_ResizeBegin(object sender, EventArgs e)
         {
             Console.WriteLine("Resize Begin");
+        }
+
+        private void chkPatternAEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            commitPatternDetails("enabled", chkPatternAEnabled.Checked);
+        }
+
+        private void chkPatternALinked_CheckedChanged(object sender, EventArgs e)
+        {
+            commitPatternDetails("linked", chkPatternALinked.Checked);
+        }
+
+        private void txtPatternAKey_TextChanged(object sender, EventArgs e)
+        {
+            commitPatternDetails("key", txtPatternAKey.Text);
+        }
+
+        private void txtPatternAName_TextChanged(object sender, EventArgs e)
+        {
+            commitPatternDetails("name", txtPatternAName.Text);
+        }
+
+        private void txtPatternAFilename_TextChanged(object sender, EventArgs e)
+        {
+            commitPatternDetails("filename", txtPatternAFilename.Text);
+        }
+
+        private void txtPatternATiling_TextChanged(object sender, EventArgs e)
+        {
+            commitPatternDetails("tiling", txtPatternATiling.Text);
+        }
+
+        private void txtPatternARGBMask_TextChanged(object sender, EventArgs e)
+        {
+            commitPatternDetails("rgbmask", txtPatternARGBMask.Text);
+        }
+
+        private void txtPatternASpecular_TextChanged(object sender, EventArgs e)
+        {
+            commitPatternDetails("specular", txtPatternASpecular.Text);
+        }
+
+        private void txtPatternBGImage_TextChanged(object sender, EventArgs e)
+        {
+            commitPatternDetails("bgimage", txtPatternBGImage.Text);
         }
 
     }
