@@ -332,7 +332,7 @@ namespace CASPartEditor
 
             Stream matchChunk = null;
 
-            if (filename == "" || filename == null) { return matchChunk; }
+            if (String.IsNullOrEmpty(filename)) { return matchChunk; }
 
             // Open the package file and search
             Stream package = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -1135,7 +1135,7 @@ namespace CASPartEditor
 
         private string replaceImageKey(string keyString)
         {
-            //if (keyString.Trim() == "") { return ""; }
+            
 
             openFileDialog1.FileName = "";
             openFileDialog1.Filter = "Sims 3 Texture File|*.dds";
@@ -1145,7 +1145,7 @@ namespace CASPartEditor
                 // Generate Instance ID from the name plus some other stuff
                 string newKey = "";
                 string instanceID = "";
-                if (keyString.Trim() == "")
+                if (String.IsNullOrEmpty(keyString))
                 {
                     instanceID = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks.ToString() + "_" + f.Name).ToString("X16");
                     newKey = "key:00B2D882:00000000:" + instanceID;

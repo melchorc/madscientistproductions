@@ -396,7 +396,7 @@ namespace CASPartEditor
 
         private void writeLocalResource(Database db, string keyName)
         {
-            if (keyName.Trim() == "") return;
+            if (String.IsNullOrEmpty(keyName)) return;
             //if (!validateKey(keyName)) return;
 
             if (Helpers.localFiles.ContainsKey(keyName))

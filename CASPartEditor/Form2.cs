@@ -21,6 +21,7 @@ namespace CASPartEditor
         {
             bool retVal = true;
 
+            if (String.IsNullOrEmpty(keyString)) return false;
             if (keyString.Trim() == "") retVal = false;
             if (!keyString.StartsWith("key:")) retVal = false;
             if (!keyString.Contains(":")) retVal = false;

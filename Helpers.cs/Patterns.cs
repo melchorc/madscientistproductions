@@ -89,8 +89,14 @@ namespace MadScience
                         C2 = new Colours.HSVColor(double.Parse(pattern.H[2]) * 360, double.Parse(pattern.S[2]), double.Parse(pattern.V[2]));
                         ce[2] = true;
                     }
-                    
-                    temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), KeyUtils.findKey(pattern.rgbmask), bg, KeyUtils.findKey(makeKey(pattern.Channel[0])), KeyUtils.findKey(makeKey(pattern.Channel[1])), KeyUtils.findKey(makeKey(pattern.Channel[2])),C0,C1,C2,ce);
+                    if (db != null)
+                    {
+                        temp = Patterns.createHSVPattern(KeyUtils.findKey(new Wrappers.ResourceKey(pattern.BackgroundImage), 2, db), KeyUtils.findKey(new Wrappers.ResourceKey(pattern.rgbmask), 2, db), bg, KeyUtils.findKey(new MadScience.Wrappers.ResourceKey(makeKey(pattern.Channel[0])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[1])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[2])), 0, db), C0, C1, C2, ce);
+                    }
+                    else
+                    {
+                        temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), KeyUtils.findKey(pattern.rgbmask), bg, KeyUtils.findKey(makeKey(pattern.Channel[0])), KeyUtils.findKey(makeKey(pattern.Channel[1])), KeyUtils.findKey(makeKey(pattern.Channel[2])), C0, C1, C2, ce);
+                    }
                 }
                 if (pattern.type == "Coloured")
                 {
@@ -100,7 +106,35 @@ namespace MadScience
                     {
                         bgColor = Color.Black;
                     }
-                    ddsP.Load(KeyUtils.findKey(pattern.rgbmask));
+                    if (pattern.isCustom)
+                    {
+                        // We need this in here becuase findKey only searches the game files and any local DDS files - it
+                        // doesn't search custom packages
+                        if (File.Exists(pattern.customFilename))
+                        {
+                            Stream patternThumb = KeyUtils.searchForKey(pattern.rgbmask, pattern.customFilename);
+                            if (!Helpers.isValidStream(patternThumb))
+                            {
+                                patternThumb = KeyUtils.searchForKey(pattern.BackgroundImage, pattern.customFilename);
+                            }
+                            if (Helpers.isValidStream(patternThumb))
+                            {
+                                ddsP.Load(patternThumb);
+                            }
+                            patternThumb.Close();
+                        }
+                    }
+                    else
+                    {
+                        if (db != null)
+                        {
+                            ddsP.Load(KeyUtils.findKey(new Wrappers.ResourceKey(pattern.rgbmask), 2, db));
+                        }
+                        else
+                        {
+                            ddsP.Load(KeyUtils.findKey(pattern.rgbmask));
+                        }
+                    }
                     temp = ddsP.Image(bgColor, Colours.convertColour(pattern.ColorP[1], true), Colours.convertColour(pattern.ColorP[2], true), Colours.convertColour(pattern.ColorP[3], true), Colours.convertColour(pattern.ColorP[4], true));
 
                 }
@@ -150,13 +184,9 @@ namespace MadScience
                         case "complate":
                             level++;
 
-                            xtr.MoveToAttribute("name");
-                            pDetail.name = xtr.Value;
-                            xtr.MoveToAttribute("category");
-                            pDetail.category = xtr.Value;
-
-                            xtr.MoveToAttribute("reskey");
-                            pDetail.key = xtr.Value;
+                            pDetail.name = xtr.GetAttribute("name");
+                            pDetail.category = xtr.GetAttribute("category");
+                            pDetail.key = xtr.GetAttribute("reskey");
 
                             break;
                         case "variables":
@@ -184,236 +214,182 @@ namespace MadScience
                                 switch (xtr.Value)
                                 {
                                     case "assetRoot":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.assetRoot = xtr.Value;
+                                        pDetail.assetRoot = xtr.GetAttribute("default");
                                         break;
                                     case "Color":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.Color = xtr.Value;
+                                        pDetail.Color = xtr.GetAttribute("default");
                                         break;
 
                                     case "Color 0":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.ColorP[0] = xtr.Value;
+                                        pDetail.ColorP[0] = xtr.GetAttribute("default");
                                         break;
                                     case "Color 1":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.ColorP[1] = xtr.Value;
+                                        pDetail.ColorP[1] = xtr.GetAttribute("default");
                                         break;
                                     case "Color 2":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.ColorP[2] = xtr.Value;
+                                        pDetail.ColorP[2] = xtr.GetAttribute("default");
                                         break;
                                     case "Color 3":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.ColorP[3] = xtr.Value;
+                                        pDetail.ColorP[3] = xtr.GetAttribute("default");
                                         break;
                                     case "Color 4":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.ColorP[4] = xtr.Value;
+                                        pDetail.ColorP[4] = xtr.GetAttribute("default");
                                         break;
 
                                     case "Channel 1":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.Channel[0] = xtr.Value;
+                                        pDetail.Channel[0] = xtr.GetAttribute("default");
                                         break;
                                     case "Channel 2":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.Channel[1] = xtr.Value;
+                                        pDetail.Channel[1] = xtr.GetAttribute("default");
                                         break;
                                     case "Channel 3":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.Channel[2] = xtr.Value;
+                                        pDetail.Channel[2] = xtr.GetAttribute("default");
                                         break;
                                     case "Channel 4":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.Channel[3] = xtr.Value;
+                                        pDetail.Channel[3] = xtr.GetAttribute("default");
                                         break;
 
                                     case "Channel 1 Enabled":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.ChannelEnabled[0] = xtr.Value;
+                                        pDetail.ChannelEnabled[0] = xtr.GetAttribute("default");
                                         break;
                                     case "Channel 2 Enabled":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.ChannelEnabled[1] = xtr.Value;
+                                        pDetail.ChannelEnabled[1] = xtr.GetAttribute("default");
                                         break;
                                     case "Channel 3 Enabled":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.ChannelEnabled[2] = xtr.Value;
+                                        pDetail.ChannelEnabled[2] = xtr.GetAttribute("default");
                                         break;
                                     case "Channel 4 Enabled":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.ChannelEnabled[3] = xtr.Value;
+                                        pDetail.ChannelEnabled[3] = xtr.GetAttribute("default");
                                         break;
 
 
                                     case "Background Image":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BackgroundImage = xtr.Value;
-                                        if (patternTexture == "") patternTexture = xtr.Value;
+                                        pDetail.BackgroundImage = xtr.GetAttribute("default");
+                                        if (patternTexture == "") patternTexture = pDetail.BackgroundImage;
                                         break;
 
                                     case "H Bg":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.HBg = xtr.Value;
+                                        pDetail.HBg = xtr.GetAttribute("default");
                                         break;
                                     case "H 1":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.H[0] = xtr.Value;
+                                        pDetail.H[0] = xtr.GetAttribute("default");
                                         break;
                                     case "H 2":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.H[1] = xtr.Value;
+                                        pDetail.H[1] = xtr.GetAttribute("default");
                                         break;
                                     case "H 3":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.H[2] = xtr.Value;
+                                        pDetail.H[2] = xtr.GetAttribute("default");
                                         break;
                                     case "H 4":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.H[3] = xtr.Value;
+                                        pDetail.H[3] = xtr.GetAttribute("default");
                                         break;
 
                                     case "S Bg":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.SBg = xtr.Value;
+                                        pDetail.SBg = xtr.GetAttribute("default");
                                         break;
                                     case "S 1":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.S[0] = xtr.Value;
+                                        pDetail.S[0] = xtr.GetAttribute("default");
                                         break;
                                     case "S 2":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.S[1] = xtr.Value;
+                                        pDetail.S[1] = xtr.GetAttribute("default");
                                         break;
                                     case "S 3":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.S[2] = xtr.Value;
+                                        pDetail.S[2] = xtr.GetAttribute("default");
                                         break;
                                     case "S 4":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.S[3] = xtr.Value;
+                                        pDetail.S[3] = xtr.GetAttribute("default");
                                         break;
 
                                     case "V Bg":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.VBg = xtr.Value;
+                                        pDetail.VBg = xtr.GetAttribute("default");
                                         break;
                                     case "V 1":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.V[0] = xtr.Value;
+                                        pDetail.V[0] = xtr.GetAttribute("default");
                                         break;
                                     case "V 2":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.V[1] = xtr.Value;
+                                        pDetail.V[1] = xtr.GetAttribute("default");
                                         break;
                                     case "V 3":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.V[2] = xtr.Value;
+                                        pDetail.V[2] = xtr.GetAttribute("default"); 
                                         break;
                                     case "V 4":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.V[3] = xtr.Value;
+                                        pDetail.V[3] = xtr.GetAttribute("default");
                                         break;
 
 
                                     case "Base H Bg":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseHBg = xtr.Value;
+                                        pDetail.BaseHBg = xtr.GetAttribute("default");
                                         break;
                                     case "Base H 1":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseH[0] = xtr.Value;
+                                        pDetail.BaseH[0] = xtr.GetAttribute("default");
                                         break;
                                     case "Base H 2":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseH[1] = xtr.Value;
+                                        pDetail.BaseH[1] = xtr.GetAttribute("default");
                                         break;
                                     case "Base H 3":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseH[2] = xtr.Value;
+                                        pDetail.BaseH[2] = xtr.GetAttribute("default");
                                         break;
                                     case "Base H 4":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseH[3] = xtr.Value;
+                                        pDetail.BaseH[3] = xtr.GetAttribute("default");
                                         break;
 
                                     case "Base S Bg":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseSBg = xtr.Value;
+                                        pDetail.BaseSBg = xtr.GetAttribute("default");
                                         break;
                                     case "Base S 1":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseS[0] = xtr.Value;
+                                        pDetail.BaseS[0] = xtr.GetAttribute("default");
                                         break;
                                     case "Base S 2":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseS[1] = xtr.Value;
+                                        pDetail.BaseS[1] = xtr.GetAttribute("default");
                                         break;
                                     case "Base S 3":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseS[2] = xtr.Value;
+                                        pDetail.BaseS[2] = xtr.GetAttribute("default");
                                         break;
                                     case "Base S 4":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseS[3] = xtr.Value;
+                                        pDetail.BaseS[3] = xtr.GetAttribute("default");
                                         break;
 
                                     case "Base V Bg":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseVBg = xtr.Value;
+                                        pDetail.BaseVBg = xtr.GetAttribute("default");
                                         break;
                                     case "Base V 1":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseV[0] = xtr.Value;
+                                        pDetail.BaseV[0] = xtr.GetAttribute("default");
                                         break;
                                     case "Base V 2":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseV[1] = xtr.Value;
+                                        pDetail.BaseV[1] = xtr.GetAttribute("default");
                                         break;
                                     case "Base V 3":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseV[2] = xtr.Value;
+                                        pDetail.BaseV[2] = xtr.GetAttribute("default");
                                         break;
                                     case "Base V 4":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.BaseV[3] = xtr.Value;
+                                        pDetail.BaseV[3] = xtr.GetAttribute("default");
                                         break;
 
                                     case "HSVShift Bg":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.HSVShiftBg = xtr.Value;
+                                        pDetail.HSVShiftBg = xtr.GetAttribute("default");
                                         break;
                                     case "HSVShift 1":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.HSVShift[0] = xtr.Value;
+                                        pDetail.HSVShift[0] = xtr.GetAttribute("default");
                                         break;
                                     case "HSVShift 2":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.HSVShift[1] = xtr.Value;
+                                        pDetail.HSVShift[1] = xtr.GetAttribute("default");
                                         break;
                                     case "HSVShift 3":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.HSVShift[2] = xtr.Value;
+                                        pDetail.HSVShift[2] = xtr.GetAttribute("default");
                                         break;
                                     case "HSVShift 4":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.HSVShift[3] = xtr.Value;
+                                        pDetail.HSVShift[3] = xtr.GetAttribute("default");
                                         break;
 
                                     case "rgbmask":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.rgbmask = xtr.Value;
-                                        if (patternTexture == "") patternTexture = xtr.Value;
+                                        pDetail.rgbmask = xtr.GetAttribute("default");
+                                        if (patternTexture == "") patternTexture = pDetail.rgbmask;
                                         break;
                                     case "specmap":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.specmap = xtr.Value;
+                                        pDetail.specmap = xtr.GetAttribute("default");
                                         break;
                                     case "filename":
-                                        xtr.MoveToAttribute("default");
-                                        pDetail.filename = xtr.Value;
+                                        pDetail.filename = xtr.GetAttribute("default");
                                         break;
 
                                 }

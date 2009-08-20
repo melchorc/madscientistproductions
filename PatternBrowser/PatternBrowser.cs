@@ -50,158 +50,87 @@ namespace PatternBrowser
             for (int i = 0; i < lookupList.Items.Count; i++)
             {
 
-                // Open XML file 
-                string patternTexture = "";
-                string color0 = "";
-                string color1 = "";
-                string color2 = "";
-                string color3 = "";
-                string color4 = "";
-                string HBg = "";
-                string SBg = "";
-                string VBg = "";
-                string HSVShiftBg = "";
 
                 Stream mem = File.OpenRead(@"P:\Stuart\Desktop\FullBuild0\config\xml\root\" + lookupList.Items[i].fullCasPartname + ".xml");
 
-                patternDetails pDetail = Patterns.parsePatternComplate(mem);
+                patternDetails pDetails = Patterns.parsePatternComplate(mem);
 
-                /*
-                XmlTextReader xtr = new XmlTextReader(mem);
-                while (xtr.Read() )
+                if (String.IsNullOrEmpty(pDetails.category)) continue;
+
+                patternsFile cPattern = new patternsFile();
+
+                MadScience.Wrappers.ResourceKey rKey = new MadScience.Wrappers.ResourceKey("key:" + lookupList.Items[i].typeid.Remove(0, 2) + ":" + lookupList.Items[i].groupid.Remove(0, 2) + ":" + lookupList.Items[i].instanceid.Remove(0,2));
+
+                cPattern.key = rKey.ToString();
+
+                if (!Helpers.isValidStream(KeyUtils.findKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.name.Substring(pDetails.name.LastIndexOf("\\") + 1)).ToString("X16"))))
                 {
-                    if (xtr.NodeType == XmlNodeType.Element)
-                    {
-                        switch (xtr.Name)
+                    cPattern.texturename = pDetails.BackgroundImage;
+                }
+                else
+                {
+                    cPattern.texturename = "key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.name.Substring(pDetails.name.LastIndexOf("\\") + 1)).ToString("X16");
+                }
+                cPattern.casPart = pDetails.name.Substring(pDetails.name.LastIndexOf("\\") + 1);
+
+                switch (pDetails.category)
+                {
+                    case "Old":
+                        break;
+                    default:
+                        //string fullName = pDetails.Substring(patternTexture.LastIndexOf("\\") + 1);
+                        string category = pDetails.filename;
+                        category = category.Replace(@"($assetRoot)\InGame\Complates\", "");
+                        category = category.Replace(@"Materials\", "");
+                        category = category.Replace(@".tga", ""); 
+                        category = category.Replace(@".dds", ""); 
+
+                        if (category.IndexOf("\\") > -1)
                         {
-                            case "param":
-                                xtr.MoveToAttribute("type");
-                                if (xtr.Value == "texture")
-                                {
-                                    xtr.MoveToAttribute("name");
-                                    if (xtr.Value == "rgbmask")
-                                    {
-                                        xtr.MoveToAttribute("default");
-                                        if (patternTexture == "") patternTexture = xtr.Value;
-                                    }
-                                    if (xtr.Value == "Background Image")
-                                    {
-                                        xtr.MoveToAttribute("default");
-                                        patternTexture = xtr.Value;
-                                    }
-                                }
-                                if (xtr.Value == "float")
-                                {
-                                    xtr.MoveToAttribute("name");
-                                    if (xtr.Value == "H Bg")
-                                    {
-                                        xtr.MoveToAttribute("default");
-                                        HBg = xtr.Value;
-                                    }
-                                    if (xtr.Value == "S Bg")
-                                    {
-                                        xtr.MoveToAttribute("default");
-                                        SBg = xtr.Value;
-                                    }
-                                    if (xtr.Value == "V Bg")
-                                    {
-                                        xtr.MoveToAttribute("default");
-                                        VBg = xtr.Value;
-                                    }
-                                }
-                                if (xtr.Value == "string")
-                                {
-                                    xtr.MoveToAttribute("name");
-                                    if (xtr.Value == "HSVShift Bg")
-                                    {
-                                        xtr.MoveToAttribute("default");
-                                        HSVShiftBg = xtr.Value;
-                                    }
-                                }
-                                if (xtr.Value == "color")
-                                {
-                                    xtr.MoveToAttribute("name");
-                                    if (xtr.Value == "Color 0")
-                                    {
-                                        xtr.MoveToAttribute("default");
-                                        color0 = xtr.Value;
-                                    }
-                                    if (xtr.Value == "Color 1")
-                                    {
-                                        xtr.MoveToAttribute("default");
-                                        color1 = xtr.Value;
-                                    }
-                                    if (xtr.Value == "Color 2")
-                                    {
-                                        xtr.MoveToAttribute("default");
-                                        color2 = xtr.Value;
-                                    }
-                                    if (xtr.Value == "Color 3")
-                                    {
-                                        xtr.MoveToAttribute("default");
-                                        color3 = xtr.Value;
-                                    }
-                                    if (xtr.Value == "Color 4")
-                                    {
-                                        xtr.MoveToAttribute("default");
-                                        color4 = xtr.Value;
-                                    }
-
-                                }
-                                break;
-                            case "step":
-                                xtr.MoveToAttribute("type");
-                                if (xtr.Value == "ColorFill")
-                                {
-                                    if (xtr.AttributeCount == 2)
-                                    {
-                                        if (color0 != "")
-                                        {
-                                            color4 = color3;
-                                            color3 = color2;
-                                            color2 = color1;
-                                            color1 = color0;
-                                        }
-
-                                        xtr.MoveToAttribute("color");
-                                        color0 = xtr.Value;
-                                    }
-                                }
-                                break;
+                            category = category.Substring(0, category.IndexOf("\\"));
                         }
-                    }
+                        else
+                        {
+                            category = pDetails.category;
+                        }
+
+                        string subCategory = pDetails.filename;
+                        subCategory = subCategory.Replace(@"($assetRoot)\InGame\Complates\", "");
+                        subCategory = subCategory.Replace(@"Materials\", "");
+                        subCategory = subCategory.Replace(@".tga", "");
+                        subCategory = subCategory.Replace(@".dds", ""); 
+                        if (subCategory.IndexOf("\\") > -1)
+                        {
+                            subCategory = subCategory.Substring(subCategory.IndexOf("\\") + 1);
+                        }
+
+                        if (subCategory.Contains("\\"))
+                        {
+                            subCategory = subCategory.Remove(subCategory.IndexOf("\\"));
+                        }
+                        else
+                        {
+                            subCategory = "";
+                        }
+
+                        if (subCategory == pDetails.name) subCategory = "";
+
+                        cPattern.category = category;
+                        cPattern.subcategory = subCategory;
+
+                        Console.WriteLine(pDetails.name + " " + category + " " + subCategory);
+
+                        sb.AppendLine("<pattern key=\"" + cPattern.key + "\" texturename=\"\" category=\"" + category + "\" subcategory=\"" + subCategory + "\">" + pDetails.name + "</file>");
+
+                        break;
                 }
-
-                if (patternTexture != "")
-                {
-                   //Console.WriteLine(lookupList.Items[i].fullCasPartname);
-
-                    patternTexture = patternTexture.Replace(@"($assetRoot)\InGame\Complates\Materials\", "");
-                    patternTexture = patternTexture.Replace(@".tga", "");
-                    patternTexture = patternTexture.Replace(@".dds", "");
-                    //Console.WriteLine(patternTexture);
-                    string fullName = patternTexture.Substring(patternTexture.LastIndexOf("\\") + 1);
-                    string category = patternTexture.Substring(0, patternTexture.IndexOf("\\"));
-                    string subCategory = patternTexture.Substring(patternTexture.IndexOf("\\") + 1);
-
-                    if (subCategory.Contains("\\"))
-                    {
-                        subCategory = subCategory.Remove(subCategory.IndexOf("\\"));
-                    }
-                    else
-                    {
-                        subCategory = "";
-                    }
-
-                    sb.AppendLine("<file texturename=\"" + fullName + "\" typeid=\"" + lookupList.Items[i].typeid + "\" groupid=\"" + lookupList.Items[i].groupid + "\" instanceid=\"" + lookupList.Items[i].instanceid + "\" category=\"" + category + "\" subcategory=\"" + subCategory + "\" color0=\"" + color0 + "\" color1=\"" + color1 + "\" color2=\"" + color2 + "\" color3=\"" + color3 + "\" color4=\"" + color4 + "\" HBg=\"" + HBg + "\" SBg=\"" + SBg + "\" VBg=\"" + VBg + "\" HSVShiftBg=\"" + HSVShiftBg + "\" >" + lookupList.Items[i].fullCasPartname + "</file>");
-
-                }
-                xtr.Close();
-                 */
+                
+                //xtr.Close();
+                 
                 mem.Close();
             }
 
-            //Clipboard.SetText(sb.ToString());
+            Clipboard.SetText(sb.ToString());
             Console.WriteLine("Done");
 
         }
@@ -237,7 +166,7 @@ namespace PatternBrowser
                 XmlSerializer s2 = new XmlSerializer(typeof(patterns));
                 this.customPatterns = (patterns)s2.Deserialize(r2);
                 r2.Close();
-                Helpers.logMessageToFile(patterns.Items.Count + " patterns found");
+                Helpers.logMessageToFile(customPatterns.Items.Count + " custom patterns found");
             }
             if (this.customPatterns == null) this.customPatterns = new patterns();
         }
@@ -400,11 +329,12 @@ namespace PatternBrowser
                         {
                             if (File.Exists(pattern.subcategory))
                             {
-                                if (pattern.typeid.StartsWith("0x")) pattern.typeid = pattern.typeid.Remove(0, 2);
-                                if (pattern.groupid.StartsWith("0x")) pattern.groupid = pattern.groupid.Remove(0, 2);
-                                if (pattern.instanceid.StartsWith("0x")) pattern.instanceid = pattern.instanceid.Remove(0, 2);
 
-                                Stream patternXml = KeyUtils.searchForKey("key:" + pattern.typeid + ":" + pattern.groupid + ":" + pattern.instanceid, pattern.subcategory);
+                                //if (pattern.typeid.StartsWith("0x")) pattern.typeid = pattern.typeid.Remove(0, 2);
+                                //if (pattern.groupid.StartsWith("0x")) pattern.groupid = pattern.groupid.Remove(0, 2);
+                                //if (pattern.instanceid.StartsWith("0x")) pattern.instanceid = pattern.instanceid.Remove(0, 2);
+
+                                Stream patternXml = KeyUtils.searchForKey(pattern.key, pattern.subcategory);
                                 if (Helpers.isValidStream(patternXml))
                                 {
                                     patternDetails pDetails = Patterns.parsePatternComplate(patternXml);
@@ -477,9 +407,9 @@ namespace PatternBrowser
                         }
                         else
                         {
-                            Console.WriteLine(pattern.casPart);
+                            //Console.WriteLine(pattern.casPart);
 
-                            Stream patternXml = KeyUtils.findKey(new MadScience.Wrappers.ResourceKey("key:" + pattern.typeid + ":" + pattern.groupid + ":" + pattern.instanceid), 0, xmldb);
+                            Stream patternXml = KeyUtils.findKey(new MadScience.Wrappers.ResourceKey(pattern.key), 0, xmldb);
                             if (Helpers.isValidStream(patternXml))
                             {
                                 patternDetails pDetails2 = Patterns.parsePatternComplate(patternXml);
@@ -547,7 +477,7 @@ namespace PatternBrowser
                             toolStripStatusLabel2.Text += "\\" + pattern.subcategory;
                         }
 
-                        toolStripStatusLabel3.Text = pattern.instanceid;
+                        toolStripStatusLabel3.Text = pattern.key;
                         //toolStripStatusLabel4.Text = "key:" + pattern.typeid.ToLower() + ":" + pattern.groupid.ToLower() + ":" + pattern.instanceid.ToLower();
 
                         this._selectedPattern = pattern;
@@ -575,7 +505,7 @@ namespace PatternBrowser
                             toolStripStatusLabel2.Text += "\\" + pattern.subcategory;
                         }
 
-                        toolStripStatusLabel3.Text = pattern.instanceid;
+                        toolStripStatusLabel3.Text = pattern.key;
                         //toolStripStatusLabel4.Text = "key:" + pattern.typeid.ToLower() + ":" + pattern.groupid.ToLower() + ":" + pattern.instanceid.ToLower();
 
                         this._selectedPattern = pattern;
@@ -603,8 +533,8 @@ namespace PatternBrowser
 
         private void panel1_Resize(object sender, EventArgs e)
         {
-            horizontal = 0;
-            vertical = 0;
+            horizontal = 6;
+            vertical = 6;
 
             int curWidth = panel1.Width;
 
@@ -622,7 +552,7 @@ namespace PatternBrowser
                 // Calc picture box horizontal and vertical
                 if ((i % maxAcross) == 0)
                 {
-                    vertical += imageHeight + 6; horizontal = 0;
+                    vertical += imageHeight + 6; horizontal = 6;
                 }
                 else
                 {
@@ -639,21 +569,21 @@ namespace PatternBrowser
 
             //this.selectedPattern = this._selectedPattern;
 
-            if (_selectedPattern.typeid.StartsWith("0x")) _selectedPattern.typeid = _selectedPattern.typeid.Remove(0, 2);
-            if (_selectedPattern.groupid.StartsWith("0x")) _selectedPattern.groupid = _selectedPattern.groupid.Remove(0, 2);
-            if (_selectedPattern.instanceid.StartsWith("0x")) _selectedPattern.instanceid = _selectedPattern.instanceid.Remove(0, 2);
+            //if (_selectedPattern.typeid.StartsWith("0x")) _selectedPattern.typeid = _selectedPattern.typeid.Remove(0, 2);
+            //if (_selectedPattern.groupid.StartsWith("0x")) _selectedPattern.groupid = _selectedPattern.groupid.Remove(0, 2);
+            //if (_selectedPattern.instanceid.StartsWith("0x")) _selectedPattern.instanceid = _selectedPattern.instanceid.Remove(0, 2);
 
-            string reskey = "key:" + _selectedPattern.typeid + ":" + _selectedPattern.groupid + ":" + _selectedPattern.instanceid;
+            //string reskey = "key:" + _selectedPattern.typeid + ":" + _selectedPattern.groupid + ":" + _selectedPattern.instanceid;
 
             if (_selectedPattern.isCustom == false)
             {
-                this.selectedPattern = Patterns.parsePatternComplate(KeyUtils.findKey(reskey, 0));
+                this.selectedPattern = Patterns.parsePatternComplate(KeyUtils.findKey(_selectedPattern.key, 0));
             }
             else
             {
-                this.selectedPattern = Patterns.parsePatternComplate(KeyUtils.searchForKey(reskey, _selectedPattern.subcategory));
+                this.selectedPattern = Patterns.parsePatternComplate(KeyUtils.searchForKey(_selectedPattern.key, _selectedPattern.subcategory));
             }
-            this.selectedPattern.key = reskey;
+            this.selectedPattern.key = _selectedPattern.key;
 
             this.DialogResult = DialogResult.OK;
 
@@ -682,6 +612,9 @@ namespace PatternBrowser
             picBox.SizeMode = PictureBoxSizeMode.StretchImage;
             picBox.Click += new System.EventHandler(pictureBox_Click);
 
+            if (horizontal == 0) horizontal += 6;
+            if (vertical == 0) vertical += 6;
+
             picBox.Location = new System.Drawing.Point(horizontal, vertical);
 
             // Add picturebox to panel
@@ -690,7 +623,8 @@ namespace PatternBrowser
             // Calc picture box horizontal and vertical
             if ((numFound % maxAcross) == 0)
             {
-                vertical += imageHeight + 6; horizontal = 0;
+                vertical += imageHeight + 6; 
+                horizontal = 6;
             }
             else
             {
@@ -718,15 +652,24 @@ namespace PatternBrowser
                         pDetails = Patterns.parsePatternComplate(castdb.GetResourceStream(key));
                         patternsFile cPattern = new patternsFile();
 
-                        MadScience.Wrappers.ResourceKey rKey = new MadScience.Wrappers.ResourceKey(pDetails.key);
+                        //MadScience.Wrappers.ResourceKey rKey = new MadScience.Wrappers.ResourceKey(pDetails.key);
 
-                        cPattern.typeid = rKey.typeId.ToString("X8");
-                        cPattern.groupid = rKey.groupId.ToString("X8");
-                        cPattern.instanceid = rKey.instanceId.ToString("X16");
+                        //cPattern.typeid = rKey.typeId.ToString("X8");
+                        //cPattern.groupid = rKey.groupId.ToString("X8");
+                        //cPattern.instanceid = rKey.instanceId.ToString("X16");
+
+                        cPattern.key = pDetails.key;
 
                         if (!Helpers.isValidStream(KeyUtils.findKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.name.Substring(pDetails.name.LastIndexOf("\\") + 1)).ToString("X16"))))
                         {
-                            cPattern.texturename = pDetails.BackgroundImage;
+                            if (String.IsNullOrEmpty(pDetails.BackgroundImage))
+                            {
+                                cPattern.texturename = pDetails.rgbmask;
+                            }
+                            else
+                            {
+                                cPattern.texturename = pDetails.BackgroundImage;
+                            }
                         }
                         else
                         {
@@ -749,7 +692,6 @@ namespace PatternBrowser
                         break;
                     }
                 }
-                cast.Close();
 
                 //Stream patternThumb = KeyUtils.searchForKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.name), openFileDialog1.FileName);
                 //if (!Helpers.isValidStream(patternThumb))
@@ -776,7 +718,7 @@ namespace PatternBrowser
                     toolTip += pDetails.name;
                     tt.SetToolTip(picBox, toolTip);
 
-                    picBox.Image = Patterns.makePatternThumb(pDetails);
+                    picBox.Image = Patterns.makePatternThumb(pDetails, castdb);
                     //picBox.Image =     castdb.GetResourceStream(entry.Key);
                     try
                     {
@@ -788,6 +730,8 @@ namespace PatternBrowser
 
                     addToPanel(picBox);
 
+
+                    cast.Close();
                     //picBox.Dispose();
 
                 //}
@@ -846,7 +790,7 @@ namespace PatternBrowser
         }
       
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("file", Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = true)]
+        [System.Xml.Serialization.XmlElementAttribute("pattern", Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = true)]
         public List<patternsFile> Items = new List<patternsFile>();
 
     }
@@ -858,15 +802,7 @@ namespace PatternBrowser
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string typeid;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string groupid;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string instanceid;
+        public string key;
 
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string texturename;
@@ -876,29 +812,6 @@ namespace PatternBrowser
 
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string subcategory;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string color0;
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string color1;
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string color2;
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string color3;
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string color4;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string HBg;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string SBg;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string VBg;
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string HSVShiftBg;
 
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public bool isCustom;
