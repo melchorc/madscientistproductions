@@ -53,18 +53,19 @@ namespace CASPartEditor
             renderWindow1.loadTexture(KeyUtils.findKey(details.Multiplier), "baseTexture");
             renderWindow1.loadTexture(null, "stencilA");
 
-            if ((casPartNew.typeFlag & 0x4) == 0x4)
-            {
-                renderWindow1.shaderMode = 1;
-            }
-            else
-            {
-                renderWindow1.shaderMode = 0;
-            }
+            //if ((casPartNew.typeFlag & 0x4) == 0x4)
+            //{
+                //renderWindow1.shaderMode = 1;
+            //}
+            //else
+            //{
+                //renderWindow1.shaderMode = 0;
+            //}
 
             generate3DTexture(details);
             
-            renderWindow1.resetDevice();
+            // We don't need this here since generate3DTexture resets the device anyway
+            //renderWindow1.resetDevice();
 
         }
 

@@ -186,15 +186,15 @@ namespace MadScience
                                         break;
                                     case "Channel 2":
                                         xtr.MoveToAttribute("default");
-                                        pDetail.Channel[2] = xtr.Value;
+                                        pDetail.Channel[1] = xtr.Value;
                                         break;
                                     case "Channel 3":
                                         xtr.MoveToAttribute("default");
-                                        pDetail.Channel[3] = xtr.Value;
+                                        pDetail.Channel[2] = xtr.Value;
                                         break;
                                     case "Channel 4":
                                         xtr.MoveToAttribute("default");
-                                        pDetail.Channel[4] = xtr.Value;
+                                        pDetail.Channel[3] = xtr.Value;
                                         break;
 
                                     case "Channel 1 Enabled":
