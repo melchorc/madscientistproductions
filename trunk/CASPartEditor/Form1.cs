@@ -2186,16 +2186,17 @@ namespace CASPartEditor
                         txtPatternASpecular.Text = "";
                         txtPatternATiling.Text = "4.0000,4.0000";
                         txtPatternAFilename.Text = @"Materials\Miscellaneous\solidColor_1";
+
+                        // Get the first colour of the previous pattern
+                        picPatternSolidColour.BackColor = picPatternColour1.BackColor;
+                        commitPatternDetails("Color", Colours.convertColour(picPatternSolidColour.BackColor));
+
+                        commitPatternDetails("type", "solidColor");
+
+                        refreshDisplay();
+
                     }
                     picPatternThumb.Visible = false;
-
-                    commitPatternDetails("type", "solidColor");
-
-                    // Get the first colour of the previous pattern
-                    picPatternSolidColour.BackColor = picPatternColour1.BackColor;
-                    commitPatternDetails("Color", Colours.convertColour(picPatternSolidColour.BackColor));
-
-                    refreshDisplay();
 
                     break;
                 case 1: // Coloured
