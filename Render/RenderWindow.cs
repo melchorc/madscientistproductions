@@ -9,6 +9,9 @@ namespace MadScience.Render
 {
     public partial class RenderWindow : UserControl
     {
+
+        public event EventHandler RequireNewTextures;
+
         public RenderWindow()
         {
             this.ClientSize = new Size(640, 480);
@@ -273,8 +276,20 @@ namespace MadScience.Render
             // Register an event-handler for DeviceReset and call it to continue
             // our setup.
             d3dDevice.DeviceReset += new System.EventHandler(this.OnResetDevice);
-
+            d3dDevice.DeviceLost += new System.EventHandler(this.OnLostDevice);
+            d3dDevice.DeviceResizing += new System.ComponentModel.CancelEventHandler(this.CancelResize);
             //OnResetDevice(d3dDevice, null);
+        }
+
+        private void CancelResize(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (Width < 1 || Height < 1)
+                e.Cancel = true;
+        }
+
+        public void OnLostDevice(object sender, EventArgs e)
+        {
+            Console.WriteLine("RenderWindow: Device Lost");
         }
 
         public void DeInit()
@@ -405,7 +420,7 @@ namespace MadScience.Render
             // Create a vertex buffer...
             //
 
-            if (model.numVertices > 0)
+            if (model != null && model.numVertices > 0)
             {
 
                 Console.WriteLine("num vertices: " + model.numVertices.ToString());
@@ -451,79 +466,100 @@ namespace MadScience.Render
         {
             if (d3dDevice == null || shader == null)
                 return;
-
-            // Display the frame rate in the title bar of the form - not anymore since this is no longer the main form
-            //this.Text = string.Format("Mesh Previewer ({0} fps)", FrameRate.CalculateFrameRate());
-
-            d3dDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, backgroundColour, 1.0f, 0);
-
-            d3dDevice.BeginScene();
-
-            // Load the values for the transformation matrices
-            // View moves the virtual camera around the 3d model (Lighting moves with the model)
-            // World moves the 3d model - (Lighting stays in place as the model rotates, illuminating different parts)
-            Matrix viewx = Matrix.Translation(transX, 0f, 2f + transZ);
-            Matrix worldx = Matrix.Translation(0f, -height, 0f) * Matrix.RotationYawPitchRoll(Geometry.DegreeToRadian(spinX),
-                    Geometry.DegreeToRadian(-spinY), 0.0f);
-            // * 
-
-            // Projection matrix - typically can be left alone unless the viewport needs to be adjusted
-            Matrix projx = Matrix.PerspectiveFovLH(Geometry.DegreeToRadian(45.0f),
-                (float)Width / Height,
-                0.1f, 100.0f);
-
-            // World transform
-            shader.SetValue("gWorldXf", worldx);
-            // Inverse transpose world transform
-            shader.SetValueTranspose("gWorldITXf", Matrix.Invert(worldx));
-            // World/view/projection transform
-            shader.SetValue("gWvpXf", worldx * viewx * projx);
-            if (fillMode == 2)
+            try
             {
-                wireframe.SetValue("gWvpXf", worldx * viewx * projx);
-            }
-            // View inverse transform
-            shader.SetValue("gViewIXf", Matrix.Invert(viewx));
-            // View transform
-            shader.SetValue("gViewXf", viewx);
-            // World/view transform
-            shader.SetValue("gWorldViewXf", worldx * viewx);
+                d3dDevice.TestCooperativeLevel();
 
-            if (model.numVertices > 0 && indexBuffer != null && vertexBuffer != null)
-            {
+                // Display the frame rate in the title bar of the form - not anymore since this is no longer the main form
+                //this.Text = string.Format("Mesh Previewer ({0} fps)", FrameRate.CalculateFrameRate());
 
-                int passes = shader.Begin(FX.DoNotSaveState);
-                for (int loop = 0; loop < passes; loop++)
-                {
-                    shader.BeginPass(loop);
-                    d3dDevice.SetStreamSource(0, vertexBuffer, 0);
-                    d3dDevice.Indices = indexBuffer;
-                    d3dDevice.VertexDeclaration = vertexDeclaration;
+                d3dDevice.Clear(ClearFlags.Target | ClearFlags.ZBuffer, backgroundColour, 1.0f, 0);
 
-                    d3dDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (int)model.numVertices, 0, (int)model.numPolygons);
-                    shader.EndPass();
-                }
-                shader.End();
+                d3dDevice.BeginScene();
+
+                // Load the values for the transformation matrices
+                // View moves the virtual camera around the 3d model (Lighting moves with the model)
+                // World moves the 3d model - (Lighting stays in place as the model rotates, illuminating different parts)
+                Matrix viewx = Matrix.Translation(transX, 0f, 2f + transZ);
+                Matrix worldx = Matrix.Translation(0f, -height, 0f) * Matrix.RotationYawPitchRoll(Geometry.DegreeToRadian(spinX),
+                        Geometry.DegreeToRadian(-spinY), 0.0f);
+                // * 
+
+                // Projection matrix - typically can be left alone unless the viewport needs to be adjusted
+                Matrix projx = Matrix.PerspectiveFovLH(Geometry.DegreeToRadian(45.0f),
+                    (float)Width / Height,
+                    0.1f, 100.0f);
+
+                // World transform
+                shader.SetValue("gWorldXf", worldx);
+                // Inverse transpose world transform
+                shader.SetValueTranspose("gWorldITXf", Matrix.Invert(worldx));
+                // World/view/projection transform
+                shader.SetValue("gWvpXf", worldx * viewx * projx);
                 if (fillMode == 2)
                 {
-                    passes = wireframe.Begin(FX.None);
+                    wireframe.SetValue("gWvpXf", worldx * viewx * projx);
+                }
+                // View inverse transform
+                shader.SetValue("gViewIXf", Matrix.Invert(viewx));
+                // View transform
+                shader.SetValue("gViewXf", viewx);
+                // World/view transform
+                shader.SetValue("gWorldViewXf", worldx * viewx);
+
+                if (model.numVertices > 0 && indexBuffer != null && vertexBuffer != null)
+                {
+
+                    int passes = shader.Begin(FX.DoNotSaveState);
                     for (int loop = 0; loop < passes; loop++)
                     {
-                        wireframe.BeginPass(loop);
+                        shader.BeginPass(loop);
                         d3dDevice.SetStreamSource(0, vertexBuffer, 0);
                         d3dDevice.Indices = indexBuffer;
                         d3dDevice.VertexDeclaration = vertexDeclaration;
 
                         d3dDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (int)model.numVertices, 0, (int)model.numPolygons);
-                        wireframe.EndPass();
+                        shader.EndPass();
                     }
-                    wireframe.End();
+                    shader.End();
+                    if (fillMode == 2)
+                    {
+                        passes = wireframe.Begin(FX.None);
+                        for (int loop = 0; loop < passes; loop++)
+                        {
+                            wireframe.BeginPass(loop);
+                            d3dDevice.SetStreamSource(0, vertexBuffer, 0);
+                            d3dDevice.Indices = indexBuffer;
+                            d3dDevice.VertexDeclaration = vertexDeclaration;
+
+                            d3dDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (int)model.numVertices, 0, (int)model.numPolygons);
+                            wireframe.EndPass();
+                        }
+                        wireframe.End();
+                    }
+
                 }
+                d3dDevice.EndScene();
 
+                d3dDevice.Present();
             }
-            d3dDevice.EndScene();
+            catch (DeviceLostException)
+            {
+                System.Threading.Thread.Sleep(500); // Sleep for a while
+            }
+            catch (DeviceNotResetException)
+            {
+                if (d3dDevice != null)
+                {
+                    d3dDevice.Dispose();
+                    d3dDevice = null;
+                }
+                Init();
+                resetDevice();
+                //for some really strange reason, we lose our textures
+                RequireNewTextures(this,new EventArgs());
+            }
 
-            d3dDevice.Present();
 
             //Application.DoEvents();
         }

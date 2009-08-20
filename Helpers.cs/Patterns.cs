@@ -31,69 +31,67 @@ namespace MadScience
         {
             //keyName patternXML = new keyName(resKey);
 
-            Stream patternThumb = Stream.Null;
+            //Stream patternThumb = Stream.Null;
 
-            if (pattern.isCustom)
-            {
+            //if (pattern.isCustom)
+            //{
 
-                if (File.Exists(pattern.customFilename))
-                {
-                    patternThumb = KeyUtils.searchForKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pattern.name.Substring(pattern.name.LastIndexOf("\\") +1)).ToString("X16"), pattern.customFilename);
-                    if (!Helpers.isValidStream(patternThumb))
-                    {
-                        patternThumb = KeyUtils.searchForKey(pattern.BackgroundImage, pattern.customFilename);
-                    }
-                }
-            }
-            else
-            {
-                Wrappers.ResourceKey rKey = new MadScience.Wrappers.ResourceKey(0x00B2D882, 0x0, StringHelpers.HashFNV64(pattern.name.Substring(pattern.name.LastIndexOf("\\") +1)));
-                if (db != null) patternThumb = KeyUtils.findKey(rKey, 0, db);
-                else patternThumb = KeyUtils.findKey(rKey);
-                if (!Helpers.isValidStream(patternThumb))
-                {
-                    rKey = new MadScience.Wrappers.ResourceKey(pattern.BackgroundImage);
-                    if (db != null) patternThumb = KeyUtils.findKey(rKey, 0, db);
-                    else patternThumb = KeyUtils.findKey(rKey);
-                }
-            }
+            //    if (File.Exists(pattern.customFilename))
+            //    {
+            //        patternThumb = KeyUtils.searchForKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pattern.name.Substring(pattern.name.LastIndexOf("\\") +1)).ToString("X16"), pattern.customFilename);
+            //        if (!Helpers.isValidStream(patternThumb))
+            //        {
+            //            patternThumb = KeyUtils.searchForKey(pattern.BackgroundImage, pattern.customFilename);
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    Wrappers.ResourceKey rKey = new MadScience.Wrappers.ResourceKey(0x00B2D882, 0x0, StringHelpers.HashFNV64(pattern.name.Substring(pattern.name.LastIndexOf("\\") +1)));
+            //    if (db != null) patternThumb = KeyUtils.findKey(rKey, 0, db);
+            //    else patternThumb = KeyUtils.findKey(rKey);
+            //    if (!Helpers.isValidStream(patternThumb))
+            //    {
+            //        rKey = new MadScience.Wrappers.ResourceKey(pattern.BackgroundImage);
+            //        if (db != null) patternThumb = KeyUtils.findKey(rKey, 0, db);
+            //        else patternThumb = KeyUtils.findKey(rKey);
+            //    }
+            //}
 
             Image temp = null;
 
-            if (patternThumb != Stream.Null)
-            {
 
-                if (patternThumb == Stream.Null || patternThumb == null || patternThumb.Length == 0)
-                {
-                    return temp;
-                }
-
-                DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
+                
                 if (pattern.type == "HSV")
                 {
+                    DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
                     Colours.HSVColor bg = new Colours.HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
                     Colours.HSVColor basebg = new Colours.HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
                     Colours.HSVColor shift = new Colours.HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
-                    temp = Patterns.createHSVPattern(patternThumb, bg, basebg, shift);
+                    temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), bg, basebg, shift);
                 }
                 if (pattern.type == "Coloured")
                 {
+                    DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
                     Color bgColor = Colours.convertColour(pattern.ColorP[0], true);
                     if (bgColor == Color.Empty)
                     {
                         bgColor = Color.Black;
                     }
-                    ddsP.Load(patternThumb);
+                    ddsP.Load(KeyUtils.findKey(pattern.rgbmask));
                     temp = ddsP.Image(bgColor, Colours.convertColour(pattern.ColorP[1], true), Colours.convertColour(pattern.ColorP[2], true), Colours.convertColour(pattern.ColorP[3], true), Colours.convertColour(pattern.ColorP[4], true));
 
                 }
                 if (pattern.type == "solidColor")
                 {
-                    ddsP.Load(patternThumb);
-                    temp = ddsP.Image();
+                    temp = new Bitmap(256,256);
+                    using (Graphics g = Graphics.FromImage(temp))
+                    {
+                        g.FillRectangle(new SolidBrush(Colours.convertColour(pattern.Color)),0,0,256,256);
+                    }
+
                 }
 
-            }
 
             return temp;
         }

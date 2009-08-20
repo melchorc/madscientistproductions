@@ -14,6 +14,32 @@ namespace CASPartEditor
 {
     public partial class Form1 : Form
     {
+
+        public void reloadTextures()
+        {
+            if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
+            {
+
+                xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+
+                renderWindow1.RenderEnabled = false;
+
+                DateTime startTime = DateTime.Now;
+                toolStripStatusLabel1.Text = "Reloading 3d view... please wait...";
+                statusStrip1.Refresh();
+
+                reloadTextures(details);
+
+
+                DateTime stopTime = DateTime.Now;
+                TimeSpan duration = stopTime - startTime;
+
+                toolStripStatusLabel1.Text = "Reloaded 3D in " + duration.Milliseconds + "ms";
+
+                renderWindow1.RenderEnabled = true;
+            }
+        }
+
         public void reloadTextures(xmlChunkDetails details)
         {
             List<string> textures = findDefaultTextures(casPartNew.ageGenderFlag, casPartNew.typeFlag);
