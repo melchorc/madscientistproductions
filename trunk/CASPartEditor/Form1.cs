@@ -2188,7 +2188,10 @@ namespace CASPartEditor
                         txtPatternAFilename.Text = @"Materials\Miscellaneous\solidColor_1";
 
                         // Get the first colour of the previous pattern
-                        picPatternSolidColour.BackColor = picPatternColour1.BackColor;
+                        if (chunk.pattern[patternNo].type == "Coloured")
+                            picPatternSolidColour.BackColor = picPatternColour1.BackColor;
+                        if (chunk.pattern[patternNo].type == "HSV")
+                            picPatternSolidColour.BackColor = picHSVColorBG.BackColor;
                         commitPatternDetails("Color", Colours.convertColour(picPatternSolidColour.BackColor));
 
                         commitPatternDetails("type", "solidColor");
