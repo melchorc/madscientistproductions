@@ -189,6 +189,8 @@ namespace CASPartEditor
             lstCasPartDetails.Items.Clear();
             // Populate the CAS Part Details 
             addCasPartItem("Mesh Name", casPartSrc.meshName);
+            toolStripStatusLabel2.Text = casPartSrc.meshName;
+
             addCasPartItem("Clothing Order", casPartSrc.clothingOrder.ToString());
             addCasPartItem("CAS Part Type", casPartSrc.clothingType.ToString() + " (0x" + casPartSrc.clothingType.ToString("X8") + ")");
             addCasPartItem("Type", casPartSrc.typeFlag.ToString() + " (0x" + casPartSrc.typeFlag.ToString("X8") + ")");

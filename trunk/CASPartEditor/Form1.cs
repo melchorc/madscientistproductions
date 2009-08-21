@@ -897,6 +897,7 @@ namespace CASPartEditor
 
                 bool hasShownDialog = false;
 
+                toolStripProgressBar1.Visible = true;
                 toolStripProgressBar1.Minimum = 0;
                 toolStripProgressBar1.Value = 0;
                 toolStripStatusLabel1.Text = "Searching for textures... please wait";
@@ -967,6 +968,7 @@ namespace CASPartEditor
 
                 toolStripProgressBar1.Value = 0;
                 toolStripStatusLabel1.Text = numFound + " textures found.";
+                toolStripProgressBar1.Visible = false;
                 statusStrip1.Refresh();
 
                 fbuild2.Close();
@@ -1431,6 +1433,7 @@ namespace CASPartEditor
 
                 bool hasShownDialog = false;
 
+                toolStripProgressBar1.Visible = true;
                 toolStripProgressBar1.Minimum = 0;
                 toolStripProgressBar1.Value = 0;
                 toolStripStatusLabel1.Text = "Searching for meshes... please wait";
@@ -1543,6 +1546,7 @@ namespace CASPartEditor
                 }
 
                 toolStripProgressBar1.Value = 0;
+                toolStripProgressBar1.Visible = false;
                 toolStripStatusLabel1.Text = numFound.ToString() + " meshes found";
                 statusStrip1.Refresh();
 
@@ -1715,6 +1719,7 @@ namespace CASPartEditor
         private void button1_Click_1(object sender, EventArgs e)
         {
 
+            toolStripProgressBar1.Visible = true;
             toolStripProgressBar1.Value = 0;
             toolStripProgressBar1.Minimum = 0;
             toolStripProgressBar1.Maximum = this.lookupList.Items.Length;
@@ -1748,11 +1753,14 @@ namespace CASPartEditor
                     Console.WriteLine("Finished writing " + cFile.cFile.meshName + ".caspart");
                 }
             }
-            
+
+            toolStripProgressBar1.Visible = false;
+
         }
 
         private void generateThumbnailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            toolStripProgressBar1.Visible = true;
             toolStripProgressBar1.Value = 0;
             toolStripProgressBar1.Minimum = 0;
             toolStripProgressBar1.Maximum = this.lookupList.Items.Length;
@@ -1785,6 +1793,7 @@ namespace CASPartEditor
 
             toolStripStatusLabel1.Text = "";
             toolStripProgressBar1.Value = 0;
+            toolStripProgressBar1.Visible = false;
         }
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2352,6 +2361,8 @@ namespace CASPartEditor
                 chunk.daeFileName = txtMeshName.Text;
             }
 
+            toolStripStatusLabel2.Text = txtMeshName.Text;
+
         }
 
         private void button18_Click(object sender, EventArgs e)
@@ -2890,11 +2901,6 @@ namespace CASPartEditor
             pDetail.V[2] = MadScience.Helpers.numberToString(hsv.Value);
 
             makePatternPreviewThumb();
-        }
-
-        private void Form1_ResizeBegin(object sender, EventArgs e)
-        {
-            Console.WriteLine("Resize Begin");
         }
 
         private void chkPatternAEnabled_CheckedChanged(object sender, EventArgs e)

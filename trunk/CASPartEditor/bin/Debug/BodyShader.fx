@@ -357,10 +357,9 @@ technique normal_mapping <
 		ZEnable = true;
 		ZWriteEnable = true;
 		ZFunc = LessEqual;
-		AlphaBlendEnable = false;
+		AlphaBlendEnable = true;
 		CullMode = None;
-        PixelShader = compile ps_2_0 normal_mapPS(
-						gSurfaceColor,
+        PixelShader = compile ps_2_0 normal_mapPS(gSurfaceColor,
 						gSkinSampler,
 						gSkinSpecularSampler,
 						gMultiplySampler,

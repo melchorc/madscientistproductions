@@ -72,10 +72,11 @@ namespace CASPartEditor
         public void startRender(xmlChunkDetails details)
         {
 
-            Stream meshStream = Stream.Null;
+            // Get the Mesh links for the first LOD
+            List<Stream> meshStreams = new List<Stream>();
 
             // Use the VPXY to get the mesh lod
-            Stream vpxyStream = KeyUtils.findKey(casPartNew.tgi64list[casPartNew.tgiIndexVPXY], 0);
+            Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY], 0);
 
             if (vpxyStream != null)
             {
@@ -83,32 +84,39 @@ namespace CASPartEditor
                 // Get the first VPXY internal link
                 if (vpxyFile.vpxy.linkEntries.Count >= 1 && vpxyFile.vpxy.linkEntries[0].tgiList.Count >= 1)
                 {
-                    meshStream = KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[0], 0);
+                    for (int i = 0; i < vpxyFile.vpxy.linkEntries[0].tgiList.Count; i++)
+                    {
+                        meshStreams.Add(KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0));
+                    }
                 }
                 vpxyStream.Close();
             }
 
-            if (meshStream == Stream.Null)
+            if (meshStreams.Count == 0)
             {
                 ResourceKey findKey = findDefaultMeshes(casPartNew.ageGenderFlag, casPartNew.typeFlag);
                 
                 if (findKey.groupId != 0 && findKey.instanceId != 0)
                 {
-                    meshStream = KeyUtils.findKey(findKey, 0);
+                    meshStreams.Add(KeyUtils.findKey(findKey, 0));
                 }
             }
 
-            if (meshStream != Stream.Null)
+            if (meshStreams.Count > 0)
             {
-
-                MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStream);
-                newModel.name = txtMeshName.Text;
                 renderWindow1.BackgroundColour = MadScience.Colours.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
-                //renderWindow1.loadDefaultTextures();
-                renderWindow1.setModel(newModel);
 
+                // For each model, go through, get the model info and send it to the render window
+                for (int i = 0; i < meshStreams.Count; i++)
+                {
+                    MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStreams[i]);
+                    newModel.name = txtMeshName.Text;
+                    //renderWindow1.loadDefaultTextures();
+                    renderWindow1.setModel(newModel, i);
+
+                }
+                    
                 reloadTextures(details);
-
                 renderWindow1.RenderEnabled = true;
 
 
@@ -118,7 +126,6 @@ namespace CASPartEditor
                 renderWindow1.statusLabel.Text = "Sorry, we could not find a mesh!";
             }
 
-            meshStream.Close();
         }
 
         private void generate3DTexture(xmlChunkDetails details)
