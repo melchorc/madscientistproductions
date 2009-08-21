@@ -1,4 +1,4 @@
-/*********************************************************************NVMH3****
+﻿/*********************************************************************NVMH3****
 *******************************************************************************
 $Revision: #4 $
 
@@ -253,50 +253,47 @@ float4 normal_mapPS(VertexOutput IN,
 		    uniform float PhongExp,
 		    uniform float3 SpecColor,
 		    uniform float3 AmbiColor,
-			uniform bool UseStencil
+			uniform bool UseStencil			
 ) : COLOR
 {
 	////////////////// Texture compositing
 	
 	// Diffuse color
 	// Load in the diffuse textures
-	float4 texCol1 = float4(0, 0, 0, 1);
 	float4 texCol2 = float4(1, 1, 1, 1);
 	if (UseStencil)
 	{
 	  texCol2 = tex2D(StencilSampler,IN.UV);
-	}
-	float4 texCol3 = tex2D(SkinSampler,IN.UV);
+	}	
+	float3 texCol3 = tex2D(SkinSampler,IN.UV).rgb;
 	
 	// Start with white
-	float4 diffuseColor = float4(0, 0, 0, 0);
+	float4 diffuseColor = float4(1, 1, 1, 1);
 	// Mask off by the multiplier (Should also apply masks at this point)
 	//diffuseColor.a = texCol1.a;
 	// Perform color blending srcblend = destcolor and destblend=srccolor
 	//diffuseColor.rgb = float3(diffuseColor.r * texCol1.r, diffuseColor.g * texCol1.g, diffuseColor.b * texCol1.b) * 2;
-	if (UseStencil)
-	{
-		// Alpha blending of the stencil
-		diffuseColor = texCol2 * texCol2.a + diffuseColor * (1 - texCol2.a);
-	}
+	// Alpha blending of the stencil
+	diffuseColor = texCol2 * texCol2.a + diffuseColor * (1 - texCol2.a);
 	// Alpha blend the shirt onto the skin texture
     float3 texCol = texCol3 * (1 - diffuseColor.a) + diffuseColor.xyz * diffuseColor.a;
     
     // Specular map influence - alpha blend the shirt specular onto the skin specular
-    float specular = tex2D(SkinSpecularSampler,IN.UV).b * (1 - diffuseColor.a) * diffuseColor.a;  //+ tex2D(SpecularSampler,IN.UV).b * texCol1.b * 2 * diffuseColor.a;
+    float specular = tex2D(SkinSpecularSampler,IN.UV).b * (1 - diffuseColor.a) * texCol3.b * 2 * diffuseColor.a;
 
 	////////////////// Pixel rendering
 
 	// Scale the normal map data from 0..1 to -1..1 - also alpha blend the normal map against straight up normal using the shirt layer alpha so the shirt doesn't get perturbed
-    float3 tNorm = (tex2D(ReliefSampler,IN.UV).agg * (1 - texCol1.a) + texCol1.aaa * 0.5) * 2.0 - float3(1.0,1.0,1.0);
+    float3 tNorm = float3(0,0,0);
+    //float3 tNorm = (tex2D(ReliefSampler,IN.UV).agg * (1 - texCol1.a) + texCol1.a * 0.5) * 2.0 - float3(1.0,1.0,1.0);
     // Calculate the missing component of the normal map, care of Pythagorean theorem
     // If the answer to the sqrt should be negative, the surface will have been culled anyway
-    tNorm = normalize(float3(tNorm.x, tNorm.y, sqrt(1.0 - (tNorm.x * tNorm.x + tNorm.y * tNorm.y))));
+    //tNorm = normalize(float3(tNorm.x, tNorm.y, sqrt(1.0 - (tNorm.x * tNorm.x + tNorm.y * tNorm.y))));
     
     // transform tNorm to world space
-    tNorm = normalize(tNorm.x*IN.tangent -
-		      tNorm.y*IN.binormal + 
-		      tNorm.z*IN.normal);
+    //tNorm = normalize(tNorm.x*IN.tangent -
+	//	      tNorm.y*IN.binormal + 
+	//	      tNorm.z*IN.normal);
     
     // view and light directions
     float3 Vn = normalize(IN.vpos);
@@ -305,7 +302,7 @@ float4 normal_mapPS(VertexOutput IN,
     // compute diffuse and specular terms
     float att = saturate(dot(Ln,IN.normal));
     float diff = saturate(dot(Ln,tNorm));
-    float spec = saturate(dot(normalize(Ln-Vn),tNorm));
+    float spec = saturate(normalize(Ln-Vn));
     spec = pow(spec,PhongExp);
     
     // compute final color
@@ -332,7 +329,7 @@ technique normal_mapping <
 					    gLamp0Pos);
 		ZEnable = true;
 		ZWriteEnable = true;
-		ZFunc = LessEqual; 
+		ZFunc = LessEqual;
 		AlphaBlendEnable = true;
 		CullMode = None;
         PixelShader = compile ps_2_0 normal_mapPS(

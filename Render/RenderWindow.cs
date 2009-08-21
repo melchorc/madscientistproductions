@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
@@ -78,15 +79,16 @@ namespace MadScience.Render
         private float transZ;
         private float height;
 
-        MadScience.Render.modelInfo model = new modelInfo();
+        List<modelInfo> models = new List<modelInfo>();
 
         private VertexDeclaration vertexDeclaration = null;
-        private VertexBuffer vertexBuffer = null;
-        private IndexBuffer indexBuffer = null;
+        private List<VertexBuffer> vertexBuffers = new List<VertexBuffer>();
+        private List<IndexBuffer> indexBuffers = new List<IndexBuffer>();
 
         private Texture skinTexture;
         private Texture skinSpecular;
         private Texture normalMapTexture;
+
         private ContextMenuStrip contextMenuStrip1;
         private System.ComponentModel.IContainer components;
         private ToolStripMenuItem renderModeToolStripMenuItem;
@@ -153,8 +155,15 @@ namespace MadScience.Render
 
         public void setModel(modelInfo newModel)
         {
-            logMessageToFile("Set model");
-            this.model = newModel;
+            setModel(newModel, 0);
+        }
+
+        public void setModel(modelInfo newModel, int modelNumber)
+        {
+            logMessageToFile("Set model " + modelNumber);
+            if ((modelNumber + 1) > models.Count) models.Add(newModel);
+            else models[0] = newModel;
+
             if (d3dDevice == null) Init();
 
             ResetView();
@@ -191,12 +200,19 @@ namespace MadScience.Render
             if (vertexDeclaration != null)
                 vertexDeclaration.Dispose();
             vertexDeclaration = null;
-            if (vertexBuffer != null)
-                vertexBuffer.Dispose();
-            vertexBuffer = null;
-            if (indexBuffer != null)
-                indexBuffer.Dispose();
-            indexBuffer = null;
+            for (int i = 0; i < vertexBuffers.Count; i++)
+            {
+                if (vertexBuffers[i] != null) vertexBuffers[i].Dispose();
+            }
+            vertexBuffers.Clear();
+            //vertexBuffers = null;
+            for (int i = 0; i < indexBuffers.Count; i++)
+            {
+                if (indexBuffers[i] != null)
+                    indexBuffers[i].Dispose();
+            }
+            indexBuffers.Clear();
+            //indexBuffers = null;
             if (shader != null)
                 shader.Dispose();
             shader = null;
@@ -209,22 +225,26 @@ namespace MadScience.Render
             if (normalMapTexture != null)
                 normalMapTexture.Dispose();
             normalMapTexture = null;
-            if (model != null)
+            for (int i = 0; i < models.Count; i++)
             {
-                if (model.textures.ambientTexture != null)
-                    model.textures.ambientTexture.Dispose();
-                model.textures.ambientTexture = null;
-                if (model.textures.baseTexture != null)
-                    model.textures.baseTexture.Dispose();
-                model.textures.baseTexture = null;
-                if (model.textures.curStencil != null)
-                    model.textures.curStencil.Dispose();
-                model.textures.curStencil = null;
-                if (model.textures.specularTexture != null)
-                    model.textures.specularTexture.Dispose();
-                model.textures.specularTexture = null;
-                model = null;
+                if (models[i] != null)
+                {
+                    if (models[i].textures.ambientTexture != null)
+                        models[i].textures.ambientTexture.Dispose();
+                    models[i].textures.ambientTexture = null;
+                    if (models[i].textures.baseTexture != null)
+                        models[i].textures.baseTexture.Dispose();
+                    models[i].textures.baseTexture = null;
+                    if (models[i].textures.curStencil != null)
+                        models[i].textures.curStencil.Dispose();
+                    models[i].textures.curStencil = null;
+                    if (models[i].textures.specularTexture != null)
+                        models[i].textures.specularTexture.Dispose();
+                    models[i].textures.specularTexture = null;
+                    models[i] = null;
+                }
             }
+            models.Clear();
         }
 
         /// <summary>
@@ -297,12 +317,19 @@ namespace MadScience.Render
             if (vertexDeclaration != null)
                 vertexDeclaration.Dispose();
             vertexDeclaration = null;
-            if (vertexBuffer != null)
-                vertexBuffer.Dispose();
-            vertexBuffer = null;
-            if (indexBuffer != null)
-                indexBuffer.Dispose();
-            indexBuffer = null;
+            for (int i = 0; i < vertexBuffers.Count; i++)
+            {
+                if (vertexBuffers[i] != null) vertexBuffers[i].Dispose();
+            }
+            vertexBuffers.Clear();
+            //vertexBuffer = null;
+            for (int i = 0; i < indexBuffers.Count; i++)
+            {
+                if (indexBuffers[i] != null) indexBuffers[i].Dispose();
+            }
+            indexBuffers.Clear();
+
+            //indexBuffer = null;
             if (shader != null)
                 shader.Dispose();
             shader = null;
@@ -315,22 +342,26 @@ namespace MadScience.Render
             if (normalMapTexture != null)
                 normalMapTexture.Dispose();
             normalMapTexture = null;
-            if (model != null)
+            for (int i = 0; i < models.Count; i++)
             {
-                if (model.textures.ambientTexture != null)
-                    model.textures.ambientTexture.Dispose();
-                model.textures.ambientTexture = null;
-                if (model.textures.baseTexture != null)
-                    model.textures.baseTexture.Dispose();
-                model.textures.baseTexture = null;
-                if (model.textures.curStencil != null)
-                    model.textures.curStencil.Dispose();
-                model.textures.curStencil = null;
-                if (model.textures.specularTexture != null)
-                    model.textures.specularTexture.Dispose();
-                model.textures.specularTexture = null;
-                model = null;
+                if (models[i] != null)
+                {
+                    if (models[i].textures.ambientTexture != null)
+                        models[i].textures.ambientTexture.Dispose();
+                    models[i].textures.ambientTexture = null;
+                    if (models[i].textures.baseTexture != null)
+                        models[i].textures.baseTexture.Dispose();
+                    models[i].textures.baseTexture = null;
+                    if (models[i].textures.curStencil != null)
+                        models[i].textures.curStencil.Dispose();
+                    models[i].textures.curStencil = null;
+                    if (models[i].textures.specularTexture != null)
+                        models[i].textures.specularTexture.Dispose();
+                    models[i].textures.specularTexture = null;
+                    models[i] = null;
+                }
             }
+            models.Clear();
             if (d3dDevice != null)
             {
                 d3dDevice.Dispose();
@@ -366,10 +397,10 @@ namespace MadScience.Render
                 {
                     shader.SetValue(EffectHandle.FromString("gSkinTexture"), skinTexture);
                     shader.SetValue(EffectHandle.FromString("gSkinSpecular"), skinSpecular);
-                    if (shaderMode == 0) shader.SetValue(EffectHandle.FromString("gMultiplyTexture"), model.textures.baseTexture);
-                    shader.SetValue(EffectHandle.FromString("gStencilTexture"), model.textures.curStencil);
-                    if (model.textures.curStencil != null) shader.SetValue(EffectHandle.FromString("gUseStencil"), true);
-                    if (shaderMode == 0) shader.SetValue(EffectHandle.FromString("gSpecularTexture"), model.textures.specularTexture);
+                    if (shaderMode == 0) shader.SetValue(EffectHandle.FromString("gMultiplyTexture"), models[0].textures.baseTexture);
+                    shader.SetValue(EffectHandle.FromString("gStencilTexture"), models[0].textures.curStencil);
+                    if (models[0].textures.curStencil != null) shader.SetValue(EffectHandle.FromString("gUseStencil"), true);
+                    if (shaderMode == 0) shader.SetValue(EffectHandle.FromString("gSpecularTexture"), models[0].textures.specularTexture);
                     shader.SetValue(EffectHandle.FromString("gReliefTexture"), normalMapTexture);
                     shader.SetValue(EffectHandle.FromString("gTileCount"), 1.0f);
                     shader.SetValue(EffectHandle.FromString("gAmbiColor"), new ColorValue(0.6f, 0.6f, 0.6f));
@@ -416,46 +447,59 @@ namespace MadScience.Render
 
             setupShaders();
 
+            vertexBuffers.Clear();
+            indexBuffers.Clear();
+
             //
             // Create a vertex buffer...
             //
-
-            if (model != null && model.numVertices > 0)
+            uint numPolygons = 0;
+            uint numVertices = 0;
+            for (int i = 0; i < models.Count; i++)
             {
+                if (models[i] != null && models[i].numVertices > 0)
+                {
 
-                Console.WriteLine("num vertices: " + model.numVertices.ToString());
+                    numPolygons += models[i].numPolygons;
+                    numVertices += models[i].numVertices;
 
-                this.statusLabel.Text = "Model loaded.  (" + String.Format("{0:0} polygons, ", model.numPolygons) + String.Format("{0:0} vertices)", model.numVertices);
+                    vertexDeclaration = new VertexDeclaration(device, MadScience.Render.vertex.Elements);
+                    VertexBuffer vertexBuffer = new VertexBuffer(typeof(MadScience.Render.vertex),
+                                                     (int)models[i].numVertices, device,
+                                                     Usage.Dynamic | Usage.WriteOnly,
+                                                     MadScience.Render.vertex.FVF_Flags,
+                                                     Pool.Default);
 
+                    GraphicsStream gStream = vertexBuffer.Lock(0, 0, LockFlags.None);
 
-                vertexDeclaration = new VertexDeclaration(device,  MadScience.Render.vertex.Elements);
-                vertexBuffer = new VertexBuffer(typeof(MadScience.Render.vertex),
-                                                 (int)model.numVertices, device,
-                                                 Usage.Dynamic | Usage.WriteOnly,
-                                                 MadScience.Render.vertex.FVF_Flags,
-                                                 Pool.Default);
+                    // Now, copy the vertex data into the vertex buffer
+                    gStream.Write(models[i].vertexData.ToArray());
 
-                GraphicsStream gStream = vertexBuffer.Lock(0, 0, LockFlags.None);
+                    vertexBuffer.Unlock();
 
-                // Now, copy the vertex data into the vertex buffer
-                gStream.Write(model.vertexData.ToArray());
+                    vertexBuffers.Add(vertexBuffer);
 
-                vertexBuffer.Unlock();
+                    //
+                    // Create an index buffer to use with our indexed vertex buffer...
+                    //
 
-                //
-                // Create an index buffer to use with our indexed vertex buffer...
-                //
+                    IndexBuffer indexBuffer = new IndexBuffer(typeof(int), (int)(models[i].faceData.Count * 2), device,
+                                                   Usage.WriteOnly, Pool.Default);
 
-                indexBuffer = new IndexBuffer(typeof(int), (int)(model.faceData.Count * 2), device,
-                                               Usage.WriteOnly, Pool.Default);
+                    gStream = indexBuffer.Lock(0, 0, LockFlags.None);
 
-                gStream = indexBuffer.Lock(0, 0, LockFlags.None);
+                    // Now, copy the indices data into the index buffer
+                    gStream.Write(models[i].faceData.ToArray());
 
-                // Now, copy the indices data into the index buffer
-                gStream.Write(model.faceData.ToArray());
+                    indexBuffer.Unlock();
 
-                indexBuffer.Unlock();
+                    indexBuffers.Add(indexBuffer);
+                }
             }
+
+            this.statusLabel.Text = "Model loaded. " + models.Count.ToString() + " part(s), total " + String.Format("{0:0} polygons, ", numPolygons) + String.Format("{0:0} vertices", numVertices);
+
+
         }
 
         /// <summary>
@@ -507,37 +551,40 @@ namespace MadScience.Render
                 // World/view transform
                 shader.SetValue("gWorldViewXf", worldx * viewx);
 
-                if (model.numVertices > 0 && indexBuffer != null && vertexBuffer != null)
+                for (int i = 0; i < models.Count; i++)
                 {
-
-                    int passes = shader.Begin(FX.DoNotSaveState);
-                    for (int loop = 0; loop < passes; loop++)
+                    if (models[i].numVertices > 0 && indexBuffers[i] != null && vertexBuffers[i] != null)
                     {
-                        shader.BeginPass(loop);
-                        d3dDevice.SetStreamSource(0, vertexBuffer, 0);
-                        d3dDevice.Indices = indexBuffer;
-                        d3dDevice.VertexDeclaration = vertexDeclaration;
 
-                        d3dDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (int)model.numVertices, 0, (int)model.numPolygons);
-                        shader.EndPass();
-                    }
-                    shader.End();
-                    if (fillMode == 2)
-                    {
-                        passes = wireframe.Begin(FX.None);
+                        int passes = shader.Begin(FX.DoNotSaveState);
                         for (int loop = 0; loop < passes; loop++)
                         {
-                            wireframe.BeginPass(loop);
-                            d3dDevice.SetStreamSource(0, vertexBuffer, 0);
-                            d3dDevice.Indices = indexBuffer;
+                            shader.BeginPass(loop);
+                            d3dDevice.SetStreamSource(0, vertexBuffers[i], 0);
+                            d3dDevice.Indices = indexBuffers[i];
                             d3dDevice.VertexDeclaration = vertexDeclaration;
 
-                            d3dDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (int)model.numVertices, 0, (int)model.numPolygons);
-                            wireframe.EndPass();
+                            d3dDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (int)models[i].numVertices, 0, (int)models[i].numPolygons);
+                            shader.EndPass();
                         }
-                        wireframe.End();
-                    }
+                        shader.End();
+                        if (fillMode == 2)
+                        {
+                            passes = wireframe.Begin(FX.None);
+                            for (int loop = 0; loop < passes; loop++)
+                            {
+                                wireframe.BeginPass(loop);
+                                d3dDevice.SetStreamSource(0, vertexBuffers[i], 0);
+                                d3dDevice.Indices = indexBuffers[i];
+                                d3dDevice.VertexDeclaration = vertexDeclaration;
 
+                                d3dDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (int)models[i].numVertices, 0, (int)models[i].numPolygons);
+                                wireframe.EndPass();
+                            }
+                            wireframe.End();
+                        }
+
+                    }
                 }
                 d3dDevice.EndScene();
 
@@ -572,16 +619,16 @@ namespace MadScience.Render
                 switch (outputTexture)
                 {
                     case "ambientTexture":
-                        this.model.textures.ambientTexture = TextureLoader.FromStream(d3dDevice, textureInput);
+                        this.models[0].textures.ambientTexture = TextureLoader.FromStream(d3dDevice, textureInput);
                         break;
                     case "baseTexture":
-                        this.model.textures.baseTexture = TextureLoader.FromStream(d3dDevice, textureInput);
+                        this.models[0].textures.baseTexture = TextureLoader.FromStream(d3dDevice, textureInput);
                         break;
                     case "specularTexture":
-                        this.model.textures.specularTexture = TextureLoader.FromStream(d3dDevice, textureInput);
+                        this.models[0].textures.specularTexture = TextureLoader.FromStream(d3dDevice, textureInput);
                         break;
                     case "stencilA":
-                        this.model.textures.curStencil = TextureLoader.FromStream(d3dDevice, textureInput);
+                        this.models[0].textures.curStencil = TextureLoader.FromStream(d3dDevice, textureInput);
                         break;
                     case "skinTexture":
                         this.skinTexture = TextureLoader.FromStream(d3dDevice, textureInput);
@@ -600,16 +647,16 @@ namespace MadScience.Render
                 switch (outputTexture)
                 {
                     case "ambientTexture":
-                        this.model.textures.ambientTexture = null;
+                        this.models[0].textures.ambientTexture = null;
                         break;
                     case "baseTexture":
-                        this.model.textures.baseTexture = null;
+                        this.models[0].textures.baseTexture = null;
                         break;
                     case "specularTexture":
-                        this.model.textures.specularTexture = null;
+                        this.models[0].textures.specularTexture = null;
                         break;
                     case "stencilA":
-                        this.model.textures.curStencil = null;
+                        this.models[0].textures.curStencil = null;
                         break;
                     case "skinTexture":
                         this.skinTexture = null;
@@ -633,16 +680,16 @@ namespace MadScience.Render
                 switch (outputTexture)
                 {
                     case "ambientTexture":
-                        this.model.textures.ambientTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
+                        this.models[0].textures.ambientTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
                         break;
                     case "baseTexture":
-                        this.model.textures.baseTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
+                        this.models[0].textures.baseTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
                         break;
                     case "specularTexture":
-                        this.model.textures.specularTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
+                        this.models[0].textures.specularTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
                         break;
                     case "stencilA":
-                        this.model.textures.curStencil = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
+                        this.models[0].textures.curStencil = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
                         break;
                     case "skinTexture":
                         this.skinTexture = Texture.FromBitmap(d3dDevice, textureInput, Usage.None, Pool.Managed);
@@ -815,15 +862,16 @@ namespace MadScience.Render
         private void ResetView(int spX)
         {
             Console.WriteLine("camera height: " + height.ToString());
-            if (model != null)
+            // TODO - Add in addition of bounding boxes so we get the centerpoint of all combined meshes, not just the first one
+            if (models[0] != null)
             {
-                Console.WriteLine("Min: " + model.bounds.min.X.ToString() + " : " + model.bounds.min.Y.ToString() + " : " + model.bounds.min.Z.ToString());
-                Console.WriteLine("Mid: " + model.bounds.mid.X.ToString() + " : " + model.bounds.mid.Y.ToString() + " : " + model.bounds.mid.Z.ToString());
-                Console.WriteLine("Max: " + model.bounds.max.X.ToString() + " : " + model.bounds.max.Y.ToString() + " : " + model.bounds.max.Z.ToString());
+                //Console.WriteLine("Min: " + model.bounds.min.X.ToString() + " : " + model.bounds.min.Y.ToString() + " : " + model.bounds.min.Z.ToString());
+                //Console.WriteLine("Mid: " + model.bounds.mid.X.ToString() + " : " + model.bounds.mid.Y.ToString() + " : " + model.bounds.mid.Z.ToString());
+                //Console.WriteLine("Max: " + model.bounds.max.X.ToString() + " : " + model.bounds.max.Y.ToString() + " : " + model.bounds.max.Z.ToString());
 
-                height = model.bounds.mid.Y + ((model.bounds.max.Y - model.bounds.mid.Y) / 2f);
-                if (spX == 180 || spX == 0) transZ = model.bounds.max.X * 0.2f;
-                else transZ = model.bounds.max.Z * 0.2f;
+                height = models[0].bounds.mid.Y + ((models[0].bounds.max.Y - models[0].bounds.mid.Y) / 2f);
+                if (spX == 180 || spX == 0) transZ = models[0].bounds.max.X * 0.2f;
+                else transZ = models[0].bounds.max.Z * 0.2f;
             }
             else
             {
@@ -970,8 +1018,6 @@ namespace MadScience.Render
             this.Name = "RenderWindow";
             this.Size = new System.Drawing.Size(471, 246);
             this.Load += new System.EventHandler(this.RenderWindow_Load);
-            this.VisibleChanged += new System.EventHandler(this.RenderWindow_VisibleChanged);
-            this.Resize += new System.EventHandler(this.RenderWindow_Resize);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1025,16 +1071,6 @@ namespace MadScience.Render
         private void rightToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ResetView(270);
-        }
-
-        private void RenderWindow_Resize(object sender, EventArgs e)
-        {
-
-        }
-
-        private void RenderWindow_VisibleChanged(object sender, EventArgs e)
-        {
-            Console.WriteLine("Test2");
         }
 
     }

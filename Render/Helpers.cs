@@ -20,6 +20,8 @@ namespace MadScience.Render
             if (input.Length == 0) return model;
 
             BinaryReader reader = new BinaryReader(input);
+
+            // Read in the RCOL Header
             uint rcolVersion = reader.ReadUInt32();
             uint rcolDatatype = reader.ReadUInt32();
 

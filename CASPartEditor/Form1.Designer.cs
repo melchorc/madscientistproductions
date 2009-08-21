@@ -161,6 +161,10 @@
             this.chkPatternALinked = new System.Windows.Forms.CheckBox();
             this.label38 = new System.Windows.Forms.Label();
             this.txtPatternATiling = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button8 = new System.Windows.Forms.Button();
+            this.label42 = new System.Windows.Forms.Label();
+            this.picPatternSolidColour = new System.Windows.Forms.PictureBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label68 = new System.Windows.Forms.Label();
             this.picPatternColour4 = new System.Windows.Forms.PictureBox();
@@ -181,10 +185,6 @@
             this.picHSVColorChannel1 = new System.Windows.Forms.PictureBox();
             this.label19 = new System.Windows.Forms.Label();
             this.picHSVColorBG = new System.Windows.Forms.PictureBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button8 = new System.Windows.Forms.Button();
-            this.label42 = new System.Windows.Forms.Label();
-            this.picPatternSolidColour = new System.Windows.Forms.PictureBox();
             this.label37 = new System.Windows.Forms.Label();
             this.btnPatternACommit = new System.Windows.Forms.Button();
             this.tabPage13 = new System.Windows.Forms.TabPage();
@@ -302,6 +302,7 @@
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.editColourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.renderWindow1 = new MadScience.Render.RenderWindow();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl3.SuspendLayout();
@@ -318,6 +319,8 @@
             this.tabPage2.SuspendLayout();
             this.grpPatternA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternThumb)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).BeginInit();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour2)).BeginInit();
@@ -329,8 +332,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.picHSVColorChannel2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHSVColorChannel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHSVColorBG)).BeginInit();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).BeginInit();
             this.tabPage13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLstTextureColour)).BeginInit();
             this.tabPage3.SuspendLayout();
@@ -469,7 +470,8 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.toolStripProgressBar1});
+            this.toolStripProgressBar1,
+            this.toolStripStatusLabel2});
             this.statusStrip1.Location = new System.Drawing.Point(0, 601);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(992, 22);
@@ -479,7 +481,7 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(775, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(977, 17);
             this.toolStripStatusLabel1.Spring = true;
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -487,6 +489,7 @@
             // 
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(200, 16);
+            this.toolStripProgressBar1.Visible = false;
             // 
             // tabControl3
             // 
@@ -1791,6 +1794,47 @@
             this.txtPatternATiling.TabIndex = 0;
             this.txtPatternATiling.TextChanged += new System.EventHandler(this.txtPatternATiling_TextChanged);
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.button8);
+            this.groupBox3.Controls.Add(this.label42);
+            this.groupBox3.Controls.Add(this.picPatternSolidColour);
+            this.groupBox3.Location = new System.Drawing.Point(5, 232);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(512, 105);
+            this.groupBox3.TabIndex = 40;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Solid Colour Options";
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(390, 19);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(116, 23);
+            this.button8.TabIndex = 11;
+            this.button8.Text = "Populate details";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(22, 22);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(40, 13);
+            this.label42.TabIndex = 9;
+            this.label42.Text = "Colour:";
+            // 
+            // picPatternSolidColour
+            // 
+            this.picPatternSolidColour.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picPatternSolidColour.Location = new System.Drawing.Point(25, 39);
+            this.picPatternSolidColour.Name = "picPatternSolidColour";
+            this.picPatternSolidColour.Size = new System.Drawing.Size(42, 42);
+            this.picPatternSolidColour.TabIndex = 10;
+            this.picPatternSolidColour.TabStop = false;
+            this.picPatternSolidColour.Click += new System.EventHandler(this.picPatternAColor_Click);
+            // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.label68);
@@ -2010,47 +2054,6 @@
             this.picHSVColorBG.TabIndex = 57;
             this.picHSVColorBG.TabStop = false;
             this.picHSVColorBG.Click += new System.EventHandler(this.picHSVColorBG_Click);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.button8);
-            this.groupBox3.Controls.Add(this.label42);
-            this.groupBox3.Controls.Add(this.picPatternSolidColour);
-            this.groupBox3.Location = new System.Drawing.Point(5, 232);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(512, 105);
-            this.groupBox3.TabIndex = 40;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Solid Colour Options";
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(390, 19);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(116, 23);
-            this.button8.TabIndex = 11;
-            this.button8.Text = "Populate details";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(22, 22);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(40, 13);
-            this.label42.TabIndex = 9;
-            this.label42.Text = "Colour:";
-            // 
-            // picPatternSolidColour
-            // 
-            this.picPatternSolidColour.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternSolidColour.Location = new System.Drawing.Point(25, 39);
-            this.picPatternSolidColour.Name = "picPatternSolidColour";
-            this.picPatternSolidColour.Size = new System.Drawing.Size(42, 42);
-            this.picPatternSolidColour.TabIndex = 10;
-            this.picPatternSolidColour.TabStop = false;
-            this.picPatternSolidColour.Click += new System.EventHandler(this.picPatternAColor_Click);
             // 
             // label37
             // 
@@ -3228,6 +3231,11 @@
             this.renderWindow1.WireframeColour = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.renderWindow1.RequireNewTextures += new System.EventHandler(this.renderWindow1_RequireNewTextures);
             // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(0, 17);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3247,7 +3255,6 @@
             this.Name = "Form1";
             this.Text = "CAS Texture+Unitool";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.ResizeBegin += new System.EventHandler(this.Form1_ResizeBegin);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -3271,6 +3278,9 @@
             this.grpPatternA.ResumeLayout(false);
             this.grpPatternA.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternThumb)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPatternColour4)).EndInit();
@@ -3284,9 +3294,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.picHSVColorChannel2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHSVColorChannel1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHSVColorBG)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPatternSolidColour)).EndInit();
             this.tabPage13.ResumeLayout(false);
             this.tabPage13.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLstTextureColour)).EndInit();
@@ -3580,6 +3587,7 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
     }
 }
 
