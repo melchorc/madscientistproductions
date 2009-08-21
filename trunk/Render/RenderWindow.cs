@@ -589,7 +589,7 @@ namespace MadScience.Render
                     case "skinSpecular":
                         this.skinSpecular = TextureLoader.FromStream(d3dDevice, textureInput);
                         break;
-                    case "skinBumpmap":
+                    case "normalMap":
                         this.normalMapTexture = TextureLoader.FromStream(d3dDevice, textureInput);
                         break;
 
@@ -617,7 +617,7 @@ namespace MadScience.Render
                     case "skinSpecular":
                         this.skinSpecular = null;
                         break;
-                    case "skinBumpmap":
+                    case "normalMap":
                         this.normalMapTexture = null;
                         break;
 
