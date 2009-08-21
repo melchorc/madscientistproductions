@@ -105,7 +105,7 @@ float3 gLamp0Pos : POSITION <
     string Object = "PointLight0";
     string UIName =  "Lamp 0 Position";
     string Space = (LIGHT_COORDS);
-> = {-0.5f,3.0f,1.25f};
+> = {-0.5f,2.0f,1.25f};
 
 float gTileCount <
     string UIName = "Tile Repeat";
