@@ -677,7 +677,7 @@ namespace CASPartEditor
             toolStripStatusLabel1.Text = "Initialising 3d view... please wait...";
             statusStrip1.Refresh();
 
-            refreshDisplay();
+            reloadTextures();
 
             toolStripStatusLabel1.Text = "";
 

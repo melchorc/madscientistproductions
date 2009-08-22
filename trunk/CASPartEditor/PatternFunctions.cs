@@ -42,10 +42,8 @@ namespace CASPartEditor
                 //picPatternThumb.Image = Patterns.makePatternThumb(pBrowser.findPattern(temp.key), pBrowser.pDetailsTopFile(temp));
                 picPatternThumb.Image = Patterns.makePatternThumb(chunk.pattern[patternNo]);
                 picPatternThumb.Visible = true;
-
-                refreshDisplay();
+                generate3DTexture(chunk);
             }
-
         }
 
         private void showPatternDetails(int designNo)
