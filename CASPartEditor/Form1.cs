@@ -303,7 +303,7 @@ namespace CASPartEditor
 
                     displayCasPartFile();
 
-                    refreshDisplay(0);
+                    reloadTextures();
                 }
                 else
                 {
@@ -1101,7 +1101,12 @@ namespace CASPartEditor
 
                     Stream saveFile = File.Open(saveFileDialog1.FileName, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 
-                    ulong instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
+                    ulong instanceId;
+                    if (sender != saveAsDefaultToolStripMenuItem)
+                        instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
+                    else
+                        instanceId = MadScience.StringHelpers.ParseHex64(txtCasPartInstance.Text);
+
                     Database db = new Database(saveFile, false);
 
                     saveToDBPF(db, instanceId, true);
@@ -1415,7 +1420,7 @@ namespace CASPartEditor
                 if (cmbPatternStencil5.SelectedIndex == 0) { chunk.stencil.E = blank; } else { chunk.stencil.E = stencilPool[cmbPatternStencil5.SelectedIndex - 1]; chunk.stencil.E.Enabled = "True"; }
                 if (cmbPatternStencil6.SelectedIndex == 0) { chunk.stencil.F = blank; } else { chunk.stencil.F = stencilPool[cmbPatternStencil6.SelectedIndex - 1]; chunk.stencil.F.Enabled = "True"; }
 
-                refreshDisplay();
+                reloadTextures();
             }
         
         }
@@ -1898,7 +1903,7 @@ namespace CASPartEditor
 
                 updateChunkFromLists(lstTextureDetails, chunk);
 
-                refreshDisplay();
+                reloadTextures();
             }
         }
 
@@ -2097,7 +2102,7 @@ namespace CASPartEditor
             picPatternSolidColour.BackColor = showColourDialog(picPatternSolidColour.BackColor);
             commitPatternDetails("Color", Colours.convertColour(picPatternSolidColour.BackColor));
 
-            refreshDisplay();
+            generate3DTexture();
             makePatternPreviewThumb();
         }
 
@@ -2202,10 +2207,10 @@ namespace CASPartEditor
 
                         commitPatternDetails("type", "solidColor");
 
-                        refreshDisplay();
+                        generate3DTexture();
 
                     }
-                    picPatternThumb.Visible = false;
+                    picPatternThumb.Visible = true;
 
                     break;
                 case 1: // Coloured
@@ -2255,8 +2260,8 @@ namespace CASPartEditor
                     showPatternDetails(pBrowser.selectedPattern, false);
 
                     chunk.pattern[patternNo] = (patternDetails)pBrowser.selectedPattern.Copy();
-
-                    refreshDisplay();
+                    pBrowser.selectedPattern.Enabled = chunk.pattern[patternNo].Enabled;
+                    generate3DTexture();
 
                 }
             }
@@ -2265,70 +2270,32 @@ namespace CASPartEditor
         }
         #endregion
 
-        private void refreshDisplay()
-        {
-            // Default to only refresh textures
-            refreshDisplay(1);
-        }
+        //private void refreshDisplay()
+        //{
+        //    // Default to only refresh textures
+        //    refreshDisplay(1);
+        //}
 
-        private void refreshDisplay(int refreshType)
-        {
-            if (renderWindow1.RenderEnabled && refreshType == 1)
-            {
-                if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
-        {
-
-                    xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-
-                    renderWindow1.RenderEnabled = false;
-
-                    DateTime startTime = DateTime.Now;
-                    toolStripStatusLabel1.Text = "Reloading 3d view... please wait...";
-                    statusStrip1.Refresh();
-
-                    reloadTextures(details);
-
-                    DateTime stopTime = DateTime.Now;
-                    TimeSpan duration = stopTime - startTime;
-
-                    toolStripStatusLabel1.Text = "Reloaded 3D in " + duration.Milliseconds + "ms";
-
-                    renderWindow1.RenderEnabled = true;
-                }
-
-                
-            }
-            else
-            {
-            if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
-            {
-                xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-
-                toolStripStatusLabel1.Text = "Initialising 3d view... please wait...";
-                statusStrip1.Refresh();
-
-                DateTime startTime = DateTime.Now;
-
-                startRender(details);
-
-                DateTime stopTime = DateTime.Now;
-                TimeSpan duration = stopTime - startTime;
-                this.toolStripStatusLabel1.Text = "Loaded 3D in " + duration.Milliseconds + "ms";
-
-
-            }
-
-        }
-        }
+        //private void refreshDisplay(int refreshType)
+        //{
+        //    if (renderWindow1.RenderEnabled && refreshType == 1)
+        //    {
+        //        reloadTextures();
+        //    }
+        //    else
+        //    {
+        //        reload3D();
+        //    }
+        //}
 
         private void btnReloadTextures_Click(object sender, EventArgs e)
         {
-            refreshDisplay(1);
+            reloadTextures();
         }
 
         private void btnStart3D_Click(object sender, EventArgs e)
         {
-            refreshDisplay(0);
+            reload3D();
         }
 
         private void updateLists(string searchText, string replaceValue)
@@ -2500,8 +2467,8 @@ namespace CASPartEditor
             saveAsToolStripMenuItem.Enabled = true;
 
             listView1.Items[listView1.Items.Count - 1].Selected = true;
-            
-            refreshDisplay();
+
+            reloadTextures();
 
         }
 
@@ -2524,7 +2491,7 @@ namespace CASPartEditor
             listView1.Items.Add(item);
             listView1.Items[listView1.Items.Count - 1].Selected = true;
 
-            refreshDisplay();
+            reloadTextures();
         }
 
         private void copyDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2550,7 +2517,7 @@ namespace CASPartEditor
             saveAsToolStripMenuItem.Enabled = true;
             listView1.Items[listView1.Items.Count - 1].Selected = true;
 
-            refreshDisplay();
+            reloadTextures();
         }
 
         private void cEnable3DPreview_CheckedChanged(object sender, EventArgs e)
@@ -2564,12 +2531,10 @@ namespace CASPartEditor
                 btnReloadTextures.Visible = true;
                 btnResetView.Visible = true;
                 renderWindow1.Visible = true;
-
-                refreshDisplay(0);
+                reload3D();
             }
             else
             {
-                //there is a bug when making the window smaller than that. Probably the 3d view doesn't like it to have no width.
                 MadScience.Helpers.saveRegistryValue("show3dRender", "False");
                 this.MinimumSize = new Size(590,650);
                 this.Size = new Size(590, this.Height);
@@ -2909,6 +2874,7 @@ namespace CASPartEditor
         private void chkPatternAEnabled_CheckedChanged(object sender, EventArgs e)
         {
             commitPatternDetails("enabled", chkPatternAEnabled.Checked);
+            makePatternPreviewThumb();
         }
 
         private void chkPatternALinked_CheckedChanged(object sender, EventArgs e)
@@ -2949,6 +2915,42 @@ namespace CASPartEditor
         private void renderWindow1_RequireNewTextures(object sender, EventArgs e)
         {
             reloadTextures();
+        }
+
+        private void Validate_Key(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            TextBox t = (TextBox)sender;
+            t.Text = t.Text.Trim();
+            if (t.Text != "" && !MadScience.KeyUtils.validateKey(t.Text))
+                e.Cancel = true;
+        }
+
+        private void Validate_Tiling(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            TextBox t = (TextBox)sender;
+            String[] s = t.Text.Split(',');
+            if (t.Text == "")
+                return;
+            if (s.Length == 2)
+            {
+                try
+                {
+                    float a = float.Parse(s[0]);
+                    a = float.Parse(s[1]);
+                }
+                catch (Exception)
+                {
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+            if (e.Cancel == true)
+                MessageBox.Show("Tiling invalid. Format: |x.xxx, x.xxx|");
+            else
+                reloadTextures();
         }
 
     }

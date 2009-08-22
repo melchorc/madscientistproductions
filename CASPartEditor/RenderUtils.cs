@@ -17,6 +17,11 @@ namespace CASPartEditor
 
         public void reloadTextures()
         {
+            if (!renderWindow1.RenderEnabled)
+            {
+                reload3D();
+                return;
+            }
             if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
             {
 
@@ -25,7 +30,7 @@ namespace CASPartEditor
                 renderWindow1.RenderEnabled = false;
 
                 DateTime startTime = DateTime.Now;
-                toolStripStatusLabel1.Text = "Reloading 3d view... please wait...";
+                toolStripStatusLabel1.Text = "Reloading Textures...";
                 statusStrip1.Refresh();
 
                 reloadTextures(details);
@@ -34,7 +39,7 @@ namespace CASPartEditor
                 DateTime stopTime = DateTime.Now;
                 TimeSpan duration = stopTime - startTime;
 
-                toolStripStatusLabel1.Text = "Reloaded 3D in " + duration.Milliseconds + "ms";
+                toolStripStatusLabel1.Text = "Reloaded Textures in " + duration.Milliseconds + "ms";
 
                 renderWindow1.RenderEnabled = true;
             }
@@ -69,7 +74,26 @@ namespace CASPartEditor
 
         }
 
-        public void startRender(xmlChunkDetails details)
+        public void reload3D()
+        {
+            if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
+            {
+                xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+
+                toolStripStatusLabel1.Text = "Initialising 3d view... please wait...";
+                statusStrip1.Refresh();
+
+                DateTime startTime = DateTime.Now;
+
+                reload3D(details);
+
+                DateTime stopTime = DateTime.Now;
+                TimeSpan duration = stopTime - startTime;
+                this.toolStripStatusLabel1.Text = "Loaded 3D in " + duration.Milliseconds + "ms";
+            }
+        }
+
+        public void reload3D(xmlChunkDetails details)
         {
 
             // Get the Mesh links for the first LOD
@@ -126,6 +150,15 @@ namespace CASPartEditor
                 renderWindow1.statusLabel.Text = "Sorry, we could not find a mesh!";
             }
 
+        }
+
+        private void generate3DTexture()
+        {
+            if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
+            {
+                xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+                generate3DTexture(details);
+            }
         }
 
         private void generate3DTexture(xmlChunkDetails details)
