@@ -2241,13 +2241,19 @@ namespace CASPartEditor
             //pBrowser.curCategory = this.patternBrowserCategory;
             if (pBrowser.ShowDialog() == DialogResult.OK)
             {
-                showPatternDetails(pBrowser.selectedPattern, false);
+                
                 // Commit pattern here
                 if (listView1.SelectedItems.Count == 1)
                 {
 
                     int patternNo = cmbPatternSelect.SelectedIndex;
                     xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+
+                    pBrowser.selectedPattern.Tiling = chunk.pattern[patternNo].Tiling;
+                    pBrowser.selectedPattern.Enabled = chunk.pattern[patternNo].Enabled;
+
+                    showPatternDetails(pBrowser.selectedPattern, false);
+
                     chunk.pattern[patternNo] = (patternDetails)pBrowser.selectedPattern.Copy();
 
                     refreshDisplay();
