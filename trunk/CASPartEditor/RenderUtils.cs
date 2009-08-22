@@ -147,7 +147,7 @@ namespace CASPartEditor
             }
             else
             {
-                b = composeMultiplier(details, details.filename != "CasRgbMask");
+                b = composeMultiplier(details);
             }
             Object[] a = new Object[2];
             a[0] = details;
@@ -250,70 +250,78 @@ namespace CASPartEditor
             return output;
         }
 
-        private Bitmap composeMultiplier(xmlChunkDetails details, bool RGBA)
+        private Bitmap composeMultiplier(xmlChunkDetails details)
         {
-            Color[] pattern1colors = createColorArray(details.pattern[0]);
-            Color[] pattern2colors = createColorArray(details.pattern[1]);
-            Color[] pattern3colors = createColorArray(details.pattern[2]);
-            Color[] pattern4colors = createColorArray(details.pattern[3]);
-            Bitmap[] hsvPatterns = new Bitmap[4];
-
+            Bitmap[] myPatterns = new Bitmap[1];
             DateTime startTime2 = DateTime.Now;
             List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Multiplier));
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Mask));
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
 
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[0].rgbmask));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[1].rgbmask));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[2].rgbmask));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.pattern[3].rgbmask));
-
             List<Stream> textures = KeyUtils.findKey(tempList, 2);
 
-            // If any of the patterns can't be found, then check if they are a custom pattern and load them
-            if (textures[3].Length == 0 && details.pattern[0].Enabled == "True")
+            //// If any of the patterns can't be found, then check if they are a custom pattern and load them
+            //if (textures[3].Length == 0 && details.pattern[0].Enabled == "True")
+            //{
+            //    textures[3] = Patterns.findPattern(details.pattern[0]);
+            //}
+            //if (textures[4].Length == 0 && details.pattern[1].Enabled == "True")
+            //{
+            //    //textures[4] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[1].key));
+            //    textures[4] = Patterns.findPattern(details.pattern[1]);
+            //}
+            //if (textures[5].Length == 0 && details.pattern[2].Enabled == "True")
+            //{
+            //    //textures[5] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[2].key));
+            //    textures[5] = Patterns.findPattern(details.pattern[2]);
+            //}
+            //if (textures[6].Length == 0 && details.pattern[3].Enabled == "True")
+            //{
+            //    //textures[6] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[3].key));
+            //    textures[6] = Patterns.findPattern(details.pattern[3]);
+            //}
+
+            //process Patterns
+
+
+            if (details.pattern[3].Enabled.ToLower() == "true" && details.filename == "CasRgbaMask")
             {
-                textures[3] = Patterns.findPattern(details.pattern[0]);
+                myPatterns = new Bitmap[4];
             }
-            if (textures[4].Length == 0 && details.pattern[1].Enabled == "True")
+            else if (details.pattern[2].Enabled.ToLower() == "true")
             {
-                //textures[4] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[1].key));
-                textures[4] = Patterns.findPattern(details.pattern[1]);
+                myPatterns = new Bitmap[3];
             }
-            if (textures[5].Length == 0 && details.pattern[2].Enabled == "True")
+            else if (details.pattern[1].Enabled.ToLower() == "true")
             {
-                //textures[5] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[2].key));
-                textures[5] = Patterns.findPattern(details.pattern[2]);
-            }
-            if (textures[6].Length == 0 && details.pattern[3].Enabled == "True")
-            {
-                //textures[6] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[3].key));
-                textures[6] = Patterns.findPattern(details.pattern[3]);
+                myPatterns = new Bitmap[2];
             }
 
-            //process hsv Patterns
+            PointF[] tilings = new PointF[myPatterns.Length];
 
-            if (details.pattern[0].type == "HSV")
-            {
-                //hsvPatterns[0] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[0].key), pBrowser.pDetailsTopFile(details.pattern[0]));
-                hsvPatterns[0] = (Bitmap)Patterns.makePatternThumb(details.pattern[0]);
-            }
-            if (details.pattern[1].type == "HSV")
-            {
-                //hsvPatterns[1] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[1].key), pBrowser.pDetailsTopFile(details.pattern[1]));
-                hsvPatterns[1] = (Bitmap)Patterns.makePatternThumb(details.pattern[1]);
-            }
-            if (details.pattern[2].type == "HSV")
-            {
-                //hsvPatterns[2] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[2].key), pBrowser.pDetailsTopFile(details.pattern[2]));
-                hsvPatterns[2] = (Bitmap)Patterns.makePatternThumb(details.pattern[2]);
-            }
-            if (details.pattern[3].type == "HSV")
-            {
-                //hsvPatterns[3] = (Bitmap)this.pBrowser.makePatternThumb(pBrowser.findPattern(details.pattern[3].key), pBrowser.pDetailsTopFile(details.pattern[3]));
-                hsvPatterns[3] = (Bitmap)Patterns.makePatternThumb(details.pattern[3]);
-            }
+            for(int i = 0; i < myPatterns.Length;i++)
+                if (details.pattern[i].Enabled.ToLower() == "true")
+                {
+                    myPatterns[i] = (Bitmap)Patterns.makePatternThumb(details.pattern[i]); ;
+                    tilings[i] = new PointF(1f, 1f);
+                    if (details.pattern[i].Tiling != null)
+                    {
+                        String[] s = details.pattern[i].Tiling.Split(',');
+                        if (s.Length == 2)
+                        {
+                            try
+                            {
+                                tilings[i].X = float.Parse(s[0]);
+                                tilings[i].Y = float.Parse(s[1]);
+                            }
+                            catch (Exception)
+                            {
+                                tilings[i] = new PointF(1f, 1f);
+                            }
+                        }
+                    }
+                }
 
             DateTime stopTime2 = DateTime.Now;
             TimeSpan duration2 = stopTime2 - startTime2;
@@ -322,46 +330,13 @@ namespace CASPartEditor
             DateTime startTime = DateTime.Now;
             Bitmap output = PatternProcessor.ProcessTexture(
                 textures,
-                hsvPatterns,
-                pattern1colors, pattern2colors, pattern3colors, pattern4colors, RGBA);
+                myPatterns,
+                tilings);
 
             DateTime stopTime = DateTime.Now;
             TimeSpan duration = stopTime - startTime;
             Console.WriteLine("Total Multiplier Texture generation time: " + duration.TotalMilliseconds);
             return output;
-        }
-
-        private Color[] createColorArray(patternDetails pDetail)
-        {
-            Color[] colors = new Color[1];
-
-            if (pDetail.Enabled.ToLower() == "false")
-            {
-                colors[0] = Color.Empty;
-                return colors;
-            }
-
-            if (pDetail.type == "solidColor")
-            {
-                colors[0] = MadScience.Colours.convertColour(pDetail.Color);
-            }
-            if (pDetail.type == "HSV")
-            {
-                //we process the pattern in the pattern preview code, so we multiplicate it with white so that there is no change
-                colors[0] = Color.White;
-            }
-            if (pDetail.type == "Coloured")
-            {
-                // Always copy directly - we check individual colours in the pattern processor
-                colors = new Color[5];
-                colors[0] = MadScience.Colours.convertColour(pDetail.ColorP[0], true);
-                colors[1] = MadScience.Colours.convertColour(pDetail.ColorP[1], true);
-                colors[2] = MadScience.Colours.convertColour(pDetail.ColorP[2], true);
-                colors[3] = MadScience.Colours.convertColour(pDetail.ColorP[3], true);
-                colors[4] = MadScience.Colours.convertColour(pDetail.ColorP[4], true);
-
-            }
-            return colors;
         }
 
         public static Dictionary<string, string> defaultMeshes = new Dictionary<string, string>();
