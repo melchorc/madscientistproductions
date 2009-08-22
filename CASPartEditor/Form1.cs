@@ -463,18 +463,15 @@ namespace CASPartEditor
             //toolStripStatusLabel1.Text = temp.Name;
             temp.BorderStyle = BorderStyle.FixedSingle;
 
-            if (cmbMeshName.SelectedItem != null)
+            if (cmbMeshName.SelectedItem == null || cmbMeshName.SelectedItem.ToString() != temp.Name)
             {
-                if (cmbMeshName.SelectedItem.ToString() != temp.Name)
+                newToolStripMenuItem_Click(null, null);
+                for (int i = 0; i < cmbMeshName.Items.Count; i++)
                 {
-                    newToolStripMenuItem_Click(null, null);
-                    for (int i = 0; i < cmbMeshName.Items.Count; i++)
+                    if ((string)cmbMeshName.Items[i] == temp.Name)
                     {
-                        if ((string)cmbMeshName.Items[i] == temp.Name)
-                        {
-                            cmbMeshName.SelectedIndex = i;
-                            break;
-                        }
+                        cmbMeshName.SelectedIndex = i;
+                        break;
                     }
                 }
             }

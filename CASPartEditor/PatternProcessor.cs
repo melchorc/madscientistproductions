@@ -132,44 +132,15 @@ namespace CASPartEditor
 
         public static Bitmap ProcessTexture(
                 List<Stream> textures, 
-                Bitmap[] HSVPatterns,
-                Color[] Pattern1Colors, 
-                Color[] Pattern2Colors, 
-                Color[] Pattern3Colors,
-                Color[] Pattern4Colors, 
-                bool RGBA
+                Bitmap[] Patterns,
+                PointF[] Tilings
             )
         {
+            int numPatterns = Patterns.Length;
             Bitmap _Multiplier;
             Bitmap _PartMask;
             Bitmap _Overlay = null;
-            Bitmap _Pattern1;
-            Bitmap _Pattern2;
-            Bitmap _Pattern3;
-            Bitmap _Pattern4;
             Bitmap output;
-
-            // Pattern Colors check
-            bool Pattern1Enabled = true;
-            bool Pattern2Enabled = true;
-            bool Pattern3Enabled = true;
-            bool Pattern4Enabled = true;
-            if (Pattern1Colors.Length == 1 && Pattern1Colors[0].IsEmpty)
-            {
-                Pattern1Enabled = false;
-            }
-            if (Pattern2Colors.Length == 1 && Pattern2Colors[0].IsEmpty)
-            {
-                Pattern2Enabled = false;
-            }
-            if (Pattern3Colors.Length == 1 && Pattern3Colors[0].IsEmpty)
-            {
-                Pattern3Enabled = false;
-            }
-            if (Pattern4Colors.Length == 1 && Pattern4Colors[0].IsEmpty)
-            {
-                Pattern4Enabled = false;
-            }
 
             var d = new DdsFileTypePlugin.DdsFile();
 
@@ -231,108 +202,6 @@ namespace CASPartEditor
             duration = stopTime - startTime;
             Console.WriteLine("Overlay generation time: " + duration.TotalMilliseconds);
 
-
-            startTime = DateTime.Now;
-            Stream Pattern1 = textures[3];
-            Console.WriteLine("Pattern1 length: " + Pattern1.Length.ToString());
-
-            //Load patterns
-            if (HSVPatterns[0] == null)
-            {
-                if ((Pattern1.Length != 0))
-                {
-                    d.Load(Pattern1);
-                    _Pattern1 = (Bitmap)d.Image(true, true, true, true);
-                    Pattern1.Close();
-                }
-                else
-                {
-                    _Pattern1 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
-                }
-            }
-            else
-            {
-                _Pattern1 = HSVPatterns[0];
-            }
-            stopTime = DateTime.Now;
-            duration = stopTime - startTime;
-            Console.WriteLine("Pattern1 generation time: " + duration.TotalMilliseconds);
-
-            startTime = DateTime.Now;
-            Stream Pattern2 = textures[4];
-            Console.WriteLine("Pattern2 length: " + Pattern2.Length.ToString());
-
-            if (HSVPatterns[1] == null)
-            {
-                if ((Pattern2.Length != 0))
-                {
-                    d.Load(Pattern2);
-                    _Pattern2 = (Bitmap)d.Image(true, true, true, true);
-                    Pattern2.Close();
-                }
-                else
-                {
-                    _Pattern2 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
-                }
-            }
-            else
-            {
-                _Pattern2 = HSVPatterns[1];
-            }
-            stopTime = DateTime.Now;
-            duration = stopTime - startTime;
-            Console.WriteLine("Pattern2 generation time: " + duration.TotalMilliseconds);
-
-            startTime = DateTime.Now;
-            Stream Pattern3 = textures[5];
-            Console.WriteLine("Pattern3 length: " + Pattern3.Length.ToString());
-
-            if (HSVPatterns[2] == null)
-            {
-                if ((Pattern3.Length != 0))
-                {
-                    d.Load(Pattern3);
-                    _Pattern3 = (Bitmap)d.Image(true, true, true, true);
-                    Pattern3.Close();
-                }
-                else
-                {
-                    _Pattern3 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
-                }
-            }
-            else
-            {
-                _Pattern3 = HSVPatterns[2];
-            }
-            stopTime = DateTime.Now;
-            duration = stopTime - startTime;
-            Console.WriteLine("Pattern3 generation time: " + duration.TotalMilliseconds);
-
-            startTime = DateTime.Now;
-            Stream Pattern4 = textures[6];
-            Console.WriteLine("Pattern4 length: " + Pattern4.Length.ToString());
-
-            if (HSVPatterns[3] == null)
-            {
-                if ((Pattern4.Length != 0))
-                {
-                    d.Load(Pattern4);
-                    _Pattern4 = (Bitmap)d.Image(true, true, true, true);
-                    Pattern4.Close();
-                }
-                else
-                {
-                    _Pattern4 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
-                }
-            }
-            else
-            {
-                _Pattern4 = HSVPatterns[3];
-            }
-            stopTime = DateTime.Now;
-            duration = stopTime - startTime;
-            Console.WriteLine("Pattern4 generation time: " + duration.TotalMilliseconds);
-
             //create empty output bitmap
             output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
 
@@ -347,39 +216,39 @@ namespace CASPartEditor
                 ResizeBitmap(ref _PartMask, 1024, 1024);
             }
 
-            if (_Pattern1.Width != 256 || _Pattern1.Height != 256)
-            {
-                ResizeBitmap(ref _Pattern1, 256, 256);
-            }
+            int[] PatternsWidth = new int[numPatterns];
+            int[] PatternsHeight = new int[numPatterns];
 
-            if (_Pattern2.Width != 256 || _Pattern2.Height != 256)
-            {
-                ResizeBitmap(ref _Pattern2, 256, 256);
-            }
-
-            if (_Pattern3.Width != 256 || _Pattern3.Height != 256)
-            {
-                ResizeBitmap(ref _Pattern3, 256, 256);
-            }
-
-            if (_Pattern4.Width != 256 || _Pattern4.Height != 256)
-            {
-                ResizeBitmap(ref _Pattern4, 256, 256);
-            }
+            for (int i = 0; i < numPatterns; i++)
+                if (Patterns[i] != null)
+                {
+                    PatternsWidth[i] = (int)(1024 / Tilings[i].X);
+                    PatternsHeight[i] = (int)(1024 / Tilings[i].Y);
+                    if (PatternsWidth[i] != 256 || PatternsHeight[i] != 256)
+                        ResizeBitmap(ref Patterns[i], PatternsWidth[i], PatternsHeight[i]);
+                }
 
             startTime = DateTime.Now;
             BitmapData outputData = output.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
             BitmapData multiplierData = _Multiplier.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
             BitmapData maskData = _PartMask.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            BitmapData pattern1Data = _Pattern1.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            BitmapData pattern2Data = _Pattern2.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            BitmapData pattern3Data = _Pattern3.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            BitmapData pattern4Data = _Pattern4.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData[] patternData = new BitmapData[numPatterns];
 
+            for (int i=0; i < numPatterns; i++)
+                if (Patterns[i] != null)
+                    patternData[i] = Patterns[i].LockBits(new Rectangle(0, 0, PatternsWidth[i], PatternsHeight[i]), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            
             stopTime = DateTime.Now;
             duration = stopTime - startTime;
             Console.WriteLine("LockBits time: " + duration.TotalMilliseconds);
             const int pixelSize = 4;
+
+            byte[] byteMask = new byte[4];
+            byteMask[0] = 2;
+            byteMask[1] = 1;
+            byteMask[2] = 0;
+            byteMask[3] = 3;
+
             //process every pixel
             unsafe
             {
@@ -390,27 +259,10 @@ namespace CASPartEditor
                         byte* multiplierRow = (byte*)multiplierData.Scan0 + (y * multiplierData.Stride);
                         byte* maskRow = (byte*)maskData.Scan0 + (y * maskData.Stride);
 
-                        byte* pattern1Row = null;
-                        byte* pattern2Row = null;
-                        byte* pattern3Row = null;
-                        byte* pattern4Row = null;
-
-                        if (Pattern1Enabled)
-                        {
-                            pattern1Row = (byte*)pattern1Data.Scan0 + ((y % 256) * pattern1Data.Stride);
-                        }
-                        if (Pattern2Enabled)
-                        {
-                            pattern2Row = (byte*)pattern2Data.Scan0 + ((y % 256) * pattern2Data.Stride);
-                        }
-                        if (Pattern3Enabled)
-                        {
-                            pattern3Row = (byte*)pattern3Data.Scan0 + ((y % 256) * pattern3Data.Stride);
-                        }
-                        if (Pattern4Enabled)
-                        {
-                            pattern4Row = (byte*)pattern4Data.Scan0 + ((y % 256) * pattern4Data.Stride);
-                        }
+                        byte*[] patternRows = new byte*[numPatterns];
+                        for (int i=0; i < numPatterns; i++)
+                            if (Patterns[i] != null)
+                                patternRows[i] = (byte*)patternData[i].Scan0 + ((y % PatternsHeight[i]) * patternData[i].Stride);
 
                         for (int x = 0; x < 1024; x++)
                         {
@@ -420,42 +272,22 @@ namespace CASPartEditor
                             Color multiplierColor = Color.FromArgb(multiplierRow[pixelLocation + 3], multiplierRow[pixelLocation + 2], multiplierRow[pixelLocation + 1], multiplierRow[pixelLocation]);
                             if (multiplierColor.A != 0)
                             {
-                                Color maskColor = Color.FromArgb(maskRow[pixelLocation + 3], maskRow[pixelLocation + 2], maskRow[pixelLocation + 1], maskRow[pixelLocation]);
+                                //Color maskColor = Color.FromArgb(maskRow[pixelLocation + 3], maskRow[pixelLocation + 2], maskRow[pixelLocation + 1], maskRow[pixelLocation]);
 
-                                int xs = x % 256;
-                                int pixelLocation2 = xs * pixelSize;
-
-                                Color pattern1Color = Color.Empty;
-                                Color pattern2Color = Color.Empty;
-                                Color pattern3Color = Color.Empty;
-                                Color pattern4Color = Color.Empty;
-
-                                if (Pattern1Enabled) pattern1Color = Color.FromArgb(pattern1Row[pixelLocation2 + 3], pattern1Row[pixelLocation2 + 2], pattern1Row[pixelLocation2 + 1], pattern1Row[pixelLocation2]);
-                                if (Pattern2Enabled) pattern2Color = Color.FromArgb(pattern2Row[pixelLocation2 + 3], pattern2Row[pixelLocation2 + 2], pattern2Row[pixelLocation2 + 1], pattern2Row[pixelLocation2]);
-                                if (Pattern3Enabled) pattern3Color = Color.FromArgb(pattern3Row[pixelLocation2 + 3], pattern3Row[pixelLocation2 + 2], pattern3Row[pixelLocation2 + 1], pattern3Row[pixelLocation2]);
-                                if (RGBA && Pattern4Enabled) pattern4Color = Color.FromArgb(pattern4Row[pixelLocation2 + 3], pattern4Row[pixelLocation2 + 2], pattern4Row[pixelLocation2 + 1], pattern4Row[pixelLocation2]);
-
-                                if (HSVPatterns[0] == null)
-                                    pattern1Color = ColorFromPattern(pattern1Color, Pattern1Colors);
-                                if (HSVPatterns[1] == null)
-                                    pattern2Color = ColorFromPattern(pattern2Color, Pattern2Colors);
-                                if (HSVPatterns[2] == null)
-                                    pattern3Color = ColorFromPattern(pattern3Color, Pattern3Colors);
-                                if (HSVPatterns[3] == null)
-                                    pattern4Color = ColorFromPattern(pattern4Color, Pattern4Colors);
-
-                                if (RGBA)
-                                {
-                                    multiplierColor = ProcessPixelRGBA(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color, pattern4Color);
-                                }
-                                else
-                                {
-                                    multiplierColor = ProcessPixelRGB(multiplierColor, maskColor, pattern1Color, pattern2Color, pattern3Color);
-                                }
-                                outputRow[pixelLocation] = (byte)multiplierColor.B;
-                                outputRow[pixelLocation + 1] = (byte)multiplierColor.G;
-                                outputRow[pixelLocation + 2] = (byte)multiplierColor.R;
-                                outputRow[pixelLocation + 3] = (byte)multiplierColor.A;
+                                Color outColor = multiplierColor;
+                                Color patternColor;
+                                for (int i = 0; i < numPatterns; i++)
+                                    if (Patterns[i] != null)
+                                    {
+                                        int xs = x % PatternsWidth[i];
+                                        int pixelLocation2 = xs * pixelSize;
+                                        patternColor = Color.FromArgb(patternRows[i][pixelLocation2 + 3], patternRows[i][pixelLocation2 + 2], patternRows[i][pixelLocation2 + 1], patternRows[i][pixelLocation2]);
+                                        outColor = ColorOverlay(maskRow[pixelLocation + byteMask[i]], outColor, ColorMultiply(multiplierColor, patternColor));
+                                    }
+                                outputRow[pixelLocation] = (byte)outColor.B;
+                                outputRow[pixelLocation + 1] = (byte)outColor.G;
+                                outputRow[pixelLocation + 2] = (byte)outColor.R;
+                                outputRow[pixelLocation + 3] = (byte)outColor.A;
                             }
                         }
                     }
