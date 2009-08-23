@@ -88,6 +88,10 @@ namespace MadScience.Render
         {
         }
 
+        public void setModel(modelInfo newModel, int modelNumber)
+        {
+        }
+
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
             base.OnPaint(e);

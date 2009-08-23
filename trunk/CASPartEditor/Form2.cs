@@ -54,7 +54,7 @@ namespace CASPartEditor
 
             statusStrip1.Refresh();
 
-            Stream input = File.OpenRead(sims3root + "\\GameData\\Shared\\Packages\\FullBuild2.package");
+            Stream input = File.OpenRead(Path.Combine(sims3root, MadScience.Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild2.package")));
 
             Database db = new Database(input, true);
 
@@ -67,7 +67,7 @@ namespace CASPartEditor
             }
             catch (MadScience.Exceptions.NotAPackageException)
             {
-                MessageBox.Show("bad file: {0}", sims3root + "\\GameData\\Shared\\Packages\\FullBuild2.package");
+                MessageBox.Show("bad file: {0}", Path.Combine(sims3root, "\\GameData\\Shared\\Packages\\FullBuild2.package"));
                 input.Close();
                 return false;
             }

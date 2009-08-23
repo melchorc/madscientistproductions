@@ -30,15 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Texture Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Clothing Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Face Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Mask and Overlay Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Hair Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Skin Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup7 = new System.Windows.Forms.ListViewGroup("Logo Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup8 = new System.Windows.Forms.ListViewGroup("CAS Details", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup9 = new System.Windows.Forms.ListViewGroup("Misc. Details", System.Windows.Forms.HorizontalAlignment.Left);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,7 +51,6 @@
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
@@ -163,7 +153,6 @@
             this.label38 = new System.Windows.Forms.Label();
             this.txtPatternATiling = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button8 = new System.Windows.Forms.Button();
             this.label42 = new System.Windows.Forms.Label();
             this.picPatternSolidColour = new System.Windows.Forms.PictureBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -274,18 +263,7 @@
             this.listView2 = new System.Windows.Forms.ListView();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
-            this.txtLOD3 = new System.Windows.Forms.TextBox();
-            this.txtLOD0 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.button24 = new System.Windows.Forms.Button();
-            this.button22 = new System.Windows.Forms.Button();
-            this.button14 = new System.Windows.Forms.Button();
-            this.button15 = new System.Windows.Forms.Button();
-            this.txtLOD2 = new System.Windows.Forms.TextBox();
-            this.txtLOD1 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -1604,7 +1582,7 @@
             this.btnBrowsePatterns.TabIndex = 43;
             this.btnBrowsePatterns.Text = "Browse Patterns";
             this.btnBrowsePatterns.UseVisualStyleBackColor = true;
-            this.btnBrowsePatterns.Click += new System.EventHandler(this.button11_Click);
+            this.btnBrowsePatterns.Click += new System.EventHandler(this.btnBrowsePatterns_Click);
             // 
             // label40
             // 
@@ -1801,7 +1779,6 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button8);
             this.groupBox3.Controls.Add(this.label42);
             this.groupBox3.Controls.Add(this.picPatternSolidColour);
             this.groupBox3.Location = new System.Drawing.Point(5, 232);
@@ -1810,16 +1787,6 @@
             this.groupBox3.TabIndex = 40;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Solid Colour Options";
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(390, 19);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(116, 23);
-            this.button8.TabIndex = 11;
-            this.button8.Text = "Populate details";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // label42
             // 
@@ -2614,34 +2581,6 @@
             this.columnHeader12});
             this.lstMeshTGILinks.FullRowSelect = true;
             this.lstMeshTGILinks.GridLines = true;
-            listViewGroup1.Header = "Texture Details";
-            listViewGroup1.Name = "groupTextures";
-            listViewGroup2.Header = "Clothing Details";
-            listViewGroup2.Name = "groupClothing";
-            listViewGroup3.Header = "Face Overlay Details";
-            listViewGroup3.Name = "groupFaceOverlay";
-            listViewGroup4.Header = "Mask and Overlay Details";
-            listViewGroup4.Name = "groupMask";
-            listViewGroup5.Header = "Hair Details";
-            listViewGroup5.Name = "groupHair";
-            listViewGroup6.Header = "Skin Details";
-            listViewGroup6.Name = "groupSkin";
-            listViewGroup7.Header = "Logo Details";
-            listViewGroup7.Name = "groupLogo";
-            listViewGroup8.Header = "CAS Details";
-            listViewGroup8.Name = "groupCasDetails";
-            listViewGroup9.Header = "Misc. Details";
-            listViewGroup9.Name = "groupMisc";
-            this.lstMeshTGILinks.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2,
-            listViewGroup3,
-            listViewGroup4,
-            listViewGroup5,
-            listViewGroup6,
-            listViewGroup7,
-            listViewGroup8,
-            listViewGroup9});
             this.lstMeshTGILinks.HideSelection = false;
             this.lstMeshTGILinks.Location = new System.Drawing.Point(9, 19);
             this.lstMeshTGILinks.MultiSelect = false;
@@ -3002,89 +2941,12 @@
             this.columnHeader4.Text = "Name";
             this.columnHeader4.Width = 160;
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(0, 0);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 0;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(0, 0);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 0;
-            // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(0, 0);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(75, 23);
-            this.button10.TabIndex = 0;
-            // 
-            // txtLOD3
-            // 
-            this.txtLOD3.Location = new System.Drawing.Point(0, 0);
-            this.txtLOD3.Name = "txtLOD3";
-            this.txtLOD3.Size = new System.Drawing.Size(100, 20);
-            this.txtLOD3.TabIndex = 0;
-            // 
-            // txtLOD0
-            // 
-            this.txtLOD0.Location = new System.Drawing.Point(0, 0);
-            this.txtLOD0.Name = "txtLOD0";
-            this.txtLOD0.Size = new System.Drawing.Size(100, 20);
-            this.txtLOD0.TabIndex = 0;
-            // 
             // label9
             // 
             this.label9.Location = new System.Drawing.Point(0, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(100, 23);
             this.label9.TabIndex = 0;
-            // 
-            // button24
-            // 
-            this.button24.Location = new System.Drawing.Point(0, 0);
-            this.button24.Name = "button24";
-            this.button24.Size = new System.Drawing.Size(75, 23);
-            this.button24.TabIndex = 0;
-            // 
-            // button22
-            // 
-            this.button22.Location = new System.Drawing.Point(0, 0);
-            this.button22.Name = "button22";
-            this.button22.Size = new System.Drawing.Size(75, 23);
-            this.button22.TabIndex = 0;
-            // 
-            // button14
-            // 
-            this.button14.Location = new System.Drawing.Point(0, 0);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(75, 23);
-            this.button14.TabIndex = 0;
-            // 
-            // button15
-            // 
-            this.button15.Location = new System.Drawing.Point(0, 0);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(75, 23);
-            this.button15.TabIndex = 0;
-            // 
-            // txtLOD2
-            // 
-            this.txtLOD2.Location = new System.Drawing.Point(0, 0);
-            this.txtLOD2.Name = "txtLOD2";
-            this.txtLOD2.Size = new System.Drawing.Size(100, 20);
-            this.txtLOD2.TabIndex = 0;
-            // 
-            // txtLOD1
-            // 
-            this.txtLOD1.Location = new System.Drawing.Point(0, 0);
-            this.txtLOD1.Name = "txtLOD1";
-            this.txtLOD1.Size = new System.Drawing.Size(100, 20);
-            this.txtLOD1.TabIndex = 0;
             // 
             // label10
             // 
@@ -3337,7 +3199,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.TabControl tabControl3;
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.TabPage tabPage8;
@@ -3472,7 +3333,6 @@
         private System.Windows.Forms.Label label105;
         private System.Windows.Forms.ComboBox cmbPatternStencil3;
         private System.Windows.Forms.Button btnDesignStencilCommit;
-        private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button btnGetNewXML;
         private System.Windows.Forms.Button btnBrowsePatterns;
@@ -3521,18 +3381,8 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtMeshName;
         private System.Windows.Forms.Button txtMeshNameCommit;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.TextBox txtLOD3;
-        private System.Windows.Forms.TextBox txtLOD0;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button button24;
-        private System.Windows.Forms.Button button22;
-        private System.Windows.Forms.Button button14;
-        private System.Windows.Forms.Button button15;
-        private System.Windows.Forms.TextBox txtLOD2;
-        private System.Windows.Forms.TextBox txtLOD1;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;

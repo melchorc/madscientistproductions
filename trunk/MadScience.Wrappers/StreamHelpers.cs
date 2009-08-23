@@ -9,6 +9,46 @@ namespace MadScience
     public class StreamHelpers
     {
 
+        public static Single ReadValueF32(Stream stream)
+        {
+            return ReadValueF32(stream, true);
+        }
+
+        public static Single ReadValueF32(Stream stream, bool littleEndian)
+        {
+            byte[] data = new byte[4];
+            int read = stream.Read(data, 0, 4);
+
+            if (ShouldSwap(littleEndian))
+            {
+                return BitConverter.ToSingle(BitConverter.GetBytes(MadScience.NumberHelpers.Swap(BitConverter.ToInt32(data, 0))), 0);
+            }
+            else
+            {
+                return BitConverter.ToSingle(data, 0);
+            }
+        }
+
+        public static void WriteValueF32(Stream stream, Single value)
+        {
+            WriteValueF32(stream, value, true);
+        }
+
+        public static void WriteValueF32(Stream stream, Single value, bool littleEndian)
+        {
+            byte[] data;
+            if (ShouldSwap(littleEndian))
+            {
+                data = BitConverter.GetBytes(MadScience.NumberHelpers.Swap(BitConverter.ToInt32(BitConverter.GetBytes(value), 0)));
+            }
+            else
+            {
+                data = BitConverter.GetBytes(value);
+            }
+            stream.Write(data, 0, 4);
+        }
+
+
         public static UInt64 ReadValueU64(Stream stream)
         {
             return ReadValueU64(stream, true);
