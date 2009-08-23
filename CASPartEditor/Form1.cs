@@ -345,8 +345,6 @@ namespace CASPartEditor
 
             bool foundMatch = false;
 
-
-
             foreach (MadScience.Wrappers.ResourceKey entry in db._Entries.Keys) 
             {
                 //ResourceKey key = db.Entries.Keys[i];
@@ -598,11 +596,11 @@ namespace CASPartEditor
             Image tempImage = null;
 
             string s3root = MadScience.Helpers.findSims3Root();
-            string thumbnailPackage = @"\Thumbnails\CASThumbnails.package";
-            if (s3root != "" && File.Exists(s3root + thumbnailPackage))
+            string thumbnailPackage = Helpers.getGameSubPath(@"\Thumbnails\CASThumbnails.package");
+            if (s3root != "" && File.Exists(Path.Combine(s3root, thumbnailPackage)))
             {
                 // Open CAS Thumbnails package
-                Stream cast = File.Open(s3root + thumbnailPackage, FileMode.Open, FileAccess.Read, FileShare.Read);
+                Stream cast = File.Open(Path.Combine(s3root, thumbnailPackage), FileMode.Open, FileAccess.Read, FileShare.Read);
                 Database castdb = new Database(cast, true);
 
                 //cast.Seek(0, SeekOrigin.Begin);
@@ -900,7 +898,7 @@ namespace CASPartEditor
                 toolStripStatusLabel1.Text = "Searching for textures... please wait";
                 statusStrip1.Refresh();
 
-                Stream fbuild2 = File.Open(s3root + "\\GameData\\Shared\\Packages\\FullBuild2.package", FileMode.Open, FileAccess.Read, FileShare.Read);
+                Stream fbuild2 = File.Open(Path.Combine(s3root, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild2.package")), FileMode.Open, FileAccess.Read, FileShare.Read);
                 MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(fbuild2, true);
 
                 toolStripProgressBar1.Maximum = casPartSrc.tgi64list.Count;
@@ -1102,10 +1100,10 @@ namespace CASPartEditor
                     Stream saveFile = File.Open(saveFileDialog1.FileName, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 
                     ulong instanceId;
-                    if (sender != saveAsDefaultToolStripMenuItem)
+                    //if (sender != saveAsDefaultToolStripMenuItem)
                         instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
-                    else
-                        instanceId = MadScience.StringHelpers.ParseHex64(txtCasPartInstance.Text);
+                    //else
+                    //    instanceId = MadScience.StringHelpers.ParseHex64(txtCasPartInstance.Text);
 
                     Database db = new Database(saveFile, false);
 
@@ -1441,7 +1439,7 @@ namespace CASPartEditor
                 toolStripStatusLabel1.Text = "Searching for meshes... please wait";
                 statusStrip1.Refresh();
 
-                Stream fbuild0 = File.Open(s3root + "\\GameData\\Shared\\Packages\\FullBuild0.package", FileMode.Open, FileAccess.Read, FileShare.Read);
+                Stream fbuild0 = File.Open(Path.Combine(s3root,  Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package")), FileMode.Open, FileAccess.Read, FileShare.Read);
                 MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(fbuild0, true);
 
                 /*
@@ -2240,13 +2238,12 @@ namespace CASPartEditor
             txtPatternAFilename.Text = @"Materials\Miscellaneous\solidColor_1";
         }
 
-        private void button11_Click(object sender, EventArgs e)
+        private void btnBrowsePatterns_Click(object sender, EventArgs e)
         {
-
             //pBrowser.curCategory = this.patternBrowserCategory;
             if (pBrowser.ShowDialog() == DialogResult.OK)
             {
-                
+
                 // Commit pattern here
                 if (listView1.SelectedItems.Count == 1)
                 {
@@ -2267,6 +2264,7 @@ namespace CASPartEditor
             }
 
             pBrowser.Hide();
+
         }
         #endregion
 

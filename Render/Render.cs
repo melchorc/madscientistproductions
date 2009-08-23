@@ -90,6 +90,8 @@ namespace MadScience.Render
                 renderWindow1.statusLabel.Text = "Loaded " + Environment.GetCommandLineArgs()[1].ToString();
                 renderWindow1.setModel(newModel);
                 renderWindow1.resetDevice();
+                // If loading from command line, set mode to wireframe
+                renderWindow1.CurrentFillMode = 0;
                 renderWindow1.RenderEnabled = true;
             }
             else

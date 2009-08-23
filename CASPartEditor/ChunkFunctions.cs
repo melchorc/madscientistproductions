@@ -10,119 +10,6 @@ namespace CASPartEditor
 {
     public partial class Form1 : Form
     {
-        private void saveGeom(Stream input, Stream output, List<keyName> keynames)
-        {
-            BinaryReader reader = new BinaryReader(input);
-            BinaryWriter writer = new BinaryWriter(output);
-
-            uint rcolVersion = reader.ReadUInt32();
-            writer.Write(rcolVersion);
-            uint rcolDatatype = reader.ReadUInt32();
-            writer.Write(rcolDatatype);
-
-            uint rcolIndex3 = reader.ReadUInt32();
-            writer.Write(rcolIndex3);
-            uint rcolIndex1 = reader.ReadUInt32();
-            writer.Write(rcolIndex1);
-            uint rcolIndex2 = reader.ReadUInt32();
-            writer.Write(rcolIndex2);
-
-            for (int i = 0; i < rcolIndex2; i++)
-            {
-                ulong instanceId = reader.ReadUInt64();
-                writer.Write(instanceId);
-                uint typeId = reader.ReadUInt32();
-                writer.Write(typeId);
-                uint groupId = reader.ReadUInt32();
-                writer.Write(groupId);
-            }
-
-            for (int i = 0; i < rcolIndex2; i++)
-            {
-                uint chunkOffset = reader.ReadUInt32();
-                writer.Write(chunkOffset);
-                uint chunkSize = reader.ReadUInt32();
-                writer.Write(chunkSize);
-            }
-
-            // Real GEOM chunk
-            string geomString = MadScience.StreamHelpers.ReadStringASCII(input, 4);
-            MadScience.StreamHelpers.WriteStringASCII(output, geomString);
-
-            uint geomVersion = reader.ReadUInt32();
-            writer.Write(geomVersion);
-
-            uint tailOffset = reader.ReadUInt32();
-            writer.Write(tailOffset);
-
-            long seekFrom = input.Position;
-            //uint tailSize = reader.ReadUInt32();
-            //writer.Write(tailSize);
-
-            //int bytesLeft = (int)((tailOffset + startGeom) - input.Position);
-            int bytesLeft = (int)(input.Length - input.Position);
-            writer.Write(reader.ReadBytes(bytesLeft));
-
-            output.Seek(tailOffset + seekFrom, SeekOrigin.Begin);
-            input.Seek(tailOffset + seekFrom, SeekOrigin.Begin);
-
-            // Tail section
-            /*
-            uint tailStart = reader.ReadUInt32();
-            if (tailStart != 4)
-            {
-                // Looks like we seeked to the wrong place... try going back a bit
-                output.Seek(tailOffset + 40, SeekOrigin.Begin);
-                input.Seek(tailOffset + 40, SeekOrigin.Begin);
-                tailStart = reader.ReadUInt32();
-
-            }
-            writer.Write(tailStart);
-            uint countTail = reader.ReadUInt32();
-            writer.Write(countTail);
-            for (int i = 0; i < countTail; i++)
-            {
-                writer.Write(reader.ReadUInt32());
-            }
-            */
-            // TGI list
-            uint numOrig = reader.ReadUInt32();
-            writer.Write(numOrig);
-
-            // How many does the original mesh have? - Some meshes (Accessories) have only 3 TGI links.  Some have 4, some have 5.
-            // If 3 then chop off first two
-            // If 4 then chop off first one
-            // If 5 then save all
-
-            int startAt = 0;
-            if (numOrig == 3)
-            {
-                startAt = 2;
-            }
-            if (numOrig == 4)
-            {
-                startAt = 1;
-            }
-
-            for (int i = startAt; i < keynames.Count; i++)
-            {
-                if (keynames[i].ToString() != keynames[i].Blank)
-                {
-                    writer.Write(keynames[i].typeId);
-                    writer.Write(keynames[i].groupId);
-                    writer.Write(keynames[i].instanceId);
-                }
-                else
-                {
-                    // Skip this key
-                    writer.Write(reader.ReadUInt32());
-                    writer.Write(reader.ReadUInt32());
-                    writer.Write(reader.ReadUInt64());
-                }
-            }
-
-            Console.WriteLine("Done saving mesh...");
-        }
 
         private MemoryStream makeBlendFile(keyName proxy)
         {
@@ -245,56 +132,109 @@ namespace CASPartEditor
                     casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoThin] = bodyBlendThin.ToResourceKey();
                     casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoSpecial] = bodyBlendSpecial.ToResourceKey();
 
+                    keyName bumpMapKey = new keyName();
 
-                    // Modify the meshes if they need a replacement bump map
-                    List<keyName> kNames = new List<keyName>();
-
-                    kNames.Add(new keyName());
-                    kNames.Add(new keyName());
                     if (String.IsNullOrEmpty(txtOtherBumpMap.Text) == false)
                     {
-                        keyName bumpMapKey = new keyName(txtOtherBumpMap.Text, meshName + "_n");
-                        kNames.Add(bumpMapKey);
+                        bumpMapKey = new keyName(txtOtherBumpMap.Text, meshName + "_n");
+                        //kNames.Add(bumpMapKey);
                         if (txtOtherBumpMap.Text != "" && !txtOtherBumpMap.Text.StartsWith("key:")) db.SetResourceStream(bumpMapKey.ToResourceKey(), File.OpenRead(txtOtherBumpMap.Text));
                     }
-                    else
-                    {
-                        kNames.Add(new keyName());
-                    }
-                    kNames.Add(new keyName());
-                    kNames.Add(new keyName());
 
                     Stream blah;
+                    SimGeomFile simgeomfile = new SimGeomFile();
+                    int bumpmapPos = -1;
 
-                    MemoryStream geomLod1 = new MemoryStream();
+                    //MemoryStream geomLod1 = new MemoryStream();
                     if (txtMeshLod1.Text.Trim() != "")
                     {
                         blah = File.Open(txtMeshLod1.Text, FileMode.Open);
-                        saveGeom(blah, geomLod1, kNames);
+                        simgeomfile.Load(blah);
                         blah.Close();
-                        db.SetResourceStream(meshLod1.ToResourceKey(), geomLod1);
-                    }
-                    geomLod1.Close();
 
-                    MemoryStream geomLod2 = new MemoryStream();
+                        // Figure out bumpmap location
+                        // To do this we loop through the MTNF
+                        for (int i = 0; i < simgeomfile.simgeom.mtnfChunk.entries.Count; i++)
+                        {
+                            if (simgeomfile.simgeom.mtnfChunk.entries[i].fieldTypeHash == (uint)FieldTypes.NormalMap)
+                            {
+                                bumpmapPos = (int)simgeomfile.simgeom.mtnfChunk.entries[i].dwords[0];
+                                break;
+                            }
+                        }
+                        if (bumpmapPos > -1)
+                        {
+                            simgeomfile.simgeom.keytable.keys[bumpmapPos] = bumpMapKey.ToResourceKey();
+                        }
+                        bumpmapPos = -1;
+                        //saveGeom(blah, geomLod1, kNames);
+                        db.SetResourceStream(meshLod1.ToResourceKey(), simgeomfile.Save());
+                    }
+                    //geomLod1.Close();
+
+                    //MemoryStream geomLod2 = new MemoryStream();
                     if (txtMeshLod2.Text.Trim() != "")
                     {
+                        simgeomfile = new SimGeomFile();
                         blah = File.Open(txtMeshLod2.Text, FileMode.Open);
-                        saveGeom(blah, geomLod2, kNames);
+                        simgeomfile.Load(blah);
                         blah.Close();
-                        db.SetResourceStream(meshLod2.ToResourceKey(), geomLod2);
-                    }
-                    geomLod2.Close();
 
-                    MemoryStream geomLod3 = new MemoryStream();
+                        // Figure out bumpmap location
+                        // To do this we loop through the MTNF
+                        for (int i = 0; i < simgeomfile.simgeom.mtnfChunk.entries.Count; i++)
+                        {
+                            if (simgeomfile.simgeom.mtnfChunk.entries[i].fieldTypeHash == (uint)FieldTypes.NormalMap)
+                            {
+                                bumpmapPos = (int)simgeomfile.simgeom.mtnfChunk.entries[i].dwords[0];
+                                break;
+                            }
+                        }
+                        if (bumpmapPos > -1)
+                        {
+                            simgeomfile.simgeom.keytable.keys[bumpmapPos] = bumpMapKey.ToResourceKey();
+                        }
+                        bumpmapPos = -1;
+                        //saveGeom(blah, geomLod1, kNames);
+                        db.SetResourceStream(meshLod2.ToResourceKey(), simgeomfile.Save());
+
+                        //saveGeom(blah, geomLod2, kNames);
+                        //blah.Close();
+                        //db.SetResourceStream(meshLod2.ToResourceKey(), geomLod2);
+                    }
+                    //geomLod2.Close();
+
+                    //MemoryStream geomLod3 = new MemoryStream();
                     if (txtMeshLod3.Text.Trim() != "")
                     {
+                        simgeomfile = new SimGeomFile();
                         blah = File.Open(txtMeshLod3.Text, FileMode.Open);
-                        saveGeom(blah, geomLod3, kNames);
+                        simgeomfile.Load(blah);
                         blah.Close();
-                        db.SetResourceStream(meshLod3.ToResourceKey(), geomLod3);
+
+                        // Figure out bumpmap location
+                        // To do this we loop through the MTNF
+                        for (int i = 0; i < simgeomfile.simgeom.mtnfChunk.entries.Count; i++)
+                        {
+                            if (simgeomfile.simgeom.mtnfChunk.entries[i].fieldTypeHash == (uint)FieldTypes.NormalMap)
+                            {
+                                bumpmapPos = (int)simgeomfile.simgeom.mtnfChunk.entries[i].dwords[0];
+                                break;
+                            }
+                        }
+                        if (bumpmapPos > -1)
+                        {
+                            simgeomfile.simgeom.keytable.keys[bumpmapPos] = bumpMapKey.ToResourceKey();
+                        }
+                        bumpmapPos = -1;
+                        //saveGeom(blah, geomLod1, kNames);
+                        db.SetResourceStream(meshLod3.ToResourceKey(), simgeomfile.Save());
+
+                        //saveGeom(blah, geomLod3, kNames);
+                        //blah.Close();
+                        //db.SetResourceStream(meshLod3.ToResourceKey(), geomLod3);
                     }
-                    geomLod3.Close();
+                    //geomLod3.Close();
 
                     blah = null;
                 }

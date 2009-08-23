@@ -325,7 +325,7 @@ namespace MadScience
             Stream input = Stream.Null;
             if (db == null)
             {
-                input = File.OpenRead(Helpers.findSims3Root() + "\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package");
+                input = File.OpenRead(Path.Combine(Helpers.findSims3Root(), Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package")));
                 db = new MadScience.Wrappers.Database(input, true);
             }
 

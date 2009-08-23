@@ -47,6 +47,92 @@ namespace MadScience.Wrappers
         EarringRight = 31,
     }
 
+    public class Vector2
+    {
+        public float u = 0f;
+        public float v = 0f;
+
+        public Vector2()
+        {
+        }
+
+        private void loadFromStream(Stream input)
+        {
+            BinaryReader reader = new BinaryReader(input);
+            this.u = reader.ReadSingle();
+            this.v = reader.ReadSingle();
+            reader = null;
+        }
+        public Vector2(Stream input)
+        {
+            loadFromStream(input);
+        }
+
+        public Vector2(float nx, float ny, float nz)
+        {
+            this.u = nx;
+            this.v = ny;
+        }
+
+        public void Load(Stream input)
+        {
+            loadFromStream(input);
+        }
+
+        public void Save(Stream output)
+        {
+            BinaryWriter writer = new BinaryWriter(output);
+            writer.Write(this.u);
+            writer.Write(this.v);
+            writer = null;
+        }
+    }
+
+    public class UShort3
+    {
+        public ushort a = 0;
+        public ushort b = 0;
+        public ushort c = 0;
+
+        public UShort3()
+        {
+        }
+
+        private void loadFromStream(Stream input)
+        {
+            BinaryReader reader = new BinaryReader(input);
+            this.a = reader.ReadUInt16();
+            this.b = reader.ReadUInt16();
+            this.c = reader.ReadUInt16();
+            reader = null;
+        }
+        public UShort3(Stream input)
+        {
+            loadFromStream(input);
+        }
+
+        public UShort3(ushort na, ushort nb, ushort nc)
+        {
+            this.a = na;
+            this.b = nb;
+            this.c = nc;
+        }
+
+        public void Load(Stream input)
+        {
+            loadFromStream(input);
+        }
+
+        public void Save(Stream output)
+        {
+            BinaryWriter writer = new BinaryWriter(output);
+            writer.Write(this.a);
+            writer.Write(this.b);
+            writer.Write(this.c);
+            writer = null;
+        }
+    }
+
     public class Vector3
     {
         public float x = 0f;
