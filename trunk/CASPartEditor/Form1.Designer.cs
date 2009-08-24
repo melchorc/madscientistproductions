@@ -57,7 +57,7 @@
             this.panelMeshThumbs = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
+            this.btnExtractMeshes = new System.Windows.Forms.Button();
             this.picMeshPreview = new System.Windows.Forms.PictureBox();
             this.btnDumpFromFullbuild2 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -529,7 +529,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.button9);
+            this.groupBox1.Controls.Add(this.btnExtractMeshes);
             this.groupBox1.Controls.Add(this.picMeshPreview);
             this.groupBox1.Controls.Add(this.btnDumpFromFullbuild2);
             this.groupBox1.Controls.Add(this.label6);
@@ -565,16 +565,16 @@
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
-            // button9
+            // btnExtractMeshes
             // 
-            this.button9.Enabled = false;
-            this.button9.Location = new System.Drawing.Point(292, 85);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(122, 23);
-            this.button9.TabIndex = 19;
-            this.button9.Text = "Extract Meshes";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.btnExtractMeshes.Enabled = false;
+            this.btnExtractMeshes.Location = new System.Drawing.Point(292, 85);
+            this.btnExtractMeshes.Name = "btnExtractMeshes";
+            this.btnExtractMeshes.Size = new System.Drawing.Size(122, 23);
+            this.btnExtractMeshes.TabIndex = 19;
+            this.btnExtractMeshes.Text = "Extract Meshes";
+            this.btnExtractMeshes.UseVisualStyleBackColor = true;
+            this.btnExtractMeshes.Click += new System.EventHandler(this.button9_Click);
             // 
             // picMeshPreview
             // 
@@ -3333,7 +3333,7 @@
         private System.Windows.Forms.Label label105;
         private System.Windows.Forms.ComboBox cmbPatternStencil3;
         private System.Windows.Forms.Button btnDesignStencilCommit;
-        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button btnExtractMeshes;
         private System.Windows.Forms.Button btnGetNewXML;
         private System.Windows.Forms.Button btnBrowsePatterns;
         private System.Windows.Forms.TabPage tabPage6;

@@ -224,7 +224,7 @@ namespace CASPartEditor
                 {
                     PatternsWidth[i] = (int)(1024 / Tilings[i].X);
                     PatternsHeight[i] = (int)(1024 / Tilings[i].Y);
-                    if (PatternsWidth[i] != 256 || PatternsHeight[i] != 256)
+                    if (PatternsWidth[i] != Patterns[i].Width || PatternsHeight[i] != Patterns[i].Height) 
                         ResizeBitmap(ref Patterns[i], PatternsWidth[i], PatternsHeight[i]);
                 }
 
