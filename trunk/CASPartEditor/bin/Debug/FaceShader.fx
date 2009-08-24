@@ -142,6 +142,17 @@ float gPhongExp <
 
 /*********** TEXTURES ***************/
 
+texture gSpecularTexture : DIFFUSE;
+
+sampler2D gSpecularSampler = sampler_state {
+    Texture = <gSpecularTexture>;
+    MinFilter = Linear;
+    MipFilter = Linear;
+    MagFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
 texture gStencilTexture : DIFFUSE;
 
 sampler2D gStencilSampler = sampler_state {
@@ -248,6 +259,7 @@ float4 normal_mapPS(VertexOutput IN,
 		    uniform float3 SurfaceColor,
 		    uniform sampler2D SkinSampler,
 		    uniform sampler2D SkinSpecularSampler,
+		    uniform sampler2D SpecularSampler,
 		    uniform sampler2D StencilSampler,
 		    uniform sampler2D ReliefSampler,
 		    uniform float PhongExp,
@@ -281,9 +293,11 @@ float4 normal_mapPS(VertexOutput IN,
 	}
 	// Alpha blend the shirt onto the skin texture
     float3 texCol = texCol3 * (1 - diffuseColor.a) + diffuseColor.xyz * diffuseColor.a;
-    
+
     // Specular map influence - alpha blend the shirt specular onto the skin specular
-    float specular = tex2D(SkinSpecularSampler,IN.UV).b * (1 - diffuseColor.a) * diffuseColor.a;  //+ tex2D(SpecularSampler,IN.UV).b * texCol1.b * 2 * diffuseColor.a;
+    float specular = tex2D(SkinSpecularSampler,IN.UV).b * (1 - diffuseColor.a) + tex2D(SpecularSampler,IN.UV).b * texCol.b * 2 * diffuseColor.a;
+    // Specular map influence - alpha blend the shirt specular onto the skin specular
+    //float specular = tex2D(SkinSpecularSampler,IN.UV).b * (1 - diffuseColor.a) * diffuseColor.a;  //+ tex2D(SpecularSampler,IN.UV).b * texCol1.b * 2 * diffuseColor.a;
 
 	////////////////// Pixel rendering
 
@@ -333,12 +347,13 @@ technique normal_mapping <
 		ZEnable = true;
 		ZWriteEnable = true;
 		ZFunc = LessEqual; 
-		AlphaBlendEnable = true;
+		AlphaBlendEnable = false;
 		CullMode = None;
         PixelShader = compile ps_2_0 normal_mapPS(
 						gSurfaceColor,
 						gSkinSampler,
 						gSkinSpecularSampler,
+						gSpecularSampler,
 						gStencilSampler,
 						gReliefSampler,
 						gPhongExp,

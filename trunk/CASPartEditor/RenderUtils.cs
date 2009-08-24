@@ -53,8 +53,21 @@ namespace CASPartEditor
             renderWindow1.loadTexture(KeyUtils.findKey(textures[1]), "skinSpecular");
             renderWindow1.loadTexture(KeyUtils.findKey(textures[2]), "normalMap");
 
-            renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
-            renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
+            if ((casPartNew.typeFlag & 0x1) == 0x1)
+            {
+                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
+                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
+            }
+            else if ((casPartNew.typeFlag & 0x4) == 0x4)
+            {
+                renderWindow1.loadTexture(KeyUtils.findKey(details.faceOverlay), "ambientTexture");
+                renderWindow1.loadTexture(KeyUtils.findKey(details.faceSpecular), "specularTexture");
+            }
+            else
+            {
+                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
+                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
+            }
             renderWindow1.loadTexture(KeyUtils.findKey(details.Multiplier), "baseTexture");
             renderWindow1.loadTexture(null, "stencilA");
 
@@ -210,7 +223,14 @@ namespace CASPartEditor
                 {
                     renderWindow1.loadTextureFromBitmap((Bitmap)a[1], "baseTexture");
                     loadStencils((xmlChunkDetails)a[0]);
-                    renderWindow1.shaderMode = 0;
+                    if ((casPartNew.typeFlag & 0x1) == 0x1)
+                    {
+                        renderWindow1.shaderMode = 2;
+                    }
+                    else
+                    {
+                        renderWindow1.shaderMode = 0;
+                    }
                 }
                 renderWindow1.resetDevice();
                 renderWindow1.lblGeneratingTexture.Visible = false;
@@ -411,6 +431,7 @@ namespace CASPartEditor
 
             // Face Overlay (ie Makeup)
             if ((typeFlag & 0x4) == 0x4) flags += "Face";
+            if ((typeFlag & 0x1) == 0x1) flags += "Face";
 
             // Body
             if ((typeFlag & 0x8) == 0x8) flags += "Body";
@@ -473,6 +494,7 @@ namespace CASPartEditor
 
             // Face Overlay (ie Makeup)
             if ((typeFlag & 0x4) == 0x4) flags += "Face";
+            if ((typeFlag & 0x1) == 0x1) flags += "Face";
 
             // Body
             if ((typeFlag & 0x8) == 0x8) flags += "Body";
