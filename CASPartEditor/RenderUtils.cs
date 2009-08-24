@@ -176,7 +176,13 @@ namespace CASPartEditor
 
             if ((casPartNew.typeFlag & 0x4) == 0x4)
             {
+                //makeup
                 b = composeMakeup(details, casPartNew.clothingType);
+            }
+            else if ((casPartNew.typeFlag & 0x1) == 0x1)
+            {
+                //hair
+                b = composeHair(details);
             }
             else
             {
@@ -239,11 +245,11 @@ namespace CASPartEditor
 
         private Bitmap composeMakeup(xmlChunkDetails details, uint casPartType)
         {
-            List<string> skinTextures = findDefaultTextures(casPartNew.ageGenderFlag, casPartNew.typeFlag);
             DateTime startTime2 = DateTime.Now;
             List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.faceOverlay));
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Mask));
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
 
             List<Stream> textures = KeyUtils.findKey(tempList, 2);
             DateTime stopTime2 = DateTime.Now;
@@ -255,7 +261,6 @@ namespace CASPartEditor
             if (details.tint.A.enabled.ToLower() == "true")
             {
                 output = PatternProcessor.ProcessMakeupTexture(textures,
-                casPartNew.clothingType,
                 details.tint.A,
                 details.tint.B,
                 details.tint.C,
@@ -269,7 +274,6 @@ namespace CASPartEditor
                 t.enabled = "True";
                 t.color = details.TintColor;
                 output = PatternProcessor.ProcessMakeupTexture(textures,
-                    casPartNew.clothingType,
                     t,
                     d,
                     d,
@@ -293,30 +297,6 @@ namespace CASPartEditor
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
 
             List<Stream> textures = KeyUtils.findKey(tempList, 2);
-
-            //// If any of the patterns can't be found, then check if they are a custom pattern and load them
-            //if (textures[3].Length == 0 && details.pattern[0].Enabled == "True")
-            //{
-            //    textures[3] = Patterns.findPattern(details.pattern[0]);
-            //}
-            //if (textures[4].Length == 0 && details.pattern[1].Enabled == "True")
-            //{
-            //    //textures[4] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[1].key));
-            //    textures[4] = Patterns.findPattern(details.pattern[1]);
-            //}
-            //if (textures[5].Length == 0 && details.pattern[2].Enabled == "True")
-            //{
-            //    //textures[5] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[2].key));
-            //    textures[5] = Patterns.findPattern(details.pattern[2]);
-            //}
-            //if (textures[6].Length == 0 && details.pattern[3].Enabled == "True")
-            //{
-            //    //textures[6] = pBrowser.findPattern(pBrowser.findPattern(details.pattern[3].key));
-            //    textures[6] = Patterns.findPattern(details.pattern[3]);
-            //}
-
-            //process Patterns
-
 
             if (details.pattern[3].Enabled.ToLower() == "true" && details.filename == "CasRgbaMask")
             {
@@ -370,6 +350,32 @@ namespace CASPartEditor
             TimeSpan duration = stopTime - startTime;
             Console.WriteLine("Total Multiplier Texture generation time: " + duration.TotalMilliseconds);
             return output;
+        }
+
+        private Bitmap composeHair(xmlChunkDetails details)
+        {
+            Bitmap patterns = composeMultiplier(details);
+ 
+            List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.DiffuseMap));
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.ControlMap));
+            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
+
+            List<Stream> textures = KeyUtils.findKey(tempList, 2);
+
+            DateTime startTime = DateTime.Now;
+            Bitmap hair = PatternProcessor.ProcessHairTexture(textures,
+                MadScience.Colours.convertColour(details.hair.DiffuseColor),
+                MadScience.Colours.convertColour(details.hair.RootColor),
+                MadScience.Colours.convertColour(details.hair.HighlightColor),
+                MadScience.Colours.convertColour(details.hair.TipColor),
+                    true);
+
+            using (Graphics g = Graphics.FromImage(patterns))
+            {
+                g.DrawImage(hair,0,0);
+            }
+            return patterns;
         }
 
         public static Dictionary<string, string> defaultMeshes = new Dictionary<string, string>();
