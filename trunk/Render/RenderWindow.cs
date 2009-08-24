@@ -162,7 +162,7 @@ namespace MadScience.Render
         {
             logMessageToFile("Set model " + modelNumber);
             if ((modelNumber + 1) > models.Count) models.Add(newModel);
-            else models[0] = newModel;
+            else models[modelNumber] = newModel;
 
             if (d3dDevice == null) Init();
 
