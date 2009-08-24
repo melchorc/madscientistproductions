@@ -389,6 +389,11 @@ namespace MadScience.Render
                 {
                     shader = Effect.FromFile(d3dDevice, Path.Combine(Application.StartupPath, "FaceShader.fx"), null, ShaderFlags.None, null, out error);
                 }
+                if (shaderMode == 2)
+                {
+                    shader = Effect.FromFile(d3dDevice, Path.Combine(Application.StartupPath, "HairShader.fx"), null, ShaderFlags.None, null, out error);
+                }
+
                 if (shader == null)
                 {
                     MessageBox.Show(error);
@@ -397,10 +402,10 @@ namespace MadScience.Render
                 {
                     shader.SetValue(EffectHandle.FromString("gSkinTexture"), skinTexture);
                     shader.SetValue(EffectHandle.FromString("gSkinSpecular"), skinSpecular);
-                    if (shaderMode == 0) shader.SetValue(EffectHandle.FromString("gMultiplyTexture"), models[0].textures.baseTexture);
+                    if (models[0].textures.baseTexture != null) shader.SetValue(EffectHandle.FromString("gMultiplyTexture"), models[0].textures.baseTexture);
                     shader.SetValue(EffectHandle.FromString("gStencilTexture"), models[0].textures.curStencil);
                     if (models[0].textures.curStencil != null) shader.SetValue(EffectHandle.FromString("gUseStencil"), true);
-                    if (shaderMode == 0) shader.SetValue(EffectHandle.FromString("gSpecularTexture"), models[0].textures.specularTexture);
+                    shader.SetValue(EffectHandle.FromString("gSpecularTexture"), models[0].textures.specularTexture);
                     shader.SetValue(EffectHandle.FromString("gReliefTexture"), normalMapTexture);
                     shader.SetValue(EffectHandle.FromString("gTileCount"), 1.0f);
                     shader.SetValue(EffectHandle.FromString("gAmbiColor"), new ColorValue(0.6f, 0.6f, 0.6f));
