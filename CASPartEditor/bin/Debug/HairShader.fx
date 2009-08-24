@@ -268,6 +268,8 @@ VertexOutput view_spaceVS(AppVertexData IN,
 
 float4 normal_mapPS(VertexOutput IN,
 		    uniform float3 SurfaceColor,
+		    uniform sampler2D SkinSampler,
+		    uniform sampler2D SkinSpecularSampler,
 		    uniform sampler2D MultiplySampler,
 		    uniform sampler2D SpecularSampler,
 		    uniform sampler2D StencilSampler,
@@ -275,14 +277,20 @@ float4 normal_mapPS(VertexOutput IN,
 		    uniform float PhongExp,
 		    uniform float3 SpecColor,
 		    uniform float3 AmbiColor,
+			uniform bool UseStencil
 ) : COLOR
 {
 	////////////////// Texture compositing
 	
 	// Diffuse color
 	// Load in the diffuse textures
-	float4 texCol = tex2D(MultiplySampler,IN.UV);
+	float4 texCol1 = tex2D(MultiplySampler,IN.UV);
 	float4 texCol2 = float4(1, 1, 1, 1);
+	if (UseStencil)
+	{
+	  texCol2 = tex2D(StencilSampler,IN.UV);
+	}
+	float3 texCol3 = tex2D(SkinSampler,IN.UV).rgb;
 	
 	// Start with white
 	float4 diffuseColor = float4(1, 1, 1, 1);
@@ -290,9 +298,16 @@ float4 normal_mapPS(VertexOutput IN,
 	diffuseColor.a = texCol1.a;
 	// Perform color blending srcblend = destcolor and destblend=srccolor
 	diffuseColor.rgb = float3(diffuseColor.r * texCol1.r, diffuseColor.g * texCol1.g, diffuseColor.b * texCol1.b) * 2;
+	if (UseStencil)
+	{
+		// Alpha blending of the stencil
+		diffuseColor = texCol2 * texCol2.a + diffuseColor * (1 - texCol2.a);
+	}
+	// Alpha blend the shirt onto the skin texture
+    float3 texCol = texCol3 * (1 - diffuseColor.a) + diffuseColor.xyz * diffuseColor.a;
     
-   // Specular map influence - alpha blend the shirt specular onto the skin specular
-   float specular = tex2D(SpecularSampler,IN.UV).b * texCol1.b * 2;
+    // Specular map influence - alpha blend the shirt specular onto the skin specular
+    float specular = tex2D(SkinSpecularSampler,IN.UV).b * (1 - diffuseColor.a) + tex2D(SpecularSampler,IN.UV).b * texCol1.b * 2 * diffuseColor.a;
 
 	////////////////// Pixel rendering
 
