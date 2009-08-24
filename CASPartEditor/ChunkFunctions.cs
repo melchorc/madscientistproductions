@@ -138,7 +138,9 @@ namespace CASPartEditor
                     {
                         bumpMapKey = new keyName(txtOtherBumpMap.Text, meshName + "_n");
                         //kNames.Add(bumpMapKey);
-                        if (txtOtherBumpMap.Text != "" && !txtOtherBumpMap.Text.StartsWith("key:")) db.SetResourceStream(bumpMapKey.ToResourceKey(), File.OpenRead(txtOtherBumpMap.Text));
+                        Stream bumpMapStream = File.OpenRead(txtOtherBumpMap.Text);
+                        if (txtOtherBumpMap.Text != "" && !txtOtherBumpMap.Text.StartsWith("key:")) db.SetResourceStream(bumpMapKey.ToResourceKey(), bumpMapStream);
+                        bumpMapStream.Close();
                     }
 
                     Stream blah;

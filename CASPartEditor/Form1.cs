@@ -565,7 +565,7 @@ namespace CASPartEditor
                 cmbMeshName.Enabled = false;
                 groupBox11.Enabled = false;
                 groupBox11.Visible = false;
-                button9.Enabled = false;
+                btnExtractMeshes.Enabled = false;
                 label70.Visible = true;
                 btnDumpFromFullbuild2.Enabled = false;
             }
@@ -576,7 +576,7 @@ namespace CASPartEditor
                 groupBox11.Visible = true;
                 label70.Visible = false;
                 btnDumpFromFullbuild2.Enabled = true;
-                button9.Enabled = true;
+                btnExtractMeshes.Enabled = true;
                 if (isNew) cmbMeshName.SelectedIndex = 0;
 
                 groupBox11.Text = "Quick Find (" + numFound.ToString() + " found)";
@@ -924,7 +924,81 @@ namespace CASPartEditor
                     toolStripProgressBar1.Value++;
                     //keyName tgi = new keyName((tgi64)casPartSrc.tgi64list[j]);
                     MadScience.Wrappers.ResourceKey tgi = casPartSrc.tgi64list[j];
-                    if (tgi.typeId == (int)0x00B2D882)
+                    if (tgi.typeId == (int)0x736884F1) // VPXY
+                    {
+                        // Find the meshes, then dump any textures the meshes reference too
+
+                        // Use the VPXY to get the mesh lod
+                        Stream vpxyStream = KeyUtils.findKey(tgi, 0);
+
+                        //int numFound = 0;
+                        //folderBrowserDialog1.SelectedPath = "";
+
+                        if (vpxyStream != null)
+                        {
+                            VPXYFile vpxyFile = new VPXYFile(vpxyStream);
+                            // Get the first VPXY internal link
+                            if (vpxyFile.vpxy.linkEntries.Count >= 1 && vpxyFile.vpxy.linkEntries[0].tgiList.Count >= 1)
+                            {
+                                for (int i = 0; i < vpxyFile.vpxy.linkEntries[0].tgiList.Count; i++)
+                                {
+                                    //meshStreams.Add(KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0));
+                                    //KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0);
+
+                                    //ResourceKey entry = vpxyFile.vpxy.linkEntries[0].tgiList[i];
+
+                                    Stream meshFile = KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0);
+
+                                    SimGeomFile sgf = new SimGeomFile(meshFile);
+
+                                    if (!hasShownDialog)
+                                    {
+                                        folderBrowserDialog1.Description = "Please select a folder to save the extracted textures to.";
+                                        folderBrowserDialog1.ShowDialog();
+                                        hasShownDialog = true;
+                                    }
+                                    if (folderBrowserDialog1.SelectedPath != "")
+                                    {
+                                        string extension = "";
+                                        for (int k = 0; k < sgf.simgeom.keytable.keys.Count; k++)
+                                        {
+                                            ResourceKey entry = sgf.simgeom.keytable.keys[k];
+
+                                            if (entry.typeId == 0x00B2D882)
+                                            {
+                                                extension = ".dds";
+
+                                                string fileNameToSave = "";
+                                                if (keyNames.ContainsKey(entry.instanceId))
+                                                {
+                                                    fileNameToSave = keyNames[entry.instanceId];
+                                                    if (fileNameToSave.Contains("0x") == false) { fileNameToSave += "_0x" + entry.instanceId.ToString("X16"); }
+                                                }
+                                                else
+                                                {
+                                                    fileNameToSave = entry.typeId.ToString("X8") + "_" + entry.groupId.ToString("X8") + "_" + entry.instanceId.ToString("X16");
+                                                }
+
+
+                                                FileStream saveFile = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + fileNameToSave + extension, FileMode.Create, FileAccess.Write);
+                                                Helpers.CopyStream(KeyUtils.findKey(entry, 2, db), saveFile);
+                                                saveFile.Close();
+                                            }
+                                        }
+                                        //numFound++;
+                                    }
+                                    meshFile.Close();
+
+                                    //output.Close();
+                                }
+
+
+                            }
+
+
+                        }
+                    }
+                    if (tgi.typeId == (int)0x00B2D882) // DDS
                     {
                         //Stream textureStream = KeyUtils.searchForKey(tgi.ToString(), 2);
                         Stream textureStream = KeyUtils.findKey(tgi);
@@ -1425,6 +1499,8 @@ namespace CASPartEditor
 
         private void button9_Click(object sender, EventArgs e)
         {
+
+
             // Go through the list of DDS files and dump them
             string s3root = MadScience.Helpers.findSims3Root();
 
@@ -1474,6 +1550,91 @@ namespace CASPartEditor
                     }
                 }
 
+                // Get the Mesh links for the first LOD
+                //List<Stream> meshStreams = new List<Stream>();
+
+                // Use the VPXY to get the mesh lod
+                Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY], 0);
+
+                int numFound = 0;
+                folderBrowserDialog1.SelectedPath = "";
+
+                if (vpxyStream != null)
+                {
+                    VPXYFile vpxyFile = new VPXYFile(vpxyStream);
+                    // Get the first VPXY internal link
+                    if (vpxyFile.vpxy.linkEntries.Count >= 1 && vpxyFile.vpxy.linkEntries[0].tgiList.Count >= 1)
+                    {
+                        for (int i = 0; i < vpxyFile.vpxy.linkEntries[0].tgiList.Count; i++)
+                        {
+                            //meshStreams.Add(KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0));
+                            //KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0);
+
+                            ResourceKey entry = vpxyFile.vpxy.linkEntries[0].tgiList[i];
+
+                            string fileNameToSave = "";
+                            if (keyNames.ContainsKey(entry.instanceId))
+                            {
+                                fileNameToSave = keyNames[entry.instanceId];
+                                if (fileNameToSave.Contains("0x") == false) { fileNameToSave += "_0x" + entry.instanceId.ToString("X16"); }
+                            }
+                            else
+                            {
+                                fileNameToSave = entry.typeId.ToString("X8") + "_" + entry.groupId.ToString("X8") + "_" + entry.instanceId.ToString("X16");
+                            }
+
+                            Stream output = KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0);
+
+                            if (!hasShownDialog)
+                            {
+                                folderBrowserDialog1.Description = "Please select a folder to save the extracted meshes to.";
+                                folderBrowserDialog1.ShowDialog();
+                                hasShownDialog = true;
+                            }
+                            if (folderBrowserDialog1.SelectedPath != "")
+                            {
+                                string extension = "";
+                                if (entry.typeId == 0x015A1849)
+                                {
+                                    extension = ".simgeom";
+                                }
+
+                                FileStream saveFile = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + fileNameToSave + extension, FileMode.Create, FileAccess.Write);
+                                Helpers.CopyStream(output, saveFile);
+                                saveFile.Close();
+                                numFound++;
+                            }
+                            output.Close();
+                        }
+
+
+                    }
+
+                    if (numFound > 0)
+                    {
+                        string fileNameToSave2 = "";
+                        ResourceKey entry = casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY];
+                        if (keyNames.ContainsKey(entry.instanceId))
+                        {
+                            fileNameToSave2 = keyNames[entry.instanceId];
+                            if (fileNameToSave2.Contains("0x") == false) { fileNameToSave2 += "_0x" + entry.instanceId.ToString("X16"); }
+                        }
+                        else
+                        {
+                            fileNameToSave2 = entry.typeId.ToString("X8") + "_" + entry.groupId.ToString("X8") + "_" + entry.instanceId.ToString("X16");
+                        }
+
+                        FileStream saveFile = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + fileNameToSave2 + ".vpxy", FileMode.Create, FileAccess.Write);
+                        Helpers.CopyStream(vpxyStream, saveFile, true);
+                        saveFile.Close();
+
+                    }
+
+                    vpxyStream.Close();
+
+                }
+
+                /*
                 // Calc the 4 lod files
                 ulong lod0 = (ulong)MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod0");
                 ulong lod1 = (ulong)MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod1");
@@ -1544,6 +1705,7 @@ namespace CASPartEditor
 
                     
                 }
+                */
 
                 toolStripProgressBar1.Value = 0;
                 toolStripProgressBar1.Visible = false;

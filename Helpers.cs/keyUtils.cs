@@ -319,6 +319,8 @@ namespace MadScience
                         }
                     }
                 }
+
+                localPackage.Close();
             }
 
             // If input stream isn't null then we use that, otherwise open the fullbuild we want...

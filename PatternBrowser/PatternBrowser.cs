@@ -441,6 +441,7 @@ namespace PatternBrowser
                 Console.WriteLine("Stopping at: " + DateTime.Now.ToString());
 
                 //dbpf = null;
+                fullBuild0.Close();
                 cast.Close();
                 //castdb = null;
             }
@@ -733,7 +734,6 @@ namespace PatternBrowser
 
                     cast.Close();
                     //picBox.Dispose();
-
                 //}
 
                 comboBox1.SelectedIndex = 15;
