@@ -205,6 +205,7 @@ namespace MadScience
 
             if (sims3root != "")
             {
+                Console.WriteLine("Returning already stored path");
                 return sims3root;
             }
 
@@ -212,9 +213,29 @@ namespace MadScience
             try
             {
 
+                Console.WriteLine("Attempting to get path from common registry...");
                 installLocation = Helpers.getCommonRegistryValue("sims3root");
-                if (!String.IsNullOrEmpty(installLocation)) return installLocation;
+                if (!String.IsNullOrEmpty(installLocation))
+                {
+                    // Check install location just in case...
+                    try
+                    {
+                        if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
+                        {
+                            //Helpers.saveCommonRegistryValue("sims3root", installLocation);
+                            sims3root = installLocation;
+                            return installLocation;
+                        }
+                    }
+                    catch (DirectoryNotFoundException dex)
+                    {
+                    }
+                    catch (FileNotFoundException fex)
+                    {
+                    }
+                }
 
+                Console.WriteLine("Attempting to get path from registry...");
                 string path32 = "Software\\Sims\\The Sims 3";
                 string path64 = "Software\\Wow6432Node\\Sims\\The Sims 3";
 
@@ -256,15 +277,26 @@ namespace MadScience
             bool getManualPath = false;
             if (!String.IsNullOrEmpty(installLocation))
             {
-                if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
+                try
                 {
-                    Helpers.saveCommonRegistryValue("sims3root", installLocation);
-                    sims3root = installLocation;
-                    return installLocation;
+                    if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
+                    {
+                        Helpers.saveCommonRegistryValue("sims3root", installLocation);
+                        sims3root = installLocation;
+                        return installLocation;
+                    }
+                    else
+                    {
+                        // No FullBuild0 found, have to get a manual path
+                        getManualPath = true;
+                    }
                 }
-                else
+                catch (DirectoryNotFoundException dex)
                 {
-                    // No FullBuild0 found, have to get a manual path
+                    getManualPath = true;
+                }
+                catch (FileNotFoundException fex)
+                {
                     getManualPath = true;
                 }
             }
@@ -281,7 +313,7 @@ namespace MadScience
                 // paths where none can be found (ie on Macs)
                 if (File.Exists(Path.Combine(Application.StartupPath, "pathOverrides.xml")))
                 {
-                    Stream xmlStream = File.OpenRead(Path.Combine(Application.StartupPath, "pathOverride.xml"));
+                    Stream xmlStream = File.OpenRead(Path.Combine(Application.StartupPath, "pathOverrides.xml"));
                     XmlTextReader xtr = new XmlTextReader(xmlStream);
 
                     while (xtr.Read())
@@ -308,11 +340,22 @@ namespace MadScience
 
                     if (!String.IsNullOrEmpty(installLocation))
                     {
-                        if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
+                        try
                         {
-                            Helpers.saveCommonRegistryValue("sims3root", installLocation);
-                            sims3root = installLocation;
-                            return installLocation;
+                            if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
+                            {
+                                Helpers.saveCommonRegistryValue("sims3root", installLocation);
+                                sims3root = installLocation;
+                                return installLocation;
+                            }
+                        }
+                        catch (DirectoryNotFoundException dex)
+                        {
+                            getManualPath = true;
+                        }
+                        catch (FileNotFoundException fex)
+                        {
+                            getManualPath = true;
                         }
                     }
 
@@ -326,17 +369,27 @@ namespace MadScience
                 {
                     if (fBrowse.SelectedPath != "")
                     {
-                        Helpers.saveCommonRegistryValue("sims3root", fBrowse.SelectedPath);
-                        if (File.Exists(Path.Combine(fBrowse.SelectedPath,  Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
+                        try
                         {
-                            sims3root = fBrowse.SelectedPath;
-                            return fBrowse.SelectedPath;
+                            if (File.Exists(Path.Combine(fBrowse.SelectedPath, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
+                            {
+                                Helpers.saveCommonRegistryValue("sims3root", fBrowse.SelectedPath);
+                                sims3root = fBrowse.SelectedPath;
+                                return fBrowse.SelectedPath;
+                            }
+                            else
+                            {
+                                return "";
+                            }
                         }
-                        else
+                        catch (DirectoryNotFoundException dex)
                         {
-                            return "";
+                            getManualPath = true;
                         }
-
+                        catch (FileNotFoundException fex)
+                        {
+                            getManualPath = true;
+                        }
                     }
 
                 }

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EA40DDB1-1C28-4323-90B3-5B99071F0B78}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{D45993F2-0FA0-4B1C-AAE5-719AF1E112FC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MadScience</RootNamespace>
-    <AssemblyName>MadScience.Helpers</AssemblyName>
+    <RootNamespace>DDSViewer</RootNamespace>
+    <AssemblyName>DDSViewer</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -21,8 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,56 +31,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OX.Copyable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CASPartEditor\bin\Debug\OX.Copyable.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="casPartFile.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Colours.cs" />
-    <Compile Include="Database.cs" />
-    <Compile Include="DatabasePackedFile.cs" />
-    <Compile Include="DdsFile.cs" />
     <Compile Include="DDSPreview.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DDSPreview.Designer.cs">
       <DependentUpon>DDSPreview.cs</DependentUpon>
     </Compile>
-    <Compile Include="Exceptions.cs" />
-    <Compile Include="Helpers.cs" />
-    <Compile Include="keyUtils.cs" />
-    <Compile Include="licenseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="licenseForm.designer.cs">
-      <DependentUpon>licenseForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ListViewSorter.cs" />
-    <Compile Include="Patterns.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="RefPack.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="DDSPreview.resx">
       <DependentUpon>DDSPreview.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="licenseForm.resx">
-      <DependentUpon>licenseForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -90,11 +56,24 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MadScience.Wrappers\MadScience.Wrappers.csproj">
-      <Project>{82597921-C98E-4D1C-B32E-6BB2164B89AD}</Project>
-      <Name>MadScience.Wrappers</Name>
+    <ProjectReference Include="..\Helpers.cs\MadScience.Helpers.csproj">
+      <Project>{EA40DDB1-1C28-4323-90B3-5B99071F0B78}</Project>
+      <Name>MadScience.Helpers</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

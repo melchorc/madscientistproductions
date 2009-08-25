@@ -235,6 +235,7 @@ namespace MadScience.Render
             // 
             // RenderWindow
             // 
+            this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.lblGeneratingTexture);
             this.Controls.Add(this.statusLabel);
             this.Name = "RenderWindow";
@@ -278,7 +279,6 @@ namespace MadScience.Render
 
         private void RenderWindow_VisibleChanged(object sender, EventArgs e)
         {
-            Console.WriteLine("Test2");
         }
 
     }

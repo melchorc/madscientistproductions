@@ -368,7 +368,7 @@ namespace MadScience.Render
                 d3dDevice = null;
             }
             renderEnabled = false;
-            statusLabel.Text = "3d view currently not initialised.";
+            statusLabel.Text = "No model loaded.";
             Invalidate();
         }
 
@@ -997,11 +997,11 @@ namespace MadScience.Render
             this.statusLabel.AutoSize = true;
             this.statusLabel.BackColor = System.Drawing.SystemColors.Menu;
             this.statusLabel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.statusLabel.Location = new System.Drawing.Point(318, 0);
+            this.statusLabel.Location = new System.Drawing.Point(381, 0);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(153, 13);
+            this.statusLabel.Size = new System.Drawing.Size(90, 13);
             this.statusLabel.TabIndex = 1;
-            this.statusLabel.Text = "3d view currently not initialised.";
+            this.statusLabel.Text = "No model loaded.";
             this.statusLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // lblGeneratingTexture

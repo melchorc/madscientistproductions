@@ -325,8 +325,10 @@ namespace MadScience
 
             // If input stream isn't null then we use that, otherwise open the fullbuild we want...
             Stream input = Stream.Null;
+            bool closeDb = false;
             if (db == null)
             {
+                closeDb = true;
                 input = File.OpenRead(Path.Combine(Helpers.findSims3Root(), Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package")));
                 db = new MadScience.Wrappers.Database(input, true);
             }
@@ -351,7 +353,7 @@ namespace MadScience
                     }
                 }
             }
-            if (db == null)
+            if (closeDb)
             {
                 input.Close();
             }
