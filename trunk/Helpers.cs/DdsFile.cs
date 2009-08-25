@@ -40,9 +40,9 @@ namespace DdsFileTypePlugin
 {
 	public enum DdsFileFormat
 	{
-		DDS_FORMAT_DXT1,
-		DDS_FORMAT_DXT3,
-		DDS_FORMAT_DXT5,
+        DDS_FORMAT_DXT1 = 0x31545844,
+        DDS_FORMAT_DXT3 = 0x33545844,
+        DDS_FORMAT_DXT5 = 0x35545844,
 		DDS_FORMAT_A8R8G8B8,
 		DDS_FORMAT_X8R8G8B8,
 		DDS_FORMAT_A8B8G8R8,
@@ -52,6 +52,8 @@ namespace DdsFileTypePlugin
 		DDS_FORMAT_R8G8B8,
 		DDS_FORMAT_R5G6B5,
         DDS_FORMAT_A8L8,
+        DDS_FORMAT_ATI1 = 0x31495441,
+        DDS_FORMAT_ATI2 = 0x32495441,
 
 		DDS_FORMAT_INVALID,
 	};
@@ -338,7 +340,7 @@ namespace DdsFileTypePlugin
 
 	}	
 
-	public	class DdsFile
+	public partial class DdsFile
 	{
 		public	DdsFile()
 		{
@@ -369,10 +371,11 @@ namespace DdsFileTypePlugin
             return this._rawDDS;
         }
 
-        public Image Image(Color background, Color HSVShift)
-        {
-            return Image(background, HSVShift, HSVShift, HSVShift, HSVShift);
-        }
+        //public Image Image(Color background, Color HSVShift)
+        //{
+            //return Image(background, HSVShift, HSVShift, HSVShift, HSVShift);
+        //}
+
 
         public Image Image(Color background, Color c1, Color c2, Color c3, Color c4)
         {
@@ -384,7 +387,8 @@ namespace DdsFileTypePlugin
             //bitmap.Save(ms, ImageFormat.Bmp);
             //ms.Seek(54, SeekOrigin.Begin);
 
-            byte[] readPixelData = this.GetPixelData();
+            //byte[] readPixelData = this.GetPixelData();
+            byte[] readPixelData = this.m_pixelData;
 
             if (readPixelData == null) return bitmap;
 
@@ -584,6 +588,7 @@ namespace DdsFileTypePlugin
 
         public Image Image(bool red, bool green, bool blue, bool alpha, bool invAlpha)
         {
+
             //unsafe
             //{
             int height = this.GetHeight();
@@ -591,7 +596,8 @@ namespace DdsFileTypePlugin
 
             //byte[] readPixelData = this.GetPixelData();
             //byte[] myBuffer = (byte[])readPixelData.Clone();
-            byte[] myBuffer = (byte[])this.GetPixelData().Clone();
+            //byte[] myBuffer = (byte[])this.GetPixelData().Clone();
+            byte[] myBuffer = (byte[])this.m_pixelData.Clone();
 
             Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
@@ -651,10 +657,11 @@ namespace DdsFileTypePlugin
                     if (blue) cblue = myBuffer[i + 2];
                 }
 
-                myBuffer[i + 2] = (byte)cred;
-                myBuffer[i + 1] = (byte)cgreen;
-                myBuffer[i + 0] = (byte)cblue;
-                myBuffer[i + 3] = (byte)calpha;
+                        myBuffer[i + 2] = (byte)cred;
+                        myBuffer[i + 1] = (byte)cgreen;
+                        myBuffer[i + 0] = (byte)cblue;
+                        myBuffer[i + 3] = (byte)calpha;
+
 
                 //ms.WriteByte((byte)cblue);
                 //ms.WriteByte((byte)cgreen);
@@ -730,6 +737,452 @@ namespace DdsFileTypePlugin
             }
         }
 
+        #region Decode Functions
+        private static byte[] DecodeTextureData(Stream file, DdsFileFormat fourcc, int width, int height, int mipmaps, int mipmapno, bool mipmapreversed)
+        {
+            UInt32 start = GetMipMapOffset(fourcc, width, height, mipmaps, mipmapno, mipmapreversed);
+            UInt32 size = GetMipMapSize(fourcc, width, height, mipmaps, mipmapno);
+
+            //if (input.Length == 0) return null;
+            if (size == 0 || size + start + file.Position > file.Length)
+                return null;
+
+            width = (width + (1 << mipmapno) - 1) >> mipmapno;
+            height = (height + (1 << mipmapno) - 1) >> mipmapno;
+
+            file.Seek(start, System.IO.SeekOrigin.Current);
+            byte[] data = new byte[size];
+            file.Read(data, 0, (int)size);
+
+            byte[] pixeldata = new byte[width * height * 4];
+            //pixeldata[0] = 0x42;
+            //pixeldata[1] = 0x4d;
+            //BitConverter.GetBytes(pixeldata.Length).CopyTo(pixeldata, 2);
+            //pixeldata[10] = 0x36;
+            //pixeldata[14] = 0x28;
+            //BitConverter.GetBytes(width).CopyTo(pixeldata, 18);
+            //BitConverter.GetBytes(height).CopyTo(pixeldata, 22);
+            //pixeldata[26] = 1;
+            //pixeldata[28] = 32;
+            //BitConverter.GetBytes(width * height * 4).CopyTo(pixeldata, 0);
+
+            switch (fourcc)
+            {
+                case DdsFileFormat.DDS_FORMAT_ATI1:
+                    DecodeATI1Texture(pixeldata, 0, width, height, data);
+                    break;
+                case DdsFileFormat.DDS_FORMAT_ATI2:
+                    DecodeATI2Texture(pixeldata, 0, width, height, data);
+                    break;
+                case DdsFileFormat.DDS_FORMAT_DXT1:
+                    DecodeDXT1Texture(pixeldata, 0, width, height, data);
+                    break;
+                case DdsFileFormat.DDS_FORMAT_DXT5:
+                    DecodeDXT5Texture(pixeldata, 0, width, height, data);
+                    break;
+            }
+
+            //System.IO.MemoryStream ms = new System.IO.MemoryStream(pixeldata);
+            //using (ms)
+            //{
+            //    return new Bitmap(Image.FromStream(ms));
+            //}
+            return pixeldata;
+        }
+
+        private static void DecodeDXT5AlphaBlock(int[] pixels, int poffset, byte[] data, int doffset, int[] alphavals)
+        {
+            UInt64 curdata = BitConverter.ToUInt64(data, doffset);
+            alphavals[0] = (int)(curdata & 0xff);
+            curdata >>= 8;
+            alphavals[1] = (int)(curdata & 0xff);
+            curdata >>= 8;
+            if (alphavals[0] > alphavals[1])
+            {
+                for (int loopi = 1; loopi < 7; loopi++)
+                {
+                    alphavals[loopi + 1] = ((7 - loopi) * alphavals[0] + loopi * alphavals[1]) / 7;
+                }
+            }
+            else
+            {
+                for (int loopi = 1; loopi < 5; loopi++)
+                {
+                    alphavals[loopi + 1] = ((5 - loopi) * alphavals[0] + loopi * alphavals[1]) / 5;
+                }
+                alphavals[6] = 0;
+                alphavals[7] = 255;
+            }
+
+            for (int loopsuby = 0; loopsuby < 4; loopsuby++)
+            {
+                for (int loopsubx = 0; loopsubx < 4; loopsubx++)
+                {
+                    pixels[loopsuby * 4 + loopsubx + poffset] = alphavals[curdata & 7];
+                    curdata >>= 3;
+                }
+            }
+        }
+
+        private static void DecodeATI1Texture(byte[] pixels, int poffset, int width, int height, byte[] data)
+        {
+            int[] colors = new int[8];
+            for (int loopy = 0; loopy < height; loopy += 4)
+            {
+                for (int loopx = 0; loopx < width; loopx += 4)
+                {
+                    int loc = (((loopx + 3) >> 2) + ((loopy + 3) >> 2) * ((width + 3) >> 2)) << 3;
+                    UInt64 curdata = BitConverter.ToUInt64(data, loc);
+                    colors[0] = (int)(curdata & 0xff);
+                    curdata >>= 8;
+                    colors[1] = (int)(curdata & 0xff);
+                    curdata >>= 8;
+                    if (colors[0] > colors[1])
+                    {
+                        for (int loopi = 1; loopi < 7; loopi++)
+                        {
+                            colors[loopi + 1] = ((7 - loopi) * colors[0] + loopi * colors[1]) / 7;
+                        }
+                    }
+                    else
+                    {
+                        for (int loopi = 1; loopi < 5; loopi++)
+                        {
+                            colors[loopi + 1] = ((5 - loopi) * colors[0] + loopi * colors[1]) / 5;
+                        }
+                        colors[6] = 0;
+                        colors[7] = 255;
+                    }
+
+                    for (int loopsuby = 0; loopsuby < 4; loopsuby++)
+                    {
+                        if (loopy + loopsuby < height)
+                        {
+                            //int pixloc = poffset + (loopx << 2) + (height - (loopsuby + loopy + 1)) * (width << 2);
+                            int pixloc = poffset + (loopx << 2) + ((loopsuby + loopy )) * (width << 2);
+                            for (int loopsubx = 0; loopsubx < 4; loopsubx++, pixloc += 4)
+                            {
+                                if (loopx + loopsubx < width)
+                                {
+                                    uint c = (uint)colors[curdata & 7];
+                                    curdata >>= 3;
+                                    pixels[pixloc] =
+                                        pixels[pixloc + 1] =
+                                        pixels[pixloc + 2] = (byte)c;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void DecodeATI2Texture(byte[] pixels, int poffset, int width, int height, byte[] data)
+        {
+            int[] colorsg = new int[8];
+            int[] colorsr = new int[8];
+            for (int loopy = 0; loopy < height; loopy += 4)
+            {
+                for (int loopx = 0; loopx < width; loopx += 4)
+                {
+                    for (int loopc = 0; loopc < 2; loopc++)
+                    {
+                        int loc = (((loopx + 3) >> 2) + ((loopy + 3) >> 2) * ((width + 3) >> 2)) << 4;
+                        UInt64 curdatag = BitConverter.ToUInt64(data, loc);
+                        UInt64 curdatar = BitConverter.ToUInt64(data, loc + 8);
+                        colorsg[0] = (int)(curdatag & 0xff);
+                        curdatag >>= 8;
+                        colorsg[1] = (int)(curdatag & 0xff);
+                        curdatag >>= 8;
+                        if (colorsg[0] > colorsg[1])
+                        {
+                            for (int loopi = 1; loopi < 7; loopi++)
+                            {
+                                colorsg[loopi + 1] = ((7 - loopi) * colorsg[0] + loopi * colorsg[1]) / 7;
+                            }
+                        }
+                        else
+                        {
+                            for (int loopi = 1; loopi < 5; loopi++)
+                            {
+                                colorsg[loopi + 1] = ((5 - loopi) * colorsg[0] + loopi * colorsg[1]) / 5;
+                            }
+                            colorsg[6] = 0;
+                            colorsg[7] = 255;
+                        }
+                        colorsr[0] = (int)(curdatar & 0xff);
+                        curdatar >>= 8;
+                        colorsr[1] = (int)(curdatar & 0xff);
+                        curdatar >>= 8;
+                        if (colorsr[0] > colorsr[1])
+                        {
+                            for (int loopi = 1; loopi < 7; loopi++)
+                            {
+                                colorsr[loopi + 1] = ((7 - loopi) * colorsr[0] + loopi * colorsr[1]) / 7;
+                            }
+                        }
+                        else
+                        {
+                            for (int loopi = 1; loopi < 5; loopi++)
+                            {
+                                colorsr[loopi + 1] = ((5 - loopi) * colorsr[0] + loopi * colorsr[1]) / 5;
+                            }
+                            colorsr[6] = 0;
+                            colorsr[7] = 255;
+                        }
+
+                        for (int loopsuby = 0; loopsuby < 4; loopsuby++)
+                        {
+                            if (loopy + loopsuby < height)
+                            {
+                                //int pixloc = poffset + (loopx << 2) + (height - (loopsuby + loopy + 1)) * (width << 2);
+                                int pixloc = poffset + (loopx << 2) + ((loopsuby + loopy)) * (width << 2);
+                                for (int loopsubx = 0; loopsubx < 4; loopsubx++, pixloc += 4)
+                                {
+                                    if (loopx + loopsubx < width)
+                                    {
+                                        int g = colorsg[curdatag & 7];
+                                        curdatag >>= 3;
+                                        int r = colorsr[curdatar & 7];
+                                        curdatar >>= 3;
+                                        double b = Math.Round(Math.Sqrt(128 * 128 - (r - 127) * (r - 127) - (g - 127) * (g - 127)) + 127);
+                                        if (b > 255)
+                                            b = 255;
+                                        else if (b < 128 || double.IsNaN(b))
+                                            b = 128;
+                                        pixels[pixloc + 2] = (byte)(uint)r;
+                                        pixels[pixloc + 1] = (byte)(uint)g;
+                                        pixels[pixloc] = (byte)b;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void DecodeDXT1Texture(byte[] pixels, int poffset, int width, int height, byte[] data)
+        {
+            UInt32[] colors = new UInt32[4];
+            for (int loopy = 0; loopy < height; loopy += 4)
+            {
+                for (int loopx = 0; loopx < width; loopx += 4)
+                {
+                    int loc = (((loopx + 3) >> 2) + ((loopy + 3) >> 2) * ((width + 3) >> 2)) << 3;
+                    UInt64 curdataC = BitConverter.ToUInt64(data, loc);
+                    UInt32 c1 = (UInt32)(curdataC & ((1 << 16) - 1));
+                    curdataC >>= 16;
+                    UInt32 c2 = (UInt32)(curdataC & ((1 << 16) - 1));
+                    curdataC >>= 16;
+                    UInt32 b1 = (UInt32)(c1 & ((1 << 5) - 1)) << 3;
+                    b1 |= b1 >> 5;
+                    UInt32 g1 = (UInt32)((c1 >> 5) & ((1 << 6) - 1)) << 2;
+                    g1 |= g1 >> 6;
+                    UInt32 r1 = (UInt32)(c1 >> 11) << 3;
+                    r1 |= r1 >> 5;
+                    UInt32 b2 = (UInt32)(c2 & ((1 << 5) - 1)) << 3;
+                    b2 |= b2 >> 5;
+                    UInt32 g2 = (UInt32)((c2 >> 5) & ((1 << 6) - 1)) << 2;
+                    g2 |= g2 >> 6;
+                    UInt32 r2 = (UInt32)(c2 >> 11) << 3;
+                    r2 |= r2 >> 5;
+
+                    /*
+                    colors[0] = (r1 << 16) | (g1 << 8) | b1;
+                    colors[1] = (r2 << 16) | (g2 << 8) | b2;
+                    if (c1 > c2)
+                    {
+                        colors[2] =
+                            (((2 * r1 + r2) / 3) << 16) |
+                            (((2 * g1 + g2) / 3) << 8) |
+                            ((2 * b1 + b2) / 3);
+                        colors[3] =
+                            (((r1 + 2 * r2) / 3) << 16) |
+                            (((g1 + 2 * g2) / 3) << 8) |
+                            ((b1 + 2 * b2) / 3);
+                    }
+                    else
+                    {
+                        colors[2] =
+                            (((r1 + r2) >> 1) << 16) |
+                            (((g1 + g2) >> 1) << 8) |
+                            ((b1 + b2) >> 1);
+                        colors[3] = 255 << 1;
+                    }
+                     */
+                    colors[0] = (b1 << 16) | (g1 << 8) | r1;
+                    colors[1] = (b2 << 16) | (g2 << 8) | r2;
+                    if (c1 > c2)
+                    {
+                        colors[2] =
+                            (((2 * b1 + b2) / 3) << 16) |
+                            (((2 * g1 + g2) / 3) << 8) |
+                            ((2 * r1 + r2) / 3);
+                        colors[3] =
+                            (((b1 + 2 * b2) / 3) << 16) |
+                            (((g1 + 2 * g2) / 3) << 8) |
+                            ((r1 + 2 * r2) / 3);
+                    }
+                    else
+                    {
+                        colors[2] =
+                            (((b1 + b2) >> 1) << 16) |
+                            (((g1 + g2) >> 1) << 8) |
+                            ((r1 + r2) >> 1);
+                        colors[3] = 255 << 1;
+                    }
+
+
+                    for (int loopsuby = 0; loopsuby < 4; loopsuby++)
+                    {
+                        //int pixloc = poffset + (loopx << 2) + (height - (loopsuby + loopy + 1)) * (width << 2);
+                        int pixloc = poffset + (loopx << 2) + ((loopsuby + loopy)) * (width << 2);
+                        for (int loopsubx = 0; loopsubx < 4; loopsubx++, pixloc += 4)
+                        {
+                            if (loopx + loopsubx < width)
+                            {
+                                BitConverter.GetBytes(colors[curdataC & 3]).CopyTo(pixels, pixloc);
+                            }
+                            curdataC >>= 2;
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void DecodeDXT5Texture(byte[] pixels, int poffset, int width, int height, byte[] data)
+        {
+            UInt32[] alphas = new UInt32[8];
+            UInt32[] colors = new UInt32[4];
+            for (int loopy = 0; loopy < height; loopy += 4)
+            {
+                for (int loopx = 0; loopx < width; loopx += 4)
+                {
+                    int loc = (((loopx + 3) >> 2) + ((loopy + 3) >> 2) * ((width + 3) >> 2)) << 4;
+                    UInt64 curdataA = BitConverter.ToUInt64(data, loc);
+                    alphas[0] = (uint)(curdataA & 0xff);
+                    curdataA >>= 8;
+                    alphas[1] = (uint)(curdataA & 0xff);
+                    curdataA >>= 8;
+                    if (alphas[0] > alphas[1])
+                    {
+                        for (int loopi = 1; loopi < 7; loopi++)
+                        {
+                            alphas[loopi + 1] = ((UInt32)((7 - loopi) * alphas[0] + loopi * alphas[1]) / 7) << 24;
+                        }
+                    }
+                    else
+                    {
+                        for (int loopi = 1; loopi < 5; loopi++)
+                        {
+                            alphas[loopi + 1] = ((UInt32)((5 - loopi) * alphas[0] + loopi * alphas[1]) / 5) << 24;
+                        }
+                        alphas[6] = 0;
+                        alphas[7] = (UInt32)255 << 24;
+                    }
+                    alphas[0] <<= 24;
+                    alphas[1] <<= 24;
+
+                    UInt64 curdataC = BitConverter.ToUInt64(data, loc + 8);
+                    UInt32 c1 = (UInt32)(curdataC & ((1 << 16) - 1));
+                    curdataC >>= 16;
+                    UInt32 c2 = (UInt32)(curdataC & ((1 << 16) - 1));
+                    curdataC >>= 16;
+                    UInt32 b1 = (UInt32)(c1 & ((1 << 5) - 1)) << 3;
+                    b1 |= b1 >> 5;
+                    UInt32 g1 = (UInt32)((c1 >> 5) & ((1 << 6) - 1)) << 2;
+                    g1 |= g1 >> 6;
+                    UInt32 r1 = (UInt32)(c1 >> 11) << 3;
+                    r1 |= r1 >> 5;
+                    UInt32 b2 = (UInt32)(c2 & ((1 << 5) - 1)) << 3;
+                    b2 |= b2 >> 5;
+                    UInt32 g2 = (UInt32)((c2 >> 5) & ((1 << 6) - 1)) << 2;
+                    g2 |= g2 >> 6;
+                    UInt32 r2 = (UInt32)(c2 >> 11) << 3;
+                    r2 |= r2 >> 5;
+                    //colors[0] = (r1 << 16) | (g1 << 8) | b1;
+                    //colors[1] = (r2 << 16) | (g2 << 8) | b2;
+                    //colors[2] =
+                    //    (((2 * r1 + r2) / 3) << 16) |
+                    //    (((2 * g1 + g2) / 3) << 8) |
+                    //    ((2 * b1 + b2) / 3);
+                    //colors[3] =
+                    //    (((r1 + 2 * r2) / 3) << 16) |
+                    //    (((g1 + 2 * g2) / 3) << 8) |
+                    //    ((b1 + 2 * b2) / 3);
+                    colors[0] = (b1 << 16) | (g1 << 8) | r1;
+                    colors[1] = (b2 << 16) | (g2 << 8) | r2;
+                    colors[2] =
+                        (((2 * b1 + b2) / 3) << 16) |
+                        (((2 * g1 + g2) / 3) << 8) |
+                        ((2 * r1 + r2) / 3);
+                    colors[3] =
+                        (((b1 + 2 * b2) / 3) << 16) |
+                        (((g1 + 2 * g2) / 3) << 8) |
+                        ((r1 + 2 * r2) / 3);
+
+
+
+                    for (int loopsuby = 0; loopsuby < 4; loopsuby++)
+                    {
+                        //int pixloc = poffset + (loopx << 2) + (height - (loopsuby + loopy + 1)) * (width << 2);
+                        int pixloc = poffset + (loopx << 2) + ((loopsuby + loopy)) * (width << 2);
+                        for (int loopsubx = 0; loopsubx < 4; loopsubx++, pixloc += 4)
+                        {
+                            if (loopx + loopsubx < width)
+                            {
+                                UInt32 c = alphas[curdataA & 7] | colors[curdataC & 3];
+                                BitConverter.GetBytes(c).CopyTo(pixels, pixloc);
+                            }
+                            curdataA >>= 3;
+                            curdataC >>= 2;
+                        }
+                    }
+                }
+            }
+        }
+
+        static private UInt32 GetMipMapOffset(DdsFileFormat fourcc, int width, int height, int mipmaps, int mipmapno, bool mipmapreversed)
+        {
+            UInt32 offset = 0;
+            if (mipmapreversed)
+            {
+                for (int loop = mipmaps - 1; loop > mipmapno; loop--)
+                {
+                    offset += GetMipMapSize(fourcc, width, height, mipmaps, loop);
+                }
+            }
+            else
+            {
+                for (int loop = mipmapno; loop > 0; loop--)
+                {
+                    offset += GetMipMapSize(fourcc, width, height, mipmaps, loop - 1);
+                }
+            }
+            return offset;
+        }
+
+        static private UInt32 GetMipMapSize(DdsFileFormat fourcc, int width, int height, int mipmaps, int mipmapno)
+        {
+            width = (width + (1 << mipmapno) - 1) >> mipmapno;
+            height = (height + (1 << mipmapno) - 1) >> mipmapno;
+            switch (fourcc)
+            {
+                case DdsFileFormat.DDS_FORMAT_DXT1:
+                    return (UInt32)(((width + 3) / 4) * ((height + 3) / 4)) * 8;
+                case DdsFileFormat.DDS_FORMAT_DXT5:
+                    return (UInt32)(((width + 3) / 4) * ((height + 3) / 4)) * 16;
+                case DdsFileFormat.DDS_FORMAT_ATI1:
+                    return (UInt32)(((width + 3) / 4) * ((height + 3) / 4)) * 8;
+                case DdsFileFormat.DDS_FORMAT_ATI2:
+                    return (UInt32)(((width + 3) / 4) * ((height + 3) / 4)) * 16;
+                default:
+                    return 0;
+            }
+        }
+        #endregion
+
 		public	void	Load( System.IO.Stream input )
 		{
             ReadWriteStream(input, this._rawDDS);
@@ -747,39 +1200,61 @@ namespace DdsFileTypePlugin
 
 			if ( ( m_header.m_pixelFormat.m_flags & ( int )DdsPixelFormat.PixelFormatFlags.DDS_FOURCC ) != 0 )
 			{
-				int	squishFlags = 0;
+				//int	squishFlags = 0;
+                DdsFileFormat ddsFormat = new DdsFileFormat();
 
 				switch ( m_header.m_pixelFormat.m_fourCC )
 				{
 					case	0x31545844:
-						squishFlags = ( int )DdsSquish.SquishFlags.kDxt1;
+						//squishFlags = ( int )DdsSquish.SquishFlags.kDxt1;
+                        ddsFormat = DdsFileFormat.DDS_FORMAT_DXT1;
                         m_header.fileFormat = "DXT1";
 						break;
 
 					case	0x33545844:
-						squishFlags = ( int )DdsSquish.SquishFlags.kDxt3;
+						//squishFlags = ( int )DdsSquish.SquishFlags.kDxt3;
+                        ddsFormat = DdsFileFormat.DDS_FORMAT_DXT3;
                         m_header.fileFormat = "DXT3";
 						break;
 
 					case	0x35545844:
-						squishFlags = ( int )DdsSquish.SquishFlags.kDxt5;
+						//squishFlags = ( int )DdsSquish.SquishFlags.kDxt5;
+                        ddsFormat = DdsFileFormat.DDS_FORMAT_DXT5;
                         m_header.fileFormat = "DXT5";
 						break;
+                    case    0x31495441:
+                        ddsFormat = DdsFileFormat.DDS_FORMAT_ATI1;
+                        m_header.fileFormat = "ATI1";
+                        break;
+                    case    0x32495441:
+                        ddsFormat = DdsFileFormat.DDS_FORMAT_ATI2;
+                        m_header.fileFormat = "ATI2";
+                        break;
 
 					default:
 						throw new FormatException( "File is not a supported DDS format" );
 				}
 
 				// Compute size of compressed block area
-				int blockCount = ( ( GetWidth() + 3 )/4 ) * ( ( GetHeight() + 3 )/4 );
-				int blockSize = ( ( squishFlags & ( int )DdsSquish.SquishFlags.kDxt1 ) != 0 ) ? 8 : 16;
+				//int blockCount = ( ( GetWidth() + 3 )/4 ) * ( ( GetHeight() + 3 )/4 );
+                //int blockSize = 0;
+                //((squishFlags & (int)DdsSquish.SquishFlags.kDxt1) != 0) ? 8 : 16;
+                //if ((squishFlags & (int)DdsFileFormat.DDS_FORMAT_DXT1) != 0)
+                //{
+                    //blockSize = 8;
+                //}
+                //else
+                //{
+                    //blockSize = 16;
+                //}
 				
 				// Allocate room for compressed blocks, and read data into it.
-				byte[] compressedBlocks = new byte[ blockCount * blockSize ];
-				input.Read( compressedBlocks, 0, compressedBlocks.GetLength( 0 ) );
+				//byte[] compressedBlocks = new byte[ blockCount * blockSize ];
+				//input.Read( compressedBlocks, 0, compressedBlocks.GetLength( 0 ) );
 
 				// Now decompress..
-				m_pixelData = DdsSquish.DecompressImage( compressedBlocks, GetWidth(), GetHeight(), squishFlags );
+				//m_pixelData = DdsSquish.DecompressImage( input, GetWidth(), GetHeight(), squishFlags );
+                this.m_pixelData = DecodeTextureData(input, ddsFormat, GetWidth(), GetHeight(), 0, 0, false);
 			}
 			else
 			{

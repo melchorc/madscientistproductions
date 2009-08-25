@@ -17,13 +17,14 @@ namespace CASPartEditor
 
         public void reloadTextures()
         {
-            if (!renderWindow1.RenderEnabled)
-            {
-                reload3D();
-                return;
-            }
+
             if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
             {
+                if (!renderWindow1.RenderEnabled)
+                {
+                    reload3D();
+                    return;
+                }
 
                 xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
 
@@ -47,44 +48,47 @@ namespace CASPartEditor
 
         public void reloadTextures(xmlChunkDetails details)
         {
-            List<string> textures = findDefaultTextures(casPartNew.ageGenderFlag, casPartNew.typeFlag);
-
-            renderWindow1.loadTexture(KeyUtils.findKey(textures[0]), "skinTexture");
-            renderWindow1.loadTexture(KeyUtils.findKey(textures[1]), "skinSpecular");
-            renderWindow1.loadTexture(KeyUtils.findKey(textures[2]), "normalMap");
-
-            if ((casPartNew.typeFlag & 0x1) == 0x1)
+            if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
             {
-                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
-                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
-            }
-            else if ((casPartNew.typeFlag & 0x4) == 0x4)
-            {
-                renderWindow1.loadTexture(KeyUtils.findKey(details.faceOverlay), "ambientTexture");
-                renderWindow1.loadTexture(KeyUtils.findKey(details.faceSpecular), "specularTexture");
-            }
-            else
-            {
-                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
-                renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
-            }
-            renderWindow1.loadTexture(KeyUtils.findKey(details.Multiplier), "baseTexture");
-            renderWindow1.loadTexture(null, "stencilA");
 
-            //if ((casPartNew.typeFlag & 0x4) == 0x4)
-            //{
+                List<string> textures = findDefaultTextures(casPartNew.ageGenderFlag, casPartNew.typeFlag);
+
+                renderWindow1.loadTexture(KeyUtils.findKey(textures[0]), "skinTexture");
+                renderWindow1.loadTexture(KeyUtils.findKey(textures[1]), "skinSpecular");
+                renderWindow1.loadTexture(KeyUtils.findKey(textures[2]), "normalMap");
+
+                if ((casPartNew.typeFlag & 0x1) == 0x1)
+                {
+                    renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
+                    renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
+                }
+                else if ((casPartNew.typeFlag & 0x4) == 0x4)
+                {
+                    renderWindow1.loadTexture(KeyUtils.findKey(details.faceOverlay), "ambientTexture");
+                    renderWindow1.loadTexture(KeyUtils.findKey(details.faceSpecular), "specularTexture");
+                }
+                else
+                {
+                    renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingAmbient), "ambientTexture");
+                    renderWindow1.loadTexture(KeyUtils.findKey(details.ClothingSpecular), "specularTexture");
+                }
+                renderWindow1.loadTexture(KeyUtils.findKey(details.Multiplier), "baseTexture");
+                renderWindow1.loadTexture(null, "stencilA");
+
+                //if ((casPartNew.typeFlag & 0x4) == 0x4)
+                //{
                 //renderWindow1.shaderMode = 1;
-            //}
-            //else
-            //{
+                //}
+                //else
+                //{
                 //renderWindow1.shaderMode = 0;
-            //}
+                //}
 
-            generate3DTexture(details);
-            
-            // We don't need this here since generate3DTexture resets the device anyway
-            //renderWindow1.resetDevice();
+                generate3DTexture(details);
 
+                // We don't need this here since generate3DTexture resets the device anyway
+                //renderWindow1.resetDevice();
+            }
         }
 
         public void reload3D()
@@ -109,60 +113,63 @@ namespace CASPartEditor
         public void reload3D(xmlChunkDetails details)
         {
 
-            // Get the Mesh links for the first LOD
-            List<Stream> meshStreams = new List<Stream>();
-
-            // Use the VPXY to get the mesh lod
-            Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY], 0);
-
-            if (vpxyStream != null)
+            if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
             {
-                VPXYFile vpxyFile = new VPXYFile(vpxyStream);
-                // Get the first VPXY internal link
-                if (vpxyFile.vpxy.linkEntries.Count >= 1 && vpxyFile.vpxy.linkEntries[0].tgiList.Count >= 1)
+
+                // Get the Mesh links for the first LOD
+                List<Stream> meshStreams = new List<Stream>();
+
+                // Use the VPXY to get the mesh lod
+                Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY], 0);
+
+                if (vpxyStream != null)
                 {
-                    for (int i = 0; i < vpxyFile.vpxy.linkEntries[0].tgiList.Count; i++)
+                    VPXYFile vpxyFile = new VPXYFile(vpxyStream);
+                    // Get the first VPXY internal link
+                    if (vpxyFile.vpxy.linkEntries.Count >= 1 && vpxyFile.vpxy.linkEntries[0].tgiList.Count >= 1)
                     {
-                        meshStreams.Add(KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0));
+                        for (int i = 0; i < vpxyFile.vpxy.linkEntries[0].tgiList.Count; i++)
+                        {
+                            meshStreams.Add(KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0));
+                        }
+                    }
+                    vpxyStream.Close();
+                }
+
+                if (meshStreams.Count == 0) // || ((casPartSrc.typeFlag & 0x1) == 0x1))
+                {
+                    ResourceKey findKey = findDefaultMeshes(casPartNew.ageGenderFlag, casPartNew.typeFlag);
+
+                    if (findKey.groupId != 0 && findKey.instanceId != 0)
+                    {
+                        meshStreams.Add(KeyUtils.findKey(findKey, 0));
                     }
                 }
-                vpxyStream.Close();
-            }
 
-            if (meshStreams.Count == 0)
-            {
-                ResourceKey findKey = findDefaultMeshes(casPartNew.ageGenderFlag, casPartNew.typeFlag);
-                
-                if (findKey.groupId != 0 && findKey.instanceId != 0)
+                if (meshStreams.Count > 0)
                 {
-                    meshStreams.Add(KeyUtils.findKey(findKey, 0));
-                }
-            }
+                    renderWindow1.BackgroundColour = MadScience.Colours.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
 
-            if (meshStreams.Count > 0)
-            {
-                renderWindow1.BackgroundColour = MadScience.Colours.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
+                    // For each model, go through, get the model info and send it to the render window
+                    for (int i = 0; i < meshStreams.Count; i++)
+                    {
+                        MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStreams[i]);
+                        newModel.name = txtMeshName.Text;
+                        //renderWindow1.loadDefaultTextures();
+                        renderWindow1.setModel(newModel, i);
 
-                // For each model, go through, get the model info and send it to the render window
-                for (int i = 0; i < meshStreams.Count; i++)
-                {
-                    MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStreams[i]);
-                    newModel.name = txtMeshName.Text;
-                    //renderWindow1.loadDefaultTextures();
-                    renderWindow1.setModel(newModel, i);
+                    }
+
+                    reloadTextures(details);
+                    renderWindow1.RenderEnabled = true;
+
 
                 }
-                    
-                reloadTextures(details);
-                renderWindow1.RenderEnabled = true;
-
-
+                else
+                {
+                    renderWindow1.statusLabel.Text = "Sorry, we could not find a mesh!";
+                }
             }
-            else
-            {
-                renderWindow1.statusLabel.Text = "Sorry, we could not find a mesh!";
-            }
-
         }
 
         private void generate3DTexture()
@@ -407,7 +414,7 @@ namespace CASPartEditor
             if (defaultMeshes.Count == 0)
             {
                 // Load in XML
-                TextReader r = new StreamReader(Path.Combine(Application.StartupPath, "xml\\defaultMeshes.xml"));
+                TextReader r = new StreamReader(Path.Combine(Application.StartupPath, Path.Combine("xml", "defaultMeshes.xml")));
                 XmlSerializer s = new XmlSerializer(typeof(meshesFile));
                 DeserializeMeshes(r, defaultMeshes);
                 r.Close();
@@ -463,7 +470,7 @@ namespace CASPartEditor
             if (defaultTextures.Count == 0)
             {
                 // Load in XML
-                TextReader r = new StreamReader(Path.Combine(Application.StartupPath, "xml\\defaultTextures.xml"));
+                TextReader r = new StreamReader(Path.Combine(Application.StartupPath, Path.Combine("xml", "defaultTextures.xml")));
                 Deserialize(r, defaultTextures);
                 r.Close();
             }

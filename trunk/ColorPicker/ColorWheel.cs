@@ -59,7 +59,7 @@ namespace ColorPicker
 			
 			wheelrect = ColorWheelRectangle;
 			PointF center = Util.Center(wheelrect);
-			e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+			e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 			if (m_brush == null)
 			{
 				m_brush = new PathGradientBrush(m_path.ToArray(), WrapMode.Clamp);
@@ -67,7 +67,8 @@ namespace ColorPicker
 				m_brush.CenterColor = Color.White;
 				m_brush.SurroundColors = m_colors.ToArray();
 			}
-			e.Graphics.FillPie(m_brush, Util.Rect(wheelrect), 0, 360);
+			//e.Graphics.FillPie(m_brush, Util.Rect(wheelrect), 0, 360);
+            e.Graphics.FillEllipse(m_brush, Util.Rect(wheelrect).X, Util.Rect(wheelrect).Y, Util.Rect(wheelrect).Width, Util.Rect(wheelrect).Height);
 			DrawColorSelector(e.Graphics);
 
 			if (Focused)

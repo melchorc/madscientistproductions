@@ -38,11 +38,17 @@ namespace CASPartEditor
                 xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
 
                 //patternDetails temp = commitPatternDetails();
-
+                Console.WriteLine("makePatternPreviewThumb");
                 //picPatternThumb.Image = Patterns.makePatternThumb(pBrowser.findPattern(temp.key), pBrowser.pDetailsTopFile(temp));
-                picPatternThumb.Image = Patterns.makePatternThumb(chunk.pattern[patternNo]);
+                if (chunk.pattern[patternNo].type == "solidColor" && cEnable3DPreview.Checked == false)
+                {
+                    picPatternThumb.Image = null;
+                    picPatternThumb.BackColor = Colours.convertColour(chunk.pattern[patternNo].Color);
+                } else {
+                    picPatternThumb.Image = Patterns.makePatternThumb(chunk.pattern[patternNo]);
+                    generate3DTexture(chunk);
+                }
                 picPatternThumb.Visible = true;
-                generate3DTexture(chunk);
             }
         }
 

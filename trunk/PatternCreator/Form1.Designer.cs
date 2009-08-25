@@ -687,6 +687,7 @@
             this.txtSourceDDS.Name = "txtSourceDDS";
             this.txtSourceDDS.Size = new System.Drawing.Size(318, 20);
             this.txtSourceDDS.TabIndex = 77;
+            this.txtSourceDDS.TextChanged += new System.EventHandler(this.txtSourceDDS_TextChanged);
             // 
             // pictureBox1
             // 

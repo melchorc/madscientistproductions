@@ -528,12 +528,12 @@ namespace PatternCreator
             {
 
                 // Check for .package on the end - if it exists, strip it
-                string savePath = saveFileDialog1.FileName.Substring(0, saveFileDialog1.FileName.LastIndexOf("\\") + 1);
+                string savePath = saveFileDialog1.FileName.Substring(0, saveFileDialog1.FileName.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 
                 string saveName = "";
 
                 FileInfo f = new FileInfo(saveFileDialog1.FileName);
-                saveName = saveFileDialog1.FileName.Substring(saveFileDialog1.FileName.LastIndexOf("\\") + 1).Replace(f.Extension, "");
+                saveName = saveFileDialog1.FileName.Substring(saveFileDialog1.FileName.LastIndexOf(Path.DirectorySeparatorChar) + 1).Replace(f.Extension, "");
 
                 toggleEverything(false);
 
@@ -903,6 +903,11 @@ namespace PatternCreator
         }
 
         private void groupBox6_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtSourceDDS_TextChanged(object sender, EventArgs e)
         {
 
         }

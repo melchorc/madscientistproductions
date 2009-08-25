@@ -68,6 +68,9 @@ namespace CASPartEditor
             {
                 uint customGroup = MadScience.StringHelpers.HashFNV24(meshName);
                 keyName meshLod1 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod1"), meshName + "_lod1");
+                keyName meshLod1_1 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod1"), meshName + "_lod1_1");
+                keyName meshLod1_2 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod1"), meshName + "_lod1_2");
+                keyName meshLod1_3 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod1"), meshName + "_lod1_3");
                 keyName meshLod2 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod2"), meshName + "_lod2");
                 keyName meshLod3 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod3"), meshName + "_lod3");
 
@@ -88,27 +91,56 @@ namespace CASPartEditor
                     keyName bodyBlendThin = new keyName(0x062C8204, 0x0, meshName + "_thin");
                     keyName bodyBlendSpecial = new keyName(0x062C8204, 0x0, meshName + "_special");
 
-                    vpxyStream.Seek(0x14, SeekOrigin.Begin);
-                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, vpxyKey.instanceId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, vpxyKey.typeId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, vpxyKey.groupId);
+                    VPXYFile vpxyfile = new VPXYFile(vpxyStream);
+                    vpxyfile.rcolHeader.internalChunks.Clear();
+                    vpxyfile.rcolHeader.internalChunks.Add(vpxyKey.ToResourceKey());
 
-                    vpxyStream.Seek(vpxyStream.Length - 48, SeekOrigin.Begin);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod1.typeId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod1.groupId);
-                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, meshLod1.instanceId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod2.typeId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod2.groupId);
-                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, meshLod2.instanceId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod3.typeId);
-                    MadScience.StreamHelpers.WriteValueU32(vpxyStream, meshLod3.groupId);
-                    MadScience.StreamHelpers.WriteValueU64(vpxyStream, meshLod3.instanceId);
+                    vpxyfile.vpxy.linkEntries.Clear();
+                    if (!String.IsNullOrEmpty(txtMeshLod1.Text))
+                    {
+                        // LOD 1
+                        VPXYEntry vpxyE = new VPXYEntry();
+                        vpxyE.tgiList.Add(meshLod1.ToResourceKey());
+                        if (!String.IsNullOrEmpty(txtMeshLod1_1.Text)) vpxyE.tgiList.Add(meshLod1_1.ToResourceKey());
+                        if (!String.IsNullOrEmpty(txtMeshLod1_2.Text)) vpxyE.tgiList.Add(meshLod1_2.ToResourceKey());
+                        if (!String.IsNullOrEmpty(txtMeshLod1_3.Text)) vpxyE.tgiList.Add(meshLod1_3.ToResourceKey());
+                        vpxyfile.vpxy.linkEntries.Add(vpxyE);
+                    }
+                    if (!String.IsNullOrEmpty(txtMeshLod2.Text))
+                    {
+                        // LOD 2
+                        VPXYEntry vpxyE = new VPXYEntry();
+                        vpxyE.tgiList.Add(meshLod2.ToResourceKey());
+                        vpxyfile.vpxy.linkEntries.Add(vpxyE);
+                    }
+                    if (!String.IsNullOrEmpty(txtMeshLod3.Text))
+                    {
+                        // LOD 2
+                        VPXYEntry vpxyE = new VPXYEntry();
+                        vpxyE.tgiList.Add(meshLod3.ToResourceKey());
+                        vpxyfile.vpxy.linkEntries.Add(vpxyE);
+                    }
+                    
+                    vpxyfile.vpxy.keytable.keys.Clear();
 
+                    vpxyStream = vpxyfile.Save();
 
-                    MemoryStream proxyFitFile = makeVPXYfile(proxyFit.ToResourceKey());
-                    MemoryStream proxyFatFile = makeVPXYfile(proxyFat.ToResourceKey());
-                    MemoryStream proxyThinFile = makeVPXYfile(proxyThin.ToResourceKey());
-                    MemoryStream proxySpecialFile = makeVPXYfile(proxySpecial.ToResourceKey());
+                    vpxyfile.rcolHeader.internalChunks[0] = proxyFit.ToResourceKey();
+                    Stream proxyFitFile = vpxyfile.Save();
+
+                    vpxyfile.rcolHeader.internalChunks[0] = proxyFat.ToResourceKey();
+                    Stream proxyFatFile = vpxyfile.Save();
+
+                    vpxyfile.rcolHeader.internalChunks[0] = proxyThin.ToResourceKey();
+                    Stream proxyThinFile = vpxyfile.Save();
+
+                    vpxyfile.rcolHeader.internalChunks[0] = proxySpecial.ToResourceKey();
+                    Stream proxySpecialFile = vpxyfile.Save();
+
+                    //MemoryStream proxyFitFile = makeVPXYfile(proxyFit.ToResourceKey());
+                    //MemoryStream proxyFatFile = makeVPXYfile(proxyFat.ToResourceKey());
+                    //MemoryStream proxyThinFile = makeVPXYfile(proxyThin.ToResourceKey());
+                    //MemoryStream proxySpecialFile = makeVPXYfile(proxySpecial.ToResourceKey());
 
                     MemoryStream bodyBlendFitFile = makeBlendFile(proxyFit);
                     MemoryStream bodyBlendFatFile = makeBlendFile(proxyFat);

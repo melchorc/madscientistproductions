@@ -22,7 +22,7 @@ namespace PatternBrowser
                 InitializeComponent();
 
                 Helpers.logMessageToFile("Creating cache folder");
-                if (!Directory.Exists(Path.Combine(Application.StartupPath, "\\patterncache\\")))
+                if (!Directory.Exists(Path.Combine(Application.StartupPath, "patterncache")))
                 {
                     Directory.CreateDirectory(Path.Combine(Application.StartupPath, "patterncache"));
                 }
@@ -366,14 +366,14 @@ namespace PatternBrowser
             {
 
                 string s3root = MadScience.Helpers.findSims3Root();
-                string thumbnailPackage = @"\GameData\Shared\Packages\FullBuild2.package";
+                string thumbnailPackage = Helpers.getGameSubPath(@"\GameData\Shared\Packages\FullBuild2.package");
 
                 Console.WriteLine("Starting at: " + DateTime.Now.ToString());
 
-                Stream cast = File.Open(s3root + thumbnailPackage, FileMode.Open, FileAccess.Read, FileShare.Read);
+                Stream cast = File.Open(Path.Combine(s3root, thumbnailPackage), FileMode.Open, FileAccess.Read, FileShare.Read);
                 MadScience.Wrappers.Database castdb = new MadScience.Wrappers.Database(cast);
 
-                Stream fullBuild0 = File.Open(s3root + @"\GameData\Shared\Packages\FullBuild0.package", FileMode.Open, FileAccess.Read, FileShare.Read);
+                Stream fullBuild0 = File.Open(Path.Combine(s3root, Helpers.getGameSubPath(@"\GameData\Shared\Packages\FullBuild0.package")), FileMode.Open, FileAccess.Read, FileShare.Read);
                 MadScience.Wrappers.Database xmldb = new MadScience.Wrappers.Database(fullBuild0);
 
 

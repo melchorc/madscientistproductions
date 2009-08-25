@@ -586,6 +586,7 @@ namespace CASPartEditor
 
         Dictionary<ulong, ResourceKey> casThumbsKeyList = new Dictionary<ulong, ResourceKey>();
         Dictionary<ulong, ResourceKey> casThumbsKeyList2 = new Dictionary<ulong, ResourceKey>();
+        private string sims3root = "";
         private Image extractCASThumbnail(string meshName)
         {
 
@@ -595,26 +596,19 @@ namespace CASPartEditor
 
             Image tempImage = null;
 
-            string s3root = MadScience.Helpers.findSims3Root();
-            string thumbnailPackage = Helpers.getGameSubPath(@"\Thumbnails\CASThumbnails.package");
-            if (s3root != "" && File.Exists(Path.Combine(s3root, thumbnailPackage)))
+            if (String.IsNullOrEmpty(sims3root))
+            {
+                sims3root = MadScience.Helpers.findSims3Root();
+            } 
+
+            string thumbnailPackage = Helpers.getGameSubPath(@"\Thumbnails\CasThumbnails.package");
+            Helpers.logMessageToFile(Path.Combine(sims3root, thumbnailPackage));
+            if (sims3root != "" && File.Exists(Path.Combine(sims3root, thumbnailPackage)))
             {
                 // Open CAS Thumbnails package
-                Stream cast = File.Open(Path.Combine(s3root, thumbnailPackage), FileMode.Open, FileAccess.Read, FileShare.Read);
+                Stream cast = File.Open(Path.Combine(sims3root, thumbnailPackage), FileMode.Open, FileAccess.Read, FileShare.Read);
                 Database castdb = new Database(cast, true);
 
-                //cast.Seek(0, SeekOrigin.Begin);
-                //DatabasePackedFile dbpf = new DatabasePackedFile();
-                //try
-                //{
-                //dbpf.Read(cast);
-                //}
-                //catch (NotAPackageException)
-                //{
-                //  MessageBox.Show("bad file: {0}", s3root + thumbnailPackage);
-                //                    cast.Close();
-                //                  return null ;
-                //            }
                 ulong instanceid = MadScience.StringHelpers.HashFNV64(meshName);
 
                 if (casThumbsKeyList.Count == 0)
@@ -675,7 +669,7 @@ namespace CASPartEditor
             }
             else
             {
-                Helpers.logMessageToFile(@"Can't find sims3root or Thumbnails\CASThumbnails.package");
+                Helpers.logMessageToFile(@"Can't find sims3root or Thumbnails\CasThumbnails.package");
             }
 
             //Console.WriteLine("Stopped " + meshName + " at " + DateTime.Now.ToString());
@@ -980,7 +974,7 @@ namespace CASPartEditor
                                                 }
 
 
-                                                FileStream saveFile = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + fileNameToSave + extension, FileMode.Create, FileAccess.Write);
+                                                FileStream saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
                                                 Helpers.CopyStream(KeyUtils.findKey(entry, 2, db), saveFile);
                                                 saveFile.Close();
                                             }
@@ -1024,7 +1018,7 @@ namespace CASPartEditor
                             {
 
                                 Stream output = db.GetResourceStream(tgi);
-                                FileStream saveFile = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + fileNameToSave + ".dds", FileMode.Create, FileAccess.Write);
+                                FileStream saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + ".dds"), FileMode.Create, FileAccess.Write);
                                 Helpers.CopyStream(output, saveFile);
                                 saveFile.Close();
                                 output.Close();
@@ -1563,50 +1557,52 @@ namespace CASPartEditor
                 {
                     VPXYFile vpxyFile = new VPXYFile(vpxyStream);
                     // Get the first VPXY internal link
-                    if (vpxyFile.vpxy.linkEntries.Count >= 1 && vpxyFile.vpxy.linkEntries[0].tgiList.Count >= 1)
+                    if (vpxyFile.vpxy.linkEntries.Count >= 1) // && vpxyFile.vpxy.linkEntries[0].tgiList.Count >= 1)
                     {
-                        for (int i = 0; i < vpxyFile.vpxy.linkEntries[0].tgiList.Count; i++)
+                        for (int p = 0; p < vpxyFile.vpxy.linkEntries.Count; p++)
                         {
-                            //meshStreams.Add(KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0));
-                            //KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0);
-
-                            ResourceKey entry = vpxyFile.vpxy.linkEntries[0].tgiList[i];
-
-                            string fileNameToSave = "";
-                            if (keyNames.ContainsKey(entry.instanceId))
+                            for (int i = 0; i < vpxyFile.vpxy.linkEntries[p].tgiList.Count; i++)
                             {
-                                fileNameToSave = keyNames[entry.instanceId];
-                                if (fileNameToSave.Contains("0x") == false) { fileNameToSave += "_0x" + entry.instanceId.ToString("X16"); }
-                            }
-                            else
-                            {
-                                fileNameToSave = entry.typeId.ToString("X8") + "_" + entry.groupId.ToString("X8") + "_" + entry.instanceId.ToString("X16");
-                            }
+                                //meshStreams.Add(KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0));
+                                //KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0);
 
-                            Stream output = KeyUtils.findKey(vpxyFile.vpxy.linkEntries[0].tgiList[i], 0);
+                                ResourceKey entry = vpxyFile.vpxy.linkEntries[p].tgiList[i];
 
-                            if (!hasShownDialog)
-                            {
-                                folderBrowserDialog1.Description = "Please select a folder to save the extracted meshes to.";
-                                folderBrowserDialog1.ShowDialog();
-                                hasShownDialog = true;
-                            }
-                            if (folderBrowserDialog1.SelectedPath != "")
-                            {
-                                string extension = "";
-                                if (entry.typeId == 0x015A1849)
+                                string fileNameToSave = "";
+                                if (keyNames.ContainsKey(entry.instanceId))
                                 {
-                                    extension = ".simgeom";
+                                    fileNameToSave = keyNames[entry.instanceId];
+                                    if (fileNameToSave.Contains("0x") == false) { fileNameToSave += "_0x" + entry.instanceId.ToString("X16"); }
+                                }
+                                else
+                                {
+                                    fileNameToSave = entry.typeId.ToString("X8") + "_" + entry.groupId.ToString("X8") + "_" + entry.instanceId.ToString("X16");
                                 }
 
-                                FileStream saveFile = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + fileNameToSave + extension, FileMode.Create, FileAccess.Write);
-                                Helpers.CopyStream(output, saveFile);
-                                saveFile.Close();
-                                numFound++;
-                            }
-                            output.Close();
-                        }
+                                Stream output = KeyUtils.findKey(entry, 0);
 
+                                if (!hasShownDialog)
+                                {
+                                    folderBrowserDialog1.Description = "Please select a folder to save the extracted meshes to.";
+                                    folderBrowserDialog1.ShowDialog();
+                                    hasShownDialog = true;
+                                }
+                                if (folderBrowserDialog1.SelectedPath != "")
+                                {
+                                    string extension = "";
+                                    if (entry.typeId == 0x015A1849)
+                                    {
+                                        extension = ".simgeom";
+                                    }
+
+                                    FileStream saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
+                                    Helpers.CopyStream(output, saveFile);
+                                    saveFile.Close();
+                                    numFound++;
+                                }
+                                output.Close();
+                            }
+                        }
 
                     }
 
@@ -1624,7 +1620,7 @@ namespace CASPartEditor
                             fileNameToSave2 = entry.typeId.ToString("X8") + "_" + entry.groupId.ToString("X8") + "_" + entry.instanceId.ToString("X16");
                         }
 
-                        FileStream saveFile = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + fileNameToSave2 + ".vpxy", FileMode.Create, FileAccess.Write);
+                        FileStream saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave2) + ".vpxy", FileMode.Create, FileAccess.Write);
                         Helpers.CopyStream(vpxyStream, saveFile, true);
                         saveFile.Close();
 
@@ -2696,8 +2692,8 @@ namespace CASPartEditor
             else
             {
                 MadScience.Helpers.saveRegistryValue("show3dRender", "False");
-                this.MinimumSize = new Size(590,650);
-                this.Size = new Size(590, this.Height);
+                this.MinimumSize = new Size(tabControl3.Width + 10, this.Height);
+                this.Size = new Size(tabControl3.Width + 10, this.Height);
                 btnStart3D.Visible = false;
                 btnReloadTextures.Visible = false;
                 btnResetView.Visible = false;
@@ -3111,6 +3107,33 @@ namespace CASPartEditor
                 MessageBox.Show("Tiling invalid. Format: |x.xxx, x.xxx|");
             else
                 reloadTextures();
+        }
+
+        private void tabControl3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Console.WriteLine("Index changed to " + tabControl3.SelectedIndex);
+            tabControl3.SelectedTab.Refresh();
+            tabControl3.Refresh();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            txtMeshLod1_1.Text = selectLodFile();
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            txtMeshLod1_2.Text = selectLodFile();
+        }
+
+        private void button8_Click_1(object sender, EventArgs e)
+        {
+            txtMeshLod1_3.Text = selectLodFile();
+        }
+
+        private void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+            this.Refresh();
         }
 
     }
