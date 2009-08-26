@@ -47,8 +47,8 @@ namespace MadScience
                 m_hue = hue;
                 while (m_hue > 360) m_hue -= 360;
                 while (m_hue < 0) m_hue += 360;
-                m_saturation = Math.Min(1, saturation);
-                m_value = Math.Min(1, value);
+                m_saturation = saturation;
+                m_value = value;
             }
             public HSVColor(Color color)
             {

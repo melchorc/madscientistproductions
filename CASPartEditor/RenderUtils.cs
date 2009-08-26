@@ -267,7 +267,7 @@ namespace CASPartEditor
             if (stencils.Count == 1)
                 renderWindow1.loadTexture(stencils[0],"stencilA");
             if (stencils.Count > 1)
-                renderWindow1.loadTextureFromBitmap(PatternProcessor.mergeStencils(stencils), "stencilA");
+                renderWindow1.loadTextureFromBitmap(MadScience.Patterns.mergeStencils(stencils), "stencilA");
         }
 
         private Bitmap composeMakeup(xmlChunkDetails details, uint casPartType)
@@ -423,6 +423,7 @@ namespace CASPartEditor
             string flags = "";
             string highestAge = "";
 
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Baby) == (uint)AgeGenderFlags.Baby) highestAge = "b";
             if ((ageGenderFlag & (uint)AgeGenderFlags.Toddler) == (uint)AgeGenderFlags.Toddler) highestAge = "p";
             if ((ageGenderFlag & (uint)AgeGenderFlags.Child) == (uint)AgeGenderFlags.Child) highestAge = "c";
             if ((ageGenderFlag & (uint)AgeGenderFlags.Teen) == (uint)AgeGenderFlags.Teen) highestAge = "t";
@@ -478,6 +479,7 @@ namespace CASPartEditor
             string flags = "";
             string highestAge = "";
 
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Baby) == (uint)AgeGenderFlags.Baby) highestAge = "b";
             if ((ageGenderFlag & (uint)AgeGenderFlags.Toddler) == (uint)AgeGenderFlags.Toddler) highestAge = "p";
             if ((ageGenderFlag & (uint)AgeGenderFlags.Child) == (uint)AgeGenderFlags.Child) highestAge = "c";
             if ((ageGenderFlag & (uint)AgeGenderFlags.Teen) == (uint)AgeGenderFlags.Teen) highestAge = "t";
