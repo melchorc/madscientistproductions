@@ -160,7 +160,32 @@ namespace MadScience.Render
             for (int i = 0; i < model.numVertices; i++)
             {
                 //model.vertexData.Add(new vertex(model.vertexList[i].X, model.vertexList[i].X, model.vertexList[i].X, model.textureVertex[i].u, model.textureVertex[i].v, model.vertexNormal[i].X, model.vertexNormal[i].Y, model.vertexNormal[i].Z));
-                model.vertexData.Add(new vertex(-model.vertexList[i].X, model.vertexList[i].Y, model.vertexList[i].Z, model.textureVertex[i].u, model.textureVertex[i].v, -model.vertexNormal[i].X, model.vertexNormal[i].Y, model.vertexNormal[i].Z, -model.vertexTangentList[i].X, model.vertexTangentList[i].Y, model.vertexTangentList[i].Z));
+                vertex v = new vertex();
+                if (model.vertexList.Count > 0 && model.vertexList[i] != null)
+                {
+                    v.x = -model.vertexList[i].X;
+                    v.y = model.vertexList[i].Y;
+                    v.z = model.vertexList[i].Z;
+                }
+                if (model.textureVertex.Count > 0 && model.textureVertex[i] != null)
+                {
+                    v.tu = model.textureVertex[i].u;
+                    v.tv = model.textureVertex[i].v;
+                }
+                if (model.vertexNormal.Count > 0 && model.vertexNormal[i] != null)
+                {
+                    v.nx = -model.vertexNormal[i].X;
+                    v.ny = model.vertexNormal[i].Y;
+                    v.nz = model.vertexNormal[i].Z;
+                }
+                if (model.vertexTangentList.Count > 0 && model.vertexTangentList[i] != null)
+                {
+                    v.tx = model.vertexTangentList[i].X;
+                    v.ty = model.vertexTangentList[i].Y;
+                    v.tz = model.vertexTangentList[i].Z;
+                }
+                model.vertexData.Add(v);
+                //model.vertexData.Add(new vertex(-model.vertexList[i].X, model.vertexList[i].Y, model.vertexList[i].Z, model.textureVertex[i].u, model.textureVertex[i].v, -model.vertexNormal[i].X, model.vertexNormal[i].Y, model.vertexNormal[i].Z, -model.vertexTangentList[i].X, model.vertexTangentList[i].Y, model.vertexTangentList[i].Z));
             }
 
             // Go through the vertex lists again, this time normalising the values

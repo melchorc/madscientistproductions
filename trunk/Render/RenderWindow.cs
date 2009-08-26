@@ -789,7 +789,7 @@ namespace MadScience.Render
                 if (spinX > 359) spinX -= 360;
                 if (spinY > 359) spinY -= 360;
 
-                Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + transX.ToString() + " : " + transZ.ToString() + " : " + height.ToString());
+                //Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + transX.ToString() + " : " + transZ.ToString() + " : " + height.ToString());
             }
 
             ptLastMousePosit = ptCurrentMousePosit;
@@ -889,7 +889,7 @@ namespace MadScience.Render
             spinY = 0;
             transX = 0;
 
-            Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + transZ.ToString());
+            //Console.WriteLine(spinX.ToString() + " : " + spinY.ToString() + " : " + transZ.ToString());
 
 
             Invalidate();

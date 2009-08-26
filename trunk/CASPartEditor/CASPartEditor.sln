@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternCreator", "..\Patter
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDSViewer", "..\DDSViewer\DDSViewer.csproj", "{D45993F2-0FA0-4B1C-AAE5-719AF1E112FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadScience.RenderStub", "..\RenderStub\MadScience.RenderStub.csproj", "{A732E1DF-2B28-4255-9651-A858FE78FECE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +121,16 @@ Global
 		{D45993F2-0FA0-4B1C-AAE5-719AF1E112FC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D45993F2-0FA0-4B1C-AAE5-719AF1E112FC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D45993F2-0FA0-4B1C-AAE5-719AF1E112FC}.Release|Win32.ActiveCfg = Release|Any CPU
+		{A732E1DF-2B28-4255-9651-A858FE78FECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A732E1DF-2B28-4255-9651-A858FE78FECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A732E1DF-2B28-4255-9651-A858FE78FECE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A732E1DF-2B28-4255-9651-A858FE78FECE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A732E1DF-2B28-4255-9651-A858FE78FECE}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{A732E1DF-2B28-4255-9651-A858FE78FECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A732E1DF-2B28-4255-9651-A858FE78FECE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A732E1DF-2B28-4255-9651-A858FE78FECE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A732E1DF-2B28-4255-9651-A858FE78FECE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A732E1DF-2B28-4255-9651-A858FE78FECE}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

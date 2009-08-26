@@ -78,29 +78,59 @@ namespace MadScience.Render
             solidWireframeToolStripMenuItem.Checked = true;
         }
 
+        private void loadModel(string filename)
+        {
+            //MessageBox.Show(Environment.GetCommandLineArgs()[0] + " " + Environment.GetCommandLineArgs()[1]);
+            Stream meshStream = File.OpenRead(filename);
+            MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStream);
+            meshStream.Close();
+
+            renderWindow1.statusLabel.Text = "Loaded " + filename;
+            renderWindow1.setModel(newModel);
+            renderWindow1.resetDevice();
+            // If loading from command line, set mode to wireframe
+            renderWindow1.CurrentFillMode = 0;
+            renderWindow1.RenderEnabled = true;
+
+            toolStripStatusLabel1.Text = "Loaded " + filename;
+        }
+
         private void Render_Load(object sender, EventArgs e)
         {
             if (Environment.GetCommandLineArgs().Length > 1)
             {
-                //MessageBox.Show(Environment.GetCommandLineArgs()[0] + " " + Environment.GetCommandLineArgs()[1]);
-                Stream meshStream = File.OpenRead(Environment.GetCommandLineArgs()[1].ToString());
+                loadModel(Environment.GetCommandLineArgs()[1].ToString());
+            }
+            else
+            {
+                logMessageToFile("RenderEnabled: true");
+                renderWindow1.RenderEnabled = false;
+                //logMessageToFile("loadDefaultTextures");
+                //renderWindow1.loadDefaultTextures();
+                //renderWindow1.resetDevice();
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "Sims 3 Geometry Mesh|*.simgeom";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK && openFileDialog1.FileName.Trim() != "")
+            {
+                Stream meshStream = File.OpenRead(openFileDialog1.FileName);
                 MadScience.Render.modelInfo newModel = MadScience.Render.Helpers.geomToModel(meshStream);
                 meshStream.Close();
 
-                renderWindow1.statusLabel.Text = "Loaded " + Environment.GetCommandLineArgs()[1].ToString();
+                renderWindow1.statusLabel.Text = "Loaded " + openFileDialog1.FileName;
                 renderWindow1.setModel(newModel);
                 renderWindow1.resetDevice();
                 // If loading from command line, set mode to wireframe
                 renderWindow1.CurrentFillMode = 0;
                 renderWindow1.RenderEnabled = true;
-            }
-            else
-            {
-                logMessageToFile("RenderEnabled: true");
-                renderWindow1.RenderEnabled = true;
-                logMessageToFile("loadDefaultTextures");
-                //renderWindow1.loadDefaultTextures();
-                renderWindow1.resetDevice();
             }
         }
     }

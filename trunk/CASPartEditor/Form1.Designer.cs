@@ -277,6 +277,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.renderWindow1 = new MadScience.Render.RenderWindow();
             this.bwGenTexture = new System.ComponentModel.BackgroundWorker();
             this.btnStart3D = new System.Windows.Forms.Button();
             this.btnReloadTextures = new System.Windows.Forms.Button();
@@ -289,7 +290,6 @@
             this.replaceImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.editColourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.renderWindow1 = new MadScience.Render.RenderWindow();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl3.SuspendLayout();
@@ -3114,6 +3114,7 @@
             this.cEnable3DPreview.TabIndex = 27;
             this.cEnable3DPreview.Text = "Enable 3D Preview";
             this.cEnable3DPreview.UseVisualStyleBackColor = true;
+            this.cEnable3DPreview.Visible = false;
             this.cEnable3DPreview.CheckedChanged += new System.EventHandler(this.cEnable3DPreview_CheckedChanged);
             // 
             // btnResetView
