@@ -26,76 +26,46 @@ namespace MadScience
             return makePatternThumb(pattern, null);
         }
 
-        //public static Image makePatternThumb(patternsFile pattern, bool saveImage, patternsFile pOverride)
         public static Image makePatternThumb(patternDetails pattern, Wrappers.Database db)
         {
-            //keyName patternXML = new keyName(resKey);
-
-            //Stream patternThumb = Stream.Null;
-
-            //if (pattern.isCustom)
-            //{
-
-            //    if (File.Exists(pattern.customFilename))
-            //    {
-            //        patternThumb = KeyUtils.searchForKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pattern.name.Substring(pattern.name.LastIndexOf("\\") +1)).ToString("X16"), pattern.customFilename);
-            //        if (!Helpers.isValidStream(patternThumb))
-            //        {
-            //            patternThumb = KeyUtils.searchForKey(pattern.BackgroundImage, pattern.customFilename);
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    Wrappers.ResourceKey rKey = new MadScience.Wrappers.ResourceKey(0x00B2D882, 0x0, StringHelpers.HashFNV64(pattern.name.Substring(pattern.name.LastIndexOf("\\") +1)));
-            //    if (db != null) patternThumb = KeyUtils.findKey(rKey, 0, db);
-            //    else patternThumb = KeyUtils.findKey(rKey);
-            //    if (!Helpers.isValidStream(patternThumb))
-            //    {
-            //        rKey = new MadScience.Wrappers.ResourceKey(pattern.BackgroundImage);
-            //        if (db != null) patternThumb = KeyUtils.findKey(rKey, 0, db);
-            //        else patternThumb = KeyUtils.findKey(rKey);
-            //    }
-            //}
-
             Image temp = null;
 
-
-                
                 if (pattern.type == "HSV")
                 {
+                    DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
+                    
                     Colours.HSVColor C0 = new Colours.HSVColor();
                     Colours.HSVColor C1 = new Colours.HSVColor();
                     Colours.HSVColor C2 = new Colours.HSVColor();
-                    DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
+
                     Colours.HSVColor bg = new Colours.HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
                     Colours.HSVColor basebg = new Colours.HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
                     Colours.HSVColor shift = new Colours.HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
 
-                    bool[] ce = new bool[3];
+                    bool[] ColorChannelEnabled = new bool[3];
 
                     if (pattern.ChannelEnabled[0] != null && pattern.ChannelEnabled[0].ToLower() == "true")
                     {
                         C0 = new Colours.HSVColor(double.Parse(pattern.H[0]) * 360, double.Parse(pattern.S[0]), double.Parse(pattern.V[0]));
-                        ce[0] = true;
+                        ColorChannelEnabled[0] = true;
                     }
                     if (pattern.ChannelEnabled[1] != null && pattern.ChannelEnabled[1].ToLower() == "true")
                     {
                         C1 = new Colours.HSVColor(double.Parse(pattern.H[1]) * 360, double.Parse(pattern.S[1]), double.Parse(pattern.V[1]));
-                        ce[1] = true;
+                        ColorChannelEnabled[1] = true;
                     }
                     if (pattern.ChannelEnabled[2] != null && pattern.ChannelEnabled[2].ToLower() == "true")
                     {
                         C2 = new Colours.HSVColor(double.Parse(pattern.H[2]) * 360, double.Parse(pattern.S[2]), double.Parse(pattern.V[2]));
-                        ce[2] = true;
+                        ColorChannelEnabled[2] = true;
                     }
                     if (db != null)
                     {
-                        temp = Patterns.createHSVPattern(KeyUtils.findKey(new Wrappers.ResourceKey(pattern.BackgroundImage), 2, db), KeyUtils.findKey(new Wrappers.ResourceKey(pattern.rgbmask), 2, db), bg, KeyUtils.findKey(new MadScience.Wrappers.ResourceKey(makeKey(pattern.Channel[0])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[1])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[2])), 0, db), C0, C1, C2, ce);
+                        temp = Patterns.createHSVPattern(KeyUtils.findKey(new Wrappers.ResourceKey(pattern.BackgroundImage), 2, db), KeyUtils.findKey(new Wrappers.ResourceKey(pattern.rgbmask), 2, db), bg, KeyUtils.findKey(new MadScience.Wrappers.ResourceKey(makeKey(pattern.Channel[0])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[1])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[2])), 0, db), C0, C1, C2, ColorChannelEnabled);
                     }
                     else
                     {
-                        temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), KeyUtils.findKey(pattern.rgbmask), bg, KeyUtils.findKey(makeKey(pattern.Channel[0])), KeyUtils.findKey(makeKey(pattern.Channel[1])), KeyUtils.findKey(makeKey(pattern.Channel[2])), C0, C1, C2, ce);
+                        temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), KeyUtils.findKey(pattern.rgbmask), bg, KeyUtils.findKey(makeKey(pattern.Channel[0])), KeyUtils.findKey(makeKey(pattern.Channel[1])), KeyUtils.findKey(makeKey(pattern.Channel[2])), C0, C1, C2, ColorChannelEnabled);
                     }
                 }
                 if (pattern.type == "Coloured")
@@ -544,7 +514,7 @@ namespace MadScience
             }
             if (input.Width != 256 || input.Height != 256)
             {
-                ResizeBitmap(ref input, 256, 256);
+                MadScience.Patterns.ResizeBitmapFast(ref input, 256, 256);
             }
 
             if ((rgbmask.Length != 0))
@@ -559,7 +529,7 @@ namespace MadScience
             }
             if (mask.Width != 256 || mask.Height != 256)
             {
-                ResizeBitmap(ref mask, 256, 256);
+                MadScience.Patterns.ResizeBitmapCorrect(ref mask, 256, 256);
             }
 
             if ((textureChannel1 != null) && (textureChannel1.Length != 0))
@@ -574,7 +544,7 @@ namespace MadScience
             }
             if (channel1.Width != 256 || channel1.Height != 256)
             {
-                ResizeBitmap(ref channel1, 256, 256);
+                MadScience.Patterns.ResizeBitmapFast(ref channel1, 256, 256);
             }
 
             if ((textureChannel2 != null) && (textureChannel2.Length != 0))
@@ -589,7 +559,7 @@ namespace MadScience
             }
             if (channel2.Width != 256 || channel2.Height != 256)
             {
-                ResizeBitmap(ref channel2, 256, 256);
+                MadScience.Patterns.ResizeBitmapFast(ref channel2, 256, 256);
             }
 
             if ((textureChannel3 != null) && (textureChannel3.Length != 0))
@@ -604,7 +574,7 @@ namespace MadScience
             }
             if (channel3.Width != 256 || channel3.Height != 256)
             {
-                ResizeBitmap(ref channel3, 256, 256);
+                MadScience.Patterns.ResizeBitmapFast(ref channel3, 256, 256);
             }
 
             output = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
@@ -634,8 +604,8 @@ namespace MadScience
 
                         int pixelLocation = x * pixelSize;
 
-                        Color inputcolor = Color.FromArgb(1, inputRow[pixelLocation + 2], inputRow[pixelLocation + 1], inputRow[pixelLocation]);
-                        Color maskcolor = Color.FromArgb(1, maskRow[pixelLocation + 2], maskRow[pixelLocation + 1], maskRow[pixelLocation]);
+                        Color inputcolor = Color.FromArgb(255, inputRow[pixelLocation + 2], inputRow[pixelLocation + 1], inputRow[pixelLocation]);
+                        Color maskcolor = Color.FromArgb(maskRow[pixelLocation + 3], maskRow[pixelLocation + 2], maskRow[pixelLocation + 1], maskRow[pixelLocation]);
 
                         MadScience.Colours.HSVColor bgcolor = new MadScience.Colours.HSVColor(inputcolor);
                         bgcolor.Hue += bg.Hue;
@@ -686,13 +656,196 @@ namespace MadScience
 
         }
 
-        private static Color ColorOverlay(byte factor, Color colorA, Color colorB)
+        #region helperfunctions
+
+        public static Bitmap mergeStencils(List<Stream> Stencils)
+        {
+            Bitmap output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
+            Graphics g = Graphics.FromImage(output);
+            var d = new DdsFileTypePlugin.DdsFile();
+            if ((Stencils != null))
+            {
+                for (int i = 0; i < Stencils.Count; i++)
+                {
+                    if (Stencils[i].Length != 0)
+                    {
+                        d.Load(Stencils[i]);
+                        Bitmap _Stencil = (Bitmap)d.Image(true, true, true, true);
+                        Stencils[i].Close();
+                        if (!(_Stencil.Width == 1024 || _Stencil.Height == 1024))
+                        {
+                            ResizeBitmapCorrect(ref _Stencil, 1024, 1024);
+                        }
+                        g.DrawImage(_Stencil, 0, 0);
+                    }
+                }
+            }
+            g.Dispose();
+            return output;
+        }
+        public static void ResizeBitmapCorrect(ref Bitmap bitmap, int width, int height)
+        {
+            float[][] ptsArrayCopyRGB =
+            {
+                new float[] {1, 0, 0, 0, 0},
+                new float[] {0, 1, 0, 0, 0},
+                new float[] {0, 0, 1, 0, 0},
+                new float[] {0, 0, 0, 0, 0},
+                new float[] {0, 0, 0, 1, 1}
+            };
+            // Create a ColorMatrix object
+            ColorMatrix clrMatrixCopyRGB = new ColorMatrix(ptsArrayCopyRGB);
+            // Create image attributes
+            ImageAttributes imgAttribsCopyRGB = new ImageAttributes();
+            // Set color matrix
+            imgAttribsCopyRGB.SetColorMatrix(clrMatrixCopyRGB,
+                ColorMatrixFlag.Default,
+                ColorAdjustType.Default);
+
+            float[][] ptsArrayCopyA =
+            {
+                new float[] {0, 0, 0, 0, 0},
+                new float[] {0, 0, 0, 0, 0},
+                new float[] {0, 0, 0, 0, 0},
+                new float[] {1, 0, 0, 0, 0},
+                new float[] {0, 0, 0, 1, 1}
+            };
+            // Create a ColorMatrix object
+            ColorMatrix clrMatrixCopyA = new ColorMatrix(ptsArrayCopyA);
+            // Create image attributes
+            ImageAttributes imgAttribsCopyA = new ImageAttributes();
+            // Set color matrix
+            imgAttribsCopyA.SetColorMatrix(clrMatrixCopyA,
+                ColorMatrixFlag.Default,
+                ColorAdjustType.Default);
+
+            Bitmap result = new Bitmap(width, height);
+            Bitmap alphamask = new Bitmap(width, height);
+
+            using (Graphics g = Graphics.FromImage((Image)result))
+                g.DrawImage(bitmap, new Rectangle(0, 0, width, height), 0, 0, bitmap.Width, bitmap.Height, GraphicsUnit.Pixel, imgAttribsCopyRGB);
+
+            using (Graphics g = Graphics.FromImage((Image)alphamask))
+                g.DrawImage(bitmap, new Rectangle(0, 0, width, height), 0, 0, bitmap.Width, bitmap.Height, GraphicsUnit.Pixel, imgAttribsCopyA);
+
+            BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData maskData = alphamask.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            const int pixelSize = 4;
+            //process every pixel
+            unsafe
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    byte* bitmapRow = (byte*)bitmapData.Scan0 + (y * bitmapData.Stride);
+                    byte* maskRow = (byte*)maskData.Scan0 + (y * maskData.Stride);
+
+                    for (int x = 0; x < width; x++)
+                    {
+
+                        int pixelLocation = x * pixelSize;
+
+                        bitmapRow[pixelLocation + 3] = (byte)maskRow[pixelLocation + 2];
+
+                    }
+                }
+            }
+            result.UnlockBits(bitmapData);
+            alphamask.UnlockBits(maskData);
+
+
+            bitmap = result;
+
+        }
+
+        public static Color ProcessHairPixelRGB(Color multiplier, Color mask, Color color1, Color color2, Color color3, Color color4)
+        {
+            Color output = ColorMultiply(multiplier, color1);
+            output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, color2));
+            output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, color3));
+            output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, color4));
+            return output;
+        }
+
+        public static Color ProcessMakeUpPixelRGB(Color multiplier, Color mask, Color color1, Color color2, Color color3)
+        {
+            Color output = multiplier;
+            output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, color1));
+            output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, color2));
+            output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, color3));
+            return output;
+        }
+
+        public static Color ProcessMakeUpPixelRGBA(Color multiplier, Color mask, Color color1, Color color2, Color color3, Color color4)
+        {
+            Color output = multiplier;
+            output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, color1));
+            output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, color2));
+            output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, color3));
+            output = ColorOverlay(mask.A, output, ColorMultiply(multiplier, color4));
+
+            return output;
+        }
+
+        public static Color ProcessPixelRGB(Color multiplier, Color mask, Color pattern1color, Color pattern2color, Color pattern3color)
+        {
+            Color output;
+            output = multiplier;
+            if (!pattern1color.IsEmpty) output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, pattern1color));
+            if (!pattern2color.IsEmpty) output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, pattern2color));
+            if (!pattern3color.IsEmpty) output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, pattern3color));
+            return output;
+        }
+
+        public static Color ProcessPixelRGBA(Color multiplier, Color mask, Color pattern1color, Color pattern2color, Color pattern3color, Color pattern4color)
+        {
+            Color output = multiplier;
+            if (!pattern1color.IsEmpty) output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, pattern1color));
+            if (!pattern2color.IsEmpty) output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, pattern2color));
+            if (!pattern3color.IsEmpty) output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, pattern3color));
+            if (!pattern4color.IsEmpty) output = ColorOverlay(mask.A, output, ColorMultiply(multiplier, pattern4color));
+            return output;
+        }
+
+        public static Color ColorMultiply(Color colorA, Color colorB)
+        {
+            return Color.FromArgb(colorA.A, ((int)colorA.R * colorB.R) / 255, ((int)colorA.G * colorB.G) / 255, ((int)colorA.B * colorB.B) / 255);
+        }
+
+        public static Color ColorOverlay(byte factor, Color colorA, Color colorB)
         {
             int cFactor = 255 - factor;
             return Color.FromArgb(colorA.A, ((int)colorA.R * (cFactor) + (int)colorB.R * factor) / 255, ((int)colorA.G * (cFactor) + (int)colorB.G * factor) / 255, ((int)colorA.B * (cFactor) + (int)colorB.B * factor) / 255);
         }
 
-        private static void ResizeBitmap(ref Bitmap bitmap, int width, int height)
+        public static Color ColorPaint(byte factor, Color colorA, Color colorB)
+        {
+            if (factor == 0)
+                return colorA;
+            float fFactor = (float)factor / 255;
+            float fIFactor = 1 - (fFactor);
+            float a = factor + colorA.A * fIFactor;
+            float r = (((fIFactor * colorA.R * colorA.A)) / 255 + (fFactor * colorB.R)) / (a / 255);
+            float g = (((fIFactor * colorA.B * colorA.A)) / 255 + (fFactor * colorB.G)) / (a / 255);
+            float b = (((fIFactor * colorA.G * colorA.A)) / 255 + (fFactor * colorB.B)) / (a / 255);
+
+            return Color.FromArgb((int)a, (int)r, (int)g, (int)b);
+        }
+
+        public static Color ColorFromPattern(Color mask, Color[] colors)
+        {
+            Color output = colors[0];
+            if (colors.Length > 1)
+            {
+                if (colors[1] != Color.Empty) { output = ColorOverlay(mask.R, output, colors[1]); }
+                if (colors[2] != Color.Empty) { output = ColorOverlay(mask.G, output, colors[2]); }
+                if (colors[3] != Color.Empty) { output = ColorOverlay(mask.B, output, colors[3]); }
+                if (colors[4] != Color.Empty) { output = ColorOverlay(mask.A, output, colors[4]); }
+
+            }
+            return output;
+        }
+
+        public static void ResizeBitmapFast(ref Bitmap bitmap, int width, int height)
         {
 
             Bitmap result = new Bitmap(width, height);
@@ -702,6 +855,9 @@ namespace MadScience
             bitmap = result;
 
         }
+        #endregion
+
+
 
     }
 

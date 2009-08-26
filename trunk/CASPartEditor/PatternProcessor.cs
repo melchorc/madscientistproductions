@@ -7,8 +7,11 @@ using System.Collections.Generic;
 
 namespace CASPartEditor
 {
+
     public static class PatternProcessor
     {
+
+    #region Makeup
         public static Bitmap ProcessMakeupTexture(
                 List<Stream> textures,
                 MadScience.tintDetail tinta,
@@ -74,7 +77,7 @@ namespace CASPartEditor
                 Overlay.Close();
                 if (_Overlay.Width != 1024 || _Overlay.Height != 1024)
                 {
-                    ResizeBitmap(ref _Overlay, 1024, 1024);
+                    MadScience.Patterns.ResizeBitmapFast(ref _Overlay, 1024, 1024);
                 }
             }
 
@@ -84,12 +87,12 @@ namespace CASPartEditor
             //some error handling
             if (_Multiplier.Width != 1024 || _Multiplier.Height != 1024)
             {
-                ResizeBitmap(ref _Multiplier, 1024, 1024);
+                MadScience.Patterns.ResizeBitmapFast(ref _Multiplier, 1024, 1024);
             }
 
             if (_PartMask.Width != 1024 || _PartMask.Height != 1024)
             {
-                ResizeBitmap(ref _PartMask, 1024, 1024);
+                MadScience.Patterns.ResizeBitmapFast(ref _PartMask, 1024, 1024);
             }
 
             BitmapData outputData = output.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -119,16 +122,16 @@ namespace CASPartEditor
                                 {
                                     if (useMask)
                                     {
-                                        outputColor = ProcessMakeUpPixelRGB(multiplierColor, maskColor, color1, color2, color3);
+                                        outputColor = MadScience.Patterns.ProcessMakeUpPixelRGB(multiplierColor, maskColor, color1, color2, color3);
                                     }
                                     else
                                     {
-                                        outputColor = ProcessMakeUpPixelRGB(multiplierColor, Color.Red, color1, color2, color3);
+                                        outputColor = MadScience.Patterns.ProcessMakeUpPixelRGB(multiplierColor, Color.Red, color1, color2, color3);
                                     }
                                 }
                                 else
                                 {
-                                    outputColor = ProcessMakeUpPixelRGBA(multiplierColor, maskColor, color1, color2, color3, color4);
+                                    outputColor = MadScience.Patterns.ProcessMakeUpPixelRGBA(multiplierColor, maskColor, color1, color2, color3, color4);
                                 }
                                 outputRow[pixelLocation] = (byte)outputColor.B;
                                 outputRow[pixelLocation + 1] = (byte)outputColor.G;
@@ -148,6 +151,11 @@ namespace CASPartEditor
             }
             return output;
         }
+
+
+    #endregion
+    #region Hair
+
 
         public static Bitmap ProcessHairTexture(
                 List<Stream> textures,
@@ -205,7 +213,7 @@ namespace CASPartEditor
                 Overlay.Close();
                 if (_Overlay.Width != 1024 || _Overlay.Height != 1024)
                 {
-                    ResizeBitmap(ref _Overlay, 1024, 1024);
+                    MadScience.Patterns.ResizeBitmapFast(ref _Overlay, 1024, 1024);
                 }
             }
 
@@ -215,12 +223,12 @@ namespace CASPartEditor
             //some error handling
             if (_Multiplier.Width != 1024 || _Multiplier.Height != 1024)
             {
-                ResizeBitmap(ref _Multiplier, 1024, 1024);
+                MadScience.Patterns.ResizeBitmapFast(ref _Multiplier, 1024, 1024);
             }
 
             if (_PartMask.Width != 1024 || _PartMask.Height != 1024)
             {
-                ResizeBitmap(ref _PartMask, 1024, 1024);
+                MadScience.Patterns.ResizeBitmapCorrect(ref _PartMask, 1024, 1024);
             }
 
             BitmapData outputData = output.LockBits(new Rectangle(0, 0, 1024, 1024), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -246,7 +254,7 @@ namespace CASPartEditor
                         Color multiplierColor = Color.FromArgb(multiplierRow[pixelLocation + 3], multiplierRow[pixelLocation + 2], multiplierRow[pixelLocation + 1], multiplierRow[pixelLocation]);
                         if (multiplierColor.A != 0)
                         {
-                            outputColor = ProcessHairPixelRGB(multiplierColor, maskColor, color1, color2, color3, color4);
+                            outputColor = MadScience.Patterns.ProcessHairPixelRGB(multiplierColor, maskColor, color1, color2, color3, color4);
 
                             outputRow[pixelLocation] = (byte)outputColor.B;
                             outputRow[pixelLocation + 1] = (byte)outputColor.G;
@@ -267,6 +275,8 @@ namespace CASPartEditor
             return output;
         }
 
+    #endregion
+    #region clothing
 
         public static Bitmap ProcessTexture(
                 List<Stream> textures, 
@@ -332,7 +342,7 @@ namespace CASPartEditor
                 Overlay.Close();
                 if (_Overlay.Width != 1024 || _Overlay.Height != 1024)
                 {
-                    ResizeBitmap(ref _Overlay, 1024, 1024);
+                    MadScience.Patterns.ResizeBitmapFast(ref _Overlay, 1024, 1024);
                 }
             }
 
@@ -346,12 +356,12 @@ namespace CASPartEditor
             //some error handling
             if (_Multiplier.Width != 1024 || _Multiplier.Height != 1024)
             {
-                ResizeBitmap(ref _Multiplier, 1024, 1024);
+                MadScience.Patterns.ResizeBitmapFast(ref _Multiplier, 1024, 1024);
             }
 
             if (_PartMask.Width != 1024 || _PartMask.Height != 1024)
             {
-                ResizeBitmap(ref _PartMask, 1024, 1024);
+                MadScience.Patterns.ResizeBitmapCorrect(ref _PartMask, 1024, 1024);
             }
 
             int[] PatternsWidth = new int[numPatterns];
@@ -363,7 +373,7 @@ namespace CASPartEditor
                     PatternsWidth[i] = (int)(1024 / Tilings[i].X);
                     PatternsHeight[i] = (int)(1024 / Tilings[i].Y);
                     if (PatternsWidth[i] != Patterns[i].Width || PatternsHeight[i] != Patterns[i].Height)
-                        ResizeBitmap(ref Patterns[i], PatternsWidth[i], PatternsHeight[i]);
+                        MadScience.Patterns.ResizeBitmapFast(ref Patterns[i], PatternsWidth[i], PatternsHeight[i]);
                 }
 
             startTime = DateTime.Now;
@@ -420,7 +430,7 @@ namespace CASPartEditor
                                         int xs = x % PatternsWidth[i];
                                         int pixelLocation2 = xs * pixelSize;
                                         patternColor = Color.FromArgb(patternRows[i][pixelLocation2 + 3], patternRows[i][pixelLocation2 + 2], patternRows[i][pixelLocation2 + 1], patternRows[i][pixelLocation2]);
-                                        outColor = ColorOverlay(maskRow[pixelLocation + byteMask[i]], outColor, ColorMultiply(multiplierColor, patternColor));
+                                        outColor = MadScience.Patterns.ColorOverlay(maskRow[pixelLocation + byteMask[i]], outColor, MadScience.Patterns.ColorMultiply(multiplierColor, patternColor));
                                     }
                                 outputRow[pixelLocation] = (byte)outColor.B;
                                 outputRow[pixelLocation + 1] = (byte)outColor.G;
@@ -447,141 +457,9 @@ namespace CASPartEditor
             return output;
         }
 
+        #endregion
 
-        public static Bitmap mergeStencils(List<Stream> Stencils)
-        {
-            Bitmap output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(output);
-            var d = new DdsFileTypePlugin.DdsFile();
-            if ((Stencils != null))
-            {
-                for (int i = 0; i < Stencils.Count; i++)
-                {
-                    if (Stencils[i].Length != 0)
-                    {
-                        d.Load(Stencils[i]);
-                        Bitmap _Stencil = (Bitmap)d.Image(true, true, true, true);
-                        Stencils[i].Close();
-                        if (!(_Stencil.Width == 1024 || _Stencil.Height == 1024))
-                        {
-                            ResizeBitmap(ref _Stencil, 1024, 1024);
-                        }
-                        g.DrawImage(_Stencil, 0, 0);
-                    }
-                }
-            }
-            g.Dispose();
-            return output;
-        }
-        private static void ResizeBitmap(ref Bitmap bitmap, int width, int height)
-        {
 
-            Bitmap result = new Bitmap(width, height);
-            using (Graphics g = Graphics.FromImage((Image)result))
-                g.DrawImage(bitmap, 0, 0, width, height);
-
-            bitmap = result;
-
-        }
-
-        private static Color ProcessHairPixelRGB(Color multiplier, Color mask, Color color1, Color color2, Color color3, Color color4)
-        {
-            Color output = ColorMultiply(multiplier, color1);
-            output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, color2));
-            output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, color3));
-            output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, color4));
-            return output;
-        }
-
-        private static Color ProcessMakeUpPixelRGB(Color multiplier, Color mask, Color color1, Color color2, Color color3)
-        {
-            Color output = multiplier;
-            output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, color1));
-            output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, color2));
-            output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, color3));
-            return output;
-        }
-
-        private static Color ProcessMakeUpPixelRGBA(Color multiplier, Color mask, Color color1, Color color2, Color color3, Color color4)
-        {
-            Color output = multiplier;
-            output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, color1));
-            output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, color2));
-            output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, color3));
-            output = ColorOverlay(mask.A, output, ColorMultiply(multiplier, color4));
-
-            return output;
-        }
-
-        private static Color ProcessPixelRGB(Color multiplier, Color mask, Color pattern1color, Color pattern2color, Color pattern3color)
-        {
-            Color output;
-            output = multiplier;
-            if (!pattern1color.IsEmpty) output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, pattern1color));
-            if (!pattern2color.IsEmpty) output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, pattern2color));
-            if (!pattern3color.IsEmpty) output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, pattern3color));
-            return output;
-        }
-
-        private static Color ProcessPixelRGBA(Color multiplier, Color mask, Color pattern1color, Color pattern2color, Color pattern3color, Color pattern4color)
-        {
-            Color output = multiplier;
-            if (!pattern1color.IsEmpty) output = ColorOverlay(mask.R, output, ColorMultiply(multiplier, pattern1color));
-            if (!pattern2color.IsEmpty) output = ColorOverlay(mask.G, output, ColorMultiply(multiplier, pattern2color));
-            if (!pattern3color.IsEmpty) output = ColorOverlay(mask.B, output, ColorMultiply(multiplier, pattern3color));
-            if (!pattern4color.IsEmpty) output = ColorOverlay(mask.A, output, ColorMultiply(multiplier, pattern4color));
-            return output;
-        }
-
-        private static Color ColorMultiply(Color colorA, Color colorB)
-        {
-            return Color.FromArgb(colorA.A, ((int)colorA.R * colorB.R) / 255, ((int)colorA.G * colorB.G) / 255, ((int)colorA.B * colorB.B) / 255);
-        }
-
-        private static Color ColorOverlay(byte factor, Color colorA, Color colorB)
-        {
-            int cFactor = 255 - factor;
-            return Color.FromArgb(colorA.A, ((int)colorA.R * (cFactor) + (int)colorB.R * factor) / 255, ((int)colorA.G * (cFactor) + (int)colorB.G * factor) / 255, ((int)colorA.B * (cFactor) + (int)colorB.B * factor) / 255);
-        }
-
-        private static Color ColorPaint(byte factor, Color colorA, Color colorB)
-        {
-            if (factor == 0)
-                return colorA;
-            float fFactor = (float)factor / 255;
-            float fIFactor = 1-(fFactor);
-            float a = factor + colorA.A * fIFactor;
-            float r = (((fIFactor * colorA.R * colorA.A)) / 255 + (fFactor * colorB.R)) / (a / 255);
-            float g = (((fIFactor * colorA.B * colorA.A)) / 255 + (fFactor * colorB.G)) / (a / 255);
-            float b = (((fIFactor * colorA.G * colorA.A)) / 255 + (fFactor * colorB.B)) / (a / 255);
-
-            return Color.FromArgb((int)a, (int)r, (int)g, (int)b);
-        }
-
-        private static Color ColorFromPattern(Color mask, Color[] colors)
-        {
-            Color output = colors[0];
-            if (colors.Length > 1)
-            {
-                if (colors[1] != Color.Empty) { output = ColorOverlay(mask.R, output, colors[1]); }
-                if (colors[2] != Color.Empty) { output = ColorOverlay(mask.G, output, colors[2]); }
-                if (colors[3] != Color.Empty) { output = ColorOverlay(mask.B, output, colors[3]); }
-                if (colors[4] != Color.Empty) { output = ColorOverlay(mask.A, output, colors[4]); }
-                /*
-                if (colors.Length > 2)
-                {
-                    output = ColorOverlay(mask.G, output, colors[2]);
-                    if (colors.Length > 3)
-                    {
-                        output = ColorOverlay(mask.B, output, colors[3]);
-                        if (colors.Length > 4)
-                            output = ColorOverlay(mask.A, output, colors[4]);
-                    }
-                }
-                */
-            }
-            return output;
-        }
     }
 
 
