@@ -132,6 +132,17 @@ namespace MadScience
                 string s = string.Format("HSV({0:f2}, {1:f2}, {2:f2})", Hue, Saturation, Value);
                 return s;
             }
+            public override bool Equals(object o)
+            {
+                if (o is HSVColor)
+                    if ((HSVColor)o == this)
+                        return true;
+                return false;
+            }
+            public override int GetHashCode()
+            {
+               return this.Color.ToArgb();
+            }
         }
         #endregion
 

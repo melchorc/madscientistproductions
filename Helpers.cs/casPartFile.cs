@@ -135,7 +135,7 @@ namespace MadScience
                 if (!String.IsNullOrEmpty(chunk.pattern[i].name))
                 {
                     string patternName = "";
-                    string charName = "";
+                    string charName;
                     switch (i)
                     {
                         case 0: patternName = "Pattern A"; charName = "JackB"; break;
