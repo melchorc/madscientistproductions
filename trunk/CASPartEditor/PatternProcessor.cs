@@ -88,7 +88,7 @@ namespace CASPartEditor
             }
 
             //apply overlay 
-            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], baseTexture.Width, baseTexture.Height);
+            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], output.Width, output.Height);
             if (overlay != null)
             {
                 using (Graphics g = Graphics.FromImage(output))
@@ -146,7 +146,7 @@ namespace CASPartEditor
                 output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
             }
             //apply overlay 
-            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], baseTexture.Width, baseTexture.Height);
+            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], output.Width, output.Height);
             if (overlay != null)
             {
                 using (Graphics g = Graphics.FromImage(output))
@@ -218,7 +218,7 @@ namespace CASPartEditor
                 output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
             }
             //apply overlay 
-            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], baseTexture.Width, baseTexture.Height);
+            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], output.Width, output.Height);
             if (overlay != null)
             {
                 using (Graphics g = Graphics.FromImage(output))
@@ -300,7 +300,7 @@ namespace CASPartEditor
                             if (baseColor.A != 0)
                             {
                                 Color outColor = baseColor;
-                                //Color patternColor;
+
                                 for (int i = 0; i < numPatterns; i++)
                                     if (Patterns[i] != null)
                                     {
@@ -357,7 +357,7 @@ namespace CASPartEditor
                 if (pattern != null)
                 {
                     BitmapData outputData = output.LockBits(new Rectangle(0, 0, baseTexture.Width, baseTexture.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-                    BitmapData multiplierData = baseTexture.LockBits(new Rectangle(0, 0, baseTexture.Width, baseTexture.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                    BitmapData baseTextureData = baseTexture.LockBits(new Rectangle(0, 0, baseTexture.Width, baseTexture.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
                     BitmapData patternData = pattern.LockBits(new Rectangle(0, 0, patternWidth, patternHeight), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
                     const int pixelSize = 4;
@@ -374,7 +374,7 @@ namespace CASPartEditor
                         for (int y = 0; y < baseTexture.Height; y++)
                         {
                             byte* outputRow = (byte*)outputData.Scan0 + (y * outputData.Stride);
-                            byte* baseTextureRow = (byte*)multiplierData.Scan0 + (y * multiplierData.Stride);
+                            byte* baseTextureRow = (byte*)baseTextureData.Scan0 + (y * baseTextureData.Stride);
                             byte* patternRow = (byte*)patternData.Scan0 + ((y % patternHeight) * patternData.Stride);
 
                             for (int x = 0; x < baseTexture.Width; x++)
@@ -402,6 +402,7 @@ namespace CASPartEditor
                         }
                     }
                     output.UnlockBits(outputData);
+                    baseTexture.UnlockBits(baseTextureData);
                 }
                 else
                 {
@@ -414,7 +415,7 @@ namespace CASPartEditor
             }
 
             //apply overlay 
-            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], baseTexture.Width, baseTexture.Height);
+            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], output.Width, output.Height);
             if (overlay != null)
             {
                 using (Graphics g = Graphics.FromImage(output))

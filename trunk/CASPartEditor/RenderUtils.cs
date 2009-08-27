@@ -283,6 +283,11 @@ namespace CASPartEditor
             TimeSpan duration2 = stopTime2 - startTime2;
             Console.WriteLine("Key search time: " + duration2.TotalMilliseconds);
 
+            if (MadScience.Patterns.isEmptyTexture(details.Multiplier))
+                textures[0] = null;
+            if (MadScience.Patterns.isEmptyTexture(details.Overlay))
+                textures[2] = null;
+
             DateTime startTime = DateTime.Now;
             Bitmap output = null;
             if (String.IsNullOrEmpty(details.TintColor))
@@ -365,7 +370,19 @@ namespace CASPartEditor
             Console.WriteLine("Key search time: " + duration2.TotalMilliseconds);
 
             DateTime startTime = DateTime.Now;
-            Bitmap output = PatternProcessor.ProcessClothingTexture(
+            if (MadScience.Patterns.isEmptyTexture(details.Multiplier))
+                textures[0] = null;
+            if (MadScience.Patterns.isEmptyTexture(details.Overlay))
+                textures[2] = null;
+
+            Bitmap output;
+            if (MadScience.Patterns.isEmptyMask(details.Mask))
+               output = PatternProcessor.ProcessSingleChannelTexture(
+               textures,
+               myPatterns[0],
+               tilings[0]);           
+            else 
+                output = PatternProcessor.ProcessClothingTexture(
                 textures,
                 myPatterns,
                 tilings);
@@ -386,6 +403,11 @@ namespace CASPartEditor
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
 
             List<Stream> textures = KeyUtils.findKey(tempList, 2);
+
+            if (MadScience.Patterns.isEmptyTexture(details.DiffuseMap))
+                textures[0] = null;
+            if (MadScience.Patterns.isEmptyTexture(details.Overlay))
+                textures[2] = null;
 
             DateTime startTime = DateTime.Now;
             Bitmap hair = PatternProcessor.ProcessHairTexture(textures,
