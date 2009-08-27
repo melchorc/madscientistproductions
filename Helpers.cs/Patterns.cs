@@ -149,11 +149,28 @@ namespace MadScience
 
         public static bool isEmptyMask(String key)
         {
+            //only textures, that consist entirely of RGBA[255,0,0,0]
             switch (key)
             {
                 case "key:00B2D882:00000000:646B487723D17864": return true;
                 case "key:00B2D882:00000000:75F8F21E0F143CAC": return true;
                 case "key:00B2D882:00000000:6F04C03483C744EC": return true;
+                default: return false;
+            }
+        }
+
+        public static bool isEmptyTexture(String key)
+        {
+            //only textures, that have the alpha channel == 0
+
+            //Empty maks have by definition the alpha channel == 0
+            if (isEmptyMask(key))
+                return true;
+            
+            //other textures
+            switch (key)
+            {
+                case "key:00B2D882:00000000:34CC2DBA7857B5CB": return true;
                 default: return false;
             }
         }
@@ -666,7 +683,10 @@ namespace MadScience
             if (source != null && source.Length != 0)
             {
                 d.Load(source);
-                output = (Bitmap)d.Image(true, true, true, true);
+                if (isAlphaFormat(d.m_header.fileFormat))
+                    output = (Bitmap)d.Image(true, true, true, true);
+                else
+                    output = (Bitmap)d.Image(true, true, true);
                 source.Close();
                 if (output.Width != width || output.Height != height)
                 {
@@ -690,7 +710,10 @@ namespace MadScience
             if (source != null && source.Length != 0)
             {
                 d.Load(source);
-                output = (Bitmap)d.Image(true, true, true, true);
+                if (isAlphaFormat(d.m_header.fileFormat))
+                    output = (Bitmap)d.Image(true, true, true, true);
+                else
+                    output = (Bitmap)d.Image(true, true, true);
                 source.Close();
                 if (output.Width != width || output.Height != height)
                 {
@@ -714,7 +737,10 @@ namespace MadScience
             if (source != null && source.Length != 0)
             {
                 d.Load(source);
-                output = (Bitmap)d.Image(true, true, true, true);
+                if (isAlphaFormat(d.m_header.fileFormat))
+                    output = (Bitmap)d.Image(true, true, true, true);
+                else
+                    output = (Bitmap)d.Image(true, true, true);
                 source.Close();
             }
             else
@@ -759,6 +785,21 @@ namespace MadScience
             g.Dispose();
             return output;
         }
+
+        public static void ResizeBitmapFast(ref Bitmap bitmap, int width, int height)
+        {
+
+            Bitmap result = new Bitmap(width, height);
+            using (Graphics g = Graphics.FromImage((Image)result))
+            {
+                g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+                g.DrawImage(bitmap, 0, 0, width, height);
+            }
+            bitmap = result;
+
+        }
+
         public static void ResizeBitmapCorrect(ref Bitmap bitmap, int width, int height)
         {
             float[][] ptsArrayCopyRGB =
@@ -907,33 +948,6 @@ namespace MadScience
             return Color.FromArgb((int)a, (int)r, (int)g, (int)b);
         }
 
-        public static Color ColorFromPattern(Color mask, Color[] colors)
-        {
-            Color output = colors[0];
-            if (colors.Length > 1)
-            {
-                if (colors[1] != Color.Empty) { output = ColorOverlay(mask.R, output, colors[1]); }
-                if (colors[2] != Color.Empty) { output = ColorOverlay(mask.G, output, colors[2]); }
-                if (colors[3] != Color.Empty) { output = ColorOverlay(mask.B, output, colors[3]); }
-                if (colors[4] != Color.Empty) { output = ColorOverlay(mask.A, output, colors[4]); }
-
-            }
-            return output;
-        }
-
-        public static void ResizeBitmapFast(ref Bitmap bitmap, int width, int height)
-        {
-
-            Bitmap result = new Bitmap(width, height);
-            using (Graphics g = Graphics.FromImage((Image)result))
-            {
-                g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-                g.DrawImage(bitmap, 0, 0, width, height);
-            }
-            bitmap = result;
-
-        }
         #endregion
 
 

@@ -288,8 +288,6 @@ namespace PatternBrowser
             horizontal = 0;
             vertical = 0;
 
-            bool hasFound = false;
-
             ToolTip tt = new ToolTip();
 
 
@@ -347,7 +345,7 @@ namespace PatternBrowser
                                         {
                                             picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
                                         }
-                                        catch (Exception ex)
+                                        catch (Exception)
                                         {
                                         }
                                     //}
@@ -425,7 +423,7 @@ namespace PatternBrowser
                                     {
                                         picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png")), System.Drawing.Imaging.ImageFormat.Png);
                                     }
-                                    catch (Exception ex)
+                                    catch (Exception)
                                     {
                                     }
                                 //}
@@ -642,7 +640,6 @@ namespace PatternBrowser
                 MadScience.Wrappers.Database castdb = new MadScience.Wrappers.Database(cast, true);
 
                 // Open XML file 
-                string patternTexture = "";
                 //patternsFile cPattern = new patternsFile();
                 patternDetails pDetails = new patternDetails();
 
@@ -725,7 +722,7 @@ namespace PatternBrowser
                     {
                         picBox.Image.Save(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pDetails.name + ".png")), System.Drawing.Imaging.ImageFormat.Png);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                     }
 
@@ -749,7 +746,7 @@ namespace PatternBrowser
                     try {
                         File.Delete(Path.Combine(Application.StartupPath, Path.Combine("patterncache", pattern.casPart + ".png")));
                     }
-                    catch(Exception ex)
+                    catch(Exception)
                     {
                     }
                 }
