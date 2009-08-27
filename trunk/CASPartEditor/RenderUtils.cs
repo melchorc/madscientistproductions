@@ -285,27 +285,24 @@ namespace CASPartEditor
 
             DateTime startTime = DateTime.Now;
             Bitmap output = null;
-            if (details.tint.A.enabled.ToLower() == "true")
+            if (String.IsNullOrEmpty(details.TintColor))
             {
-                output = PatternProcessor.ProcessMakeupTexture(textures,
-                details.tint.A,
-                details.tint.B,
-                details.tint.C,
-                details.tint.D,
-                    true);
+                if (MadScience.Patterns.isEmptyMask(details.Mask) && details.tint.A.enabled != null && details.tint.A.enabled.ToLower() == "true")
+                {
+                    output = PatternProcessor.ProcessMakeupTexture(textures, MadScience.Colours.convertColour(details.tint.A.color));
+                }
+                else
+                {
+                    output = PatternProcessor.ProcessMakeupTexture(textures,
+                    details.tint.A,
+                    details.tint.B,
+                    details.tint.C,
+                    details.tint.D);
+                }
             }
             else if (details.TintColor != null)
             {
-                tintDetail t = new tintDetail();
-                tintDetail d = new tintDetail();
-                t.enabled = "True";
-                t.color = details.TintColor;
-                output = PatternProcessor.ProcessMakeupTexture(textures,
-                    t,
-                    d,
-                    d,
-                    d,
-                    false);
+                output = PatternProcessor.ProcessMakeupTexture(textures, MadScience.Colours.convertColour(details.TintColor));
             }
 
             DateTime stopTime = DateTime.Now;
@@ -368,7 +365,7 @@ namespace CASPartEditor
             Console.WriteLine("Key search time: " + duration2.TotalMilliseconds);
 
             DateTime startTime = DateTime.Now;
-            Bitmap output = PatternProcessor.ProcessTexture(
+            Bitmap output = PatternProcessor.ProcessClothingTexture(
                 textures,
                 myPatterns,
                 tilings);
@@ -395,14 +392,25 @@ namespace CASPartEditor
                 MadScience.Colours.convertColour(details.hair.DiffuseColor),
                 MadScience.Colours.convertColour(details.hair.RootColor),
                 MadScience.Colours.convertColour(details.hair.HighlightColor),
-                MadScience.Colours.convertColour(details.hair.TipColor),
-                    true);
+                MadScience.Colours.convertColour(details.hair.TipColor));
 
-            using (Graphics g = Graphics.FromImage(patterns))
+            if (patterns.Width < hair.Width)
             {
-                g.DrawImage(hair,0,0);
+                using (Graphics g = Graphics.FromImage(hair))
+                {
+                    g.DrawImage(patterns, 0, 0, patterns.Width, patterns.Height);
+                }
+                return hair;
             }
-            return patterns;
+            else
+            {
+                using (Graphics g = Graphics.FromImage(patterns))
+                {
+                    g.DrawImage(hair, 0, 0, patterns.Width, patterns.Height);
+                }
+                return patterns;
+            }
+
         }
 
         public static Dictionary<string, string> defaultMeshes = new Dictionary<string, string>();

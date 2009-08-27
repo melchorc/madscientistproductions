@@ -44,28 +44,42 @@ namespace MadScience
 
                     bool[] ColorChannelEnabled = new bool[3];
 
-                    if (pattern.ChannelEnabled[0] != null && pattern.ChannelEnabled[0].ToLower() == "true")
+                    if (pattern.Channel[0] != null && pattern.ChannelEnabled[0] != null && pattern.ChannelEnabled[0].ToLower() == "true")
                     {
                         C0 = new Colours.HSVColor(double.Parse(pattern.H[0]) * 360, double.Parse(pattern.S[0]), double.Parse(pattern.V[0]));
                         ColorChannelEnabled[0] = true;
                     }
-                    if (pattern.ChannelEnabled[1] != null && pattern.ChannelEnabled[1].ToLower() == "true")
+                    if (pattern.Channel[1] != null && pattern.ChannelEnabled[1] != null && pattern.ChannelEnabled[1].ToLower() == "true")
                     {
                         C1 = new Colours.HSVColor(double.Parse(pattern.H[1]) * 360, double.Parse(pattern.S[1]), double.Parse(pattern.V[1]));
                         ColorChannelEnabled[1] = true;
                     }
-                    if (pattern.ChannelEnabled[2] != null && pattern.ChannelEnabled[2].ToLower() == "true")
+                    if (pattern.Channel[2] != null && pattern.ChannelEnabled[2] != null && pattern.ChannelEnabled[2].ToLower() == "true")
                     {
                         C2 = new Colours.HSVColor(double.Parse(pattern.H[2]) * 360, double.Parse(pattern.S[2]), double.Parse(pattern.V[2]));
                         ColorChannelEnabled[2] = true;
                     }
-                    if (db != null)
+                    if (isEmptyMask(pattern.rgbmask))
                     {
-                        temp = Patterns.createHSVPattern(KeyUtils.findKey(new Wrappers.ResourceKey(pattern.BackgroundImage), 2, db), KeyUtils.findKey(new Wrappers.ResourceKey(pattern.rgbmask), 2, db), bg, KeyUtils.findKey(new MadScience.Wrappers.ResourceKey(makeKey(pattern.Channel[0])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[1])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[2])), 0, db), C0, C1, C2, ColorChannelEnabled);
+                        if (db != null)
+                        {
+                            temp = Patterns.createHSVPattern(KeyUtils.findKey(new Wrappers.ResourceKey(pattern.BackgroundImage), 2, db), bg);
+                        }
+                        else
+                        {
+                            temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), bg);
+                        }
                     }
                     else
                     {
-                        temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), KeyUtils.findKey(pattern.rgbmask), bg, KeyUtils.findKey(makeKey(pattern.Channel[0])), KeyUtils.findKey(makeKey(pattern.Channel[1])), KeyUtils.findKey(makeKey(pattern.Channel[2])), C0, C1, C2, ColorChannelEnabled);
+                        if (db != null)
+                        {
+                            temp = Patterns.createHSVPattern(KeyUtils.findKey(new Wrappers.ResourceKey(pattern.BackgroundImage), 2, db), KeyUtils.findKey(new Wrappers.ResourceKey(pattern.rgbmask), 2, db), bg, KeyUtils.findKey(new MadScience.Wrappers.ResourceKey(makeKey(pattern.Channel[0])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[1])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[2])), 0, db), C0, C1, C2, ColorChannelEnabled);
+                        }
+                        else
+                        {
+                            temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), KeyUtils.findKey(pattern.rgbmask), bg, KeyUtils.findKey(makeKey(pattern.Channel[0])), KeyUtils.findKey(makeKey(pattern.Channel[1])), KeyUtils.findKey(makeKey(pattern.Channel[2])), C0, C1, C2, ColorChannelEnabled);
+                        }
                     }
                 }
                 if (pattern.type == "Coloured")
@@ -131,6 +145,17 @@ namespace MadScience
             patternTexture = patternTexture.Replace(@".dds", "");
             string fullName = patternTexture.Substring(patternTexture.LastIndexOf("\\") + 1);
             return "key:00B2D882:00000000:" + MadScience.StringHelpers.HashFNV64(fullName).ToString("X16");
+        }
+
+        public static bool isEmptyMask(String key)
+        {
+            switch (key)
+            {
+                case "key:00B2D882:00000000:646B487723D17864": return true;
+                case "key:00B2D882:00000000:75F8F21E0F143CAC": return true;
+                case "key:00B2D882:00000000:6F04C03483C744EC": return true;
+                default: return false;
+            }
         }
 
         public static patternDetails parsePatternComplate(Stream xmlStream)
@@ -491,96 +516,22 @@ namespace MadScience
             return pDetail;
         }
 
-        public static Bitmap createHSVPattern(Stream texture, Stream rgbmask, MadScience.Colours.HSVColor bg, Stream textureChannel1, Stream textureChannel2, Stream textureChannel3, MadScience.Colours.HSVColor Channel1bg, MadScience.Colours.HSVColor Channel2bg, MadScience.Colours.HSVColor Channel3bg, bool[] ChannelEnabled)
+        public static Bitmap createHSVPattern(Stream backgroundStream, Stream maskStream, MadScience.Colours.HSVColor backgroundColor, Stream channel1Stream, Stream channel2Stream, Stream channel3Stream, MadScience.Colours.HSVColor channel1Color, MadScience.Colours.HSVColor channel2Color, MadScience.Colours.HSVColor channel3Color, bool[] channelEnabled)
         {
-            Bitmap input;
-            Bitmap mask;
-            Bitmap output;
+            Bitmap output = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
 
-            Bitmap channel1;
-            Bitmap channel2;
-            Bitmap channel3;
+            Bitmap background = LoadBitmapFromStream(backgroundStream, 256, 256);
+            Bitmap mask = LoadBitmapFromStream(maskStream, 256, 256);
 
-            var d = new DdsFileTypePlugin.DdsFile();
-            if ((texture.Length != 0))
-            {
-                d.Load(texture);
-                input = (Bitmap)d.Image(true, true, true, true);
-                texture.Close();
-            }
-            else
-            {
-                input = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
-            }
-            if (input.Width != 256 || input.Height != 256)
-            {
-                MadScience.Patterns.ResizeBitmapFast(ref input, 256, 256);
-            }
+            if (background == null || mask == null)
+                return output;
 
-            if ((rgbmask.Length != 0))
-            {
-                d.Load(rgbmask);
-                mask = (Bitmap)d.Image(true, true, true, true);
-                rgbmask.Close();
-            }
-            else
-            {
-                mask = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
-            }
-            if (mask.Width != 256 || mask.Height != 256)
-            {
-                MadScience.Patterns.ResizeBitmapCorrect(ref mask, 256, 256);
-            }
-
-            if ((textureChannel1 != null) && (textureChannel1.Length != 0))
-            {
-                d.Load(textureChannel1);
-                channel1 = (Bitmap)d.Image(true, true, true, true);
-                textureChannel1.Close();
-            }
-            else
-            {
-                channel1 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
-            }
-            if (channel1.Width != 256 || channel1.Height != 256)
-            {
-                MadScience.Patterns.ResizeBitmapFast(ref channel1, 256, 256);
-            }
-
-            if ((textureChannel2 != null) && (textureChannel2.Length != 0))
-            {
-                d.Load(textureChannel2);
-                channel2 = (Bitmap)d.Image(true, true, true, true);
-                textureChannel2.Close();
-            }
-            else
-            {
-                channel2 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
-            }
-            if (channel2.Width != 256 || channel2.Height != 256)
-            {
-                MadScience.Patterns.ResizeBitmapFast(ref channel2, 256, 256);
-            }
-
-            if ((textureChannel3 != null) && (textureChannel3.Length != 0))
-            {
-                d.Load(textureChannel3);
-                channel3 = (Bitmap)d.Image(true, true, true, true);
-                textureChannel3.Close();
-            }
-            else
-            {
-                channel3 = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
-            }
-            if (channel3.Width != 256 || channel3.Height != 256)
-            {
-                MadScience.Patterns.ResizeBitmapFast(ref channel3, 256, 256);
-            }
-
-            output = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
+            Bitmap channel1 = LoadBitmapFromStreamOrEmpty(channel1Stream, 256, 256);
+            Bitmap channel2 = LoadBitmapFromStreamOrEmpty(channel2Stream, 256, 256);
+            Bitmap channel3 = LoadBitmapFromStreamOrEmpty(channel3Stream, 256, 256);
 
             BitmapData outputData = output.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            BitmapData inputData = input.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData backgroundData = background.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
             BitmapData maskData = mask.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
             BitmapData channel1Data = channel1.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
             BitmapData channel2Data = channel2.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -593,7 +544,7 @@ namespace MadScience
                 for (int y = 0; y < 256; y++)
                 {
                     byte* outputRow = (byte*)outputData.Scan0 + (y * outputData.Stride);
-                    byte* inputRow = (byte*)inputData.Scan0 + (y * inputData.Stride);
+                    byte* inputRow = (byte*)backgroundData.Scan0 + (y * backgroundData.Stride);
                     byte* maskRow = (byte*)maskData.Scan0 + (y * maskData.Stride);
                     byte* channel1Row = (byte*)channel1Data.Scan0 + (y * channel1Data.Stride);
                     byte* channel2Row = (byte*)channel2Data.Scan0 + (y * channel2Data.Stride);
@@ -608,38 +559,38 @@ namespace MadScience
                         Color maskcolor = Color.FromArgb(maskRow[pixelLocation + 3], maskRow[pixelLocation + 2], maskRow[pixelLocation + 1], maskRow[pixelLocation]);
 
                         MadScience.Colours.HSVColor bgcolor = new MadScience.Colours.HSVColor(inputcolor);
-                        bgcolor.Hue += bg.Hue;
-                        bgcolor.Saturation += bg.Saturation;
-                        bgcolor.Value += bg.Value;
+                        bgcolor.Hue += backgroundColor.Hue;
+                        bgcolor.Saturation += backgroundColor.Saturation;
+                        bgcolor.Value += backgroundColor.Value;
                         outputColor = bgcolor.Color;
 
-                        if (maskcolor.G > 0 && ChannelEnabled[0])
+                        if (maskcolor.G > 0 && channelEnabled[0])
                         {
                             Color channelcolor = Color.FromArgb(1, channel1Row[pixelLocation + 2], channel1Row[pixelLocation + 1], channel1Row[pixelLocation]);
                             bgcolor = new MadScience.Colours.HSVColor(channelcolor);
-                            bgcolor.Hue += Channel1bg.Hue;
-                            bgcolor.Saturation += Channel1bg.Saturation;
-                            bgcolor.Value += Channel1bg.Value;
+                            bgcolor.Hue += channel1Color.Hue;
+                            bgcolor.Saturation += channel1Color.Saturation;
+                            bgcolor.Value += channel1Color.Value;
                             outputColor = ColorOverlay(maskcolor.G, outputColor, bgcolor.Color);
                         }
 
-                        if (maskcolor.B > 0 && ChannelEnabled[1])
+                        if (maskcolor.B > 0 && channelEnabled[1])
                         {
                             Color channelcolor = Color.FromArgb(1, channel2Row[pixelLocation + 2], channel2Row[pixelLocation + 1], channel2Row[pixelLocation]);
                             bgcolor = new MadScience.Colours.HSVColor(channelcolor);
-                            bgcolor.Hue += Channel2bg.Hue;
-                            bgcolor.Saturation += Channel2bg.Saturation;
-                            bgcolor.Value += Channel2bg.Value;
+                            bgcolor.Hue += channel2Color.Hue;
+                            bgcolor.Saturation += channel2Color.Saturation;
+                            bgcolor.Value += channel2Color.Value;
                             outputColor = ColorOverlay(maskcolor.B, outputColor, bgcolor.Color);
                         }
 
-                        if (maskcolor.A > 0 && ChannelEnabled[2])
+                        if (maskcolor.A > 0 && channelEnabled[2])
                         {
                             Color channelcolor = Color.FromArgb(1, channel3Row[pixelLocation + 2], channel3Row[pixelLocation + 1], channel3Row[pixelLocation]);
                             bgcolor = new MadScience.Colours.HSVColor(channelcolor);
-                            bgcolor.Hue += Channel3bg.Hue;
-                            bgcolor.Saturation += Channel3bg.Saturation;
-                            bgcolor.Value += Channel3bg.Value;
+                            bgcolor.Hue += channel3Color.Hue;
+                            bgcolor.Saturation += channel3Color.Saturation;
+                            bgcolor.Value += channel3Color.Value;
                             outputColor = ColorOverlay(maskcolor.A, outputColor, bgcolor.Color);
                         }
 
@@ -651,12 +602,137 @@ namespace MadScience
                 }
             }
             output.UnlockBits(outputData);
+            mask.UnlockBits(maskData);
+            background.UnlockBits(backgroundData);
+            channel1.UnlockBits(channel1Data);
+            channel2.UnlockBits(channel2Data);
+            channel3.UnlockBits(channel3Data);
 
             return output;
+        }
 
+        public static Bitmap createHSVPattern(Stream backgroundStream, MadScience.Colours.HSVColor backgroundColor)
+        {
+            Bitmap output = new Bitmap(256, 256, PixelFormat.Format32bppArgb);
+
+            Bitmap background = LoadBitmapFromStream(backgroundStream, 256, 256);
+            if (background == null)
+                return output;
+
+            BitmapData outputData = output.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData backgroundData = background.LockBits(new Rectangle(0, 0, 256, 256), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            Color outputColor;
+            const int pixelSize = 4;
+            //process every pixel
+            unsafe
+            {
+                for (int y = 0; y < 256; y++)
+                {
+                    byte* outputRow = (byte*)outputData.Scan0 + (y * outputData.Stride);
+                    byte* inputRow = (byte*)backgroundData.Scan0 + (y * backgroundData.Stride);
+
+                    for (int x = 0; x < 256; x++)
+                    {
+
+                        int pixelLocation = x * pixelSize;
+
+                        Color inputcolor = Color.FromArgb(255, inputRow[pixelLocation + 2], inputRow[pixelLocation + 1], inputRow[pixelLocation]);
+
+                        MadScience.Colours.HSVColor bgcolor = new MadScience.Colours.HSVColor(inputcolor);
+                        bgcolor.Hue += backgroundColor.Hue;
+                        bgcolor.Saturation += backgroundColor.Saturation;
+                        bgcolor.Value += backgroundColor.Value;
+                        outputColor = bgcolor.Color;
+
+                        outputRow[pixelLocation] = (byte)outputColor.B;
+                        outputRow[pixelLocation + 1] = (byte)outputColor.G;
+                        outputRow[pixelLocation + 2] = (byte)outputColor.R;
+                        outputRow[pixelLocation + 3] = (byte)outputColor.A;
+                    }
+                }
+            }
+            output.UnlockBits(outputData);
+            background.UnlockBits(backgroundData);
+
+            return output;
         }
 
         #region helperfunctions
+
+        public static Bitmap LoadBitmapFromStreamOrEmpty(Stream source, int width, int height)
+        {
+            Bitmap output;
+            DdsFileTypePlugin.DdsFile d = new DdsFileTypePlugin.DdsFile();
+            if (source != null && source.Length != 0)
+            {
+                d.Load(source);
+                output = (Bitmap)d.Image(true, true, true, true);
+                source.Close();
+                if (output.Width != width || output.Height != height)
+                {
+                    if (isAlphaFormat(d.m_header.fileFormat))
+                        MadScience.Patterns.ResizeBitmapCorrect(ref output, width, height);
+                    else
+                        MadScience.Patterns.ResizeBitmapFast(ref output, width, height);
+                }
+            }
+            else
+            {
+                output = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            }
+            return output;
+        }
+
+        public static Bitmap LoadBitmapFromStream(Stream source, int width, int height)
+        {
+            Bitmap output;
+            DdsFileTypePlugin.DdsFile d = new DdsFileTypePlugin.DdsFile();
+            if (source != null && source.Length != 0)
+            {
+                d.Load(source);
+                output = (Bitmap)d.Image(true, true, true, true);
+                source.Close();
+                if (output.Width != width || output.Height != height)
+                {
+                    if (isAlphaFormat(d.m_header.fileFormat))
+                        MadScience.Patterns.ResizeBitmapCorrect(ref output, width, height);
+                    else
+                        MadScience.Patterns.ResizeBitmapFast(ref output, width, height);
+                }
+            }
+            else
+            {
+                return null;
+            }
+            return output;
+        }
+
+        public static Bitmap LoadBitmapFromStream(Stream source)
+        {
+            Bitmap output;
+            DdsFileTypePlugin.DdsFile d = new DdsFileTypePlugin.DdsFile();
+            if (source != null && source.Length != 0)
+            {
+                d.Load(source);
+                output = (Bitmap)d.Image(true, true, true, true);
+                source.Close();
+            }
+            else
+            {
+                output = null;
+            }
+            return output;
+        }
+
+        private static bool isAlphaFormat(String format)
+        {
+            switch (format)
+            {
+                case "DXT1":
+                    return false;
+            }
+            return true;
+        }
 
         public static Bitmap mergeStencils(List<Stream> Stencils)
         {
@@ -850,8 +926,11 @@ namespace MadScience
 
             Bitmap result = new Bitmap(width, height);
             using (Graphics g = Graphics.FromImage((Image)result))
+            {
+                g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
                 g.DrawImage(bitmap, 0, 0, width, height);
-
+            }
             bitmap = result;
 
         }
