@@ -5,6 +5,7 @@ namespace MadScience.Wrappers
 
     public enum AgeGenderFlags : uint
     {
+        Baby = 0x1,
         Toddler = 0x2,
         Child = 0x4,
         Teen = 0x8,

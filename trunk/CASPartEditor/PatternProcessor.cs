@@ -300,13 +300,13 @@ namespace CASPartEditor
                             if (baseColor.A != 0)
                             {
                                 Color outColor = baseColor;
-                                Color patternColor;
+                                //Color patternColor;
                                 for (int i = 0; i < numPatterns; i++)
                                     if (Patterns[i] != null)
                                     {
                                         int xs = x % PatternsWidth[i];
                                         int pixelLocation2 = xs * pixelSize;
-                                        patternColor = Color.FromArgb(patternRows[i][pixelLocation2 + 3], patternRows[i][pixelLocation2 + 2], patternRows[i][pixelLocation2 + 1], patternRows[i][pixelLocation2]);
+                                        Color patternColor = Color.FromArgb(patternRows[i][pixelLocation2 + 3], patternRows[i][pixelLocation2 + 2], patternRows[i][pixelLocation2 + 1], patternRows[i][pixelLocation2]);
                                         outColor = MadScience.Patterns.ColorOverlay(maskRow[pixelLocation + byteMask[i]], outColor, MadScience.Patterns.ColorMultiply(baseColor, patternColor));
                                     }
                                 outputRow[pixelLocation] = (byte)outColor.B;

@@ -715,7 +715,7 @@ namespace DdsFileTypePlugin
 
             BitmapData data = bitmap.LockBits(area, ImageLockMode.WriteOnly, bitmap.PixelFormat);
 
-            Marshal.Copy(myBuffer, 0, data.Scan0, (int)(width * height * 4));
+            Marshal.Copy(myBuffer, 0, data.Scan0, sizeInBytes);
 
             bitmap.UnlockBits(data);
             return bitmap;
