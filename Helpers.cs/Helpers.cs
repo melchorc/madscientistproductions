@@ -205,7 +205,7 @@ namespace MadScience
 
             if (sims3root != "")
             {
-                Console.WriteLine("Returning already stored path");
+                //Console.WriteLine("Returning already stored path");
                 return sims3root;
             }
 
@@ -213,7 +213,7 @@ namespace MadScience
             try
             {
 
-                Console.WriteLine("Attempting to get path from common registry...");
+                //Console.WriteLine("Attempting to get path from common registry...");
                 installLocation = Helpers.getCommonRegistryValue("sims3root");
                 if (!String.IsNullOrEmpty(installLocation))
                 {
@@ -235,7 +235,7 @@ namespace MadScience
                     }
                 }
 
-                Console.WriteLine("Attempting to get path from registry...");
+                //Console.WriteLine("Attempting to get path from registry...");
                 string path32 = "Software\\Sims\\The Sims 3";
                 string path64 = "Software\\Wow6432Node\\Sims\\The Sims 3";
 
@@ -246,13 +246,13 @@ namespace MadScience
                 key = Registry.LocalMachine.OpenSubKey(path32, false);
                 if (key == null)
                 {
-                    // No Key exists... check 64 bit location
-                    key = Registry.LocalMachine.OpenSubKey(path64, false);
+                    // Try Alt location
+                    key = Registry.LocalMachine.OpenSubKey(path32Alt, false);
                     if (key == null)
                     {
 
-                        // Try Alt location
-                        key = Registry.LocalMachine.OpenSubKey(path32Alt, false);
+                        // No Key exists... check 64 bit location
+                        key = Registry.LocalMachine.OpenSubKey(path64, false);
                         if (key == null)
                         {
                             key = Registry.LocalMachine.OpenSubKey(path64Alt, false);

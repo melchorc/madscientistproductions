@@ -3073,6 +3073,22 @@
             this.label14.Size = new System.Drawing.Size(100, 23);
             this.label14.TabIndex = 0;
             // 
+            // renderWindow1
+            // 
+            this.renderWindow1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.renderWindow1.BackColor = System.Drawing.Color.White;
+            this.renderWindow1.BackgroundColour = System.Drawing.Color.Empty;
+            this.renderWindow1.CurrentFillMode = 1;
+            this.renderWindow1.Location = new System.Drawing.Point(579, 47);
+            this.renderWindow1.Name = "renderWindow1";
+            this.renderWindow1.RenderEnabled = false;
+            this.renderWindow1.Size = new System.Drawing.Size(411, 548);
+            this.renderWindow1.TabIndex = 25;
+            this.renderWindow1.WireframeColour = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.renderWindow1.RequireNewTextures += new System.EventHandler(this.renderWindow1_RequireNewTextures);
+            // 
             // bwGenTexture
             // 
             this.bwGenTexture.WorkerSupportsCancellation = true;
@@ -3180,22 +3196,6 @@
             this.editColourToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.editColourToolStripMenuItem.Text = "Edit Colour";
             this.editColourToolStripMenuItem.Click += new System.EventHandler(this.editColourToolStripMenuItem_Click);
-            // 
-            // renderWindow1
-            // 
-            this.renderWindow1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.renderWindow1.BackColor = System.Drawing.Color.White;
-            this.renderWindow1.BackgroundColour = System.Drawing.Color.Empty;
-            this.renderWindow1.CurrentFillMode = 1;
-            this.renderWindow1.Location = new System.Drawing.Point(579, 47);
-            this.renderWindow1.Name = "renderWindow1";
-            this.renderWindow1.RenderEnabled = false;
-            this.renderWindow1.Size = new System.Drawing.Size(411, 548);
-            this.renderWindow1.TabIndex = 25;
-            this.renderWindow1.WireframeColour = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
-            this.renderWindow1.RequireNewTextures += new System.EventHandler(this.renderWindow1_RequireNewTextures);
             // 
             // Form1
             // 
