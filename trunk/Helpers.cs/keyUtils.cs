@@ -309,11 +309,11 @@ namespace MadScience
                         {
                             tempChunks[i] = localDb.GetResourceStream(resourceKeys[i]);
                         }
-                        catch (System.Collections.Generic.KeyNotFoundException ex)
+                        catch (System.Collections.Generic.KeyNotFoundException)
                         {
                             //Helpers.logMessageToFile(ex.Message);
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             //Helpers.logMessageToFile(ex.Message);
                         }
@@ -343,11 +343,11 @@ namespace MadScience
                     {
                         tempChunks[i] = db.GetResourceStream(resourceKeys[i]);
                     }
-                    catch (System.Collections.Generic.KeyNotFoundException ex)
+                    catch (System.Collections.Generic.KeyNotFoundException)
                     {
                         //Helpers.logMessageToFile(ex.Message);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         //Helpers.logMessageToFile(ex.Message);
                     }

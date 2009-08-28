@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.IO;
+using System.Globalization;
+
 using OX.Copyable;
 using MadScience.Wrappers;
 using MadScience;
@@ -180,26 +182,29 @@ namespace CASPartEditor
             string temp3 = casPartName.Substring(0, 1);
             switch (temp3)
             {
-                case "a":
-                    cmbSimAge.SelectedIndex = 4;
-                    break;
-                case "t":
-                    cmbSimAge.SelectedIndex = 2;
-                    break;
-                case "y":
-                    cmbSimAge.SelectedIndex = 3;
-                    break;
-                case "e":
-                    cmbSimAge.SelectedIndex = 5;
-                    break;
-                case "p":
+                case "b":
                     cmbSimAge.SelectedIndex = 0;
                     break;
-                case "c":
+                case "p":
                     cmbSimAge.SelectedIndex = 1;
                     break;
-                case "u":
+                case "c":
+                    cmbSimAge.SelectedIndex = 2;
+                    break;
+                case "t":
+                    cmbSimAge.SelectedIndex = 3;
+                    break;
+                case "y":
+                    cmbSimAge.SelectedIndex = 4;
+                    break;
+                case "a":
+                    cmbSimAge.SelectedIndex = 5;
+                    break;
+                case "e":
                     cmbSimAge.SelectedIndex = 6;
+                    break;
+                case "u":
+                    cmbSimAge.SelectedIndex = 7;
                     break;
             }
 
@@ -1169,9 +1174,9 @@ namespace CASPartEditor
 
                     ulong instanceId;
                     //if (sender != saveAsDefaultToolStripMenuItem)
-                        instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
+                    //    instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
                     //else
-                    //    instanceId = MadScience.StringHelpers.ParseHex64(txtCasPartInstance.Text);
+                        instanceId = MadScience.StringHelpers.ParseHex64(txtCasPartInstance.Text);
 
                     Database db = new Database(saveFile, false);
 
@@ -3091,8 +3096,8 @@ namespace CASPartEditor
             {
                 try
                 {
-                    float a = float.Parse(s[0]);
-                    a = float.Parse(s[1]);
+                    float a = Convert.ToSingle(s[0], CultureInfo.InvariantCulture);
+                    a = Convert.ToSingle(s[1], CultureInfo.InvariantCulture);
                 }
                 catch (Exception)
                 {
@@ -3214,8 +3219,14 @@ namespace CASPartEditor
                 string temp3 = temp.Substring(0, 1);
                 switch (temp3)
                 {
-                    case "a":
-                        this.cAge = "Adult";
+                    case "b":
+                        this.cAge = "Baby";
+                        break;
+                    case "p":
+                        this.cAge = "Toddler";
+                        break;
+                    case "c":
+                        this.cAge = "Child";
                         break;
                     case "t":
                         this.cAge = "Teen";
@@ -3223,14 +3234,11 @@ namespace CASPartEditor
                     case "y":
                         this.cAge = "Young Adult";
                         break;
+                    case "a":
+                        this.cAge = "Adult";
+                        break;
                     case "e":
                         this.cAge = "Elder";
-                        break;
-                    case "p":
-                        this.cAge = "Toddler";
-                        break;
-                    case "c":
-                        this.cAge = "Child";
                         break;
                     case "u":
                         this.cAge = "All Ages";

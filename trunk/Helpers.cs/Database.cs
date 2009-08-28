@@ -451,7 +451,7 @@ namespace MadScience.Wrappers
                     {
                         File.Delete(tempFileName);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                     }
                 }

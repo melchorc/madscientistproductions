@@ -151,7 +151,7 @@ namespace MadScience
                 myDocuments = key.GetValue("Personal").ToString();
                 key.Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //MessageBox.Show(e.Message);
             }
@@ -268,7 +268,7 @@ namespace MadScience
                 installLocation = key.GetValue("Install Dir").ToString();
                 key.Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //MessageBox.Show(e.Message);
             }

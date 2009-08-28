@@ -5,6 +5,7 @@ using System.IO;
 using System.Drawing;
 using System.Xml.Serialization;
 using System.Windows.Forms;
+using System.Globalization;
 
 using MadScience;
 using MadScience.Wrappers;
@@ -359,8 +360,8 @@ namespace CASPartEditor
                         {
                             try
                             {
-                                tilings[i].X = float.Parse(s[0]);
-                                tilings[i].Y = float.Parse(s[1]);
+                                tilings[i].X = Convert.ToSingle(s[0], CultureInfo.InvariantCulture);
+                                tilings[i].Y = Convert.ToSingle(s[1], CultureInfo.InvariantCulture);
                             }
                             catch (Exception)
                             {
