@@ -296,6 +296,11 @@ namespace CASPartEditor
                 {
                     output = PatternProcessor.ProcessMakeupTexture(textures, MadScience.Colours.convertColour(details.tint.A.color));
                 }
+                else if (MadScience.Patterns.isEmptyMask(details.Mask) || String.IsNullOrEmpty(details.Mask))
+                {
+//                    output = new Bitmap(16, 16);
+                    output = PatternProcessor.ProcessMakeupTexture(textures, Color.White);
+                }
                 else
                 {
                     output = PatternProcessor.ProcessMakeupTexture(textures,
