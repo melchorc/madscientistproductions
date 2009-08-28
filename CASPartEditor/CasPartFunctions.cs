@@ -19,6 +19,9 @@ namespace CASPartEditor
             // Translate selection back into af am etc
             switch (cmbSimAge.Text)
             {
+                case "Baby":
+                    meshName += "b";
+                    break;
                 case "Toddler":
                     meshName += "p";
                     break;
