@@ -68,7 +68,7 @@ namespace CASPartEditor
                 txtCasPartName.Text = casPartSrc.meshName;
                 txtMeshName.Text = casPartSrc.meshName;
 
-                txtCasPartInstance.Text = MadScience.StringHelpers.HashFNV64(meshName).ToString("X16");
+                txtCasPartInstance.Text = "0x" + MadScience.StringHelpers.HashFNV64(meshName).ToString("X16");
                 picMeshPreview.Image = null;
                 picMeshPreview.Invalidate();
 
@@ -156,7 +156,7 @@ namespace CASPartEditor
             // Use the VPXY to get the mesh lod
             Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY], 0);
 
-            if (vpxyStream != null)
+            if (Helpers.isValidStream(vpxyStream))
             {
                 VPXYFile vpxyFile = new VPXYFile(vpxyStream);
                 // Get the first VPXY internal link
@@ -167,7 +167,7 @@ namespace CASPartEditor
                 vpxyStream.Close();
             }
 
-            if (meshStream != Stream.Null && meshStream != null)
+            if (Helpers.isValidStream(meshStream))
             {
                 lstMeshTGILinks.Items.Clear();
                 SimGeomFile simgeomfile = new SimGeomFile(meshStream);

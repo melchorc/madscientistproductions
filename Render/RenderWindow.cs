@@ -396,7 +396,7 @@ namespace MadScience.Render
 
                 if (shader == null)
                 {
-                    MessageBox.Show(error);
+                    if (!String.IsNullOrEmpty(error)) MessageBox.Show(error);
                 }
                 else
                 {
