@@ -382,6 +382,12 @@ namespace DdsFileTypePlugin
 
             int height = this.GetHeight();
             int width = this.GetWidth();
+
+            if (height == 0 && width == 0)
+            {
+                height = 1;
+                width = 1;
+            }
             Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             //MemoryStream ms = new MemoryStream();
             //bitmap.Save(ms, ImageFormat.Bmp);
@@ -1185,6 +1191,8 @@ namespace DdsFileTypePlugin
 
 		public	void	Load( System.IO.Stream input )
 		{
+            if (input.Length == 0) return;
+
             ReadWriteStream(input, this._rawDDS);
             input.Seek(0, SeekOrigin.Begin);
 

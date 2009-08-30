@@ -581,6 +581,8 @@ namespace PatternBrowser
             else
             {
                 this.selectedPattern = Patterns.parsePatternComplate(KeyUtils.searchForKey(_selectedPattern.key, _selectedPattern.subcategory));
+                this.selectedPattern.isCustom = true;
+                this.selectedPattern.customFilename = _selectedPattern.subcategory;
             }
             this.selectedPattern.key = _selectedPattern.key;
 

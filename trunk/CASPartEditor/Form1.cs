@@ -312,6 +312,7 @@ namespace CASPartEditor
                 }
                 else
                 {
+                    inputCasPart.Close();
                     MessageBox.Show("No CAS Part file can be found in this package!");
                 }
             }
@@ -1840,17 +1841,27 @@ namespace CASPartEditor
                 if (f.Extension == ".package")
                 {
 
-                    Stream saveFile = File.Open(Helpers.currentPackageFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+                    Stream saveFile = File.OpenRead(Helpers.currentPackageFile);
+                    MemoryStream tempSave = new MemoryStream();
+                    Helpers.CopyStream(saveFile, tempSave, true);
+                    saveFile.Close();
+
+                    tempSave.Seek(0, SeekOrigin.Begin);
 
                     //ulong instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
                     ulong instanceId = MadScience.StringHelpers.HashFNV64(casPartNew.meshName);
-                    Database db = new Database(saveFile, true);
+                    Database db = new Database(tempSave, true);
 
                     saveToDBPF(db, instanceId, false);
 
                     db.Commit(true);
 
+                    saveFile = File.Open(Helpers.currentPackageFile, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+                    Helpers.CopyStream(tempSave, saveFile, true);
                     saveFile.Close();
+
+                    tempSave.Close();
+
                 }
             }
         }
