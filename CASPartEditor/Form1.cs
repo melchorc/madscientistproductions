@@ -1175,9 +1175,9 @@ namespace CASPartEditor
 
                     ulong instanceId;
                     //if (sender != saveAsDefaultToolStripMenuItem)
-                    //    instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
+                        instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
                     //else
-                        instanceId = MadScience.StringHelpers.ParseHex64(txtCasPartInstance.Text);
+                    //    instanceId = MadScience.StringHelpers.ParseHex64(txtCasPartInstance.Text);
 
                     Database db = new Database(saveFile, false);
 
@@ -2975,9 +2975,9 @@ namespace CASPartEditor
             picHSVColorBG.BackColor = showColourDialog(picHSVColorBG.BackColor);
 
             Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorBG.BackColor);
-            hsv.Hue -= double.Parse(pDetail.BaseHBg) * 360;
-            hsv.Saturation -= double.Parse(pDetail.BaseSBg);
-            hsv.Value -= double.Parse(pDetail.BaseVBg);
+            hsv.Hue -= Convert.ToDouble(pDetail.BaseHBg, CultureInfo.InvariantCulture) * 360;
+            hsv.Saturation -= Convert.ToDouble(pDetail.BaseSBg, CultureInfo.InvariantCulture);
+            hsv.Value -= Convert.ToDouble(pDetail.BaseVBg, CultureInfo.InvariantCulture);
 
             pDetail.HBg = MadScience.Helpers.numberToString(hsv.Hue / 360);
             pDetail.SBg = MadScience.Helpers.numberToString(hsv.Saturation);
@@ -2994,9 +2994,9 @@ namespace CASPartEditor
             picHSVColorChannel1.BackColor = showColourDialog(picHSVColorChannel1.BackColor);
 
             Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorChannel1.BackColor);
-            hsv.Hue -= double.Parse(pDetail.BaseH[0]) * 360;
-            hsv.Saturation -= double.Parse(pDetail.BaseS[0]);
-            hsv.Value -= double.Parse(pDetail.BaseV[0]);
+            hsv.Hue -= Convert.ToDouble(pDetail.BaseH[0], CultureInfo.InvariantCulture) * 360;
+            hsv.Saturation -= Convert.ToDouble(pDetail.BaseS[0], CultureInfo.InvariantCulture);
+            hsv.Value -= Convert.ToDouble(pDetail.BaseV[0], CultureInfo.InvariantCulture);
 
             pDetail.H[0] = MadScience.Helpers.numberToString(hsv.Hue / 360);
             pDetail.S[0] = MadScience.Helpers.numberToString(hsv.Saturation);
@@ -3013,9 +3013,9 @@ namespace CASPartEditor
             picHSVColorChannel2.BackColor = showColourDialog(picHSVColorChannel2.BackColor);
 
             Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorChannel2.BackColor);
-            hsv.Hue -= double.Parse(pDetail.BaseH[1]) * 360;
-            hsv.Saturation -= double.Parse(pDetail.BaseS[1]);
-            hsv.Value -= double.Parse(pDetail.BaseV[1]);
+            hsv.Hue -= Convert.ToDouble(pDetail.BaseH[1], CultureInfo.InvariantCulture) * 360;
+            hsv.Saturation -= Convert.ToDouble(pDetail.BaseS[1], CultureInfo.InvariantCulture);
+            hsv.Value -= Convert.ToDouble(pDetail.BaseV[1], CultureInfo.InvariantCulture);
 
             pDetail.H[1] = MadScience.Helpers.numberToString(hsv.Hue / 360);
             pDetail.S[1] = MadScience.Helpers.numberToString(hsv.Saturation);
@@ -3032,9 +3032,9 @@ namespace CASPartEditor
             picHSVColorChannel3.BackColor = showColourDialog(picHSVColorChannel3.BackColor);
 
             Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorChannel3.BackColor);
-            hsv.Hue -= double.Parse(pDetail.BaseH[2]) * 360;
-            hsv.Saturation -= double.Parse(pDetail.BaseS[2]);
-            hsv.Value -= double.Parse(pDetail.BaseV[2]);
+            hsv.Hue -= Convert.ToDouble(pDetail.BaseH[2], CultureInfo.InvariantCulture) * 360;
+            hsv.Saturation -= Convert.ToDouble(pDetail.BaseS[2], CultureInfo.InvariantCulture);
+            hsv.Value -= Convert.ToDouble(pDetail.BaseV[2], CultureInfo.InvariantCulture);
 
             pDetail.H[2] = MadScience.Helpers.numberToString(hsv.Hue / 360);
             pDetail.S[2] = MadScience.Helpers.numberToString(hsv.Saturation);

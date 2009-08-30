@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <texturesFile>
+  <texture flags="bfBody_m" instanceid="6A00EC677E971DA2" />
+  <texture flags="bfBody_n" instanceid="6A00EC677E971DA1" />
+  <texture flags="bfBody_s" instanceid="6A00EC677E971DBC" />
+
+  <texture flags="bmBody_m" instanceid="6A00EC677E971DA2" />
+  <texture flags="bmBody_n" instanceid="6A00EC677E971DA1" />
+  <texture flags="bmBody_s" instanceid="6A00EC677E971DBC" />
+
   <texture flags="pfBody_m" instanceid="19D137BA2DC4D6CC" />
   <texture flags="pfBody_n" instanceid="19D137BA2DC4D6CF" />
   <texture flags="pfBody_s" instanceid="19D137BA2DC4D6D2" />
