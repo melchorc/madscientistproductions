@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 using System.Windows;
 using System.Collections.Generic;
 using System.Xml;
-
+using System.Globalization;
 
 namespace MadScience
 {
@@ -38,25 +38,25 @@ namespace MadScience
                     Colours.HSVColor C1 = new Colours.HSVColor();
                     Colours.HSVColor C2 = new Colours.HSVColor();
 
-                    Colours.HSVColor bg = new Colours.HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
-                    Colours.HSVColor basebg = new Colours.HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
-                    Colours.HSVColor shift = new Colours.HSVColor(double.Parse(pattern.HBg) * 360, double.Parse(pattern.SBg), double.Parse(pattern.VBg));
+                    Colours.HSVColor bg = new Colours.HSVColor(Convert.ToDouble(pattern.HBg, CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.SBg, CultureInfo.InvariantCulture), Convert.ToDouble(pattern.VBg, CultureInfo.InvariantCulture));
+                    Colours.HSVColor basebg = new Colours.HSVColor(Convert.ToDouble(pattern.HBg, CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.SBg, CultureInfo.InvariantCulture), Convert.ToDouble(pattern.VBg, CultureInfo.InvariantCulture));
+                    Colours.HSVColor shift = new Colours.HSVColor(Convert.ToDouble(pattern.HBg, CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.SBg, CultureInfo.InvariantCulture), Convert.ToDouble(pattern.VBg, CultureInfo.InvariantCulture));
 
                     bool[] ColorChannelEnabled = new bool[3];
 
                     if (pattern.Channel[0] != null && pattern.ChannelEnabled[0] != null && pattern.ChannelEnabled[0].ToLower() == "true")
                     {
-                        C0 = new Colours.HSVColor(double.Parse(pattern.H[0]) * 360, double.Parse(pattern.S[0]), double.Parse(pattern.V[0]));
+                        C0 = new Colours.HSVColor(Convert.ToDouble(pattern.H[0], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[0], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[0], CultureInfo.InvariantCulture));
                         ColorChannelEnabled[0] = true;
                     }
                     if (pattern.Channel[1] != null && pattern.ChannelEnabled[1] != null && pattern.ChannelEnabled[1].ToLower() == "true")
                     {
-                        C1 = new Colours.HSVColor(double.Parse(pattern.H[1]) * 360, double.Parse(pattern.S[1]), double.Parse(pattern.V[1]));
+                        C1 = new Colours.HSVColor(Convert.ToDouble(pattern.H[1], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[1], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[1], CultureInfo.InvariantCulture));
                         ColorChannelEnabled[1] = true;
                     }
                     if (pattern.Channel[2] != null && pattern.ChannelEnabled[2] != null && pattern.ChannelEnabled[2].ToLower() == "true")
                     {
-                        C2 = new Colours.HSVColor(double.Parse(pattern.H[2]) * 360, double.Parse(pattern.S[2]), double.Parse(pattern.V[2]));
+                        C2 = new Colours.HSVColor(Convert.ToDouble(pattern.H[2], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[2], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[2], CultureInfo.InvariantCulture));
                         ColorChannelEnabled[2] = true;
                     }
                     if (isEmptyMask(pattern.rgbmask))
