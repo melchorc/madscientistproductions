@@ -2,6 +2,7 @@
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Globalization;
 
 using MadScience;
 
@@ -99,16 +100,16 @@ namespace CASPartEditor
 
 
                     Colours.HSVColor hsv = new Colours.HSVColor();
-                    hsv.Hue = double.Parse(pDetails.HBg) * 360 + double.Parse(pDetails.BaseHBg) * 360;
-                    hsv.Saturation = double.Parse(pDetails.SBg) + double.Parse(pDetails.BaseSBg);
-                    hsv.Value = double.Parse(pDetails.VBg) + double.Parse(pDetails.BaseVBg);
+                    hsv.Hue = Convert.ToDouble(pDetails.HBg,CultureInfo.InvariantCulture) * 360 + Convert.ToDouble(pDetails.BaseHBg,CultureInfo.InvariantCulture) * 360;
+                    hsv.Saturation = Convert.ToDouble(pDetails.SBg,CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseSBg,CultureInfo.InvariantCulture);
+                    hsv.Value = Convert.ToDouble(pDetails.VBg,CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseVBg,CultureInfo.InvariantCulture);
                     picHSVColorBG.BackColor = hsv.Color;
 
                     if ((pDetails.Channel[0] != null) && (pDetails.ChannelEnabled[0].ToLower() == "true"))
                     {
-                        hsv.Hue = double.Parse(pDetails.H[0]) * 360 + double.Parse(pDetails.BaseH[0]) * 360;
-                        hsv.Saturation = double.Parse(pDetails.S[0]) + double.Parse(pDetails.BaseS[0]);
-                        hsv.Value = double.Parse(pDetails.V[0]) + double.Parse(pDetails.BaseV[0]);
+                        hsv.Hue = Convert.ToDouble(pDetails.H[0],CultureInfo.InvariantCulture) * 360 + Convert.ToDouble(pDetails.BaseH[0],CultureInfo.InvariantCulture) * 360;
+                        hsv.Saturation = Convert.ToDouble(pDetails.S[0],CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseS[0],CultureInfo.InvariantCulture);
+                        hsv.Value = Convert.ToDouble(pDetails.V[0],CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseV[0],CultureInfo.InvariantCulture);
                         picHSVColorChannel1.BackColor = hsv.Color;
                         picHSVColorChannel1.Visible = true;
                         label23.Visible = true;
@@ -121,9 +122,9 @@ namespace CASPartEditor
 
                     if ((pDetails.Channel[1] != null) && (pDetails.ChannelEnabled[1].ToLower() == "true"))
                     {
-                        hsv.Hue = double.Parse(pDetails.H[1]) * 360 + double.Parse(pDetails.BaseH[1]) * 360;
-                        hsv.Saturation = double.Parse(pDetails.S[1]) + double.Parse(pDetails.BaseS[1]);
-                        hsv.Value = double.Parse(pDetails.V[1]) + double.Parse(pDetails.BaseV[1]);
+                        hsv.Hue = Convert.ToDouble(pDetails.H[1],CultureInfo.InvariantCulture) * 360 + Convert.ToDouble(pDetails.BaseH[1],CultureInfo.InvariantCulture) * 360;
+                        hsv.Saturation = Convert.ToDouble(pDetails.S[1],CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseS[1],CultureInfo.InvariantCulture);
+                        hsv.Value = Convert.ToDouble(pDetails.V[1],CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseV[1],CultureInfo.InvariantCulture);
                         picHSVColorChannel2.BackColor = hsv.Color;
                         picHSVColorChannel2.Visible = true;
                         label24.Visible = true;
@@ -136,9 +137,9 @@ namespace CASPartEditor
 
                     if ((pDetails.Channel[2] != null) && (pDetails.ChannelEnabled[2].ToLower() == "true"))
                     {
-                        hsv.Hue = double.Parse(pDetails.H[2]) * 360 + double.Parse(pDetails.BaseH[2]) * 360;
-                        hsv.Saturation = double.Parse(pDetails.S[2]) + double.Parse(pDetails.BaseS[2]);
-                        hsv.Value = double.Parse(pDetails.V[2]) + double.Parse(pDetails.BaseV[2]);
+                        hsv.Hue = Convert.ToDouble(pDetails.H[2],CultureInfo.InvariantCulture) * 360 + Convert.ToDouble(pDetails.BaseH[2],CultureInfo.InvariantCulture) * 360;
+                        hsv.Saturation = Convert.ToDouble(pDetails.S[2],CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseS[2],CultureInfo.InvariantCulture);
+                        hsv.Value = Convert.ToDouble(pDetails.V[2],CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseV[2],CultureInfo.InvariantCulture);
                         picHSVColorChannel3.BackColor = hsv.Color;
                         picHSVColorChannel3.Visible = true;
                         label25.Visible = true;

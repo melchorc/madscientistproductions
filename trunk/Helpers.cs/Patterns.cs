@@ -34,55 +34,52 @@ namespace MadScience
                 {
                     DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
                     
-                    Colours.HSVColor C0 = new Colours.HSVColor();
-                    Colours.HSVColor C1 = new Colours.HSVColor();
-                    Colours.HSVColor C2 = new Colours.HSVColor();
+                    Colours.HSVColor channel1Color = new Colours.HSVColor();
+                    Colours.HSVColor channel2Color = new Colours.HSVColor();
+                    Colours.HSVColor channel3Color = new Colours.HSVColor();
 
-                    Colours.HSVColor bg = new Colours.HSVColor(Convert.ToDouble(pattern.HBg, CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.SBg, CultureInfo.InvariantCulture), Convert.ToDouble(pattern.VBg, CultureInfo.InvariantCulture));
-                    Colours.HSVColor basebg = new Colours.HSVColor(Convert.ToDouble(pattern.HBg, CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.SBg, CultureInfo.InvariantCulture), Convert.ToDouble(pattern.VBg, CultureInfo.InvariantCulture));
-                    Colours.HSVColor shift = new Colours.HSVColor(Convert.ToDouble(pattern.HBg, CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.SBg, CultureInfo.InvariantCulture), Convert.ToDouble(pattern.VBg, CultureInfo.InvariantCulture));
-
-                    bool[] ColorChannelEnabled = new bool[3];
+                    Colours.HSVColor backColor = new Colours.HSVColor(Convert.ToDouble(pattern.HBg, CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.SBg, CultureInfo.InvariantCulture), Convert.ToDouble(pattern.VBg, CultureInfo.InvariantCulture));
+                    bool[] channelsEnabled = new bool[3];
 
                     if (pattern.Channel[0] != null && pattern.ChannelEnabled[0] != null && pattern.ChannelEnabled[0].ToLower() == "true")
                     {
-                        C0 = new Colours.HSVColor(Convert.ToDouble(pattern.H[0], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[0], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[0], CultureInfo.InvariantCulture));
-                        ColorChannelEnabled[0] = true;
+                        channel1Color = new Colours.HSVColor(Convert.ToDouble(pattern.H[0], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[0], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[0], CultureInfo.InvariantCulture));
+                        channelsEnabled[0] = true;
                     }
                     if (pattern.Channel[1] != null && pattern.ChannelEnabled[1] != null && pattern.ChannelEnabled[1].ToLower() == "true")
                     {
-                        C1 = new Colours.HSVColor(Convert.ToDouble(pattern.H[1], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[1], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[1], CultureInfo.InvariantCulture));
-                        ColorChannelEnabled[1] = true;
+                        channel2Color = new Colours.HSVColor(Convert.ToDouble(pattern.H[1], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[1], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[1], CultureInfo.InvariantCulture));
+                        channelsEnabled[1] = true;
                     }
                     if (pattern.Channel[2] != null && pattern.ChannelEnabled[2] != null && pattern.ChannelEnabled[2].ToLower() == "true")
                     {
-                        C2 = new Colours.HSVColor(Convert.ToDouble(pattern.H[2], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[2], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[2], CultureInfo.InvariantCulture));
-                        ColorChannelEnabled[2] = true;
+                        channel3Color = new Colours.HSVColor(Convert.ToDouble(pattern.H[2], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[2], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[2], CultureInfo.InvariantCulture));
+                        channelsEnabled[2] = true;
                     }
                     if (isEmptyMask(pattern.rgbmask))
                     {
                         if (db != null)
                         {
-                            temp = Patterns.createHSVPattern(KeyUtils.findKey(new Wrappers.ResourceKey(pattern.BackgroundImage), 2, db), bg);
+                            temp = Patterns.createHSVPattern(KeyUtils.findKey(new Wrappers.ResourceKey(pattern.BackgroundImage), 2, db), backColor);
                         }
                         else
                         {
-                            temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), bg);
+                            temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), backColor);
                         }
                     }
                     else
                     {
                         if (db != null)
                         {
-                            temp = Patterns.createHSVPattern(KeyUtils.findKey(new Wrappers.ResourceKey(pattern.BackgroundImage), 2, db), KeyUtils.findKey(new Wrappers.ResourceKey(pattern.rgbmask), 2, db), bg, KeyUtils.findKey(new MadScience.Wrappers.ResourceKey(makeKey(pattern.Channel[0])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[1])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[2])), 0, db), C0, C1, C2, ColorChannelEnabled);
+                            temp = Patterns.createHSVPattern(KeyUtils.findKey(new Wrappers.ResourceKey(pattern.BackgroundImage), 2, db), KeyUtils.findKey(new Wrappers.ResourceKey(pattern.rgbmask), 2, db), backColor, KeyUtils.findKey(new MadScience.Wrappers.ResourceKey(makeKey(pattern.Channel[0])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[1])), 0, db), KeyUtils.findKey(new Wrappers.ResourceKey(makeKey(pattern.Channel[2])), 0, db), channel1Color, channel2Color, channel3Color, channelsEnabled);
                         }
                         else
                         {
-                            temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), KeyUtils.findKey(pattern.rgbmask), bg, KeyUtils.findKey(makeKey(pattern.Channel[0])), KeyUtils.findKey(makeKey(pattern.Channel[1])), KeyUtils.findKey(makeKey(pattern.Channel[2])), C0, C1, C2, ColorChannelEnabled);
+                            temp = Patterns.createHSVPattern(KeyUtils.findKey(pattern.BackgroundImage), KeyUtils.findKey(pattern.rgbmask), backColor, KeyUtils.findKey(makeKey(pattern.Channel[0])), KeyUtils.findKey(makeKey(pattern.Channel[1])), KeyUtils.findKey(makeKey(pattern.Channel[2])), channel1Color, channel2Color, channel3Color, channelsEnabled);
                         }
                     }
                 }
-                if (pattern.type == "Coloured")
+                else if (pattern.type == "Coloured")
                 {
                     DdsFileTypePlugin.DdsFile ddsP = new DdsFileTypePlugin.DdsFile();
                     Color bgColor = Colours.convertColour(pattern.ColorP[0], true);
@@ -122,7 +119,7 @@ namespace MadScience
                     temp = ddsP.Image(bgColor, Colours.convertColour(pattern.ColorP[1], true), Colours.convertColour(pattern.ColorP[2], true), Colours.convertColour(pattern.ColorP[3], true), Colours.convertColour(pattern.ColorP[4], true));
 
                 }
-                if (pattern.type == "solidColor")
+                else if (pattern.type == "solidColor")
                 {
                     temp = new Bitmap(256,256);
                     using (Graphics g = Graphics.FromImage(temp))
