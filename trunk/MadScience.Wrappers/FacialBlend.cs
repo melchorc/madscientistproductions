@@ -91,7 +91,7 @@ namespace MadScience.Wrappers
 
             uint tgiOffset = (uint)output.Position - 8;
             // Why is this +12?  I dunno. :)
-            this.keytable.size = 12;
+            this.keytable.size = 8;
             this.keytable.Save(output);
             output.Seek(4, SeekOrigin.Begin);
             writer.Write(tgiOffset);

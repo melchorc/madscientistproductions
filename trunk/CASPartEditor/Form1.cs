@@ -1518,22 +1518,6 @@ namespace CASPartEditor
                 Stream fbuild0 = File.Open(Path.Combine(s3root,  Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package")), FileMode.Open, FileAccess.Read, FileShare.Read);
                 MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(fbuild0, true);
 
-                /*
-                fbuild0.Seek(0, SeekOrigin.Begin);
-
-                MadScience.Wrappers.DatabasePackedFile dbpf = new MadScience.Wrappers.DatabasePackedFile();
-                try
-                {
-                    dbpf.Read(fbuild0);
-                }
-                catch (MadScience.Wrappers.NotAPackageException)
-                {
-                    MessageBox.Show("bad file: {0}");
-                    fbuild0.Close();
-                    return;
-                }
-                */
-
                 toolStripProgressBar1.Maximum = db._Entries.Count;
 
                 Dictionary<ulong, string> keyNames = new Dictionary<ulong, string>();
@@ -1636,79 +1620,58 @@ namespace CASPartEditor
 
                 }
 
-                /*
-                // Calc the 4 lod files
-                ulong lod0 = (ulong)MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod0");
-                ulong lod1 = (ulong)MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod1");
-                ulong lod2 = (ulong)MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod2");
-                ulong lod3 = (ulong)MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod3");
-                ulong vpxy = (ulong)MadScience.StringHelpers.HashFNV24(txtCasPartName.Text);
-
-                Console.WriteLine("0x00000000" + MadScience.StringHelpers.HashFNV32(txtCasPartName.Text + "_lod0").ToString("X8").ToUpper());
-
-                int numFound = 0;
-                folderBrowserDialog1.SelectedPath = "";
-
-                foreach (MadScience.Wrappers.ResourceKey entry in db._Entries.Keys)
+                if (debugModeToolStripMenuItem.Checked)
                 {
+                    Stream bodyBlendFatStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFat].ToString(), 0);
+                    Stream bodyBlendFitStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFit].ToString(), 0);
+                    Stream bodyBlendThinStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoThin].ToString(), 0);
+                    Stream bodyBlendSpecialStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoSpecial].ToString(), 0);
 
-                    //MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
-
-                    toolStripProgressBar1.Value++;
-                    bool searchChunk = false;
-                    string extension = "";
-                    //DatabasePackedFile.Entry entry = db.dbpfEntries[i];
-                    if (entry.typeId == 0x736884F1)
+                    if (!hasShownDialog)
                     {
-                        extension = ".vpxy";
-                        if (entry.instanceId == vpxy) searchChunk = true;
-
+                        folderBrowserDialog1.Description = "Please select a folder to save the extracted meshes to.";
+                        folderBrowserDialog1.ShowDialog();
+                        hasShownDialog = true;
                     }
-                    if (entry.typeId == 0x015A1849)
+                    if (folderBrowserDialog1.SelectedPath != "")
                     {
-                        extension = ".simgeom";
-                        if (entry.instanceId == lod0) searchChunk = true;
-                        if (entry.instanceId == lod1) searchChunk = true;
-                        if (entry.instanceId == lod2) searchChunk = true;
-                        if (entry.instanceId == lod3) searchChunk = true;
-                    }
-                    if (searchChunk)
-                    {
+                        string extension = ".bodyblend";
+
                         string fileNameToSave = "";
-                        if (keyNames.ContainsKey(entry.instanceId))
-                        {
-                            fileNameToSave = keyNames[entry.instanceId];
-                            if (fileNameToSave.Contains("0x") == false) { fileNameToSave += "_0x" + entry.instanceId.ToString("X16"); }
-                        }
-                        else
-                        {
-                            fileNameToSave = entry.typeId.ToString("X8") + "_" + entry.groupId.ToString("X8") + "_" + entry.instanceId.ToString("X16");
-                        }
+                        fileNameToSave = txtMeshName.Text + "_fit";
+                        FileStream saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
+                        Helpers.CopyStream(bodyBlendFitStream, saveFile);
+                        saveFile.Close();
 
-                        Stream output = db.GetResourceStream(entry);
+                        fileNameToSave = txtMeshName.Text + "_fat";
+                        saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
+                        Helpers.CopyStream(bodyBlendFatStream, saveFile);
+                        saveFile.Close();
 
-                        if (!hasShownDialog)
-                        {
-                            folderBrowserDialog1.Description = "Please select a folder to save the extracted meshes to.";
-                            folderBrowserDialog1.ShowDialog();
-                            hasShownDialog = true;
-                        }
-                        if (folderBrowserDialog1.SelectedPath != "")
-                        {
-                            FileStream saveFile = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + fileNameToSave + extension, FileMode.Create, FileAccess.Write);
-                            Helpers.CopyStream(output, saveFile);
-                            saveFile.Close();
-                            output.Close();
-                            numFound++;
-                        }
+                        fileNameToSave = txtMeshName.Text + "_thin";
+                        saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
+                        Helpers.CopyStream(bodyBlendThinStream, saveFile);
+                        saveFile.Close();
 
+                        fileNameToSave = txtMeshName.Text + "_special";
+                        saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
+                        Helpers.CopyStream(bodyBlendSpecialStream, saveFile);
+                        saveFile.Close();
 
+                        // Just grab the one BGEO for now
+                        bodyBlendFatStream.Seek(0, SeekOrigin.Begin);
+                        FacialBlend fblend = new FacialBlend(bodyBlendFatStream);
+                        Stream bgeoStream = KeyUtils.findKey(fblend.blendTgi, 0);
+                        bgeoStream.Seek(0, SeekOrigin.Begin);
+                        extension = ".blendgeom";
+                        fileNameToSave = txtMeshName.Text + "_fat";
+                        saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
+                        Helpers.CopyStream(bgeoStream, saveFile);
+                        saveFile.Close();
+
+                        //numFound++;
                     }
-
-                    
                 }
-                */
-
                 toolStripProgressBar1.Value = 0;
                 toolStripProgressBar1.Visible = false;
                 toolStripStatusLabel1.Text = numFound.ToString() + " meshes found";
@@ -2427,11 +2390,19 @@ namespace CASPartEditor
 
                     pBrowser.selectedPattern.Tiling = chunk.pattern[patternNo].Tiling;
                     pBrowser.selectedPattern.Enabled = chunk.pattern[patternNo].Enabled;
-
+                    if (chkPatternALinked.Checked)
+                    {
+                        pBrowser.selectedPattern.Linked = "True";
+                    }
+                    else
+                    {
+                        pBrowser.selectedPattern.Linked = "False";
+                    }
                     showPatternDetails(pBrowser.selectedPattern, false);
 
                     chunk.pattern[patternNo] = (patternDetails)pBrowser.selectedPattern.Copy();
-                    pBrowser.selectedPattern.Enabled = chunk.pattern[patternNo].Enabled;
+                    //pBrowser.selectedPattern.Enabled = chunk.pattern[patternNo].Enabled;
+
                     generate3DTexture();
 
                 }
