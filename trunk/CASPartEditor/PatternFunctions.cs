@@ -105,7 +105,7 @@ namespace CASPartEditor
                     hsv.Value = Convert.ToDouble(pDetails.VBg,CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseVBg,CultureInfo.InvariantCulture);
                     picHSVColorBG.BackColor = hsv.Color;
 
-                    if ((pDetails.Channel[0] != null) && (pDetails.ChannelEnabled[0].ToLower() == "true"))
+                    if ((pDetails.ChannelEnabled[0] != null) && (pDetails.ChannelEnabled[0].ToLower() == "true"))
                     {
                         hsv.Hue = Convert.ToDouble(pDetails.H[0],CultureInfo.InvariantCulture) * 360 + Convert.ToDouble(pDetails.BaseH[0],CultureInfo.InvariantCulture) * 360;
                         hsv.Saturation = Convert.ToDouble(pDetails.S[0],CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseS[0],CultureInfo.InvariantCulture);
@@ -120,7 +120,7 @@ namespace CASPartEditor
                         label23.Visible = false;
                     }
 
-                    if ((pDetails.Channel[1] != null) && (pDetails.ChannelEnabled[1].ToLower() == "true"))
+                    if ((pDetails.ChannelEnabled[1] != null) && (pDetails.ChannelEnabled[1].ToLower() == "true"))
                     {
                         hsv.Hue = Convert.ToDouble(pDetails.H[1],CultureInfo.InvariantCulture) * 360 + Convert.ToDouble(pDetails.BaseH[1],CultureInfo.InvariantCulture) * 360;
                         hsv.Saturation = Convert.ToDouble(pDetails.S[1],CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseS[1],CultureInfo.InvariantCulture);
@@ -135,7 +135,7 @@ namespace CASPartEditor
                         label24.Visible = false;
                     }
 
-                    if ((pDetails.Channel[2] != null) && (pDetails.ChannelEnabled[2].ToLower() == "true"))
+                    if ((pDetails.ChannelEnabled[2] != null) && (pDetails.ChannelEnabled[2].ToLower() == "true"))
                     {
                         hsv.Hue = Convert.ToDouble(pDetails.H[2],CultureInfo.InvariantCulture) * 360 + Convert.ToDouble(pDetails.BaseH[2],CultureInfo.InvariantCulture) * 360;
                         hsv.Saturation = Convert.ToDouble(pDetails.S[2],CultureInfo.InvariantCulture) + Convert.ToDouble(pDetails.BaseS[2],CultureInfo.InvariantCulture);

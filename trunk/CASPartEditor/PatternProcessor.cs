@@ -86,16 +86,6 @@ namespace CASPartEditor
             {
                 output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
             }
-
-            //apply overlay 
-            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], output.Width, output.Height);
-            if (overlay != null)
-            {
-                using (Graphics g = Graphics.FromImage(output))
-                {
-                    g.DrawImageUnscaled(overlay, 0, 0);
-                }
-            }
             return output;
         }
 
@@ -144,15 +134,6 @@ namespace CASPartEditor
             else
             {
                 output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
-            }
-            //apply overlay 
-            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], output.Width, output.Height);
-            if (overlay != null)
-            {
-                using (Graphics g = Graphics.FromImage(output))
-                {
-                    g.DrawImageUnscaled(overlay, 0, 0);
-                }
             }
             return output;
         }
@@ -216,15 +197,6 @@ namespace CASPartEditor
             else
             {
                 output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
-            }
-            //apply overlay 
-            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], output.Width, output.Height);
-            if (overlay != null)
-            {
-                using (Graphics g = Graphics.FromImage(output))
-                {
-                    g.DrawImageUnscaled(overlay, 0, 0);
-                }
             }
             return output;
         }
@@ -325,16 +297,6 @@ namespace CASPartEditor
             {
                 output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
             }
-
-            //apply overlay 
-            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], baseTexture.Width, baseTexture.Height);
-            if (overlay != null)
-            {
-                using (Graphics g = Graphics.FromImage(output))
-                {
-                    g.DrawImageUnscaled(overlay, 0, 0);
-                }
-            }
             return output;
         }
 
@@ -412,16 +374,6 @@ namespace CASPartEditor
             else
             {
                 output = new Bitmap(1024, 1024, PixelFormat.Format32bppArgb);
-            }
-
-            //apply overlay 
-            Bitmap overlay = MadScience.Patterns.LoadBitmapFromStream(textures[2], output.Width, output.Height);
-            if (overlay != null)
-            {
-                using (Graphics g = Graphics.FromImage(output))
-                {
-                    g.DrawImageUnscaled(overlay, 0, 0);
-                }
             }
             return output;
         }

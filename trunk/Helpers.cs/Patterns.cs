@@ -41,17 +41,17 @@ namespace MadScience
                     Colours.HSVColor backColor = new Colours.HSVColor(Convert.ToDouble(pattern.HBg, CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.SBg, CultureInfo.InvariantCulture), Convert.ToDouble(pattern.VBg, CultureInfo.InvariantCulture));
                     bool[] channelsEnabled = new bool[3];
 
-                    if (pattern.Channel[0] != null && pattern.ChannelEnabled[0] != null && pattern.ChannelEnabled[0].ToLower() == "true")
+                    if (pattern.ChannelEnabled[0] != null && pattern.ChannelEnabled[0].ToLower() == "true")
                     {
                         channel1Color = new Colours.HSVColor(Convert.ToDouble(pattern.H[0], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[0], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[0], CultureInfo.InvariantCulture));
                         channelsEnabled[0] = true;
                     }
-                    if (pattern.Channel[1] != null && pattern.ChannelEnabled[1] != null && pattern.ChannelEnabled[1].ToLower() == "true")
+                    if (pattern.ChannelEnabled[1] != null && pattern.ChannelEnabled[1].ToLower() == "true")
                     {
                         channel2Color = new Colours.HSVColor(Convert.ToDouble(pattern.H[1], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[1], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[1], CultureInfo.InvariantCulture));
                         channelsEnabled[1] = true;
                     }
-                    if (pattern.Channel[2] != null && pattern.ChannelEnabled[2] != null && pattern.ChannelEnabled[2].ToLower() == "true")
+                    if (pattern.ChannelEnabled[2] != null && pattern.ChannelEnabled[2].ToLower() == "true")
                     {
                         channel3Color = new Colours.HSVColor(Convert.ToDouble(pattern.H[2], CultureInfo.InvariantCulture) * 360, Convert.ToDouble(pattern.S[2], CultureInfo.InvariantCulture), Convert.ToDouble(pattern.V[2], CultureInfo.InvariantCulture));
                         channelsEnabled[2] = true;
@@ -137,6 +137,8 @@ namespace MadScience
         {
             if (text == null)
                 return "";
+            if (MadScience.KeyUtils.validateKey(text,false))
+                return text;
             string patternTexture = text.Replace(@"($assetRoot)\InGame\Complates\Materials\", "");
             patternTexture = patternTexture.Replace(@".tga", "");
             patternTexture = patternTexture.Replace(@".dds", "");
@@ -254,9 +256,6 @@ namespace MadScience
                                     case "Channel 3":
                                         pDetail.Channel[2] = xtr.GetAttribute("default");
                                         break;
-                                    case "Channel 4":
-                                        pDetail.Channel[3] = xtr.GetAttribute("default");
-                                        break;
 
                                     case "Channel 1 Enabled":
                                         pDetail.ChannelEnabled[0] = xtr.GetAttribute("default");
@@ -267,10 +266,6 @@ namespace MadScience
                                     case "Channel 3 Enabled":
                                         pDetail.ChannelEnabled[2] = xtr.GetAttribute("default");
                                         break;
-                                    case "Channel 4 Enabled":
-                                        pDetail.ChannelEnabled[3] = xtr.GetAttribute("default");
-                                        break;
-
 
                                     case "Background Image":
                                         pDetail.BackgroundImage = xtr.GetAttribute("default");
@@ -289,9 +284,6 @@ namespace MadScience
                                     case "H 3":
                                         pDetail.H[2] = xtr.GetAttribute("default");
                                         break;
-                                    case "H 4":
-                                        pDetail.H[3] = xtr.GetAttribute("default");
-                                        break;
 
                                     case "S Bg":
                                         pDetail.SBg = xtr.GetAttribute("default");
@@ -305,9 +297,6 @@ namespace MadScience
                                     case "S 3":
                                         pDetail.S[2] = xtr.GetAttribute("default");
                                         break;
-                                    case "S 4":
-                                        pDetail.S[3] = xtr.GetAttribute("default");
-                                        break;
 
                                     case "V Bg":
                                         pDetail.VBg = xtr.GetAttribute("default");
@@ -320,9 +309,6 @@ namespace MadScience
                                         break;
                                     case "V 3":
                                         pDetail.V[2] = xtr.GetAttribute("default"); 
-                                        break;
-                                    case "V 4":
-                                        pDetail.V[3] = xtr.GetAttribute("default");
                                         break;
 
 
@@ -338,9 +324,6 @@ namespace MadScience
                                     case "Base H 3":
                                         pDetail.BaseH[2] = xtr.GetAttribute("default");
                                         break;
-                                    case "Base H 4":
-                                        pDetail.BaseH[3] = xtr.GetAttribute("default");
-                                        break;
 
                                     case "Base S Bg":
                                         pDetail.BaseSBg = xtr.GetAttribute("default");
@@ -353,9 +336,6 @@ namespace MadScience
                                         break;
                                     case "Base S 3":
                                         pDetail.BaseS[2] = xtr.GetAttribute("default");
-                                        break;
-                                    case "Base S 4":
-                                        pDetail.BaseS[3] = xtr.GetAttribute("default");
                                         break;
 
                                     case "Base V Bg":
@@ -370,9 +350,6 @@ namespace MadScience
                                     case "Base V 3":
                                         pDetail.BaseV[2] = xtr.GetAttribute("default");
                                         break;
-                                    case "Base V 4":
-                                        pDetail.BaseV[3] = xtr.GetAttribute("default");
-                                        break;
 
                                     case "HSVShift Bg":
                                         pDetail.HSVShiftBg = xtr.GetAttribute("default");
@@ -385,9 +362,6 @@ namespace MadScience
                                         break;
                                     case "HSVShift 3":
                                         pDetail.HSVShift[2] = xtr.GetAttribute("default");
-                                        break;
-                                    case "HSVShift 4":
-                                        pDetail.HSVShift[3] = xtr.GetAttribute("default");
                                         break;
 
                                     case "rgbmask":

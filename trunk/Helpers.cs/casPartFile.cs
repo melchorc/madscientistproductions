@@ -1140,15 +1140,11 @@ namespace MadScience
                                         break;
                                     case "Channel 2":
                                         xtr.MoveToNextAttribute();
-                                        pDetail.Channel[2] = xtr.Value;
+                                        pDetail.Channel[1] = xtr.Value;
                                         break;
                                     case "Channel 3":
                                         xtr.MoveToNextAttribute();
-                                        pDetail.Channel[3] = xtr.Value;
-                                        break;
-                                    case "Channel 4":
-                                        xtr.MoveToNextAttribute();
-                                        pDetail.Channel[4] = xtr.Value;
+                                        pDetail.Channel[2] = xtr.Value;
                                         break;
 
                                     case "Channel 1 Enabled":
@@ -1163,11 +1159,6 @@ namespace MadScience
                                         xtr.MoveToNextAttribute();
                                         pDetail.ChannelEnabled[2] = xtr.Value;
                                         break;
-                                    case "Channel 4 Enabled":
-                                        xtr.MoveToNextAttribute();
-                                        pDetail.ChannelEnabled[3] = xtr.Value;
-                                        break;
-
 
                                     case "Background Image":
                                         xtr.MoveToNextAttribute();
@@ -1190,10 +1181,6 @@ namespace MadScience
                                         xtr.MoveToNextAttribute();
                                         pDetail.H[2] = xtr.Value;
                                         break;
-                                    case "H 4":
-                                        xtr.MoveToNextAttribute();
-                                        pDetail.H[3] = xtr.Value;
-                                        break;
 
                                     case "S Bg":
                                         xtr.MoveToNextAttribute();
@@ -1210,10 +1197,6 @@ namespace MadScience
                                     case "S 3":
                                         xtr.MoveToNextAttribute();
                                         pDetail.S[2] = xtr.Value;
-                                        break;
-                                    case "S 4":
-                                        xtr.MoveToNextAttribute();
-                                        pDetail.S[3] = xtr.Value;
                                         break;
 
                                     case "V Bg":
@@ -1232,11 +1215,6 @@ namespace MadScience
                                         xtr.MoveToNextAttribute();
                                         pDetail.V[2] = xtr.Value;
                                         break;
-                                    case "V 4":
-                                        xtr.MoveToNextAttribute();
-                                        pDetail.V[3] = xtr.Value;
-                                        break;
-
 
                                     case "Base H Bg":
                                         xtr.MoveToNextAttribute();
@@ -1253,10 +1231,6 @@ namespace MadScience
                                     case "Base H 3":
                                         xtr.MoveToNextAttribute();
                                         pDetail.BaseH[2] = xtr.Value;
-                                        break;
-                                    case "Base H 4":
-                                        xtr.MoveToNextAttribute();
-                                        pDetail.BaseH[3] = xtr.Value;
                                         break;
 
                                     case "Base S Bg":
@@ -1275,10 +1249,6 @@ namespace MadScience
                                         xtr.MoveToNextAttribute();
                                         pDetail.BaseS[2] = xtr.Value;
                                         break;
-                                    case "Base S 4":
-                                        xtr.MoveToNextAttribute();
-                                        pDetail.BaseS[3] = xtr.Value;
-                                        break;
 
                                     case "Base V Bg":
                                         xtr.MoveToNextAttribute();
@@ -1296,10 +1266,6 @@ namespace MadScience
                                         xtr.MoveToNextAttribute();
                                         pDetail.BaseV[2] = xtr.Value;
                                         break;
-                                    case "Base V 4":
-                                        xtr.MoveToNextAttribute();
-                                        pDetail.BaseV[3] = xtr.Value;
-                                        break;
 
                                     case "HSVShift Bg":
                                         xtr.MoveToNextAttribute();
@@ -1316,10 +1282,6 @@ namespace MadScience
                                     case "HSVShift 3":
                                         xtr.MoveToNextAttribute();
                                         pDetail.HSVShift[2] = xtr.Value;
-                                        break;
-                                    case "HSVShift 4":
-                                        xtr.MoveToNextAttribute();
-                                        pDetail.HSVShift[3] = xtr.Value;
                                         break;
 
                                     case "rgbmask":
@@ -1533,29 +1495,29 @@ namespace MadScience
 
         public string BackgroundImage = "";
 
-        public string[] Channel = new string[4];
-        public string[] ChannelEnabled = new string[4];
+        public string[] Channel = new string[3];
+        public string[] ChannelEnabled = new string[3];
 
         public string HBg = "";
-        public string[] H = new string[4];
+        public string[] H = new string[3];
 
         public string SBg = "";
-        public string[] S = new string[4];
+        public string[] S = new string[3];
 
         public string VBg = "";
-        public string[] V = new string[4];
+        public string[] V = new string[3];
 
         public string BaseHBg = "";
-        public string[] BaseH = new string[4];
+        public string[] BaseH = new string[3];
 
         public string BaseSBg = "";
-        public string[] BaseS = new string[4];
+        public string[] BaseS = new string[3];
 
         public string BaseVBg = "";
-        public string[] BaseV = new string[4];
+        public string[] BaseV = new string[3];
 
         public string HSVShiftBg = "";
-        public string[] HSVShift = new string[4];
+        public string[] HSVShift = new string[3];
 
         public string rgbmask = "";
         public string specmap = "";

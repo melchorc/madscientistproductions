@@ -256,6 +256,8 @@ namespace CASPartEditor
             List<Stream> stencils = new List<Stream>();
 
             //Stream[] stencils = new Stream[6];
+            if (details.Overlay != null && ! MadScience.Patterns.isEmptyTexture(details.Overlay))
+                stencils.Add(KeyUtils.findKey(details.Overlay));
             if (details.stencil.A.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.A.key));
             if (details.stencil.B.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.B.key));
             if (details.stencil.C.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.C.key));
@@ -277,7 +279,6 @@ namespace CASPartEditor
             List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.faceOverlay));
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Mask));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
 
             List<Stream> textures = KeyUtils.findKey(tempList, 2);
             DateTime stopTime2 = DateTime.Now;
@@ -329,7 +330,6 @@ namespace CASPartEditor
             List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Multiplier));
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.Mask));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
 
             List<Stream> textures = KeyUtils.findKey(tempList, 2);
 
@@ -406,7 +406,6 @@ namespace CASPartEditor
             List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.DiffuseMap));
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.ControlMap));
-            tempList.Add(new MadScience.Wrappers.ResourceKey(details.Overlay));
 
             List<Stream> textures = KeyUtils.findKey(tempList, 2);
 
