@@ -1566,9 +1566,9 @@
             this.grpPatternA.Controls.Add(this.chkPatternALinked);
             this.grpPatternA.Controls.Add(this.label38);
             this.grpPatternA.Controls.Add(this.txtPatternATiling);
-            this.grpPatternA.Controls.Add(this.groupBox3);
             this.grpPatternA.Controls.Add(this.groupBox7);
             this.grpPatternA.Controls.Add(this.groupBox5);
+            this.grpPatternA.Controls.Add(this.groupBox3);
             this.grpPatternA.Enabled = false;
             this.grpPatternA.Location = new System.Drawing.Point(5, 38);
             this.grpPatternA.Name = "grpPatternA";
@@ -1901,23 +1901,21 @@
             // label65
             // 
             this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(387, 24);
+            this.label65.Location = new System.Drawing.Point(293, 22);
             this.label65.Name = "label65";
             this.label65.Size = new System.Drawing.Size(56, 13);
             this.label65.TabIndex = 15;
             this.label65.Text = "Colour Bg:";
-            this.label65.Visible = false;
             // 
             // picPatternColourBg
             // 
             this.picPatternColourBg.BackColor = System.Drawing.Color.Transparent;
             this.picPatternColourBg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPatternColourBg.Location = new System.Drawing.Point(390, 41);
+            this.picPatternColourBg.Location = new System.Drawing.Point(296, 39);
             this.picPatternColourBg.Name = "picPatternColourBg";
             this.picPatternColourBg.Size = new System.Drawing.Size(42, 42);
             this.picPatternColourBg.TabIndex = 16;
             this.picPatternColourBg.TabStop = false;
-            this.picPatternColourBg.Visible = false;
             this.picPatternColourBg.Click += new System.EventHandler(this.picPatternColourBg_Click);
             // 
             // label64

@@ -186,7 +186,8 @@ namespace MadScience.Wrappers
             }
             for (int i = 0; i < this.linkEntries.Count; i++)
             {
-                this.linkEntries[i].typeZero = (byte)i;
+                //this.linkEntries[i].typeZero = (byte)(i + 1);
+                this.linkEntries[i].typeZero = (byte)(i + 0);
                 this.linkEntries[i].tgiIndex.Clear();
                 for (int j = 0; j < this.linkEntries[i].tgiList.Count; j++)
                 {

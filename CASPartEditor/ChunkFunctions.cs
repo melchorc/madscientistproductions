@@ -63,21 +63,23 @@ namespace CASPartEditor
             simgeomfile.Load(blah);
             blah.Close();
 
-            // Figure out bumpmap location
-            // To do this we loop through the MTNF
-            for (int i = 0; i < simgeomfile.simgeom.mtnfChunk.entries.Count; i++)
+            if (bumpMapKey.ToString() != "key:00000000:00000000:0000000000000000")
             {
-                if (simgeomfile.simgeom.mtnfChunk.entries[i].fieldTypeHash == (uint)FieldTypes.NormalMap)
+                // Figure out bumpmap location
+                // To do this we loop through the MTNF
+                for (int i = 0; i < simgeomfile.simgeom.mtnfChunk.entries.Count; i++)
                 {
-                    bumpmapPos = (int)simgeomfile.simgeom.mtnfChunk.entries[i].dwords[0];
-                    break;
+                    if (simgeomfile.simgeom.mtnfChunk.entries[i].fieldTypeHash == (uint)FieldTypes.NormalMap)
+                    {
+                        bumpmapPos = (int)simgeomfile.simgeom.mtnfChunk.entries[i].dwords[0];
+                        break;
+                    }
+                }
+                if (bumpmapPos > -1)
+                {
+                    simgeomfile.simgeom.keytable.keys[bumpmapPos] = bumpMapKey;
                 }
             }
-            if (bumpmapPos > -1)
-            {
-                simgeomfile.simgeom.keytable.keys[bumpmapPos] = bumpMapKey;
-            }
-
             return simgeomfile.Save();
         }
 
@@ -91,6 +93,45 @@ namespace CASPartEditor
             // Do we have new meshes?  If so, we need to do some pretty heft modifications. :)
 
             string meshName = txtMeshName.Text;
+
+            NameMap namemap = new NameMap();
+            ResourceKey namemapKey = new ResourceKey(0x0166038C, 0x00000000, instanceId);
+
+            keyName bodyBlendFat = new keyName(0x062C8204, 0x0, meshName + "_fat");
+            keyName bodyBlendFit = new keyName(0x062C8204, 0x0, meshName + "_fit");
+            keyName bodyBlendThin = new keyName(0x062C8204, 0x0, meshName + "_thin");
+            keyName bodyBlendSpecial = new keyName(0x062C8204, 0x0, meshName + "_special");
+
+            namemap.entries.Add(bodyBlendFat.instanceId, bodyBlendFat.name);
+            namemap.entries.Add(bodyBlendFit.instanceId, bodyBlendFit.name);
+            namemap.entries.Add(bodyBlendThin.instanceId, bodyBlendThin.name);
+            namemap.entries.Add(bodyBlendSpecial.instanceId, bodyBlendSpecial.name);
+
+            Stream bodyBlendFatStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFat].ToString(), 0);
+            Stream bodyBlendFitStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFit].ToString(), 0);
+            Stream bodyBlendThinStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoThin].ToString(), 0);
+            Stream bodyBlendSpecialStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoSpecial].ToString(), 0);
+
+            // Load in the blend information
+            FacialBlend bodyBlendFatFile = new FacialBlend(bodyBlendFatStream);
+            bodyBlendFatFile.partName = meshName + "_fat";
+            FacialBlend bodyBlendFitFile = new FacialBlend(bodyBlendFitStream);
+            bodyBlendFitFile.partName = meshName + "_fit";
+            FacialBlend bodyBlendThinFile = new FacialBlend(bodyBlendThinStream);
+            bodyBlendThinFile.partName = meshName + "_thin";
+            FacialBlend bodyBlendSpecialFile = new FacialBlend(bodyBlendSpecialStream);
+            bodyBlendSpecialFile.partName = meshName + "_special";
+
+            db.SetResourceStream(bodyBlendFit.ToResourceKey(), bodyBlendFitFile.Save());
+            db.SetResourceStream(bodyBlendFat.ToResourceKey(), bodyBlendFatFile.Save());
+            db.SetResourceStream(bodyBlendThin.ToResourceKey(), bodyBlendThinFile.Save());
+            db.SetResourceStream(bodyBlendSpecial.ToResourceKey(), bodyBlendSpecialFile.Save());
+
+            // Update the CAS part TGI links with the new VPXY
+            casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFat] = bodyBlendFat.ToResourceKey();
+            casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFit] = bodyBlendFit.ToResourceKey();
+            casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoThin] = bodyBlendThin.ToResourceKey();
+            casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoSpecial] = bodyBlendSpecial.ToResourceKey();
 
             if (!String.IsNullOrEmpty(txtMeshLod1.Text))
             {
@@ -110,14 +151,18 @@ namespace CASPartEditor
                 if (vpxyStream != null)
                 {
 
-                    keyName proxyFit = new keyName(0x736884F1, 0x00000001, meshName + "_fit");
-                    keyName proxyFat = new keyName(0x736884F1, 0x00000001, meshName + "_fat");
-                    keyName proxyThin = new keyName(0x736884F1, 0x00000001, meshName + "_thin");
-                    keyName proxySpecial = new keyName(0x736884F1, 0x00000001, meshName + "_special");
-                    keyName bodyBlendFat = new keyName(0x062C8204, 0x0, meshName + "_fat");
-                    keyName bodyBlendFit = new keyName(0x062C8204, 0x0, meshName + "_fit");
-                    keyName bodyBlendThin = new keyName(0x062C8204, 0x0, meshName + "_thin");
-                    keyName bodyBlendSpecial = new keyName(0x062C8204, 0x0, meshName + "_special");
+                    namemap.entries.Add(meshLod1.instanceId, meshName + "_lod1");
+                    namemap.entries.Add(meshLod1_1.instanceId, meshName + "_lod1_1");
+                    namemap.entries.Add(meshLod1_2.instanceId, meshName + "_lod1_2");
+                    namemap.entries.Add(meshLod1_3.instanceId, meshName + "_lod1_3");
+                    namemap.entries.Add(meshLod2.instanceId, meshName + "_lod2");
+                    namemap.entries.Add(meshLod3.instanceId, meshName + "_lod3");
+                    namemap.entries.Add(vpxyKey.instanceId, meshName);
+
+                    //keyName proxyFit = new keyName(0x736884F1, 0x00000001, meshName + "_fit");
+                    //keyName proxyFat = new keyName(0x736884F1, 0x00000001, meshName + "_fat");
+                    //keyName proxyThin = new keyName(0x736884F1, 0x00000001, meshName + "_thin");
+                    //keyName proxySpecial = new keyName(0x736884F1, 0x00000001, meshName + "_special");
 
                     VPXYFile vpxyfile = new VPXYFile(vpxyStream);
                     vpxyfile.rcolHeader.internalChunks.Clear();
@@ -128,10 +173,10 @@ namespace CASPartEditor
                     {
                         // LOD 1
                         VPXYEntry vpxyE = new VPXYEntry();
-                        vpxyE.tgiList.Add(meshLod1.ToResourceKey());
                         if (!String.IsNullOrEmpty(txtMeshLod1_1.Text)) vpxyE.tgiList.Add(meshLod1_1.ToResourceKey());
                         if (!String.IsNullOrEmpty(txtMeshLod1_2.Text)) vpxyE.tgiList.Add(meshLod1_2.ToResourceKey());
                         if (!String.IsNullOrEmpty(txtMeshLod1_3.Text)) vpxyE.tgiList.Add(meshLod1_3.ToResourceKey());
+                        vpxyE.tgiList.Add(meshLod1.ToResourceKey());
                         vpxyfile.vpxy.linkEntries.Add(vpxyE);
                     }
                     if (!String.IsNullOrEmpty(txtMeshLod2.Text))
@@ -153,51 +198,26 @@ namespace CASPartEditor
 
                     vpxyStream = vpxyfile.Save();
 
-                    vpxyfile.rcolHeader.internalChunks[0] = proxyFit.ToResourceKey();
-                    Stream proxyFitFile = vpxyfile.Save();
+                    //vpxyfile.rcolHeader.internalChunks[0] = proxyFit.ToResourceKey();
+                    //Stream proxyFitFile = vpxyfile.Save();
 
-                    vpxyfile.rcolHeader.internalChunks[0] = proxyFat.ToResourceKey();
-                    Stream proxyFatFile = vpxyfile.Save();
+                    //vpxyfile.rcolHeader.internalChunks[0] = proxyFat.ToResourceKey();
+                    //Stream proxyFatFile = vpxyfile.Save();
 
-                    vpxyfile.rcolHeader.internalChunks[0] = proxyThin.ToResourceKey();
-                    Stream proxyThinFile = vpxyfile.Save();
+                    //vpxyfile.rcolHeader.internalChunks[0] = proxyThin.ToResourceKey();
+                    //Stream proxyThinFile = vpxyfile.Save();
 
-                    vpxyfile.rcolHeader.internalChunks[0] = proxySpecial.ToResourceKey();
-                    Stream proxySpecialFile = vpxyfile.Save();
-
-                    //MemoryStream proxyFitFile = makeVPXYfile(proxyFit.ToResourceKey());
-                    //MemoryStream proxyFatFile = makeVPXYfile(proxyFat.ToResourceKey());
-                    //MemoryStream proxyThinFile = makeVPXYfile(proxyThin.ToResourceKey());
-                    //MemoryStream proxySpecialFile = makeVPXYfile(proxySpecial.ToResourceKey());
-
-
-
-                    //MemoryStream bodyBlendFitFile = makeBlendFile(proxyFit);
-                    //MemoryStream bodyBlendFatFile = makeBlendFile(proxyFat);
-                    //MemoryStream bodyBlendThinFile = makeBlendFile(proxyThin);
-                    //MemoryStream bodyBlendSpecialFile = makeBlendFile(proxySpecial);
-
-                    Stream bodyBlendFitFile = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFit].ToString(), 0);
-                    Stream bodyBlendFatFile = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFat].ToString(), 0);
-                    Stream bodyBlendThinFile = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoThin].ToString(), 0);
-                    Stream bodyBlendSpecialFile = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoSpecial].ToString(), 0);
+                    //vpxyfile.rcolHeader.internalChunks[0] = proxySpecial.ToResourceKey();
+                    //Stream proxySpecialFile = vpxyfile.Save();
 
                     db.SetResourceStream(vpxyKey.ToResourceKey(), vpxyStream);
-                    db.SetResourceStream(proxyFit.ToResourceKey(), proxyFitFile);
-                    db.SetResourceStream(proxyFat.ToResourceKey(), proxyFatFile);
-                    db.SetResourceStream(proxyThin.ToResourceKey(), proxyThinFile);
-                    db.SetResourceStream(proxySpecial.ToResourceKey(), proxySpecialFile);
-                    db.SetResourceStream(bodyBlendFit.ToResourceKey(), bodyBlendFitFile);
-                    db.SetResourceStream(bodyBlendFat.ToResourceKey(), bodyBlendFatFile);
-                    db.SetResourceStream(bodyBlendThin.ToResourceKey(), bodyBlendThinFile);
-                    db.SetResourceStream(bodyBlendSpecial.ToResourceKey(), bodyBlendSpecialFile);
+                    //db.SetResourceStream(proxyFit.ToResourceKey(), proxyFitFile);
+                    //db.SetResourceStream(proxyFat.ToResourceKey(), proxyFatFile);
+                    //db.SetResourceStream(proxyThin.ToResourceKey(), proxyThinFile);
+                    //db.SetResourceStream(proxySpecial.ToResourceKey(), proxySpecialFile);
 
                     // Update the CAS part TGI links with the new VPXY
                     casPartNew.tgi64list[casPartNew.tgiIndexVPXY] = vpxyKey.ToResourceKey();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFat] = bodyBlendFat.ToResourceKey();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFit] = bodyBlendFit.ToResourceKey();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoThin] = bodyBlendThin.ToResourceKey();
-                    casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoSpecial] = bodyBlendSpecial.ToResourceKey();
 
                     keyName bumpMapKey = new keyName();
 
@@ -244,6 +264,8 @@ namespace CASPartEditor
                 }
 
             }
+
+            db.SetResourceStream(namemapKey, namemap.Save());
 
             if (casPartNew != null)
             {

@@ -373,6 +373,7 @@ namespace MadScience
                                         break;
                                     case "filename":
                                         pDetail.filename = xtr.GetAttribute("default");
+                                        pDetail.nameHigh = xtr.GetAttribute("default");
                                         break;
 
                                 }
@@ -416,10 +417,11 @@ namespace MadScience
                                                     pDetail.ColorP[2] = pDetail.ColorP[1];
                                                     pDetail.ColorP[1] = pDetail.ColorP[0];
                                                 }
+
+                                                xtr.MoveToAttribute("color");
+                                                pDetail.ColorP[0] = xtr.Value;
                                             }
 
-                                            xtr.MoveToAttribute("color");
-                                            pDetail.ColorP[0] = xtr.Value;
                                         }
                                         break;
                                 }
@@ -464,6 +466,7 @@ namespace MadScience
                 }
 
                 pDetail.filename = patternTexture;
+                pDetail.nameHigh = patternTexture;
             }
 
             if (!String.IsNullOrEmpty(pDetail.rgbmask) && !MadScience.KeyUtils.validateKey(pDetail.rgbmask, false))
