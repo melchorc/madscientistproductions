@@ -378,8 +378,6 @@ namespace CASPartEditor
             DateTime startTime = DateTime.Now;
             if (MadScience.Patterns.isEmptyTexture(details.Multiplier))
                 textures[0] = null;
-            if (MadScience.Patterns.isEmptyTexture(details.Overlay))
-                textures[2] = null;
 
             Bitmap output;
             if (MadScience.Patterns.isEmptyMask(details.Mask))
