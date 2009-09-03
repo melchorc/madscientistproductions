@@ -36,7 +36,7 @@ namespace CASPartEditor
 
             Helpers.logMessageToFile("Setting version number");
             Version vrs = new Version(Application.ProductVersion);
-            this.Text = this.Text + " v" + vrs.Major + "." + vrs.Minor + "." + vrs.Build + "." + vrs.Revision;
+            title = this.Text = this.Text + " v" + vrs.Major + "." + vrs.Minor + "." + vrs.Build + "." + vrs.Revision;
 
             Helpers.logMessageToFile("Checking debug mode");
             if (MadScience.Helpers.getRegistryValue("debugMode") == "True")
@@ -73,6 +73,17 @@ namespace CASPartEditor
             MadScience.Helpers.lookupTypes(Path.Combine(Application.StartupPath, Path.Combine("xml", "metaTypes.xml")));
 
             Helpers.logMessageToFile("Finished Initialisation");
+        }
+
+        public String title = "";
+        public String filename = "";
+
+        public void makeTitleBar()
+        {
+            if (filename == "")
+                this.Text = title;
+            else
+                this.Text = filename + " - " + title;
         }
 
         public List<stencilDetails> stencilPool = new List<stencilDetails>(20);
@@ -156,7 +167,7 @@ namespace CASPartEditor
             //chkPatternBEnabled.Enabled = true;
             //chkPatternCEnabled.Enabled = true;
             chkLogoEnabled.Enabled = true;
-
+            showMeshDetails();
         }
 
         private void setComboBoxes(string casPartName)
@@ -264,6 +275,9 @@ namespace CASPartEditor
 
         public void loadFile(string filename)
         {
+            //reset
+            initNewFile();
+
             toolStripStatusLabel1.Text = filename;
 
             if (debugModeToolStripMenuItem.Checked)
@@ -312,10 +326,11 @@ namespace CASPartEditor
                 }
                 else
                 {
-                    inputCasPart.Close();
                     MessageBox.Show("No CAS Part file can be found in this package!");
                 }
             }
+            this.filename = f.Name;
+            makeTitleBar();
             saveAsToolStripMenuItem.Enabled = true;
 
         }
@@ -469,7 +484,7 @@ namespace CASPartEditor
 
             if (cmbMeshName.SelectedItem == null || cmbMeshName.SelectedItem.ToString() != temp.Name)
             {
-                newToolStripMenuItem_Click(null, null);
+                initNewFile();
                 for (int i = 0; i < cmbMeshName.Items.Count; i++)
                 {
                     if ((string)cmbMeshName.Items[i] == temp.Name)
@@ -791,6 +806,11 @@ namespace CASPartEditor
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            initNewFile();
+        }
+
+        private void initNewFile()
+        {
             cmbSimAge.Enabled = true;
             cmbSimGender.Enabled = true;
             cmbPartTypes.Enabled = true;
@@ -819,6 +839,9 @@ namespace CASPartEditor
             copyDefaultsToolStripMenuItem.Enabled = true;
             renderWindow1.DeInit();
             //cmbStencilList.Enabled = true;
+
+            filename = "";
+            makeTitleBar();
         }
 
         private void btnAddNewDesign_Click(object sender, EventArgs e)
@@ -1161,7 +1184,7 @@ namespace CASPartEditor
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.FileName = "";
+            saveFileDialog1.FileName = Helpers.currentPackageFile;
             saveFileDialog1.Filter = "Sims 3 Packages|*.package|CASPart|*.caspart";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -1186,6 +1209,9 @@ namespace CASPartEditor
                     db.Commit(true);
 
                     saveFile.Close();
+
+                    this.filename = f.Name;
+                    makeTitleBar();
                 }
                 if (f.Extension == ".caspart")
                 {
@@ -1693,7 +1719,7 @@ namespace CASPartEditor
             }
             else
             {
-                newToolStripMenuItem_Click(this, null);
+                initNewFile();
             }
         }
 
@@ -1811,8 +1837,8 @@ namespace CASPartEditor
 
                     tempSave.Seek(0, SeekOrigin.Begin);
 
-                    //ulong instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
-                    ulong instanceId = MadScience.StringHelpers.HashFNV64(casPartNew.meshName);
+                    ulong instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
+                    //ulong instanceId = MadScience.StringHelpers.HashFNV64(casPartNew.meshName);
                     Database db = new Database(tempSave, true);
 
                     saveToDBPF(db, instanceId, false);
@@ -2697,7 +2723,7 @@ namespace CASPartEditor
 
         private void cmbMeshName_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            newToolStripMenuItem_Click(null, null);
+            initNewFile();
         }
 
         private void lstMeshTGILinks_SelectedIndexChanged(object sender, EventArgs e)

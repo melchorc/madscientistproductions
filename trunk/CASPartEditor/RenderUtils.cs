@@ -287,8 +287,6 @@ namespace CASPartEditor
 
             if (MadScience.Patterns.isEmptyTexture(details.Multiplier))
                 textures[0] = null;
-            if (MadScience.Patterns.isEmptyTexture(details.Overlay))
-                textures[2] = null;
 
             DateTime startTime = DateTime.Now;
             Bitmap output = null;
@@ -409,8 +407,6 @@ namespace CASPartEditor
 
             if (MadScience.Patterns.isEmptyTexture(details.DiffuseMap))
                 textures[0] = null;
-            if (MadScience.Patterns.isEmptyTexture(details.Overlay))
-                textures[2] = null;
 
             DateTime startTime = DateTime.Now;
             Bitmap hair = PatternProcessor.ProcessHairTexture(textures,
