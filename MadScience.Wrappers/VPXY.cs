@@ -77,6 +77,8 @@ namespace MadScience.Wrappers
         public byte hasFTPT = 0;
         public uint ftptIndex = 0;
 
+        public uint numTypeZero = 0;
+
         public MadScience.Wrappers.OffsetSize offsize = new MadScience.Wrappers.OffsetSize();
 
         public VPXY()
@@ -105,13 +107,17 @@ namespace MadScience.Wrappers
             this.keytable.offset = reader.ReadUInt32();
             this.keytable.size = reader.ReadUInt32();
 
+            byte typeZero = 0;
+
             byte entryCount = reader.ReadByte();
             for (int i = 0; i < entryCount; i++)
             {
                 VPXYEntry entry = new VPXYEntry(input);
                 if (entry.type == 0)
                 {
+                    if (typeZero == 0) this.numTypeZero = (uint)entry.typeZero;
                     linkEntries.Add(entry);
+                    typeZero++;
                 }
                 if (entry.type == 1)
                 {
@@ -187,7 +193,8 @@ namespace MadScience.Wrappers
             for (int i = 0; i < this.linkEntries.Count; i++)
             {
                 //this.linkEntries[i].typeZero = (byte)(i + 1);
-                this.linkEntries[i].typeZero = (byte)(i + 0);
+                this.linkEntries[i].typeZero = (byte)(this.numTypeZero);
+                this.numTypeZero++;
                 this.linkEntries[i].tgiIndex.Clear();
                 for (int j = 0; j < this.linkEntries[i].tgiList.Count; j++)
                 {
@@ -250,7 +257,8 @@ namespace MadScience.Wrappers
             this.type = reader.ReadByte();
             if (this.type == 0)
             {
-                reader.ReadByte();
+                this.typeZero = reader.ReadByte();
+                Console.WriteLine(typeZero.ToString());
                 byte count = reader.ReadByte();
                 for (int i = 0; i < count; i++)
                 {

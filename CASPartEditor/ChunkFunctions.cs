@@ -133,6 +133,34 @@ namespace CASPartEditor
             casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoThin] = bodyBlendThin.ToResourceKey();
             casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoSpecial] = bodyBlendSpecial.ToResourceKey();
 
+            keyName proxyFitKey = new keyName(0x736884F1, 0x00000001, meshName + "_fit");
+            keyName proxyFatKey = new keyName(0x736884F1, 0x00000001, meshName + "_fat");
+            keyName proxyThinKey = new keyName(0x736884F1, 0x00000001, meshName + "_thin");
+            keyName proxySpecialKey = new keyName(0x736884F1, 0x00000001, meshName + "_special");
+
+            Stream proxyFatStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFat].instanceId), 0);
+            Stream proxyFitStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFit].instanceId), 0);
+            Stream proxyThinStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoThin].instanceId), 0);
+            Stream proxySpecialStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoSpecial].instanceId), 0);
+
+            VPXYFile proxyFat = new VPXYFile(proxyFatStream);
+            proxyFat.rcolHeader.internalChunks.Clear();
+            proxyFat.rcolHeader.internalChunks.Add(proxyFatKey.ToResourceKey()); 
+            VPXYFile proxyFit = new VPXYFile(proxyFitStream);
+            proxyFit.rcolHeader.internalChunks.Clear();
+            proxyFit.rcolHeader.internalChunks.Add(proxyFitKey.ToResourceKey()); 
+            VPXYFile proxyThin = new VPXYFile(proxyThinStream);
+            proxyThin.rcolHeader.internalChunks.Clear();
+            proxyThin.rcolHeader.internalChunks.Add(proxyThinKey.ToResourceKey()); 
+            VPXYFile proxySpecial = new VPXYFile(proxySpecialStream);
+            proxySpecial.rcolHeader.internalChunks.Clear();
+            proxySpecial.rcolHeader.internalChunks.Add(proxySpecialKey.ToResourceKey()); 
+
+            db.SetResourceStream(proxyFatKey.ToResourceKey(), proxyFat.Save());
+            db.SetResourceStream(proxyFitKey.ToResourceKey(), proxyFit.Save());
+            db.SetResourceStream(proxyThinKey.ToResourceKey(), proxyThin.Save());
+            db.SetResourceStream(proxySpecialKey.ToResourceKey(), proxySpecial.Save());
+
             if (!String.IsNullOrEmpty(txtMeshLod1.Text))
             {
                 uint customGroup = MadScience.StringHelpers.HashFNV24(meshName);
@@ -148,7 +176,7 @@ namespace CASPartEditor
                 // Load in the VPXY - we need to modify it.
                 //keyName oldVpxyKey = new keyName((tgi64)casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY]);
                 Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY].ToString(), 0);
-                if (vpxyStream != null)
+                if (Helpers.isValidStream(vpxyStream))
                 {
 
                     namemap.entries.Add(meshLod1.instanceId, meshName + "_lod1");
@@ -196,6 +224,7 @@ namespace CASPartEditor
                     
                     vpxyfile.vpxy.keytable.keys.Clear();
 
+                    vpxyfile.vpxy.numTypeZero = 1;
                     vpxyStream = vpxyfile.Save();
 
                     //vpxyfile.rcolHeader.internalChunks[0] = proxyFit.ToResourceKey();
@@ -230,7 +259,7 @@ namespace CASPartEditor
                         bumpMapStream.Close();
                     }
 
-
+                    
                     if (!String.IsNullOrEmpty(txtMeshLod1.Text.Trim()))
                     {
                         db.SetResourceStream(meshLod1.ToResourceKey(), saveGeom(txtMeshLod1.Text, bumpMapKey.ToResourceKey()));
@@ -260,7 +289,7 @@ namespace CASPartEditor
                     {
                         db.SetResourceStream(meshLod3.ToResourceKey(), saveGeom(txtMeshLod3.Text, bumpMapKey.ToResourceKey()));
                     }
-
+                    
                 }
 
             }
