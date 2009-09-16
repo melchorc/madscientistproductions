@@ -55,14 +55,18 @@ namespace Sims3Pack_Multi_Installer
                 int tempOffset = Convert.ToInt32(offsetStack.Pop().ToString());
                 int length = Convert.ToInt32(lengthStack.Pop().ToString());
 
-                Sims3PackFileInfo s3fileInfo = new Sims3PackFileInfo();
-                s3fileInfo.name = tempName;
-                //s3fileInfo.cleanName = sanitiseString(tempName.Replace(".package", "")) + ".package";
-                s3fileInfo.offset = tempOffset;
-                s3fileInfo.length = length;
+                string extension = tempName.Substring(tempName.LastIndexOf("."));
+                if (extension == ".package")
+                {
+                    Sims3PackFileInfo s3fileInfo = new Sims3PackFileInfo();
+                    s3fileInfo.name = tempName;
+                    //s3fileInfo.cleanName = sanitiseString(tempName.Replace(".package", "")) + ".package";
+                    s3fileInfo.offset = tempOffset;
+                    s3fileInfo.length = length;
 
-                packagedFiles.Add(s3fileInfo);
-                s3fileInfo = null;
+                    packagedFiles.Add(s3fileInfo);
+                    s3fileInfo = null;
+                }
             }
 
 
