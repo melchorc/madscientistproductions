@@ -600,12 +600,13 @@ namespace DdsFileTypePlugin
             int height = this.GetHeight();
             int width = this.GetWidth();
 
+            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            if (this.m_pixelData == null) return bitmap;
+
             //byte[] readPixelData = this.GetPixelData();
             //byte[] myBuffer = (byte[])readPixelData.Clone();
             //byte[] myBuffer = (byte[])this.GetPixelData().Clone();
             byte[] myBuffer = (byte[])this.m_pixelData.Clone();
-
-            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
             if (myBuffer == null) return bitmap;
 

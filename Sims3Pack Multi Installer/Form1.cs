@@ -108,7 +108,7 @@ namespace Sims3Pack_Multi_Installer
                             //Console.WriteLine(s3fileinfo.name + " " + extension);
                             if (extension.ToLower() == ".package")
                             {
-                                if (s3pack.extractFile(s3fileinfo, txtDestinationFolder.Text, false) == true)
+                                if (s3pack.extractFile(s3fileinfo, txtDestinationFolder.Text, checkBox1.Checked) == true)
                                 {
 
                                 }
