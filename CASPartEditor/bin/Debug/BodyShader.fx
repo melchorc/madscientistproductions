@@ -100,6 +100,7 @@ float4x4 gWorldViewXf : WorldView <string UIWidget="none";>;
 /////////////// Tweakables //////////
 
 bool gUseStencil = false;
+bool gUseBumpMap = false;
 
 float3 gLamp0Pos : POSITION <
     string Object = "PointLight0";
@@ -277,7 +278,8 @@ float4 normal_mapPS(VertexOutput IN,
 		    uniform float PhongExp,
 		    uniform float3 SpecColor,
 		    uniform float3 AmbiColor,
-			uniform bool UseStencil
+			uniform bool UseStencil,
+			uniform bool UseBumpMap
 ) : COLOR
 {
 	////////////////// Texture compositing
@@ -311,8 +313,12 @@ float4 normal_mapPS(VertexOutput IN,
 
 	////////////////// Pixel rendering
 
-	// Scale the normal map data from 0..1 to -1..1 - also alpha blend the normal map against straight up normal using the shirt layer alpha so the shirt doesn't get perturbed
-    float3 tNorm = (tex2D(ReliefSampler,IN.UV).agg) * -2.0 + float3(1.0,1.0,1.0);
+    float3 tNorm = float3(0.0,0.0,0.0);
+	// Scale the normal map data from 0..1 to -1..1 
+		  if (UseBumpMap)
+	   {
+    tNorm = (tex2D(ReliefSampler,IN.UV).agg) * -2.0 + float3(1.0,1.0,1.0);
+    }
     // Calculate the missing component of the normal map, care of Pythagorean theorem
     // If the answer to the sqrt should be negative, the surface will have been culled anyway
     tNorm = normalize(float3(tNorm.x, tNorm.y, sqrt(1.0 - (tNorm.x * tNorm.x + tNorm.y * tNorm.y))));
@@ -369,7 +375,8 @@ technique normal_mapping <
 						gPhongExp,
 						gSpecColor,
 						gAmbiColor,
-						gUseStencil);
+						gUseStencil,
+						gUseBumpMap);
     }
 }
 

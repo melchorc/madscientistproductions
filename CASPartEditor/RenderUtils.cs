@@ -59,8 +59,11 @@ namespace CASPartEditor
                 //renderWindow1.loadTexture(KeyUtils.findKey(textures[2]), "normalMap");
 
                 //Don't use the default skin bumpmap texture, but load the bumpmap from the current mesh.
-                keyName bumpMapKey = new keyName("foobar", txtMeshName.Text + "_n");
-                renderWindow1.loadTexture(KeyUtils.findKey(bumpMapKey.ToResourceKey()), "normalMap");
+                //keyName bumpMapKey = new keyName("foobar", txtMeshName.Text + "_n");
+                //Stream tex = KeyUtils.findKey(bumpMapKey.ToResourceKey());
+
+                Stream tex = KeyUtils.findKey(lstMeshTGILinks.Items[0].Text);
+                renderWindow1.loadTexture(tex, "normalMap");
 
                 if ((casPartNew.typeFlag & 0x1) == 0x1)
                 {
