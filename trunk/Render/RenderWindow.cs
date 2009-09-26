@@ -407,6 +407,7 @@ namespace MadScience.Render
                     if (models[0].textures.curStencil != null) shader.SetValue(EffectHandle.FromString("gUseStencil"), true);
                     shader.SetValue(EffectHandle.FromString("gSpecularTexture"), models[0].textures.specularTexture);
                     shader.SetValue(EffectHandle.FromString("gReliefTexture"), normalMapTexture);
+                    if (normalMapTexture != null) shader.SetValue(EffectHandle.FromString("gUseBumpMap"), true);
                     shader.SetValue(EffectHandle.FromString("gTileCount"), 1.0f);
                     shader.SetValue(EffectHandle.FromString("gAmbiColor"), new ColorValue(0.6f, 0.6f, 0.6f));
                     shader.SetValue(EffectHandle.FromString("gLamp0Pos"), new Vector4(-10f, 10f, -10f, 1.0f));

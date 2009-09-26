@@ -14,6 +14,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
 
 namespace MadScience
 {
@@ -44,6 +45,19 @@ namespace MadScience
 
         public static Hashtable localFiles = new Hashtable();
         public static string currentPackageFile = "";
+
+        public static BindingList<string> globalPackageFiles;
+
+        static Helpers()
+        {
+            string filelist = MadScience.Helpers.getRegistryValue("globalPackageFiles");
+            string[] arr = filelist.Split('?');
+            globalPackageFiles = new BindingList<string>();
+            foreach (string a in arr)
+            {
+                globalPackageFiles.Add(a);
+            }
+        }
 
         public static metaEntries metaEntryList;
 

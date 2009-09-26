@@ -295,7 +295,7 @@ namespace MadScience
 
             }
 
-
+            //check current package
             if (!String.IsNullOrEmpty(Helpers.currentPackageFile))
             {
                 Stream localPackage = File.Open(Helpers.currentPackageFile, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -321,6 +321,39 @@ namespace MadScience
                 }
 
                 localPackage.Close();
+            }
+
+            //check global packages
+            foreach(string filename in Helpers.globalPackageFiles)
+            {
+                if (!String.IsNullOrEmpty(filename))
+                {
+                    using(Stream localPackage = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        MadScience.Wrappers.Database localDb = new MadScience.Wrappers.Database(localPackage, true);
+
+                        for (int i = 0; i < resourceKeys.Count; i++)
+                        {
+                            if (tempChunks[i].Length == 0)
+                            {
+                                try
+                                {
+                                    tempChunks[i] = localDb.GetResourceStream(resourceKeys[i]);
+                                }
+                                catch (System.Collections.Generic.KeyNotFoundException)
+                                {
+                                    //Helpers.logMessageToFile(ex.Message);
+                                }
+                                catch (Exception)
+                                {
+                                    //Helpers.logMessageToFile(ex.Message);
+                                }
+                            }
+                        }
+
+                        localPackage.Close();
+                    }
+                }
             }
 
             // If input stream isn't null then we use that, otherwise open the fullbuild we want...
