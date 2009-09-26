@@ -1426,11 +1426,16 @@ namespace CASPartEditor
                 }
                 if (lstCasPartDetails.Items[i].SubItems[1].Text.StartsWith("TGI #"))
                 {
-                    string igtText = lstCasPartDetails.Items[i].SubItems[1].Text.Replace("IGT #", "");
-                    igtText = igtText.Substring(0, igtText.IndexOf(" ") - 1);
-                    int igtNo = Convert.ToInt32(igtText);
-                    casPartNew.tgi64list[igtNo] = new ResourceKey(lstCasPartDetails.Items[i].Text);
-                    //tgi64 tgi = (tgi64)casPartNew.tgi64list[igtNo];
+                    try
+                    {
+                        string igtText = lstCasPartDetails.Items[i].SubItems[1].Text.Replace("TGI #", "");
+                        igtText = igtText.Substring(0, igtText.IndexOf(" ") - 1);
+                        int igtNo = Convert.ToInt32(igtText);
+                        casPartNew.tgi64list[igtNo] = new ResourceKey(lstCasPartDetails.Items[i].Text);
+                        //tgi64 tgi = (tgi64)casPartNew.tgi64list[igtNo];
+                    }
+                    catch (Exception)
+                    { }
                 }
 
             }
