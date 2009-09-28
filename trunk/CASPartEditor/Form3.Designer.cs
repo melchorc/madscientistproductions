@@ -150,10 +150,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(9, 16);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(411, 13);
+            this.label3.Size = new System.Drawing.Size(408, 13);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Here you can add custom packages, the program should use as source for resources:" +
-                "";
+            this.label3.Text = "Here you can add custom packages the program should use as source for resources:";
             // 
             // label4
             // 
@@ -195,7 +194,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(453, 103);
+            this.button4.Location = new System.Drawing.Point(456, 103);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(88, 23);
             this.button4.TabIndex = 5;
