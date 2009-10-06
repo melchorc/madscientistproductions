@@ -3154,6 +3154,51 @@ namespace CASPartEditor
             this.Refresh();
         }
 
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            txtMeshLod0.Text = selectLodFile();
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            txtMeshLod0_1.Text = selectLodFile();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            txtMeshLod0_2.Text = selectLodFile();
+        }
+
+        private void button9_Click_1(object sender, EventArgs e)
+        {
+            txtMeshLod0_3.Text = selectLodFile();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            txtMeshLod2_1.Text = selectLodFile();
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            txtMeshLod2_2.Text = selectLodFile();
+        }
+
     }
     
     /// <remarks/>

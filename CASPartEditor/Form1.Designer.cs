@@ -230,32 +230,52 @@
             this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
             this.btnMeshTGILinksFind = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.button19 = new System.Windows.Forms.Button();
+            this.button21 = new System.Windows.Forms.Button();
+            this.txtMeshLod2_2 = new System.Windows.Forms.TextBox();
+            this.label34 = new System.Windows.Forms.Label();
+            this.txtMeshLod2_1 = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.button9 = new System.Windows.Forms.Button();
+            this.txtMeshLod0 = new System.Windows.Forms.TextBox();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
+            this.txtMeshLod0_3 = new System.Windows.Forms.TextBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.txtMeshLod0_2 = new System.Windows.Forms.TextBox();
+            this.button15 = new System.Windows.Forms.Button();
+            this.label31 = new System.Windows.Forms.Label();
+            this.txtMeshLod0_1 = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
+            this.txtMeshLod1 = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.txtMeshLod2 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.txtMeshLod3 = new System.Windows.Forms.TextBox();
             this.txtMeshLod1_3 = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             this.txtMeshLod1_2 = new System.Windows.Forms.TextBox();
+            this.button18 = new System.Windows.Forms.Button();
             this.label27 = new System.Windows.Forms.Label();
+            this.button17 = new System.Windows.Forms.Button();
             this.txtMeshLod1_1 = new System.Windows.Forms.TextBox();
+            this.button16 = new System.Windows.Forms.Button();
             this.label26 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.button33 = new System.Windows.Forms.Button();
+            this.txtOtherBumpMap = new System.Windows.Forms.TextBox();
             this.button20 = new System.Windows.Forms.Button();
             this.txtMeshNameCommit = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.txtOtherBumpMap = new System.Windows.Forms.TextBox();
             this.txtMeshName = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
-            this.button16 = new System.Windows.Forms.Button();
-            this.button17 = new System.Windows.Forms.Button();
-            this.label18 = new System.Windows.Forms.Label();
-            this.button18 = new System.Windows.Forms.Button();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.txtMeshLod3 = new System.Windows.Forms.TextBox();
-            this.txtMeshLod2 = new System.Windows.Forms.TextBox();
-            this.txtMeshLod1 = new System.Windows.Forms.TextBox();
             this.tabPage14 = new System.Windows.Forms.TabPage();
             this.btnDesignTypeCommit = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
@@ -277,7 +297,6 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.renderWindow1 = new MadScience.Render.RenderWindow();
             this.bwGenTexture = new System.ComponentModel.BackgroundWorker();
             this.btnStart3D = new System.Windows.Forms.Button();
             this.btnReloadTextures = new System.Windows.Forms.Button();
@@ -290,6 +309,7 @@
             this.replaceImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.editColourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renderWindow1 = new MadScience.Render.RenderWindow();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl3.SuspendLayout();
@@ -330,6 +350,7 @@
             this.tabPage11.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.tabPage14.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -369,14 +390,14 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.loadToolStripMenuItem.Text = "Open";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
@@ -384,7 +405,7 @@
             // 
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -392,33 +413,33 @@
             // 
             this.saveAsToolStripMenuItem.Enabled = false;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(183, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(172, 6);
             // 
             // findKeyToolStripMenuItem
             // 
             this.findKeyToolStripMenuItem.Name = "findKeyToolStripMenuItem";
-            this.findKeyToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.findKeyToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.findKeyToolStripMenuItem.Text = "Find Key";
             this.findKeyToolStripMenuItem.Click += new System.EventHandler(this.findKeyToolStripMenuItem_Click);
             // 
             // generateThumbnailsToolStripMenuItem
             // 
             this.generateThumbnailsToolStripMenuItem.Name = "generateThumbnailsToolStripMenuItem";
-            this.generateThumbnailsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.generateThumbnailsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.generateThumbnailsToolStripMenuItem.Text = "Generate Thumbnails";
             this.generateThumbnailsToolStripMenuItem.Click += new System.EventHandler(this.generateThumbnailsToolStripMenuItem_Click);
             // 
             // debugModeToolStripMenuItem
             // 
             this.debugModeToolStripMenuItem.Name = "debugModeToolStripMenuItem";
-            this.debugModeToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.debugModeToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.debugModeToolStripMenuItem.Text = "Debug Mode";
             this.debugModeToolStripMenuItem.CheckedChanged += new System.EventHandler(this.debugModeToolStripMenuItem_CheckedChanged);
             this.debugModeToolStripMenuItem.Click += new System.EventHandler(this.debugModeToolStripMenuItem_Click);
@@ -426,19 +447,19 @@
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.optionsToolStripMenuItem.Text = "Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(183, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(172, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -2627,32 +2648,11 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button8);
-            this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Controls.Add(this.button2);
-            this.groupBox2.Controls.Add(this.txtMeshLod1_3);
-            this.groupBox2.Controls.Add(this.label28);
-            this.groupBox2.Controls.Add(this.txtMeshLod1_2);
-            this.groupBox2.Controls.Add(this.label27);
-            this.groupBox2.Controls.Add(this.txtMeshLod1_1);
-            this.groupBox2.Controls.Add(this.label26);
-            this.groupBox2.Controls.Add(this.button33);
-            this.groupBox2.Controls.Add(this.button20);
+            this.groupBox2.Controls.Add(this.panel1);
             this.groupBox2.Controls.Add(this.txtMeshNameCommit);
             this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.txtOtherBumpMap);
             this.groupBox2.Controls.Add(this.txtMeshName);
-            this.groupBox2.Controls.Add(this.label21);
             this.groupBox2.Controls.Add(this.label20);
-            this.groupBox2.Controls.Add(this.button16);
-            this.groupBox2.Controls.Add(this.button17);
-            this.groupBox2.Controls.Add(this.label18);
-            this.groupBox2.Controls.Add(this.button18);
-            this.groupBox2.Controls.Add(this.label17);
-            this.groupBox2.Controls.Add(this.label16);
-            this.groupBox2.Controls.Add(this.txtMeshLod3);
-            this.groupBox2.Controls.Add(this.txtMeshLod2);
-            this.groupBox2.Controls.Add(this.txtMeshLod1);
             this.groupBox2.Location = new System.Drawing.Point(8, 184);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(556, 354);
@@ -2660,9 +2660,235 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "New Mesh";
             // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.button19);
+            this.panel1.Controls.Add(this.button21);
+            this.panel1.Controls.Add(this.txtMeshLod2_2);
+            this.panel1.Controls.Add(this.label34);
+            this.panel1.Controls.Add(this.txtMeshLod2_1);
+            this.panel1.Controls.Add(this.label35);
+            this.panel1.Controls.Add(this.label33);
+            this.panel1.Controls.Add(this.label29);
+            this.panel1.Controls.Add(this.button9);
+            this.panel1.Controls.Add(this.txtMeshLod0);
+            this.panel1.Controls.Add(this.button10);
+            this.panel1.Controls.Add(this.button14);
+            this.panel1.Controls.Add(this.txtMeshLod0_3);
+            this.panel1.Controls.Add(this.label30);
+            this.panel1.Controls.Add(this.txtMeshLod0_2);
+            this.panel1.Controls.Add(this.button15);
+            this.panel1.Controls.Add(this.label31);
+            this.panel1.Controls.Add(this.txtMeshLod0_1);
+            this.panel1.Controls.Add(this.label32);
+            this.panel1.Controls.Add(this.label18);
+            this.panel1.Controls.Add(this.button8);
+            this.panel1.Controls.Add(this.txtMeshLod1);
+            this.panel1.Controls.Add(this.button3);
+            this.panel1.Controls.Add(this.txtMeshLod2);
+            this.panel1.Controls.Add(this.button2);
+            this.panel1.Controls.Add(this.txtMeshLod3);
+            this.panel1.Controls.Add(this.txtMeshLod1_3);
+            this.panel1.Controls.Add(this.label16);
+            this.panel1.Controls.Add(this.label28);
+            this.panel1.Controls.Add(this.label17);
+            this.panel1.Controls.Add(this.txtMeshLod1_2);
+            this.panel1.Controls.Add(this.button18);
+            this.panel1.Controls.Add(this.label27);
+            this.panel1.Controls.Add(this.button17);
+            this.panel1.Controls.Add(this.txtMeshLod1_1);
+            this.panel1.Controls.Add(this.button16);
+            this.panel1.Controls.Add(this.label26);
+            this.panel1.Controls.Add(this.label21);
+            this.panel1.Controls.Add(this.button33);
+            this.panel1.Controls.Add(this.txtOtherBumpMap);
+            this.panel1.Controls.Add(this.button20);
+            this.panel1.Location = new System.Drawing.Point(9, 75);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(541, 273);
+            this.panel1.TabIndex = 50;
+            // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(367, 328);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(26, 23);
+            this.button19.TabIndex = 68;
+            this.button19.Text = "...";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
+            // 
+            // button21
+            // 
+            this.button21.Location = new System.Drawing.Point(367, 300);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(26, 23);
+            this.button21.TabIndex = 67;
+            this.button21.Text = "...";
+            this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
+            // 
+            // txtMeshLod2_2
+            // 
+            this.txtMeshLod2_2.Location = new System.Drawing.Point(126, 328);
+            this.txtMeshLod2_2.Name = "txtMeshLod2_2";
+            this.txtMeshLod2_2.Size = new System.Drawing.Size(236, 20);
+            this.txtMeshLod2_2.TabIndex = 66;
+            this.txtMeshLod2_2.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(69, 333);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(50, 13);
+            this.label34.TabIndex = 65;
+            this.label34.Text = "LOD2_2:";
+            // 
+            // txtMeshLod2_1
+            // 
+            this.txtMeshLod2_1.Location = new System.Drawing.Point(125, 302);
+            this.txtMeshLod2_1.Name = "txtMeshLod2_1";
+            this.txtMeshLod2_1.Size = new System.Drawing.Size(236, 20);
+            this.txtMeshLod2_1.TabIndex = 64;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(69, 305);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(50, 13);
+            this.label35.TabIndex = 63;
+            this.label35.Text = "LOD2_1:";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(69, 14);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(307, 13);
+            this.label33.TabIndex = 62;
+            this.label33.Text = "Note: You only need LOD0 if you are doing Hair or Accessories!";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(29, 47);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(38, 13);
+            this.label29.TabIndex = 50;
+            this.label29.Text = "LOD0:";
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(368, 129);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(26, 23);
+            this.button9.TabIndex = 61;
+            this.button9.Text = "...";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click_1);
+            // 
+            // txtMeshLod0
+            // 
+            this.txtMeshLod0.Location = new System.Drawing.Point(73, 44);
+            this.txtMeshLod0.Name = "txtMeshLod0";
+            this.txtMeshLod0.Size = new System.Drawing.Size(289, 20);
+            this.txtMeshLod0.TabIndex = 51;
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(368, 100);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(26, 23);
+            this.button10.TabIndex = 60;
+            this.button10.Text = "...";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(368, 71);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(26, 23);
+            this.button14.TabIndex = 59;
+            this.button14.Text = "...";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // txtMeshLod0_3
+            // 
+            this.txtMeshLod0_3.Location = new System.Drawing.Point(126, 129);
+            this.txtMeshLod0_3.Name = "txtMeshLod0_3";
+            this.txtMeshLod0_3.Size = new System.Drawing.Size(236, 20);
+            this.txtMeshLod0_3.TabIndex = 58;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(70, 132);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(50, 13);
+            this.label30.TabIndex = 57;
+            this.label30.Text = "LOD0_3:";
+            // 
+            // txtMeshLod0_2
+            // 
+            this.txtMeshLod0_2.Location = new System.Drawing.Point(126, 101);
+            this.txtMeshLod0_2.Name = "txtMeshLod0_2";
+            this.txtMeshLod0_2.Size = new System.Drawing.Size(236, 20);
+            this.txtMeshLod0_2.TabIndex = 56;
+            this.txtMeshLod0_2.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(368, 42);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(26, 23);
+            this.button15.TabIndex = 52;
+            this.button15.Text = "...";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(70, 104);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(50, 13);
+            this.label31.TabIndex = 55;
+            this.label31.Text = "LOD0_2:";
+            // 
+            // txtMeshLod0_1
+            // 
+            this.txtMeshLod0_1.Location = new System.Drawing.Point(126, 73);
+            this.txtMeshLod0_1.Name = "txtMeshLod0_1";
+            this.txtMeshLod0_1.Size = new System.Drawing.Size(236, 20);
+            this.txtMeshLod0_1.TabIndex = 54;
+            this.txtMeshLod0_1.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(70, 76);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(50, 13);
+            this.label32.TabIndex = 53;
+            this.label32.Text = "LOD0_1:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(29, 163);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(38, 13);
+            this.label18.TabIndex = 14;
+            this.label18.Text = "LOD1:";
+            // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(388, 161);
+            this.button8.Location = new System.Drawing.Point(368, 242);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(26, 23);
             this.button8.TabIndex = 49;
@@ -2670,9 +2896,16 @@
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click_1);
             // 
+            // txtMeshLod1
+            // 
+            this.txtMeshLod1.Location = new System.Drawing.Point(73, 160);
+            this.txtMeshLod1.Name = "txtMeshLod1";
+            this.txtMeshLod1.Size = new System.Drawing.Size(289, 20);
+            this.txtMeshLod1.TabIndex = 18;
+            // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(388, 134);
+            this.button3.Location = new System.Drawing.Point(368, 215);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(26, 23);
             this.button3.TabIndex = 48;
@@ -2680,9 +2913,16 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
+            // txtMeshLod2
+            // 
+            this.txtMeshLod2.Location = new System.Drawing.Point(72, 273);
+            this.txtMeshLod2.Name = "txtMeshLod2";
+            this.txtMeshLod2.Size = new System.Drawing.Size(290, 20);
+            this.txtMeshLod2.TabIndex = 19;
+            // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(388, 105);
+            this.button2.Location = new System.Drawing.Point(368, 186);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(26, 23);
             this.button2.TabIndex = 47;
@@ -2690,57 +2930,121 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // txtMeshLod3
+            // 
+            this.txtMeshLod3.Location = new System.Drawing.Point(72, 358);
+            this.txtMeshLod3.Name = "txtMeshLod3";
+            this.txtMeshLod3.Size = new System.Drawing.Size(290, 20);
+            this.txtMeshLod3.TabIndex = 20;
+            // 
             // txtMeshLod1_3
             // 
-            this.txtMeshLod1_3.Location = new System.Drawing.Point(146, 163);
+            this.txtMeshLod1_3.Location = new System.Drawing.Point(126, 244);
             this.txtMeshLod1_3.Name = "txtMeshLod1_3";
             this.txtMeshLod1_3.Size = new System.Drawing.Size(236, 20);
             this.txtMeshLod1_3.TabIndex = 46;
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(29, 361);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(38, 13);
+            this.label16.TabIndex = 16;
+            this.label16.Text = "LOD3:";
+            // 
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(90, 166);
+            this.label28.Location = new System.Drawing.Point(70, 247);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(50, 13);
             this.label28.TabIndex = 45;
             this.label28.Text = "LOD1_3:";
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(29, 276);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(38, 13);
+            this.label17.TabIndex = 15;
+            this.label17.Text = "LOD2:";
+            // 
             // txtMeshLod1_2
             // 
-            this.txtMeshLod1_2.Location = new System.Drawing.Point(146, 135);
+            this.txtMeshLod1_2.Location = new System.Drawing.Point(126, 216);
             this.txtMeshLod1_2.Name = "txtMeshLod1_2";
             this.txtMeshLod1_2.Size = new System.Drawing.Size(236, 20);
             this.txtMeshLod1_2.TabIndex = 44;
             // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(368, 158);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(26, 23);
+            this.button18.TabIndex = 22;
+            this.button18.Text = "...";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(90, 138);
+            this.label27.Location = new System.Drawing.Point(70, 219);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(50, 13);
             this.label27.TabIndex = 43;
             this.label27.Text = "LOD1_2:";
             // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(368, 271);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(26, 23);
+            this.button17.TabIndex = 23;
+            this.button17.Text = "...";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
             // txtMeshLod1_1
             // 
-            this.txtMeshLod1_1.Location = new System.Drawing.Point(146, 107);
+            this.txtMeshLod1_1.Location = new System.Drawing.Point(126, 188);
             this.txtMeshLod1_1.Name = "txtMeshLod1_1";
             this.txtMeshLod1_1.Size = new System.Drawing.Size(236, 20);
             this.txtMeshLod1_1.TabIndex = 42;
             // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(368, 356);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(26, 23);
+            this.button16.TabIndex = 24;
+            this.button16.Text = "...";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(90, 110);
+            this.label26.Location = new System.Drawing.Point(70, 191);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(50, 13);
             this.label26.TabIndex = 41;
             this.label26.Text = "LOD1_1:";
             // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(6, 393);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(61, 13);
+            this.label21.TabIndex = 37;
+            this.label21.Text = "Bump Map:";
+            // 
             // button33
             // 
-            this.button33.Location = new System.Drawing.Point(420, 254);
+            this.button33.Location = new System.Drawing.Point(400, 386);
             this.button33.Name = "button33";
             this.button33.Size = new System.Drawing.Size(43, 23);
             this.button33.TabIndex = 40;
@@ -2748,9 +3052,16 @@
             this.button33.UseVisualStyleBackColor = true;
             this.button33.Click += new System.EventHandler(this.button33_Click);
             // 
+            // txtOtherBumpMap
+            // 
+            this.txtOtherBumpMap.Location = new System.Drawing.Point(72, 390);
+            this.txtOtherBumpMap.Name = "txtOtherBumpMap";
+            this.txtOtherBumpMap.Size = new System.Drawing.Size(290, 20);
+            this.txtOtherBumpMap.TabIndex = 38;
+            // 
             // button20
             // 
-            this.button20.Location = new System.Drawing.Point(388, 254);
+            this.button20.Location = new System.Drawing.Point(368, 386);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(26, 23);
             this.button20.TabIndex = 39;
@@ -2777,28 +3088,12 @@
             this.label7.TabIndex = 4;
             this.label7.Text = "Mesh Name:";
             // 
-            // txtOtherBumpMap
-            // 
-            this.txtOtherBumpMap.Location = new System.Drawing.Point(92, 258);
-            this.txtOtherBumpMap.Name = "txtOtherBumpMap";
-            this.txtOtherBumpMap.Size = new System.Drawing.Size(290, 20);
-            this.txtOtherBumpMap.TabIndex = 38;
-            // 
             // txtMeshName
             // 
             this.txtMeshName.Location = new System.Drawing.Point(93, 49);
             this.txtMeshName.Name = "txtMeshName";
             this.txtMeshName.Size = new System.Drawing.Size(261, 20);
             this.txtMeshName.TabIndex = 3;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(26, 261);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(61, 13);
-            this.label21.TabIndex = 37;
-            this.label21.Text = "Bump Map:";
             // 
             // label20
             // 
@@ -2808,84 +3103,6 @@
             this.label20.TabIndex = 0;
             this.label20.Text = "If you want this CAS Part to have a new mesh, please CHANGE the name and find you" +
                 "r mesh LODs using the boxes below.";
-            // 
-            // button16
-            // 
-            this.button16.Location = new System.Drawing.Point(388, 224);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(26, 23);
-            this.button16.TabIndex = 24;
-            this.button16.Text = "...";
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
-            // 
-            // button17
-            // 
-            this.button17.Location = new System.Drawing.Point(388, 190);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(26, 23);
-            this.button17.TabIndex = 23;
-            this.button17.Text = "...";
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(49, 81);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(38, 13);
-            this.label18.TabIndex = 14;
-            this.label18.Text = "LOD1:";
-            // 
-            // button18
-            // 
-            this.button18.Location = new System.Drawing.Point(388, 76);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(26, 23);
-            this.button18.TabIndex = 22;
-            this.button18.Text = "...";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(49, 195);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(38, 13);
-            this.label17.TabIndex = 15;
-            this.label17.Text = "LOD2:";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(49, 229);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(38, 13);
-            this.label16.TabIndex = 16;
-            this.label16.Text = "LOD3:";
-            // 
-            // txtMeshLod3
-            // 
-            this.txtMeshLod3.Location = new System.Drawing.Point(92, 226);
-            this.txtMeshLod3.Name = "txtMeshLod3";
-            this.txtMeshLod3.Size = new System.Drawing.Size(290, 20);
-            this.txtMeshLod3.TabIndex = 20;
-            // 
-            // txtMeshLod2
-            // 
-            this.txtMeshLod2.Location = new System.Drawing.Point(92, 192);
-            this.txtMeshLod2.Name = "txtMeshLod2";
-            this.txtMeshLod2.Size = new System.Drawing.Size(290, 20);
-            this.txtMeshLod2.TabIndex = 19;
-            // 
-            // txtMeshLod1
-            // 
-            this.txtMeshLod1.Location = new System.Drawing.Point(93, 78);
-            this.txtMeshLod1.Name = "txtMeshLod1";
-            this.txtMeshLod1.Size = new System.Drawing.Size(289, 20);
-            this.txtMeshLod1.TabIndex = 18;
             // 
             // tabPage14
             // 
@@ -2940,26 +3157,26 @@
             this.addNewCopyLastToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(188, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(177, 70);
             // 
             // addNewBlankToolStripMenuItem
             // 
             this.addNewBlankToolStripMenuItem.Name = "addNewBlankToolStripMenuItem";
-            this.addNewBlankToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.addNewBlankToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.addNewBlankToolStripMenuItem.Text = "Add New Blank";
             this.addNewBlankToolStripMenuItem.Click += new System.EventHandler(this.addNewBlankToolStripMenuItem_Click);
             // 
             // copyDefaultsToolStripMenuItem
             // 
             this.copyDefaultsToolStripMenuItem.Name = "copyDefaultsToolStripMenuItem";
-            this.copyDefaultsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.copyDefaultsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.copyDefaultsToolStripMenuItem.Text = "Copy All From Base";
             this.copyDefaultsToolStripMenuItem.Click += new System.EventHandler(this.copyDefaultsToolStripMenuItem_Click);
             // 
             // addNewCopyLastToolStripMenuItem
             // 
             this.addNewCopyLastToolStripMenuItem.Name = "addNewCopyLastToolStripMenuItem";
-            this.addNewCopyLastToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.addNewCopyLastToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.addNewCopyLastToolStripMenuItem.Text = "Add New (Copy Last)";
             this.addNewCopyLastToolStripMenuItem.Click += new System.EventHandler(this.addNewCopyLastToolStripMenuItem_Click);
             // 
@@ -3072,22 +3289,6 @@
             this.label14.Size = new System.Drawing.Size(100, 23);
             this.label14.TabIndex = 0;
             // 
-            // renderWindow1
-            // 
-            this.renderWindow1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.renderWindow1.BackColor = System.Drawing.Color.White;
-            this.renderWindow1.BackgroundColour = System.Drawing.Color.Empty;
-            this.renderWindow1.CurrentFillMode = 1;
-            this.renderWindow1.Location = new System.Drawing.Point(579, 47);
-            this.renderWindow1.Name = "renderWindow1";
-            this.renderWindow1.RenderEnabled = false;
-            this.renderWindow1.Size = new System.Drawing.Size(411, 548);
-            this.renderWindow1.TabIndex = 25;
-            this.renderWindow1.WireframeColour = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
-            this.renderWindow1.RequireNewTextures += new System.EventHandler(this.renderWindow1_RequireNewTextures);
-            // 
             // bwGenTexture
             // 
             this.bwGenTexture.WorkerSupportsCancellation = true;
@@ -3155,45 +3356,61 @@
             this.editColourToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
             this.contextMenuStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStrip2.Size = new System.Drawing.Size(169, 104);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(158, 104);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(165, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(154, 6);
             // 
             // findImageToolStripMenuItem
             // 
             this.findImageToolStripMenuItem.Name = "findImageToolStripMenuItem";
-            this.findImageToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.findImageToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.findImageToolStripMenuItem.Text = "Find Image";
             this.findImageToolStripMenuItem.Click += new System.EventHandler(this.findImageToolStripMenuItem_Click);
             // 
             // replaceImageToolStripMenuItem
             // 
             this.replaceImageToolStripMenuItem.Name = "replaceImageToolStripMenuItem";
-            this.replaceImageToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.replaceImageToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.replaceImageToolStripMenuItem.Text = "Replace Image...";
             this.replaceImageToolStripMenuItem.Click += new System.EventHandler(this.replaceImageToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(165, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(154, 6);
             // 
             // editColourToolStripMenuItem
             // 
             this.editColourToolStripMenuItem.Name = "editColourToolStripMenuItem";
-            this.editColourToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.editColourToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.editColourToolStripMenuItem.Text = "Edit Colour";
             this.editColourToolStripMenuItem.Click += new System.EventHandler(this.editColourToolStripMenuItem_Click);
+            // 
+            // renderWindow1
+            // 
+            this.renderWindow1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.renderWindow1.BackColor = System.Drawing.Color.White;
+            this.renderWindow1.BackgroundColour = System.Drawing.Color.Empty;
+            this.renderWindow1.CurrentFillMode = 1;
+            this.renderWindow1.Location = new System.Drawing.Point(579, 47);
+            this.renderWindow1.Name = "renderWindow1";
+            this.renderWindow1.RenderEnabled = false;
+            this.renderWindow1.Size = new System.Drawing.Size(411, 548);
+            this.renderWindow1.TabIndex = 25;
+            this.renderWindow1.WireframeColour = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.renderWindow1.RequireNewTextures += new System.EventHandler(this.renderWindow1_RequireNewTextures);
             // 
             // Form1
             // 
@@ -3271,6 +3488,8 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.tabPage14.ResumeLayout(false);
             this.tabPage14.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
@@ -3543,6 +3762,26 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox txtMeshLod1_1;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.TextBox txtMeshLod0;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.TextBox txtMeshLod0_3;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TextBox txtMeshLod0_2;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TextBox txtMeshLod0_1;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.Button button21;
+        private System.Windows.Forms.TextBox txtMeshLod2_2;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.TextBox txtMeshLod2_1;
+        private System.Windows.Forms.Label label35;
     }
 }
 

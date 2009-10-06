@@ -97,78 +97,86 @@ namespace CASPartEditor
             NameMap namemap = new NameMap();
             ResourceKey namemapKey = new ResourceKey(0x0166038C, 0x00000000, instanceId);
 
-            keyName bodyBlendFat = new keyName(0x062C8204, 0x0, meshName + "_fat");
-            keyName bodyBlendFit = new keyName(0x062C8204, 0x0, meshName + "_fit");
-            keyName bodyBlendThin = new keyName(0x062C8204, 0x0, meshName + "_thin");
-            keyName bodyBlendSpecial = new keyName(0x062C8204, 0x0, meshName + "_special");
-
-            namemap.entries.Add(bodyBlendFat.instanceId, bodyBlendFat.name);
-            namemap.entries.Add(bodyBlendFit.instanceId, bodyBlendFit.name);
-            namemap.entries.Add(bodyBlendThin.instanceId, bodyBlendThin.name);
-            namemap.entries.Add(bodyBlendSpecial.instanceId, bodyBlendSpecial.name);
-
-            Stream bodyBlendFatStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFat].ToString(), 0);
-            Stream bodyBlendFitStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFit].ToString(), 0);
-            Stream bodyBlendThinStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoThin].ToString(), 0);
-            Stream bodyBlendSpecialStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoSpecial].ToString(), 0);
-
-            // Load in the blend information
-            FacialBlend bodyBlendFatFile = new FacialBlend(bodyBlendFatStream);
-            bodyBlendFatFile.partName = meshName + "_fat";
-            FacialBlend bodyBlendFitFile = new FacialBlend(bodyBlendFitStream);
-            bodyBlendFitFile.partName = meshName + "_fit";
-            FacialBlend bodyBlendThinFile = new FacialBlend(bodyBlendThinStream);
-            bodyBlendThinFile.partName = meshName + "_thin";
-            FacialBlend bodyBlendSpecialFile = new FacialBlend(bodyBlendSpecialStream);
-            bodyBlendSpecialFile.partName = meshName + "_special";
-
-            db.SetResourceStream(bodyBlendFit.ToResourceKey(), bodyBlendFitFile.Save());
-            db.SetResourceStream(bodyBlendFat.ToResourceKey(), bodyBlendFatFile.Save());
-            db.SetResourceStream(bodyBlendThin.ToResourceKey(), bodyBlendThinFile.Save());
-            db.SetResourceStream(bodyBlendSpecial.ToResourceKey(), bodyBlendSpecialFile.Save());
-
-            // Update the CAS part TGI links with the new VPXY
-            casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFat] = bodyBlendFat.ToResourceKey();
-            casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFit] = bodyBlendFit.ToResourceKey();
-            casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoThin] = bodyBlendThin.ToResourceKey();
-            casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoSpecial] = bodyBlendSpecial.ToResourceKey();
-
-            keyName proxyFitKey = new keyName(0x736884F1, 0x00000001, meshName + "_fit");
-            keyName proxyFatKey = new keyName(0x736884F1, 0x00000001, meshName + "_fat");
-            keyName proxyThinKey = new keyName(0x736884F1, 0x00000001, meshName + "_thin");
-            keyName proxySpecialKey = new keyName(0x736884F1, 0x00000001, meshName + "_special");
-
-            Stream proxyFatStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFat].instanceId), 0);
-            Stream proxyFitStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFit].instanceId), 0);
-            Stream proxyThinStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoThin].instanceId), 0);
-            Stream proxySpecialStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoSpecial].instanceId), 0);
-
-            VPXYFile proxyFat = new VPXYFile(proxyFatStream);
-            proxyFat.rcolHeader.internalChunks.Clear();
-            proxyFat.rcolHeader.internalChunks.Add(proxyFatKey.ToResourceKey()); 
-            VPXYFile proxyFit = new VPXYFile(proxyFitStream);
-            proxyFit.rcolHeader.internalChunks.Clear();
-            proxyFit.rcolHeader.internalChunks.Add(proxyFitKey.ToResourceKey()); 
-            VPXYFile proxyThin = new VPXYFile(proxyThinStream);
-            proxyThin.rcolHeader.internalChunks.Clear();
-            proxyThin.rcolHeader.internalChunks.Add(proxyThinKey.ToResourceKey()); 
-            VPXYFile proxySpecial = new VPXYFile(proxySpecialStream);
-            proxySpecial.rcolHeader.internalChunks.Clear();
-            proxySpecial.rcolHeader.internalChunks.Add(proxySpecialKey.ToResourceKey()); 
-
-            db.SetResourceStream(proxyFatKey.ToResourceKey(), proxyFat.Save());
-            db.SetResourceStream(proxyFitKey.ToResourceKey(), proxyFit.Save());
-            db.SetResourceStream(proxyThinKey.ToResourceKey(), proxyThin.Save());
-            db.SetResourceStream(proxySpecialKey.ToResourceKey(), proxySpecial.Save());
-
-            if (!String.IsNullOrEmpty(txtMeshLod1.Text))
+            if (!String.IsNullOrEmpty(txtMeshLod1.Text) || !String.IsNullOrEmpty(txtMeshLod0.Text))
             {
+                keyName bodyBlendFat = new keyName(0x062C8204, 0x0, meshName + "_fat");
+                keyName bodyBlendFit = new keyName(0x062C8204, 0x0, meshName + "_fit");
+                keyName bodyBlendThin = new keyName(0x062C8204, 0x0, meshName + "_thin");
+                keyName bodyBlendSpecial = new keyName(0x062C8204, 0x0, meshName + "_special");
+
+                namemap.entries.Add(bodyBlendFat.instanceId, bodyBlendFat.name);
+                namemap.entries.Add(bodyBlendFit.instanceId, bodyBlendFit.name);
+                namemap.entries.Add(bodyBlendThin.instanceId, bodyBlendThin.name);
+                namemap.entries.Add(bodyBlendSpecial.instanceId, bodyBlendSpecial.name);
+
+                Stream bodyBlendFatStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFat].ToString(), 0);
+                Stream bodyBlendFitStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFit].ToString(), 0);
+                Stream bodyBlendThinStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoThin].ToString(), 0);
+                Stream bodyBlendSpecialStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoSpecial].ToString(), 0);
+
+                // Load in the blend information
+                FacialBlend bodyBlendFatFile = new FacialBlend(bodyBlendFatStream);
+                bodyBlendFatFile.partName = meshName + "_fat";
+                FacialBlend bodyBlendFitFile = new FacialBlend(bodyBlendFitStream);
+                bodyBlendFitFile.partName = meshName + "_fit";
+                FacialBlend bodyBlendThinFile = new FacialBlend(bodyBlendThinStream);
+                bodyBlendThinFile.partName = meshName + "_thin";
+                FacialBlend bodyBlendSpecialFile = new FacialBlend(bodyBlendSpecialStream);
+                bodyBlendSpecialFile.partName = meshName + "_special";
+
+                db.SetResourceStream(bodyBlendFit.ToResourceKey(), bodyBlendFitFile.Save());
+                db.SetResourceStream(bodyBlendFat.ToResourceKey(), bodyBlendFatFile.Save());
+                db.SetResourceStream(bodyBlendThin.ToResourceKey(), bodyBlendThinFile.Save());
+                db.SetResourceStream(bodyBlendSpecial.ToResourceKey(), bodyBlendSpecialFile.Save());
+
+                // Update the CAS part TGI links with the new VPXY
+                casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFat] = bodyBlendFat.ToResourceKey();
+                casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoFit] = bodyBlendFit.ToResourceKey();
+                casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoThin] = bodyBlendThin.ToResourceKey();
+                casPartNew.tgi64list[casPartNew.tgiIndexBlendInfoSpecial] = bodyBlendSpecial.ToResourceKey();
+
+                keyName proxyFitKey = new keyName(0x736884F1, 0x00000001, meshName + "_fit");
+                keyName proxyFatKey = new keyName(0x736884F1, 0x00000001, meshName + "_fat");
+                keyName proxyThinKey = new keyName(0x736884F1, 0x00000001, meshName + "_thin");
+                keyName proxySpecialKey = new keyName(0x736884F1, 0x00000001, meshName + "_special");
+
+                Stream proxyFatStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFat].instanceId), 0);
+                Stream proxyFitStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoFit].instanceId), 0);
+                Stream proxyThinStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoThin].instanceId), 0);
+                Stream proxySpecialStream = KeyUtils.findKey(new ResourceKey(0x736884F1, 0x00000001, casPartSrc.tgi64list[casPartSrc.tgiIndexBlendInfoSpecial].instanceId), 0);
+
+                VPXYFile proxyFat = new VPXYFile(proxyFatStream);
+                proxyFat.rcolHeader.internalChunks.Clear();
+                proxyFat.rcolHeader.internalChunks.Add(proxyFatKey.ToResourceKey());
+                VPXYFile proxyFit = new VPXYFile(proxyFitStream);
+                proxyFit.rcolHeader.internalChunks.Clear();
+                proxyFit.rcolHeader.internalChunks.Add(proxyFitKey.ToResourceKey());
+                VPXYFile proxyThin = new VPXYFile(proxyThinStream);
+                proxyThin.rcolHeader.internalChunks.Clear();
+                proxyThin.rcolHeader.internalChunks.Add(proxyThinKey.ToResourceKey());
+                VPXYFile proxySpecial = new VPXYFile(proxySpecialStream);
+                proxySpecial.rcolHeader.internalChunks.Clear();
+                proxySpecial.rcolHeader.internalChunks.Add(proxySpecialKey.ToResourceKey());
+
+                db.SetResourceStream(proxyFatKey.ToResourceKey(), proxyFat.Save());
+                db.SetResourceStream(proxyFitKey.ToResourceKey(), proxyFit.Save());
+                db.SetResourceStream(proxyThinKey.ToResourceKey(), proxyThin.Save());
+                db.SetResourceStream(proxySpecialKey.ToResourceKey(), proxySpecial.Save());
+
                 uint customGroup = MadScience.StringHelpers.HashFNV24(meshName);
+                keyName meshLod0 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod0"), meshName + "_lod0");
+                keyName meshLod0_1 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod0_1"), meshName + "_lod0_1");
+                keyName meshLod0_2 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod0_2"), meshName + "_lod0_2");
+                keyName meshLod0_3 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod0_3"), meshName + "_lod0_3");
+
                 keyName meshLod1 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod1"), meshName + "_lod1");
                 keyName meshLod1_1 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod1_1"), meshName + "_lod1_1");
                 keyName meshLod1_2 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod1_2"), meshName + "_lod1_2");
                 keyName meshLod1_3 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod1_3"), meshName + "_lod1_3");
                 keyName meshLod2 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod2"), meshName + "_lod2");
+                keyName meshLod2_1 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod2_1"), meshName + "_lod2_1");
+                keyName meshLod2_2 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod2_2"), meshName + "_lod2_2");
+
                 keyName meshLod3 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod3"), meshName + "_lod3");
 
                 keyName vpxyKey = new keyName(0x736884F1, 0x00000001, (ulong)customGroup);
@@ -179,11 +187,17 @@ namespace CASPartEditor
                 if (Helpers.isValidStream(vpxyStream))
                 {
 
+                    namemap.entries.Add(meshLod1.instanceId, meshName + "_lod0");
+                    namemap.entries.Add(meshLod1_1.instanceId, meshName + "_lod0_1");
+                    namemap.entries.Add(meshLod1_2.instanceId, meshName + "_lod0_2");
+                    namemap.entries.Add(meshLod1_3.instanceId, meshName + "_lod0_3");
                     namemap.entries.Add(meshLod1.instanceId, meshName + "_lod1");
                     namemap.entries.Add(meshLod1_1.instanceId, meshName + "_lod1_1");
                     namemap.entries.Add(meshLod1_2.instanceId, meshName + "_lod1_2");
                     namemap.entries.Add(meshLod1_3.instanceId, meshName + "_lod1_3");
                     namemap.entries.Add(meshLod2.instanceId, meshName + "_lod2");
+                    namemap.entries.Add(meshLod1_1.instanceId, meshName + "_lod2_1");
+                    namemap.entries.Add(meshLod1_2.instanceId, meshName + "_lod2_2");
                     namemap.entries.Add(meshLod3.instanceId, meshName + "_lod3");
                     namemap.entries.Add(vpxyKey.instanceId, meshName);
 
@@ -197,6 +211,16 @@ namespace CASPartEditor
                     vpxyfile.rcolHeader.internalChunks.Add(vpxyKey.ToResourceKey());
 
                     vpxyfile.vpxy.linkEntries.Clear();
+                    if (!String.IsNullOrEmpty(txtMeshLod0.Text))
+                    {
+                        // LOD 0
+                        VPXYEntry vpxyE = new VPXYEntry();
+                        if (!String.IsNullOrEmpty(txtMeshLod0_1.Text)) vpxyE.tgiList.Add(meshLod0_1.ToResourceKey());
+                        if (!String.IsNullOrEmpty(txtMeshLod0_2.Text)) vpxyE.tgiList.Add(meshLod0_2.ToResourceKey());
+                        if (!String.IsNullOrEmpty(txtMeshLod0_3.Text)) vpxyE.tgiList.Add(meshLod0_3.ToResourceKey());
+                        vpxyE.tgiList.Add(meshLod0.ToResourceKey());
+                        vpxyfile.vpxy.linkEntries.Add(vpxyE);
+                    }
                     if (!String.IsNullOrEmpty(txtMeshLod1.Text))
                     {
                         // LOD 1
@@ -211,6 +235,8 @@ namespace CASPartEditor
                     {
                         // LOD 2
                         VPXYEntry vpxyE = new VPXYEntry();
+                        if (!String.IsNullOrEmpty(txtMeshLod2_1.Text)) vpxyE.tgiList.Add(meshLod2_1.ToResourceKey());
+                        if (!String.IsNullOrEmpty(txtMeshLod2_2.Text)) vpxyE.tgiList.Add(meshLod2_2.ToResourceKey());
                         vpxyE.tgiList.Add(meshLod2.ToResourceKey());
                         vpxyfile.vpxy.linkEntries.Add(vpxyE);
                     }
@@ -224,7 +250,15 @@ namespace CASPartEditor
                     
                     vpxyfile.vpxy.keytable.keys.Clear();
 
-                    vpxyfile.vpxy.numTypeZero = 1;
+                    // If a Hair or an Accessory then set the vpxy start to 0 else starts at 1
+                    if (checkedListType.GetItemChecked(0) == true || checkedListType.GetItemChecked(4) == true)
+                    {
+                        vpxyfile.vpxy.numTypeZero = 0;
+                    }
+                    else
+                    {
+                        vpxyfile.vpxy.numTypeZero = 1;
+                    }
                     vpxyStream = vpxyfile.Save();
 
                     //vpxyfile.rcolHeader.internalChunks[0] = proxyFit.ToResourceKey();
@@ -259,6 +293,23 @@ namespace CASPartEditor
                         bumpMapStream.Close();
                     }
 
+                    #region Import Mesh LODs
+                    if (!String.IsNullOrEmpty(txtMeshLod0.Text.Trim()))
+                    {
+                        db.SetResourceStream(meshLod0.ToResourceKey(), saveGeom(txtMeshLod0.Text, bumpMapKey.ToResourceKey()));
+                    }
+                    if (!String.IsNullOrEmpty(txtMeshLod0_1.Text.Trim()))
+                    {
+                        db.SetResourceStream(meshLod0_1.ToResourceKey(), saveGeom(txtMeshLod0_1.Text, bumpMapKey.ToResourceKey()));
+                    }
+                    if (!String.IsNullOrEmpty(txtMeshLod0_2.Text.Trim()))
+                    {
+                        db.SetResourceStream(meshLod0_2.ToResourceKey(), saveGeom(txtMeshLod0_2.Text, bumpMapKey.ToResourceKey()));
+                    }
+                    if (!String.IsNullOrEmpty(txtMeshLod0_3.Text.Trim()))
+                    {
+                        db.SetResourceStream(meshLod0_3.ToResourceKey(), saveGeom(txtMeshLod0_3.Text, bumpMapKey.ToResourceKey()));
+                    }
                     
                     if (!String.IsNullOrEmpty(txtMeshLod1.Text.Trim()))
                     {
@@ -284,12 +335,21 @@ namespace CASPartEditor
                     {
                         db.SetResourceStream(meshLod2.ToResourceKey(), saveGeom(txtMeshLod2.Text, bumpMapKey.ToResourceKey()));
                     }
+                    if (!String.IsNullOrEmpty(txtMeshLod2_1.Text.Trim()))
+                    {
+                        db.SetResourceStream(meshLod2_1.ToResourceKey(), saveGeom(txtMeshLod2_1.Text, bumpMapKey.ToResourceKey()));
+                    }
+
+                    if (!String.IsNullOrEmpty(txtMeshLod2_2.Text.Trim()))
+                    {
+                        db.SetResourceStream(meshLod2_2.ToResourceKey(), saveGeom(txtMeshLod2_2.Text, bumpMapKey.ToResourceKey()));
+                    }
 
                     if (!String.IsNullOrEmpty(txtMeshLod3.Text.Trim()))
                     {
                         db.SetResourceStream(meshLod3.ToResourceKey(), saveGeom(txtMeshLod3.Text, bumpMapKey.ToResourceKey()));
                     }
-                    
+                    #endregion
                 }
 
             }
