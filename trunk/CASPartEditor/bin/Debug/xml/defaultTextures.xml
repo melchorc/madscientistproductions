@@ -28,17 +28,17 @@
   <texture flags="cmfBody_n" instanceid="A50790B91BBD15A2" />
   <texture flags="cmfBody_s" instanceid="A50790B91BBD15BF" />
   
-  <texture flags="tfBody_m" instanceid="659D7229A87C7A03" />
-  <texture flags="tfBody_n" instanceid="B4CDC208D8D51BF3" /> <!-- Same as yf, for now -->
-  <texture flags="tfBody_s" instanceid="659D7229A87C7A1D" />
+  <texture flags="tfBody_m" instanceid="B4CDC208D8D51BF0" /> <!-- Same as adult -->
+  <texture flags="tfBody_n" instanceid="B4CDC208D8D51BF3" /> <!-- Same as adult -->
+  <texture flags="tfBody_s" instanceid="B4CDC208D8D51BEE" /> <!-- Same as adult -->
   
   <texture flags="tmBody_m" instanceid="4DB46D1662895FC3" /> <!-- Same as adult -->
   <texture flags="tmBody_n" instanceid="4DB46D1662895FC0" /> <!-- Same as adult -->
-  <texture flags="tmBody_s" instanceid="1DE6CF6D6C84692E" />
+  <texture flags="tmBody_s" instanceid="1DE6CF6D6C84692E" /> <!-- Same as adult -->
   
-  <texture flags="yfBody_m" instanceid="B4CDC208D8D51BF0" />
-  <texture flags="yfBody_n" instanceid="B4CDC208D8D51BF3" />
-  <texture flags="yfBody_s" instanceid="B4CDC208D8D51BEE" />
+  <texture flags="yfBody_m" instanceid="B4CDC208D8D51BF0" /> <!-- Same as adult -->
+  <texture flags="yfBody_n" instanceid="B4CDC208D8D51BF3" /> <!-- Same as adult -->
+  <texture flags="yfBody_s" instanceid="B4CDC208D8D51BEE" /> <!-- Same as adult -->
 
   <texture flags="ymBody_m" instanceid="4DB46D1662895FC3" /> <!-- Same as adult -->
   <texture flags="ymBody_n" instanceid="4DB46D1662895FC0" /> <!-- Same as adult -->
@@ -52,13 +52,13 @@
   <texture flags="amBody_n" instanceid="4DB46D1662895FC0" />
   <texture flags="amBody_s" instanceid="4DB46D1662895FDD" />
 
-  <texture flags="efBody_m" instanceid="798410349B50700C" />
-  <texture flags="efBody_n" instanceid="798410349B50700F" />
-  <texture flags="efBody_s" instanceid="798410349B507012" />
+  <texture flags="efBody_m" instanceid="B4CDC208D8D51BF0" /> <!-- Same as adult -->
+  <texture flags="efBody_n" instanceid="B4CDC208D8D51BF3" /> <!-- Same as adult -->
+  <texture flags="efBody_s" instanceid="B4CDC208D8D51BEE" /> <!-- Same as adult -->
 
-  <texture flags="emBody_m" instanceid="9121FA3B0B65C88F" />
-  <texture flags="emBody_n" instanceid="9121FA3B0B65C88C" />
-  <texture flags="emBody_s" instanceid="9121FA3B0B65C891" />
+  <texture flags="emBody_m" instanceid="4DB46D1662895FC3" /> <!-- Same as adult -->
+  <texture flags="emBody_n" instanceid="4DB46D1662895FC0" /> <!-- Same as adult -->
+  <texture flags="emBody_s" instanceid="4DB46D1662895FDD" /> <!-- Same as adult -->
   
   <texture flags="pfFace_m" instanceid="F27771ADAE43381F" />
   <texture flags="pfFace_n" instanceid="F27771ADAE43381C" />
