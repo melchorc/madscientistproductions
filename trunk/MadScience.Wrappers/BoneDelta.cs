@@ -38,8 +38,8 @@ namespace MadScience.Wrappers
             }
             if (this.rcolHeader.externalChunks.Count == 0 && this.rcolHeader.internalChunks.Count == 0)
             {
-                throw new Exception("You must have a valid RCOL header");
-                //return;
+                //throw new Exception("You must have a valid RCOL header");
+                return;
             }
 
             this.rcolHeader.Save(output);
