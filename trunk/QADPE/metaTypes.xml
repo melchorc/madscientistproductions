@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<typesToMeta>
+<entry key="11431015">
+<longName>Skin Controller (Bones)</longName>
+</entry>
+<entry key="11720834">
+<shortName>dds</shortName>
+<longName>dds Image</longName>
+</entry>
+<entry key="16807867">
+<longName>audio mp3</longName>
+</entry>
+<entry key="16807876">
+<longName>audio wav</longName>
+</entry>
+<entry key="16807882">
+<longName>audio xa</longName>
+</entry>
+<entry key="22681673">
+<shortName>geom</shortName>
+<longName>Geometry Scenegraph</longName>
+</entry>
+<entry key="23462796">
+<shortName>nmap</shortName>
+<longName>Key Name Map</longName>
+</entry>
+<entry key="23466547">
+<shortName>modl</shortName>
+<longName>Model MODL Scenegraph</longName>
+</entry>
+<entry key="30467933">
+<shortName>matd</shortName>
+<longName>Material Definition MATD Scenegraph</longName>
+</entry>
+<entry key="30478132">
+<shortName>mlod</shortName>
+<longName>MLOD Scenegraph</longName>
+</entry>
+<entry key="33659250">
+<shortName>mtst</shortName>
+<longName>MTST Scenegraph</longName>
+</entry>
+<entry key="35487372">
+<longName>SpeedTree Data (spt2) TREE Scenegraph (SpeedTree)</longName>
+</entry>
+<entry key="39620774">
+<shortName>css</shortName>
+<longName>css</longName>
+</entry>
+<entry key="39622070">
+<shortName>layout</shortName>
+<longName>UI Layout</longName>
+</entry>
+<entry key="39769844">
+<shortName>xml</shortName>
+<longName>Sim Outfit</longName>
+</entry>
+<entry key="43922235">
+<longName>audio voice (controllers)</longName>
+</entry>
+<entry key="46788594">
+<longName>audio submix (mixers)</longName>
+</entry>
+<entry key="47570707">
+<longName>State Machine (.Jazz Data) (Interactions)</longName>
+</entry>
+<entry key="47985727">
+<shortName>objk</shortName>
+<longName>Object Key (Actual Object File)</longName>
+</entry>
+<entry key="53633251">
+<longName>Track Mask (TkMk) Scenegraph</longName>
+</entry>
+<entry key="53690476">
+<shortName>xml</shortName>
+<longName>XML</longName>
+</entry>
+<entry key="54137909">
+<longName>Texture Compositor property files</longName>
+</entry>
+<entry key="54635721">
+<longName>Texture Fabric property files</longName>
+</entry>
+<entry key="55242443">
+<longName>CAS Part Data xml</longName>
+</entry>
+<entry key="55959718">
+<longName>Bone Delta Pose (SLOT adjustors)</longName>
+</entry>
+<entry key="56144010">
+<longName>Facial Blend (Face Parts)</longName>
+</entry>
+<entry key="62078431">
+<shortName>mod</shortName>
+<longName>Interaction Tuning xml</longName>
+</entry>
+<entry key="62178845">
+<shortName>lite</shortName>
+<longName>Lighting Data Scenegraph</longName>
+</entry>
+<entry key="64515748">
+<longName>Details (world)</longName>
+</entry>
+<entry key="68746794">
+<longName>Catalog Fences</longName>
+</entry>
+<entry key="72016144">
+<shortName>xml</shortName>
+<longName>Complate Preset</longName>
+</entry>
+<entry key="77374669">
+<longName>Catalog Stairs</longName>
+</entry>
+<entry key="77912401">
+<longName>World Detail</longName>
+</entry>
+<entry key="78405011">
+<longName>Catalog Proxy Products</longName>
+</entry>
+<entry key="78841449">
+<longName>Catalog Terrain Tools</longName>
+</entry>
+<entry key="80052483">
+<longName>Catalog Railings</longName>
+</entry>
+<entry key="82660274">
+<longName>Catalog Terrain Paint</longName>
+</entry>
+<entry key="83086337">
+<longName>Catalog Fireplaces</longName>
+</entry>
+<entry key="83169331">
+<longName>Sim Bin Outfit (new binary data xml for clothing/mask</longName>
+</entry>
+<entry key="85848797">
+<longName>Compound Blend (Face Piece Preset)</longName>
+</entry>
+<entry key="92316340">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="92316341">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="92316342">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="92316366">
+<shortName>png</shortName>
+<longName>snapshot (png) (small)</longName>
+</entry>
+<entry key="92316367">
+<shortName>png</shortName>
+<longName>snapshot (png) (large)</longName>
+</entry>
+<entry key="92920900">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="92920901">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="92920902">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="95516312">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="95516313">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="95516314">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="95532324">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="95532325">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="95532326">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="92316365">
+<shortName>png</shortName>
+<longName>Unknown PNG</longName>
+</entry>
+<entry key="99422758">
+<longName>Reference Store file</longName>
+</entry>
+<entry key="100969434">
+<shortName>xml</shortName>
+<longName>Dreams and Promises Tress (.dreamtree)</longName>
+</entry>
+<entry key="101398796">
+<longName>Catalog Water</longName>
+</entry>
+<entry key="103580164">
+<shortName>bblend</shortName>
+<longName>Body Blend (outfit parts)</longName>
+</entry>
+<entry key="103718624">
+<longName>ttf font</longName>
+</entry>
+<entry key="103718624">
+<longName>otf font</longName>
+</entry>
+<entry key="103718624">
+<longName>ttc font</longName>
+</entry>
+<entry key="103965203">
+<longName>Object Colour Info (xml file links, plus a bit</longName>
+</entry>
+<entry key="107542056">
+<longName>World Description Details</longName>
+</entry>
+<entry key="107542073">
+<longName>World Description Image Path</longName>
+</entry>
+<entry key="108833297">
+<shortName>bgeo</shortName>
+<longName>Blend Geometry</longName>
+</entry>
+<entry key="439484877">
+<longName>Tuning Override (mod) xml</longName>
+</entry>
+<entry key="529034925">
+<longName>ini</longName>
+</entry>
+<entry key="570775514">
+<longName>STBL String Table (Languages)</longName>
+</entry>
+<entry key="643032008">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="643032009">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="643032010">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="759334128">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="759334129">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="759334130">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="779470692">
+<shortName>png</shortName>
+<longName>png icon</longName>
+</entry>
+<entry key="779470693">
+<shortName>png</shortName>
+<longName>png icon</longName>
+</entry>
+<entry key="779470694">
+<shortName>png</shortName>
+<longName>png icon</longName>
+</entry>
+<entry key="796721154">
+<longName>jpg</longName>
+</entry>
+<entry key="796721154">
+<longName>jpeg</longName>
+</entry>
+<entry key="796721156">
+<shortName>png</shortName>
+<longName>png</longName>
+</entry>
+<entry key="796721158">
+<longName>tga</longName>
+</entry>
+<entry key="796721160">
+<longName>UI Texture UV</longName>
+</entry>
+<entry key="832458525">
+<shortName>objd</shortName>
+<longName>CT Product Object (Catalog Object Definition)</longName>
+</entry>
+<entry key="1365025997">
+<longName>Catalog Walls</longName>
+</entry>
+<entry key="1575607200">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="1575607201">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="1575607202">
+<shortName>png</shortName>
+<longName>png thumb</longName>
+</entry>
+<entry key="1651466444">
+<shortName>png</shortName>
+<longName>png cas thumb</longName>
+</entry>
+<entry key="1651466445">
+<shortName>png</shortName>
+<longName>png cas thumb</longName>
+</entry>
+<entry key="1651466446">
+<shortName>png</shortName>
+<longName>png cas thumb</longName>
+</entry>
+<entry key="1671642791">
+<shortName>anim</shortName>
+<longName>ANIM Scenegraph (Animated Texture)</longName>
+</entry>
+<entry key="107542069">
+<longName>World Description Image (png)</longName>
+</entry>
+<entry key="1802339197">
+<shortName>png</shortName>
+<longName>snapshot (png)</longName>
+</entry>
+<entry key="1802339198">
+<shortName>png</shortName>
+<longName>snapshot (png)</longName>
+</entry>
+<entry key="1802339199">
+<shortName>png</shortName>
+<longName>snapshot (png)</longName>
+</entry>
+<entry key="1936229617">
+<shortName>vpxy</shortName>
+<longName>Visual Proxy Scenegraph</longName>
+</entry>
+<entry key="1944665835">
+<shortName>xml</shortName>
+<longName>package manifest</longName>
+</entry>
+<entry key="2154832445">
+<longName>Audio Tuners</longName>
+</entry>
+<entry key="2415624438">
+<shortName>dds</shortName>
+<longName>DDS image (InGame Ad Textures)</longName>
+</entry>
+<entry key="2438063804">
+<longName>Catalog Wall Styles</longName>
+</entry>
+<entry key="2448276798">
+<longName>Catalog Roof Styles</longName>
+</entry>
+<entry key="2982943478">
+<longName>Vp6/SCxI Movies</longName>
+</entry>
+<entry key="3039776853">
+<longName>Blend Unit (Face Part Linker)</longName>
+</entry>
+<entry key="3496170587">
+<longName>Lot Descriptor</longName>
+</entry>
+<entry key="3540272417">
+<shortName>rslt</shortName>
+<longName>Object Slot Scenegraphs</longName>
+</entry>
+<entry key="3548561239">
+<shortName>ftpt</shortName>
+<longName>FTPT Scenegraph</longName>
+</entry>
+<entry key="3571055589">
+<shortName>xml</shortName>
+<longName>Pattern List</longName>
+</entry>
+<entry key="3629023173">
+<shortName>png</shortName>
+<longName>png icon house small</longName>
+</entry>
+<entry key="3629023174">
+<shortName>png</shortName>
+<longName>png icon house medium</longName>
+</entry>
+<entry key="3629023175">
+<shortName>png</shortName>
+<longName>png icon house large</longName>
+</entry>
+<entry key="3653044489">
+<longName>World Description Name</longName>
+</entry>
+<entry key="4043265432">
+<shortName>cam</shortName>
+<longName>triggers</longName>
+</entry>
+<entry key="4058889606">
+<longName>Catalog Roof Materials</longName>
+</entry>
+<entry key="2393838558">
+<shortName>rig</shortName>
+<longName>Rig</longName>
+</entry>
+<entry key="1797309683">
+<longName>clip [references .ma] Animation files (a2o etc) (SoundEntry type</longName>
+</entry>
+<entry key="121612807">
+<shortName>script</shortName>
+<longName>Signed Assembly</longName>
+</entry>
+<entry key="11883242">
+<longName>Speed Tree (.spt) (Plant Splines and Data)</longName>
+</entry>
+<entry key="27600859">
+<longName>audio snr (voice/aud) (sound route?) (16bit le pcm?)</longName>
+</entry>
+<entry key="32437818">
+<longName>audio sns (fx/music) (sound send?) (16bit le pcm?)</longName>
+</entry>
+<entry key="83396964">
+<longName>Sim Export (Townie Data?)</longName>
+</entry>
+<entry key="103306152">
+<longName>Family Data</longName>
+</entry>
+<entry key="112820717">
+<longName>OBJS (world)</longName>
+</entry>
+<entry key="1293571465">
+<longName>OBJN (world)</longName>
+</entry>
+<entry key="2422433293">
+<longName>World Texture Map</longName>
+</entry>
+<entry key="3034411371">
+<longName>Inventory (Person Data?)</longName>
+</entry>
+<entry key="3931183280">
+<longName>swb Effect Resource Tree</longName>
+</entry>
+<entry key="2192848260">
+<longName>Checksum</longName>
+</entry>
+<entry key="103817841">
+<longName>Colour Info</longName>
+</entry>
+<entry key="64504770">
+<longName>Compositor Cache Entry (objectcache)</longName>
+</entry>
+<entry key="81276304">
+<longName>Compositor Cache MRU (objectcache)</longName>
+</entry>
+<entry key="103965146">
+<longName>Hair Colour Info</longName>
+</entry>
+<entry key="55925672">
+<longName>Hair Tone</longName>
+</entry>
+<entry key="979742505">
+<longName>Makeup Colour Info</longName>
+</entry>
+<entry key="3482995406">
+<longName>Modular Object</longName>
+</entry>
+<entry key="4087579504">
+<longName>Name Guid Map</longName>
+</entry>
+<entry key="204973493">
+<longName>Resource Lookup Table (links to 034aeecb files and has</longName>
+</entry>
+<entry key="2495992138">
+<longName>Signature Resource</longName>
+</entry>
+<entry key="1919433749">
+<longName>Skin Tone Preset (Short file references 0354796a)</longName>
+</entry>
+<entry key="55867754">
+<longName>Skin Tone (only several of these. contain image links)</longName>
+</entry>
+<entry key="899890729">
+<longName>World Description Hash (world)</longName>
+</entry>
+<entry key="36402540">
+<longName>World Description Name Hash (guid file from neighbourhoods)</longName>
+</entry>
+<entry key="107542064">
+<longName>World Description Num Lots (world)</longName>
+</entry>
+<entry key="114182148">
+<longName>World Meta Data (world)</longName>
+</entry>
+<entry key="4127849824">
+<longName>World Package Id (world)</longName>
+</entry>
+<entry key="106821697">
+<longName>CAS Part Cache</longName>
+</entry>
+<entry key="1318566616">
+<longName>OBJS (Object Script)</longName>
+</entry>
+<entry key="54209382">
+<longName>(file from neighbourhoods)</longName>
+</entry>
+<entry key="71775709">
+<longName>(world)</longName>
+</entry>
+<entry key="74084917">
+<longName>(world)</longName>
+</entry>
+<entry key="76158573">
+<longName>(6 byte short file. first 4 are a version)</longName>
+</entry>
+<entry key="77632131">
+<longName>(world)</longName>
+</entry>
+<entry key="77632131">
+<longName/>
+</entry>
+<entry key="82733755">
+<longName>(16 Byte short file)</longName>
+</entry>
+<entry key="83258316">
+<longName>(a short file in 3 sizes)</longName>
+</entry>
+<entry key="89203285">
+<longName>(another short file type)</longName>
+</entry>
+<entry key="89385684">
+<longName/>
+</entry>
+<entry key="90411422">
+<longName/>
+</entry>
+<entry key="97340339">
+<longName>(world)</longName>
+</entry>
+<entry key="98208502">
+<longName>(world)</longName>
+</entry>
+<entry key="98892535">
+<longName>(5 byte file with a value of 5)</longName>
+</entry>
+<entry key="100611401">
+<longName/>
+</entry>
+<entry key="100625316">
+<longName>(Giant 2d array of floats (version, x, y, -begin</longName>
+</entry>
+<entry key="101586982">
+<longName/>
+</entry>
+<entry key="101822695">
+<longName>(Bunch of 8 byte segments (count, -repeat 8 byte</longName>
+</entry>
+<entry key="104415069">
+<longName>(another short file)</longName>
+</entry>
+<entry key="106662712">
+<longName>(4 byte file, value 6)</longName>
+</entry>
+<entry key="106691756">
+<longName>(world)</longName>
+</entry>
+<entry key="106691757">
+<longName>(world)</longName>
+</entry>
+<entry key="106691758">
+<longName>(world)</longName>
+</entry>
+<entry key="114733330">
+<longName>(contains data linking to 034aeecb files)</longName>
+</entry>
+<entry key="115115134">
+<longName/>
+</entry>
+<entry key="300099734">
+<longName/>
+</entry>
+<entry key="718378482">
+<longName>(world)</longName>
+</entry>
+<entry key="825128261">
+<longName/>
+</entry>
+<entry key="875002279">
+<longName>(world)</longName>
+</entry>
+<entry key="887432316">
+<longName/>
+</entry>
+<entry key="1032205008">
+<longName>(world)</longName>
+</entry>
+<entry key="2422341632">
+<longName>(world)</longName>
+</entry>
+<entry key="2422361115">
+<longName>(world)</longName>
+</entry>
+<entry key="2422433294">
+<longName>(world)</longName>
+</entry>
+<entry key="2436071922">
+<longName/>
+</entry>
+<entry key="2498513748">
+<longName/>
+</entry>
+<entry key="2784624152">
+<longName>null file</longName>
+</entry>
+<entry key="2922985887">
+<longName>(world)</longName>
+</entry>
+<entry key="2960436454">
+<longName>(world)</longName>
+</entry>
+<entry key="2972013370">
+<longName>(big 3d array of shorts?)</longName>
+</entry>
+<entry key="2973903217">
+<longName/>
+</entry>
+<entry key="4033034633">
+<longName>(world)</longName>
+</entry>
+<entry key="4046347794">
+<longName/>
+</entry>
+<entry key="24503757">
+<longName>script (unused?)</longName>
+</entry>
+<entry key="24503769">
+<longName>scriptsym (unused?)</longName>
+</entry>
+<entry key="25276626">
+<longName>audio abk</longName>
+</entry>
+<entry key="45741666">
+<longName>audio prop</longName>
+</entry>
+<entry key="3579804847">
+<longName>lightrigs</longName>
+</entry>
+<entry key="297949376">
+<longName>ctriggers</longName>
+</entry>
+<entry key="1312748">
+<longName>Audio</longName>
+</entry>
+<entry key="5314651">
+<longName>EffectsBinary</longName>
+</entry>
+</typesToMeta>

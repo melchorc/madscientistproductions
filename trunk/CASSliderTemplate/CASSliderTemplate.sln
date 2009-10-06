@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CASSliderTemplate", "CASSliderTemplate.csproj", "{37CAFEFD-FA28-438D-8579-057E8C3530B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadScience.Wrappers", "..\madscientistproductions\MadScience.Wrappers\MadScience.Wrappers.csproj", "{82597921-C98E-4D1C-B32E-6BB2164B89AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37CAFEFD-FA28-438D-8579-057E8C3530B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37CAFEFD-FA28-438D-8579-057E8C3530B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37CAFEFD-FA28-438D-8579-057E8C3530B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37CAFEFD-FA28-438D-8579-057E8C3530B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82597921-C98E-4D1C-B32E-6BB2164B89AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82597921-C98E-4D1C-B32E-6BB2164B89AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82597921-C98E-4D1C-B32E-6BB2164B89AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82597921-C98E-4D1C-B32E-6BB2164B89AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

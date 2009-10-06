@@ -1,0 +1,159 @@
+<Configuration>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="8095" fromTop="14" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="3810" fromTop="22" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="3995" fromTop="27" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="3454" fromTop="13" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="4575" fromTop="27" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="5137" fromTop="24" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="5458" fromTop="32" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="5724" fromTop="20" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="9209" fromTop="20" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="9209" fromTop="17" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="8084" fromTop="26" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="6069" fromTop="13" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="6291" fromTop="17" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="6480" fromTop="22" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="6983" fromTop="33" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="7205" fromTop="34" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="7356" fromTop="33" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="80" fromTop="3" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="7898" fromTop="3" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="1737" fromTop="18" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="2442" fromTop="26" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="2648" fromTop="30" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="9209" fromTop="30" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="2289" fromTop="27" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="2232" fromTop="28" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="1130" fromTop="14" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="9209" fromTop="21" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="8646" fromTop="25" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="9031" fromTop="30" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="8337" fromTop="24" />
+      <File id="58D17E4B-9136-49BE-B337-17BEEB452848/f:Form1.cs" caret="9186" fromTop="33" />
+    </RecentEdits>
+  </RecentFiles>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="using" priority="0" />
+      <Item value="System" priority="1" />
+      <Item value="IO" priority="0" />
+      <Item value="private" priority="2" />
+      <Item value="string" priority="1" />
+      <Item value="SimGeomFile" priority="2" />
+      <Item value="new" priority="2" />
+      <Item value="simgeomfile" priority="4" />
+      <Item value="SimGeom" priority="0" />
+      <Item value="void" priority="0" />
+      <Item value="Stream" priority="0" />
+      <Item value="this" priority="2" />
+      <Item value="output" priority="0" />
+      <Item value="for" priority="1" />
+      <Item value="int" priority="2" />
+      <Item value="i" priority="5" />
+      <Item value="MTNFEntry" priority="1" />
+      <Item value="mtnf" priority="2" />
+      <Item value="listView1" priority="0" />
+      <Item value="Enum" priority="1" />
+      <Item value="MadScience" priority="0" />
+      <Item value="Wrappers" priority="0" />
+      <Item value="FieldTypes" priority="1" />
+      <Item value="Type" priority="0" />
+      <Item value="foreach" priority="0" />
+      <Item value="in" priority="0" />
+      <Item value="typeof" priority="0" />
+      <Item value="if" priority="4" />
+      <Item value="fieldType" priority="0" />
+      <Item value="uint" priority="0" />
+      <Item value="break" priority="2" />
+      <Item value="fieldHash" priority="0" />
+      <Item value="item" priority="2" />
+      <Item value="lstEntries" priority="1" />
+      <Item value="entryNo" priority="0" />
+      <Item value="txtMtnfDataType" priority="0" />
+      <Item value="entry" priority="5" />
+      <Item value="switch" priority="0" />
+      <Item value="case" priority="2" />
+      <Item value="txtMtnfData" priority="2" />
+      <Item value="StringBuilder" priority="1" />
+      <Item value="sb" priority="2" />
+      <Item value="null" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SimGeomEditor.Form1">
+      <Item value="simgeomfile" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:MadScience.Wrappers.SimGeomFile">
+      <Item value="simgeom" priority="5" />
+      <Item value="Save" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:MadScience.Wrappers.SimGeom">
+      <Item value="mtnfChunk" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:MadScience.Wrappers.MTNFChunk">
+      <Item value="entries" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.List`1">
+      <Item value="Count" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:MadScience.Wrappers.MTNFEntry">
+      <Item value="fieldTypeHash" priority="2" />
+      <Item value="dataType" priority="2" />
+      <Item value="dataCount" priority="0" />
+      <Item value="dwords" priority="0" />
+      <Item value="floats" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.UInt32">
+      <Item value="ToString" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.ListView">
+      <Item value="Items" priority="0" />
+      <Item value="SelectedIndices" priority="0" />
+      <Item value="SelectedItems" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.ListView+ListViewItemCollection">
+      <Item value="Clear" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Enum">
+      <Item value="GetName" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.ListViewItem">
+      <Item value="SubItems" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.ListViewItem+ListViewSubItem">
+      <Item value="Text" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="IsNullOrEmpty" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.ListViewItem+ListViewSubItemCollection">
+      <Item value="Count" priority="0" />
+      <Item value="Add" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.TextBox">
+      <Item value="Text" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Text.StringBuilder">
+      <Item value="AppendLine" priority="0" />
+      <Item value="ToString" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.ListView+SelectedListViewItemCollection">
+      <Item value="Count" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+</Configuration>
