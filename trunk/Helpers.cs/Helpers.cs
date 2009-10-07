@@ -51,11 +51,17 @@ namespace MadScience
         static Helpers()
         {
             string filelist = MadScience.Helpers.getRegistryValue("globalPackageFiles");
-            string[] arr = filelist.Split('?');
+            string[] arr = filelist.Split('?'); //The questionmark is the separator, because it can't be included in filenames
             globalPackageFiles = new BindingList<string>();
-            foreach (string a in arr)
+            foreach (string file in arr)
             {
-                globalPackageFiles.Add(a);
+                if (!String.IsNullOrEmpty(file))
+                {
+                    if (new FileInfo(file).Exists)
+                    {
+                        globalPackageFiles.Add(file);
+                    }
+                }
             }
         }
 
