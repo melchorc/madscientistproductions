@@ -518,7 +518,8 @@ namespace CASPartEditor
                 btnAddNewDesign.Enabled = true;
                 btnDeleteDesign.Enabled = true;
 
-                this.casPartNew = (casPart)casPartSrc.Copy();
+                this.casPartNew = (casPart)OX.Copyable.ObjectExtensions.Copy(casPartSrc);
+                //this.casPartNew = (casPart)casPartSrc.Copy();
                 if (this.isNew)
                 {
                     this.casPartNew.xmlChunk.Clear();

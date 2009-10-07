@@ -2431,7 +2431,8 @@ namespace CASPartEditor
                     }
                     showPatternDetails(pBrowser.selectedPattern, false);
 
-                    chunk.pattern[patternNo] = (patternDetails)pBrowser.selectedPattern.Copy();
+                    //chunk.pattern[patternNo] = (patternDetails)pBrowser.selectedPattern.Copy();
+                    chunk.pattern[patternNo] = (patternDetails)OX.Copyable.ObjectExtensions.Copy(pBrowser.selectedPattern);
                     //pBrowser.selectedPattern.Enabled = chunk.pattern[patternNo].Enabled;
 
                     generate3DTexture();
@@ -2628,7 +2629,8 @@ namespace CASPartEditor
             // Add a new XML chunk to the casPart
             xmlChunkDetails chunk = new xmlChunkDetails();
             // Copy chunk from casPartSrc index 0
-            chunk = (xmlChunkDetails)casPartSrc.xmlChunk[0].Copy();
+            //chunk = (xmlChunkDetails)casPartSrc.xmlChunk[0].Copy();
+            chunk = (xmlChunkDetails)OX.Copyable.ObjectExtensions.Copy(casPartSrc.xmlChunk[0]);
             chunk.stencil.A.Enabled = "False";
             chunk.stencil.B.Enabled = "False";
             chunk.stencil.C.Enabled = "False";
@@ -2656,7 +2658,8 @@ namespace CASPartEditor
             // Add a new XML chunk to the casPart
             xmlChunkDetails chunk = new xmlChunkDetails();
             // Copy chunk from casPartSrc index 0
-            chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.Items.Count - 1].Copy();
+            //chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.Items.Count - 1].Copy();
+            chunk = (xmlChunkDetails)OX.Copyable.ObjectExtensions.Copy(casPartNew.xmlChunk[listView1.Items.Count - 1]);
             casPartNew.xmlChunk.Add(chunk);
             casPartNew.xmlChunkRaw.Add("");
 
@@ -2682,9 +2685,8 @@ namespace CASPartEditor
                 // Add a new XML chunk to the casPart
                 xmlChunkDetails chunk = new xmlChunkDetails();
                 // Copy chunk from casPartSrc index i
-                chunk = (xmlChunkDetails)casPartSrc.xmlChunk[i].Copy();
-
-
+                //chunk = (xmlChunkDetails)casPartSrc.xmlChunk[i].Copy();
+                chunk = (xmlChunkDetails)OX.Copyable.ObjectExtensions.Copy(casPartSrc.xmlChunk[i]);
                 casPartNew.xmlChunk.Add(chunk);
                 casPartNew.xmlChunkRaw.Add("");
             }
