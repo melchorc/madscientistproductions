@@ -2691,7 +2691,7 @@ namespace CASPartEditor
             saveAsToolStripMenuItem.Enabled = true;
             listView1.Items[listView1.Items.Count - 1].Selected = true;
 
-            reloadTextures();
+            //reloadTextures();
         }
 
         private void cEnable3DPreview_CheckedChanged(object sender, EventArgs e)
