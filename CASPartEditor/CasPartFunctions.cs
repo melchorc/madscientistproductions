@@ -171,12 +171,70 @@ namespace CASPartEditor
             {
                 lstMeshTGILinks.Items.Clear();
                 SimGeomFile simgeomfile = new SimGeomFile(meshStream);
-                for (int i = 0; i < simgeomfile.simgeom.keytable.keys.Count; i++)
+
+                
+                // Always put the bumpmap in the first position and get it from the MTNF
+                //int bumpmapPos = -1;
+                //int tgiAddNo = 0;
+                for (int i = 0; i < simgeomfile.simgeom.mtnfChunk.entries.Count; i++)
+                {
+
+                    if (simgeomfile.simgeom.mtnfChunk.entries[i].fieldTypeHash == (uint)FieldTypes.NormalMap)
+                    {
+                        ListViewItem item = new ListViewItem();
+                        item.SubItems.Add(Enum.GetName(typeof(FieldTypes), simgeomfile.simgeom.mtnfChunk.entries[i].fieldTypeHash));
+                        item.Text = simgeomfile.simgeom.keytable.keys[(int)simgeomfile.simgeom.mtnfChunk.entries[i].dwords[0]].ToString();
+                        if (simgeomfile.simgeom.keytable.keys[(int)simgeomfile.simgeom.mtnfChunk.entries[i].dwords[0]].typeId == 0x00B2D882)
+                        {
+                            item.Tag = "texture";
+                        }
+                        else
+                        {
+                            item.Tag = "";
+                        }
+                        //bumpmapPos = (int)simgeomfile.simgeom.mtnfChunk.entries[i].dwords[0];
+                        lstMeshTGILinks.Items.Add(item);
+                        break;
+                    }
+                    
+                }
+
+                for (int i = 0; i < simgeomfile.simgeom.mtnfChunk.entries.Count; i++)
+                {
+                    if (simgeomfile.simgeom.mtnfChunk.entries[i].fieldTypeHash != (uint)FieldTypes.NormalMap)
+                    {
+                        foreach (uint fieldHash in Enum.GetValues(typeof(FieldTypes)))
+                        {
+                            if (fieldHash == simgeomfile.simgeom.mtnfChunk.entries[i].fieldTypeHash)
+                            {
+                                if (simgeomfile.simgeom.mtnfChunk.entries[i].dwords.Count > 0)
+                                {
+                                    ListViewItem item = new ListViewItem();
+                                    item.SubItems.Add(Enum.GetName(typeof(FieldTypes), fieldHash));
+                                    item.Text = simgeomfile.simgeom.keytable.keys[(int)simgeomfile.simgeom.mtnfChunk.entries[i].dwords[0]].ToString();
+                                    if (simgeomfile.simgeom.keytable.keys[(int)simgeomfile.simgeom.mtnfChunk.entries[i].dwords[0]].typeId == 0x00B2D882)
+                                    {
+                                        item.Tag = "texture";
+                                    }
+                                    else
+                                    {
+                                        item.Tag = "";
+                                    }
+                                    lstMeshTGILinks.Items.Add(item);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                /*
+                if (bumpmapPos > -1)
                 {
                     ListViewItem item = new ListViewItem();
-                    item.SubItems.Add("TGI #" + (i + 1));
-                    item.Text = simgeomfile.simgeom.keytable.keys[i].ToString();
-                    if (simgeomfile.simgeom.keytable.keys[i].typeId == 0x00B2D882)
+                    item.SubItems.Add("Bump Map");
+                    item.Text = simgeomfile.simgeom.keytable.keys[bumpmapPos].ToString();
+                    if (simgeomfile.simgeom.keytable.keys[bumpmapPos].typeId == 0x00B2D882)
                     {
                         item.Tag = "texture";
                     }
@@ -185,7 +243,30 @@ namespace CASPartEditor
                         item.Tag = "";
                     }
                     lstMeshTGILinks.Items.Add(item);
+                    tgiAddNo++;
                 }
+                
+                for (int i = 0; i < simgeomfile.simgeom.keytable.keys.Count; i++)
+                {
+                    if (i != bumpmapPos)
+                    {
+                        ListViewItem item = new ListViewItem();
+                        tgiAddNo++;
+                        //item.SubItems.Add("TGI #" + tgiAddNo);
+                        //item.SubItems.Add("TGI #" + (i + 1));
+                        item.Text = simgeomfile.simgeom.keytable.keys[i].ToString();
+                        if (simgeomfile.simgeom.keytable.keys[i].typeId == 0x00B2D882)
+                        {
+                            item.Tag = "texture";
+                        }
+                        else
+                        {
+                            item.Tag = "";
+                        }
+                        lstMeshTGILinks.Items.Add(item);
+                    }
+                }
+                */
             }
 
 
