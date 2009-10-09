@@ -187,17 +187,17 @@ namespace CASPartEditor
                 if (Helpers.isValidStream(vpxyStream))
                 {
 
-                    namemap.entries.Add(meshLod1.instanceId, meshName + "_lod0");
-                    namemap.entries.Add(meshLod1_1.instanceId, meshName + "_lod0_1");
-                    namemap.entries.Add(meshLod1_2.instanceId, meshName + "_lod0_2");
-                    namemap.entries.Add(meshLod1_3.instanceId, meshName + "_lod0_3");
+                    namemap.entries.Add(meshLod0.instanceId, meshName + "_lod0");
+                    namemap.entries.Add(meshLod0_1.instanceId, meshName + "_lod0_1");
+                    namemap.entries.Add(meshLod0_2.instanceId, meshName + "_lod0_2");
+                    namemap.entries.Add(meshLod0_3.instanceId, meshName + "_lod0_3");
                     namemap.entries.Add(meshLod1.instanceId, meshName + "_lod1");
                     namemap.entries.Add(meshLod1_1.instanceId, meshName + "_lod1_1");
                     namemap.entries.Add(meshLod1_2.instanceId, meshName + "_lod1_2");
                     namemap.entries.Add(meshLod1_3.instanceId, meshName + "_lod1_3");
                     namemap.entries.Add(meshLod2.instanceId, meshName + "_lod2");
-                    namemap.entries.Add(meshLod1_1.instanceId, meshName + "_lod2_1");
-                    namemap.entries.Add(meshLod1_2.instanceId, meshName + "_lod2_2");
+                    namemap.entries.Add(meshLod2_1.instanceId, meshName + "_lod2_1");
+                    namemap.entries.Add(meshLod2_2.instanceId, meshName + "_lod2_2");
                     namemap.entries.Add(meshLod3.instanceId, meshName + "_lod3");
                     namemap.entries.Add(vpxyKey.instanceId, meshName);
 
