@@ -1700,6 +1700,36 @@ namespace CASPartEditor
                         Helpers.CopyStream(bgeoStream, saveFile);
                         saveFile.Close();
 
+                        bodyBlendFitStream.Seek(0, SeekOrigin.Begin);
+                        fblend = new FacialBlend(bodyBlendFitStream);
+                        bgeoStream = KeyUtils.findKey(fblend.blendTgi, 0);
+                        bgeoStream.Seek(0, SeekOrigin.Begin);
+                        fileNameToSave = txtMeshName.Text + "_fit";
+                        saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
+                        Helpers.CopyStream(bgeoStream, saveFile);
+                        saveFile.Close();
+
+                        bodyBlendThinStream.Seek(0, SeekOrigin.Begin);
+                        fblend = new FacialBlend(bodyBlendThinStream);
+                        bgeoStream = KeyUtils.findKey(fblend.blendTgi, 0);
+                        bgeoStream.Seek(0, SeekOrigin.Begin);
+                        extension = ".blendgeom";
+                        fileNameToSave = txtMeshName.Text + "_thin";
+                        saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
+                        Helpers.CopyStream(bgeoStream, saveFile);
+                        saveFile.Close();
+
+                        bodyBlendSpecialStream.Seek(0, SeekOrigin.Begin);
+                        fblend = new FacialBlend(bodyBlendSpecialStream);
+                        bgeoStream = KeyUtils.findKey(fblend.blendTgi, 0);
+                        bgeoStream.Seek(0, SeekOrigin.Begin);
+                        extension = ".blendgeom";
+                        fileNameToSave = txtMeshName.Text + "_special";
+                        saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
+                        Helpers.CopyStream(bgeoStream, saveFile);
+                        saveFile.Close();
+
+
                         //numFound++;
                     }
                 }
