@@ -124,6 +124,30 @@ namespace CASPartEditor
                 FacialBlend bodyBlendSpecialFile = new FacialBlend(bodyBlendSpecialStream);
                 bodyBlendSpecialFile.partName = meshName + "_special";
 
+                if (debugModeToolStripMenuItem.Checked)
+                {
+                    Stream bgeoStream = KeyUtils.findKey(bodyBlendFatFile.blendTgi, 0);
+                    bgeoStream.Seek(0, SeekOrigin.Begin);
+                    bodyBlendFatFile.blendTgi = new keyName(0x067CAA11, 0x0, meshName + "_fat").ToResourceKey();
+                    db.SetResourceStream(bodyBlendFatFile.blendTgi, bgeoStream);
+
+                    bgeoStream = KeyUtils.findKey(bodyBlendFitFile.blendTgi, 0);
+                    bgeoStream.Seek(0, SeekOrigin.Begin);
+                    bodyBlendFitFile.blendTgi = new keyName(0x067CAA11, 0x0, meshName + "_fit").ToResourceKey();
+                    db.SetResourceStream(bodyBlendFitFile.blendTgi, bgeoStream);
+
+                    bgeoStream = KeyUtils.findKey(bodyBlendThinFile.blendTgi, 0);
+                    bgeoStream.Seek(0, SeekOrigin.Begin);
+                    bodyBlendThinFile.blendTgi = new keyName(0x067CAA11, 0x0, meshName + "_thin").ToResourceKey();
+                    db.SetResourceStream(bodyBlendThinFile.blendTgi, bgeoStream);
+
+                    bgeoStream = KeyUtils.findKey(bodyBlendSpecialFile.blendTgi, 0);
+                    bgeoStream.Seek(0, SeekOrigin.Begin);
+                    bodyBlendSpecialFile.blendTgi = new keyName(0x067CAA11, 0x0, meshName + "_special").ToResourceKey();
+                    db.SetResourceStream(bodyBlendSpecialFile.blendTgi, bgeoStream);
+
+                }
+
                 db.SetResourceStream(bodyBlendFit.ToResourceKey(), bodyBlendFitFile.Save());
                 db.SetResourceStream(bodyBlendFat.ToResourceKey(), bodyBlendFatFile.Save());
                 db.SetResourceStream(bodyBlendThin.ToResourceKey(), bodyBlendThinFile.Save());
