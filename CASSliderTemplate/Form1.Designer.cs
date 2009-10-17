@@ -43,6 +43,7 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.chkMale = new System.Windows.Forms.CheckBox();
             this.chkFemale = new System.Windows.Forms.CheckBox();
+            this.chkMFLink = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -79,7 +80,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(191, 256);
+            this.button1.Location = new System.Drawing.Point(191, 281);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 4;
@@ -89,7 +90,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(241, 309);
+            this.button2.Location = new System.Drawing.Point(312, 309);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(77, 29);
             this.button2.TabIndex = 5;
@@ -100,7 +101,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(28, 103);
+            this.label3.Location = new System.Drawing.Point(28, 128);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(61, 13);
             this.label3.TabIndex = 7;
@@ -109,7 +110,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(30, 206);
+            this.label4.Location = new System.Drawing.Point(30, 231);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(59, 13);
             this.label4.TabIndex = 8;
@@ -117,7 +118,7 @@
             // 
             // txtSubgroup
             // 
-            this.txtSubgroup.Location = new System.Drawing.Point(95, 203);
+            this.txtSubgroup.Location = new System.Drawing.Point(95, 228);
             this.txtSubgroup.Name = "txtSubgroup";
             this.txtSubgroup.Size = new System.Drawing.Size(127, 20);
             this.txtSubgroup.TabIndex = 9;
@@ -132,7 +133,7 @@
             "Nose",
             "Eyelashes",
             "Eyes"});
-            this.chkListCasPanelGroup.Location = new System.Drawing.Point(95, 103);
+            this.chkListCasPanelGroup.Location = new System.Drawing.Point(95, 128);
             this.chkListCasPanelGroup.Name = "chkListCasPanelGroup";
             this.chkListCasPanelGroup.Size = new System.Drawing.Size(127, 94);
             this.chkListCasPanelGroup.TabIndex = 10;
@@ -155,7 +156,7 @@
             "Nose",
             "TranslateEyes",
             "TranslateMouth"});
-            this.cmbRegionType.Location = new System.Drawing.Point(95, 229);
+            this.cmbRegionType.Location = new System.Drawing.Point(95, 254);
             this.cmbRegionType.Name = "cmbRegionType";
             this.cmbRegionType.Size = new System.Drawing.Size(127, 21);
             this.cmbRegionType.TabIndex = 11;
@@ -163,7 +164,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(45, 232);
+            this.label5.Location = new System.Drawing.Point(45, 257);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(44, 13);
             this.label5.TabIndex = 12;
@@ -193,11 +194,22 @@
             this.chkFemale.Text = "Generate Female";
             this.chkFemale.UseVisualStyleBackColor = true;
             // 
+            // chkMFLink
+            // 
+            this.chkMFLink.AutoSize = true;
+            this.chkMFLink.Location = new System.Drawing.Point(95, 103);
+            this.chkMFLink.Name = "chkMFLink";
+            this.chkMFLink.Size = new System.Drawing.Size(158, 17);
+            this.chkMFLink.TabIndex = 15;
+            this.chkMFLink.Text = "Link Male && Female to same";
+            this.chkMFLink.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(281, 285);
+            this.ClientSize = new System.Drawing.Size(289, 335);
+            this.Controls.Add(this.chkMFLink);
             this.Controls.Add(this.chkFemale);
             this.Controls.Add(this.chkMale);
             this.Controls.Add(this.label5);
@@ -236,6 +248,7 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.CheckBox chkMale;
         private System.Windows.Forms.CheckBox chkFemale;
+        private System.Windows.Forms.CheckBox chkMFLink;
     }
 }
 
