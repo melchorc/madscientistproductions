@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml.Serialization;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace BoneDeltaEditor
 {
@@ -206,16 +207,16 @@ namespace BoneDeltaEditor
             }
             txtBoneHash.Text = boneHash;
 
-            txtMinX.Text = this.bdFile.bonedelta.entries[entryNo].offset.x.ToString();
-            txtMinY.Text = this.bdFile.bonedelta.entries[entryNo].offset.y.ToString();
-            txtMinZ.Text = this.bdFile.bonedelta.entries[entryNo].offset.z.ToString();
-            txtMaxX.Text = this.bdFile.bonedelta.entries[entryNo].scale.x.ToString();
-            txtMaxY.Text = this.bdFile.bonedelta.entries[entryNo].scale.y.ToString();
-            txtMaxZ.Text = this.bdFile.bonedelta.entries[entryNo].scale.z.ToString();
-            txtQuatX.Text = this.bdFile.bonedelta.entries[entryNo].quat.x.ToString();
-            txtQuatY.Text = this.bdFile.bonedelta.entries[entryNo].quat.y.ToString();
-            txtQuatZ.Text = this.bdFile.bonedelta.entries[entryNo].quat.z.ToString();
-            txtQuatW.Text = this.bdFile.bonedelta.entries[entryNo].quat.w.ToString();
+            txtMinX.Text = this.bdFile.bonedelta.entries[entryNo].offset.x.ToString(CultureInfo.InvariantCulture);
+            txtMinY.Text = this.bdFile.bonedelta.entries[entryNo].offset.y.ToString(CultureInfo.InvariantCulture);
+            txtMinZ.Text = this.bdFile.bonedelta.entries[entryNo].offset.z.ToString(CultureInfo.InvariantCulture);
+            txtMaxX.Text = this.bdFile.bonedelta.entries[entryNo].scale.x.ToString(CultureInfo.InvariantCulture);
+            txtMaxY.Text = this.bdFile.bonedelta.entries[entryNo].scale.y.ToString(CultureInfo.InvariantCulture);
+            txtMaxZ.Text = this.bdFile.bonedelta.entries[entryNo].scale.z.ToString(CultureInfo.InvariantCulture);
+            txtQuatX.Text = this.bdFile.bonedelta.entries[entryNo].quat.x.ToString(CultureInfo.InvariantCulture);
+            txtQuatY.Text = this.bdFile.bonedelta.entries[entryNo].quat.y.ToString(CultureInfo.InvariantCulture);
+            txtQuatZ.Text = this.bdFile.bonedelta.entries[entryNo].quat.z.ToString(CultureInfo.InvariantCulture);
+            txtQuatW.Text = this.bdFile.bonedelta.entries[entryNo].quat.w.ToString(CultureInfo.InvariantCulture);
         }
 
         private void btnEntryCommit_Click(object sender, EventArgs e)
@@ -228,16 +229,16 @@ namespace BoneDeltaEditor
                     lstEntries.SelectedItems[0].SubItems[1].Text = cmbBoneList.Text;
 
                     entry.boneHash = MadScience.StringHelpers.ParseHex32("0x" + txtBoneHash.Text);
-                    entry.offset.x = Convert.ToSingle(txtMinX.Text);
-                    entry.offset.y = Convert.ToSingle(txtMinY.Text);
-                    entry.offset.z = Convert.ToSingle(txtMinZ.Text);
-                    entry.scale.x = Convert.ToSingle(txtMaxX.Text);
-                    entry.scale.y = Convert.ToSingle(txtMaxY.Text);
-                    entry.scale.z = Convert.ToSingle(txtMaxZ.Text);
-                    entry.quat.x = Convert.ToSingle(txtQuatX.Text);
-                    entry.quat.y = Convert.ToSingle(txtQuatY.Text);
-                    entry.quat.z = Convert.ToSingle(txtQuatZ.Text);
-                    entry.quat.w = Convert.ToSingle(txtQuatW.Text);
+                    entry.offset.x = Convert.ToSingle(txtMinX.Text, CultureInfo.InvariantCulture);
+                    entry.offset.y = Convert.ToSingle(txtMinY.Text, CultureInfo.InvariantCulture);
+                    entry.offset.z = Convert.ToSingle(txtMinZ.Text, CultureInfo.InvariantCulture);
+                    entry.scale.x = Convert.ToSingle(txtMaxX.Text, CultureInfo.InvariantCulture);
+                    entry.scale.y = Convert.ToSingle(txtMaxY.Text, CultureInfo.InvariantCulture);
+                    entry.scale.z = Convert.ToSingle(txtMaxZ.Text, CultureInfo.InvariantCulture);
+                    entry.quat.x = Convert.ToSingle(txtQuatX.Text, CultureInfo.InvariantCulture);
+                    entry.quat.y = Convert.ToSingle(txtQuatY.Text, CultureInfo.InvariantCulture);
+                    entry.quat.z = Convert.ToSingle(txtQuatZ.Text, CultureInfo.InvariantCulture);
+                    entry.quat.w = Convert.ToSingle(txtQuatW.Text, CultureInfo.InvariantCulture);
                     this.bdFile.bonedelta.entries[lstEntries.SelectedIndices[0]] = entry;
                     entry = null;
                 }
@@ -294,16 +295,16 @@ namespace BoneDeltaEditor
                     if (i != lstEntries.SelectedItems[0].Index)
                     {
                         MadScience.Wrappers.BoneDeltaEntry entry = this.bdFile.bonedelta.entries[i];
-                        entry.offset.x = Convert.ToSingle(txtMinX.Text);
-                        entry.offset.y = Convert.ToSingle(txtMinY.Text);
-                        entry.offset.z = Convert.ToSingle(txtMinZ.Text);
-                        entry.scale.x = Convert.ToSingle(txtMaxX.Text);
-                        entry.scale.y = Convert.ToSingle(txtMaxY.Text);
-                        entry.scale.z = Convert.ToSingle(txtMaxZ.Text);
-                        entry.quat.x = Convert.ToSingle(txtQuatX.Text);
-                        entry.quat.y = Convert.ToSingle(txtQuatY.Text);
-                        entry.quat.z = Convert.ToSingle(txtQuatZ.Text);
-                        entry.quat.w = Convert.ToSingle(txtQuatW.Text);
+                        entry.offset.x = Convert.ToSingle(txtMinX.Text, CultureInfo.InvariantCulture);
+                        entry.offset.y = Convert.ToSingle(txtMinY.Text, CultureInfo.InvariantCulture);
+                        entry.offset.z = Convert.ToSingle(txtMinZ.Text, CultureInfo.InvariantCulture);
+                        entry.scale.x = Convert.ToSingle(txtMaxX.Text, CultureInfo.InvariantCulture);
+                        entry.scale.y = Convert.ToSingle(txtMaxY.Text, CultureInfo.InvariantCulture);
+                        entry.scale.z = Convert.ToSingle(txtMaxZ.Text, CultureInfo.InvariantCulture);
+                        entry.quat.x = Convert.ToSingle(txtQuatX.Text, CultureInfo.InvariantCulture);
+                        entry.quat.y = Convert.ToSingle(txtQuatY.Text, CultureInfo.InvariantCulture);
+                        entry.quat.z = Convert.ToSingle(txtQuatZ.Text, CultureInfo.InvariantCulture);
+                        entry.quat.w = Convert.ToSingle(txtQuatW.Text, CultureInfo.InvariantCulture);
                     }
                 }
             }
