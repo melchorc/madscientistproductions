@@ -64,6 +64,7 @@ namespace MadScience.Render
                 if (renderEnabled)
                     Invalidate();
             }
+            
         }
 
         private Device d3dDevice = null;
