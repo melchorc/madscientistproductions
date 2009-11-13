@@ -333,16 +333,16 @@ namespace BoneDeltaEditor
 
         private void button3_Click(object sender, EventArgs e)
         {
-            txtMinX.Text = (-Convert.ToSingle(txtMinX.Text)).ToString();
-            txtMinY.Text = (-Convert.ToSingle(txtMinY.Text)).ToString();
-            txtMinZ.Text = (-Convert.ToSingle(txtMinZ.Text)).ToString();
-            txtMaxX.Text = (-Convert.ToSingle(txtMaxX.Text)).ToString();
-            txtMaxY.Text = (-Convert.ToSingle(txtMaxY.Text)).ToString();
-            txtMaxZ.Text = (-Convert.ToSingle(txtMaxZ.Text)).ToString();
-            txtQuatX.Text = (-Convert.ToSingle(txtQuatX.Text)).ToString();
-            txtQuatY.Text = (-Convert.ToSingle(txtQuatY.Text)).ToString();
-            txtQuatZ.Text = (-Convert.ToSingle(txtQuatZ.Text)).ToString();
-            txtQuatW.Text = (-Convert.ToSingle(txtQuatW.Text)).ToString();
+            txtMinX.Text = (-Convert.ToSingle(txtMinX.Text, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
+            txtMinY.Text = (-Convert.ToSingle(txtMinY.Text, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
+            txtMinZ.Text = (-Convert.ToSingle(txtMinZ.Text, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
+            txtMaxX.Text = (-Convert.ToSingle(txtMaxX.Text, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
+            txtMaxY.Text = (-Convert.ToSingle(txtMaxY.Text, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
+            txtMaxZ.Text = (-Convert.ToSingle(txtMaxZ.Text, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
+            txtQuatX.Text = (-Convert.ToSingle(txtQuatX.Text, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
+            txtQuatY.Text = (-Convert.ToSingle(txtQuatY.Text, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
+            txtQuatZ.Text = (-Convert.ToSingle(txtQuatZ.Text, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
+            txtQuatW.Text = (-Convert.ToSingle(txtQuatW.Text, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
         }
 
         private void selectedBoneToolStripMenuItem_Click(object sender, EventArgs e)
@@ -422,16 +422,16 @@ namespace BoneDeltaEditor
 
         private void button4_Click(object sender, EventArgs e)
         {
-            txtMinX.Text = (1 / (Convert.ToSingle(txtMinX.Text) + 1) - 1  ).ToString();
-            txtMinY.Text = (1 / (Convert.ToSingle(txtMinY.Text) + 1) - 1  ).ToString();
-            txtMinZ.Text = (1 / (Convert.ToSingle(txtMinZ.Text) + 1) - 1 ).ToString();
-            txtMaxX.Text = (1 / (Convert.ToSingle(txtMaxX.Text) + 1) - 1 ).ToString();
-            txtMaxY.Text = (1 / (Convert.ToSingle(txtMaxY.Text) + 1) - 1 ).ToString();
-            txtMaxZ.Text = (1 / (Convert.ToSingle(txtMaxZ.Text) + 1) - 1 ).ToString();
-            txtQuatX.Text = (1 / (Convert.ToSingle(txtQuatX.Text) + 1) - 1 ).ToString();
-            txtQuatY.Text = (1 / (Convert.ToSingle(txtQuatY.Text) + 1) - 1 ).ToString();
-            txtQuatZ.Text = (1 / (Convert.ToSingle(txtQuatZ.Text) + 1) - 1 ).ToString();
-            txtQuatW.Text = (1 / (Convert.ToSingle(txtQuatW.Text) + 1) - 1).ToString();
+            txtMinX.Text = (1 / (Convert.ToSingle(txtMinX.Text, CultureInfo.InvariantCulture) + 1) - 1).ToString(CultureInfo.InvariantCulture);
+            txtMinY.Text = (1 / (Convert.ToSingle(txtMinY.Text, CultureInfo.InvariantCulture) + 1) - 1).ToString(CultureInfo.InvariantCulture);
+            txtMinZ.Text = (1 / (Convert.ToSingle(txtMinZ.Text, CultureInfo.InvariantCulture) + 1) - 1).ToString(CultureInfo.InvariantCulture);
+            txtMaxX.Text = (1 / (Convert.ToSingle(txtMaxX.Text, CultureInfo.InvariantCulture) + 1) - 1).ToString(CultureInfo.InvariantCulture);
+            txtMaxY.Text = (1 / (Convert.ToSingle(txtMaxY.Text, CultureInfo.InvariantCulture) + 1) - 1).ToString(CultureInfo.InvariantCulture);
+            txtMaxZ.Text = (1 / (Convert.ToSingle(txtMaxZ.Text, CultureInfo.InvariantCulture) + 1) - 1).ToString(CultureInfo.InvariantCulture);
+            txtQuatX.Text = (1 / (Convert.ToSingle(txtQuatX.Text, CultureInfo.InvariantCulture) + 1) - 1).ToString(CultureInfo.InvariantCulture);
+            txtQuatY.Text = (1 / (Convert.ToSingle(txtQuatY.Text, CultureInfo.InvariantCulture) + 1) - 1).ToString(CultureInfo.InvariantCulture);
+            txtQuatZ.Text = (1 / (Convert.ToSingle(txtQuatZ.Text, CultureInfo.InvariantCulture) + 1) - 1).ToString(CultureInfo.InvariantCulture);
+            txtQuatW.Text = (1 / (Convert.ToSingle(txtQuatW.Text, CultureInfo.InvariantCulture) + 1) - 1).ToString(CultureInfo.InvariantCulture);
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
