@@ -31,6 +31,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -38,12 +39,17 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectedBoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.allBonesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectedBoneToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.allBonesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rCOLHeaderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtVersion = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -62,17 +68,18 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.btnEntryCopy = new System.Windows.Forms.Button();
-            this.cmbBoneList = new System.Windows.Forms.ComboBox();
             this.txtBoneHash = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.btnEntryCommit = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.lstEntries = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.button3 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -81,10 +88,11 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
+            this.toolStripStatusLabel1,
+            this.toolStripStatusLabel2});
             this.statusStrip1.Location = new System.Drawing.Point(0, 245);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(630, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(777, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 51;
             this.statusStrip1.Text = "statusStrip1";
@@ -92,9 +100,14 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(615, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(762, 17);
             this.toolStripStatusLabel1.Spring = true;
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(0, 17);
             // 
             // menuStrip1
             // 
@@ -105,7 +118,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip1.Size = new System.Drawing.Size(630, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(777, 24);
             this.menuStrip1.TabIndex = 50;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -118,10 +131,14 @@
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
             this.toolStripMenuItem1,
+            this.importToolStripMenuItem,
+            this.exportToolStripMenuItem,
+            this.toolStripMenuItem2,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
             this.fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 
             // newToolStripMenuItem
             // 
@@ -157,6 +174,57 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(122, 6);
             // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectedBoneToolStripMenuItem,
+            this.allBonesToolStripMenuItem});
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.importToolStripMenuItem.Text = "Import";
+            // 
+            // selectedBoneToolStripMenuItem
+            // 
+            this.selectedBoneToolStripMenuItem.Name = "selectedBoneToolStripMenuItem";
+            this.selectedBoneToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.selectedBoneToolStripMenuItem.Text = "Selected Bone";
+            this.selectedBoneToolStripMenuItem.Click += new System.EventHandler(this.selectedBoneToolStripMenuItem_Click);
+            // 
+            // allBonesToolStripMenuItem
+            // 
+            this.allBonesToolStripMenuItem.Name = "allBonesToolStripMenuItem";
+            this.allBonesToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.allBonesToolStripMenuItem.Text = "All Bones";
+            this.allBonesToolStripMenuItem.Click += new System.EventHandler(this.allBonesToolStripMenuItem_Click);
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectedBoneToolStripMenuItem1,
+            this.allBonesToolStripMenuItem1});
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            // 
+            // selectedBoneToolStripMenuItem1
+            // 
+            this.selectedBoneToolStripMenuItem1.Name = "selectedBoneToolStripMenuItem1";
+            this.selectedBoneToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
+            this.selectedBoneToolStripMenuItem1.Text = "Selected Bone";
+            this.selectedBoneToolStripMenuItem1.Click += new System.EventHandler(this.selectedBoneToolStripMenuItem1_Click);
+            // 
+            // allBonesToolStripMenuItem1
+            // 
+            this.allBonesToolStripMenuItem1.Name = "allBonesToolStripMenuItem1";
+            this.allBonesToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
+            this.allBonesToolStripMenuItem1.Text = "All Bones";
+            this.allBonesToolStripMenuItem1.Click += new System.EventHandler(this.allBonesToolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(122, 6);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
@@ -178,22 +246,6 @@
             this.rCOLHeaderToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.rCOLHeaderToolStripMenuItem.Text = "RCOL Header";
             this.rCOLHeaderToolStripMenuItem.Click += new System.EventHandler(this.rCOLHeaderToolStripMenuItem_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(225, 222);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 13);
-            this.label1.TabIndex = 52;
-            this.label1.Text = "Version:";
-            // 
-            // txtVersion
-            // 
-            this.txtVersion.Location = new System.Drawing.Point(276, 218);
-            this.txtVersion.Name = "txtVersion";
-            this.txtVersion.Size = new System.Drawing.Size(36, 20);
-            this.txtVersion.TabIndex = 53;
             // 
             // label5
             // 
@@ -340,11 +392,12 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.listBox1);
+            this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.btnEntryCopy);
-            this.groupBox1.Controls.Add(this.cmbBoneList);
             this.groupBox1.Controls.Add(this.txtBoneHash);
-            this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.btnEntryCommit);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.txtMinX);
@@ -365,14 +418,43 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Location = new System.Drawing.Point(219, 31);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(399, 175);
+            this.groupBox1.Size = new System.Drawing.Size(558, 211);
             this.groupBox1.TabIndex = 71;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Entry details:";
             // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(398, 13);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(147, 186);
+            this.listBox1.TabIndex = 77;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(201, 181);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 77;
+            this.button4.Text = "Invert 1/x";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(120, 181);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 76;
+            this.button3.Text = "Invert";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // btnEntryCopy
             // 
-            this.btnEntryCopy.Location = new System.Drawing.Point(9, 146);
+            this.btnEntryCopy.Location = new System.Drawing.Point(8, 181);
             this.btnEntryCopy.Name = "btnEntryCopy";
             this.btnEntryCopy.Size = new System.Drawing.Size(105, 23);
             this.btnEntryCopy.TabIndex = 75;
@@ -380,36 +462,17 @@
             this.btnEntryCopy.UseVisualStyleBackColor = true;
             this.btnEntryCopy.Click += new System.EventHandler(this.btnEntryCopy_Click);
             // 
-            // cmbBoneList
-            // 
-            this.cmbBoneList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbBoneList.FormattingEnabled = true;
-            this.cmbBoneList.Location = new System.Drawing.Point(75, 114);
-            this.cmbBoneList.Name = "cmbBoneList";
-            this.cmbBoneList.Size = new System.Drawing.Size(137, 21);
-            this.cmbBoneList.TabIndex = 74;
-            this.cmbBoneList.SelectedIndexChanged += new System.EventHandler(this.cmbBoneList_SelectedIndexChanged);
-            // 
             // txtBoneHash
             // 
-            this.txtBoneHash.Location = new System.Drawing.Point(218, 114);
+            this.txtBoneHash.Location = new System.Drawing.Point(73, 114);
             this.txtBoneHash.Name = "txtBoneHash";
             this.txtBoneHash.Size = new System.Drawing.Size(93, 20);
             this.txtBoneHash.TabIndex = 73;
             this.txtBoneHash.TextChanged += new System.EventHandler(this.txtBoneHash_TextChanged);
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(5, 117);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(66, 13);
-            this.label10.TabIndex = 72;
-            this.label10.Text = "Bone Name:";
-            // 
             // btnEntryCommit
             // 
-            this.btnEntryCommit.Location = new System.Drawing.Point(318, 146);
+            this.btnEntryCommit.Location = new System.Drawing.Point(317, 181);
             this.btnEntryCommit.Name = "btnEntryCommit";
             this.btnEntryCommit.Size = new System.Drawing.Size(75, 23);
             this.btnEntryCommit.TabIndex = 71;
@@ -471,27 +534,24 @@
             this.columnHeader2.Text = "Bone";
             this.columnHeader2.Width = 130;
             // 
-            // button3
+            // label1
             // 
-            this.button3.Location = new System.Drawing.Point(121, 146);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 76;
-            this.button3.Text = "Invert";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 117);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(63, 13);
+            this.label1.TabIndex = 78;
+            this.label1.Text = "Bone Hash:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(630, 267);
+            this.ClientSize = new System.Drawing.Size(777, 267);
             this.Controls.Add(this.lstEntries);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.txtVersion);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MaximizeBox = false;
@@ -526,8 +586,6 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rCOLHeaderToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtVersion;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -550,13 +608,22 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox txtBoneHash;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.ComboBox cmbBoneList;
         private System.Windows.Forms.ListView lstEntries;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button btnEntryCopy;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectedBoneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem allBonesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectedBoneToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem allBonesToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label label1;
     }
 }
 

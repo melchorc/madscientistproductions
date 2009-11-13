@@ -196,6 +196,7 @@
             // 
             // txtSourceDDS
             // 
+            this.txtSourceDDS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txtSourceDDS.Location = new System.Drawing.Point(246, 628);
             this.txtSourceDDS.Name = "txtSourceDDS";
             this.txtSourceDDS.Size = new System.Drawing.Size(318, 20);
@@ -203,6 +204,7 @@
             // 
             // btnBrowseDDS
             // 
+            this.btnBrowseDDS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnBrowseDDS.Location = new System.Drawing.Point(570, 626);
             this.btnBrowseDDS.Name = "btnBrowseDDS";
             this.btnBrowseDDS.Size = new System.Drawing.Size(52, 23);

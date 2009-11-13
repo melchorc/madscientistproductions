@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Drawing;
 
 namespace BoneDeltaEditor
 {
@@ -29,7 +30,14 @@ namespace BoneDeltaEditor
 
             for (int i = 0; i < this.boneList.Items.Count; i++)
             {
-                cmbBoneList.Items.Add(this.boneList.Items[i].name);
+                if (this.boneList.Items[i].hash == "00000000") { 
+                    listBox1.Items.Add(this.boneList.Items[i].name);
+                }
+                else
+                {
+                    listBox1.Items.Add("   " + this.boneList.Items[i].name);
+                }
+                //cmbBoneList.Items.Add(this.boneList.Items[i].name);
             }
 
             if (Environment.GetCommandLineArgs().Length > 1)
@@ -41,7 +49,7 @@ namespace BoneDeltaEditor
                 lstEntries.Items.Clear();
                 saveToolStripMenuItem.Enabled = false;
 
-                txtVersion.Text = this.bdFile.bonedelta.version.ToString();
+                //toolStripStatusLabel2.Text = this.bdFile.bonedelta.version.ToString();
                 button2.Enabled = false;
 
                 groupBox1.Enabled = false;
@@ -64,7 +72,7 @@ namespace BoneDeltaEditor
 
             showEntries();
 
-            txtVersion.Text = this.bdFile.bonedelta.version.ToString();
+            toolStripStatusLabel2.Text = this.bdFile.bonedelta.version.ToString();
 
             button2.Enabled = false;
         }
@@ -125,12 +133,12 @@ namespace BoneDeltaEditor
             }
             foreach (Control control in this.groupBox1.Controls)
             {
-                MadScienceSmall.Helpers.resetControl(control);
+                if (control.Name != "listBox1") MadScienceSmall.Helpers.resetControl(control);
             }
             lstEntries.Items.Clear();
             saveToolStripMenuItem.Enabled = false;
 
-            txtVersion.Text = this.bdFile.bonedelta.version.ToString();
+            toolStripStatusLabel2.Text = this.bdFile.bonedelta.version.ToString();
             button2.Enabled = false;
         }
 
@@ -170,7 +178,7 @@ namespace BoneDeltaEditor
 
         private void saveBoneDelta(Stream output)
         {
-            this.bdFile.bonedelta.version = Convert.ToUInt32(txtVersion.Text);
+            this.bdFile.bonedelta.version = Convert.ToUInt32(toolStripStatusLabel2.Text);
 
             this.bdFile.Save(output);
 
@@ -201,7 +209,11 @@ namespace BoneDeltaEditor
             {
                 if (this.boneList.Items[i].hash == boneHash)
                 {
-                    cmbBoneList.SelectedIndex = i;
+                    //cmbBoneList.SelectedIndex = i;
+                    //lstBones.Items[i].Selected = true;
+                    //lstBones.Items[i].EnsureVisible();
+                    listBox1.SelectedIndex = i;
+                    
                     break;
                 }
             }
@@ -226,7 +238,9 @@ namespace BoneDeltaEditor
                 MadScience.Wrappers.BoneDeltaEntry entry = this.bdFile.bonedelta.entries[lstEntries.SelectedIndices[0]];
                 try
                 {
-                    lstEntries.SelectedItems[0].SubItems[1].Text = cmbBoneList.Text;
+                    //lstEntries.SelectedItems[0].SubItems[1].Text = cmbBoneList.Text;
+                    //lstEntries.SelectedItems[0].SubItems[1].Text = lstBones.SelectedItems[0].Text;
+                    lstEntries.SelectedItems[0].SubItems[1].Text = listBox1.Text;
 
                     entry.boneHash = MadScience.StringHelpers.ParseHex32("0x" + txtBoneHash.Text);
                     entry.offset.x = Convert.ToSingle(txtMinX.Text, CultureInfo.InvariantCulture);
@@ -271,12 +285,7 @@ namespace BoneDeltaEditor
 
             }
         }
-
-        private void cmbBoneList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txtBoneHash.Text = this.boneList.Items[cmbBoneList.SelectedIndex].hash;
-        }
-
+         
         private void lstEntries_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstEntries.SelectedItems.Count  > 0)
@@ -316,7 +325,9 @@ namespace BoneDeltaEditor
             {
                 MadScience.Wrappers.BoneDeltaEntry entry = this.bdFile.bonedelta.entries[lstEntries.SelectedIndices[0]];
                 entry.boneHash = MadScience.StringHelpers.ParseHex32("0x" + txtBoneHash.Text);
-                lstEntries.SelectedItems[0].SubItems[1].Text = cmbBoneList.Text;
+                //lstEntries.SelectedItems[0].SubItems[1].Text = cmbBoneList.Text;
+                lstEntries.SelectedItems[0].SubItems[1].Text = listBox1.Text;
+                //lstEntries.SelectedItems[0].SubItems[1].Text = lstBones.SelectedItems[0].Text.Trim();
             }
         }
 
@@ -332,6 +343,100 @@ namespace BoneDeltaEditor
             txtQuatY.Text = (-Convert.ToSingle(txtQuatY.Text)).ToString();
             txtQuatZ.Text = (-Convert.ToSingle(txtQuatZ.Text)).ToString();
             txtQuatW.Text = (-Convert.ToSingle(txtQuatW.Text)).ToString();
+        }
+
+        private void selectedBoneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Import Selected Bone
+            if (lstEntries.SelectedItems.Count == 1)
+            {
+                // Import All Bones
+                openFileDialog1.Filter = "Bone Delta File|*.bonedelta";
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    Stream input = File.OpenRead(openFileDialog1.FileName);
+                    this.bdFile.bonedelta.entries[lstEntries.SelectedIndices[0]].Load(input);
+                    input.Close();
+
+                    showEntries();
+                }
+
+            }
+        }
+
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lstEntries.SelectedItems.Count > 0)
+            {
+                selectedBoneToolStripMenuItem.Enabled = true;
+                selectedBoneToolStripMenuItem1.Enabled = true;
+            }
+            else
+            {
+                selectedBoneToolStripMenuItem.Enabled = false;
+                selectedBoneToolStripMenuItem1.Enabled = false;
+            }
+        }
+
+        private void selectedBoneToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (lstEntries.SelectedItems.Count == 1)
+            {
+                // Export Selected Bone
+                saveFileDialog1.Filter = "Bone Delta File|*.bonedelta";
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    Stream saveFile = File.Open(saveFileDialog1.FileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                    this.bdFile.bonedelta.entries[lstEntries.SelectedIndices[0]].Save(saveFile);
+                    saveFile.Close();
+                }
+
+            }
+        }
+
+        private void allBonesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Import All Bones
+            openFileDialog1.Filter = "Bone Delta File|*.bonedelta";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Stream input = File.OpenRead(openFileDialog1.FileName);
+                this.bdFile.bonedelta.Load(input);
+                input.Close();
+
+                showEntries();
+            }
+        }
+
+        private void allBonesToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            // Export All Bones
+            saveFileDialog1.Filter = "Bone Delta File|*.bonedelta";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Stream saveFile = File.Open(saveFileDialog1.FileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                this.bdFile.bonedelta.Save(saveFile);
+                saveFile.Close();
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            txtMinX.Text = (1 / (Convert.ToSingle(txtMinX.Text) + 1) - 1  ).ToString();
+            txtMinY.Text = (1 / (Convert.ToSingle(txtMinY.Text) + 1) - 1  ).ToString();
+            txtMinZ.Text = (1 / (Convert.ToSingle(txtMinZ.Text) + 1) - 1 ).ToString();
+            txtMaxX.Text = (1 / (Convert.ToSingle(txtMaxX.Text) + 1) - 1 ).ToString();
+            txtMaxY.Text = (1 / (Convert.ToSingle(txtMaxY.Text) + 1) - 1 ).ToString();
+            txtMaxZ.Text = (1 / (Convert.ToSingle(txtMaxZ.Text) + 1) - 1 ).ToString();
+            txtQuatX.Text = (1 / (Convert.ToSingle(txtQuatX.Text) + 1) - 1 ).ToString();
+            txtQuatY.Text = (1 / (Convert.ToSingle(txtQuatY.Text) + 1) - 1 ).ToString();
+            txtQuatZ.Text = (1 / (Convert.ToSingle(txtQuatZ.Text) + 1) - 1 ).ToString();
+            txtQuatW.Text = (1 / (Convert.ToSingle(txtQuatW.Text) + 1) - 1).ToString();
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtBoneHash.Text = this.boneList.Items[listBox1.SelectedIndex].hash;
         }
 
     }

@@ -60,6 +60,7 @@ namespace MadScience.Wrappers
         NormalMapScale = 0x3c45e334,
         NormalMapUVSelector = 0x415368b4,
         NormalUVScale = 0xba2d1ab9,
+        OverlayTexture = 0x4dc0c8bc,
         PosOffset = 0x790ebf2c,
         PosScale = 0x487648e5,
         Reflective = 0x73c9923e,
@@ -108,7 +109,7 @@ namespace MadScience.Wrappers
 
     public enum ShaderType : uint
     {
-        additive = 0x5af16731,
+        Additive = 0x5af16731,
         BasinWater = 0x6aad2ad5,
         BrushedMetal = 0x3fd7990d,
         BurntTile = 0x690fdf06,
@@ -176,6 +177,7 @@ namespace MadScience.Wrappers
         ShadowMapMerged = 0xe2918799,
         SimEyes = 0xcf8a70b4,
         SimEyelashes = 0x9d9da161,
+        SimGlass = 0x5eda9cde,
         SimHair = 0x84fd7152,
         SimHairVisualizer = 0x109defb6,
         SimSilk = 0x53881019,

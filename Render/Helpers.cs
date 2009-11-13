@@ -157,6 +157,9 @@ namespace MadScience.Render
                 }
             }
 
+            Matrix blah = new Matrix();
+            
+
             for (int i = 0; i < model.numVertices; i++)
             {
                 //model.vertexData.Add(new vertex(model.vertexList[i].X, model.vertexList[i].X, model.vertexList[i].X, model.textureVertex[i].u, model.textureVertex[i].v, model.vertexNormal[i].X, model.vertexNormal[i].Y, model.vertexNormal[i].Z));

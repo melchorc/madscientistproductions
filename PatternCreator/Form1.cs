@@ -115,6 +115,7 @@ namespace PatternCreator
 
             openFileDialog1.FileName = "";
             openFileDialog1.Filter = "DDS files|*.dds";
+           
             openFileDialog1.ShowDialog();
             if (openFileDialog1.FileName != "")
             {

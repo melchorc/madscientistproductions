@@ -25,7 +25,7 @@ namespace CASSliderTemplate
             folderBrowserDialog1.Description = "Please locate the directory where you want to save this package";
             folderBrowserDialog1.ShowDialog();
 
-            txtSliderName.Text = txtSliderName.Text;
+            //txtSliderName.Text = txtSliderName.Text;
 
             // Make the instance id
             ulong instanceid = MadScience.StringHelpers.HashFNV64(txtSliderName.Text);
