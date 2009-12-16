@@ -48,6 +48,16 @@ namespace PatchLogViewer
                         }
                         //item.SubItems.Add("Patch log");
                     }
+					if (File.Exists(d.FullName + "\\{BA26FFA5-6D47-47DB-BE56-34C357B5F8CC}\\rtpatch.log"))
+					{
+						FileInfo patchLog = new FileInfo(d.FullName + "\\{BA26FFA5-6D47-47DB-BE56-34C357B5F8C}\\rtpatch.log");
+						if (patchLog.LastWriteTime > lastPatchDate)
+						{
+							lastPatchDate = patchLog.LastWriteTime;
+							lastPatchLog = patchLog.FullName;
+						}
+					}
+
                     //listView1.Items.Add(item);
 
                 }

@@ -3231,6 +3231,11 @@ namespace CASPartEditor
             txtMeshLod2_2.Text = selectLodFile();
         }
 
+		private void button22_Click(object sender, EventArgs e)
+		{
+			txtMeshLod3_1.Text = selectLodFile();
+		}
+
     }
     
     /// <remarks/>

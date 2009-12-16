@@ -202,6 +202,7 @@ namespace CASPartEditor
                 keyName meshLod2_2 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod2_2"), meshName + "_lod2_2");
 
                 keyName meshLod3 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod3"), meshName + "_lod3");
+				keyName meshLod3_1 = new keyName(0x015A1849, customGroup, (ulong)MadScience.StringHelpers.HashFNV32(meshName + "_lod3_1"), meshName + "_lod3_1");
 
                 keyName vpxyKey = new keyName(0x736884F1, 0x00000001, (ulong)customGroup);
 
@@ -223,6 +224,7 @@ namespace CASPartEditor
                     namemap.entries.Add(meshLod2_1.instanceId, meshName + "_lod2_1");
                     namemap.entries.Add(meshLod2_2.instanceId, meshName + "_lod2_2");
                     namemap.entries.Add(meshLod3.instanceId, meshName + "_lod3");
+					namemap.entries.Add(meshLod3_1.instanceId, meshName + "_lod3_1");
                     namemap.entries.Add(vpxyKey.instanceId, meshName);
 
                     //keyName proxyFit = new keyName(0x736884F1, 0x00000001, meshName + "_fit");
@@ -268,6 +270,7 @@ namespace CASPartEditor
                     {
                         // LOD 2
                         VPXYEntry vpxyE = new VPXYEntry();
+						if (!String.IsNullOrEmpty(txtMeshLod3_1.Text)) vpxyE.tgiList.Add(meshLod3_1.ToResourceKey());
                         vpxyE.tgiList.Add(meshLod3.ToResourceKey());
                         vpxyfile.vpxy.linkEntries.Add(vpxyE);
                     }
@@ -373,6 +376,11 @@ namespace CASPartEditor
                     {
                         db.SetResourceStream(meshLod3.ToResourceKey(), saveGeom(txtMeshLod3.Text, bumpMapKey.ToResourceKey()));
                     }
+					if (!String.IsNullOrEmpty(txtMeshLod3_1.Text.Trim()))
+					{
+						db.SetResourceStream(meshLod3_1.ToResourceKey(), saveGeom(txtMeshLod3_1.Text, bumpMapKey.ToResourceKey()));
+					}
+
                     #endregion
                 }
 
