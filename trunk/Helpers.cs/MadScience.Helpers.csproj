@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MadScience.Wrappers, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="OX.Copyable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\CASPartEditor\bin\Debug\OX.Copyable.dll</HintPath>
@@ -90,12 +91,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MadScience.Wrappers\MadScience.Wrappers.csproj">
-      <Project>{82597921-C98E-4D1C-B32E-6BB2164B89AD}</Project>
-      <Name>MadScience.Wrappers</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

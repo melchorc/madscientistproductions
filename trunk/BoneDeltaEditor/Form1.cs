@@ -326,7 +326,7 @@ namespace BoneDeltaEditor
                 MadScience.Wrappers.BoneDeltaEntry entry = this.bdFile.bonedelta.entries[lstEntries.SelectedIndices[0]];
                 entry.boneHash = MadScience.StringHelpers.ParseHex32("0x" + txtBoneHash.Text);
                 //lstEntries.SelectedItems[0].SubItems[1].Text = cmbBoneList.Text;
-                lstEntries.SelectedItems[0].SubItems[1].Text = listBox1.Text;
+                lstEntries.SelectedItems[0].SubItems[1].Text = listBox1.Text.Trim();
                 //lstEntries.SelectedItems[0].SubItems[1].Text = lstBones.SelectedItems[0].Text.Trim();
             }
         }

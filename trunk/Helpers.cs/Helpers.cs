@@ -181,27 +181,33 @@ namespace MadScience
 
         public static void setSims3Root()
         {
-            System.Windows.Forms.FolderBrowserDialog fBrowse = new System.Windows.Forms.FolderBrowserDialog();
-            fBrowse.Description = @"Please find your Sims 3 root (usually C:\Program Files\Electronic Arts\The Sims 3\)";
-            if (fBrowse.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                if (fBrowse.SelectedPath != "")
-                {
-                    Helpers.saveCommonRegistryValue("sims3root", fBrowse.SelectedPath);
-                    if (File.Exists(Path.Combine(fBrowse.SelectedPath, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
-                    {
-                        sims3root = fBrowse.SelectedPath;
-                        //return fBrowse.SelectedPath;
-                    }
-                    else
-                    {
-                        //return "";
-                    }
-
-                }
-
-            }
+			setSims3Root("", "FullBuild0");
         }
+
+		public static void setSims3Root(string epSuffix, string fullBuild)
+		{
+			System.Windows.Forms.FolderBrowserDialog fBrowse = new System.Windows.Forms.FolderBrowserDialog();
+			fBrowse.Description = @"Please find your Sims 3" + epSuffix + @" root (usually C:\Program Files\Electronic Arts\The Sims 3" + epSuffix + "\\)";
+			if (fBrowse.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			{
+				if (fBrowse.SelectedPath != "")
+				{
+					Helpers.saveCommonRegistryValue("sims3root" + epSuffix, fBrowse.SelectedPath);
+					if (File.Exists(Path.Combine(fBrowse.SelectedPath, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
+					{
+						//sims3root = fBrowse.SelectedPath;
+						sims3folders[epSuffix] = fBrowse.SelectedPath;
+						//return fBrowse.SelectedPath;
+					}
+					else
+					{
+						//return "";
+					}
+
+				}
+
+			}
+		}
 
         public static string getGameSubPath(string subPath)
         {
@@ -217,210 +223,228 @@ namespace MadScience
             return ret;
         }
 
-        private static string sims3root = "";
-        public static string findSims3Root()
-        {
-            //string path32 = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
-            //string path64 = "Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}"
+		private static Dictionary<string, string> sims3folders = new Dictionary<string, string>();
 
-            if (sims3root != "")
-            {
-                //Console.WriteLine("Returning already stored path");
-                return sims3root;
-            }
+		//private static string sims3root = "";
 
-            string installLocation = "";
-            try
-            {
+		public static string findSims3Root()
+		{
+			return findSims3Root("", "FullBuild0", true);
+		}
 
-                //Console.WriteLine("Attempting to get path from common registry...");
-                installLocation = Helpers.getCommonRegistryValue("sims3root");
-                if (!String.IsNullOrEmpty(installLocation))
-                {
-                    // Check install location just in case...
-                    try
-                    {
-                        if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
-                        {
-                            //Helpers.saveCommonRegistryValue("sims3root", installLocation);
-                            sims3root = installLocation;
-                            return installLocation;
-                        }
-                    }
-                    catch (DirectoryNotFoundException dex)
-                    {
-                    }
-                    catch (FileNotFoundException fex)
-                    {
-                    }
-                }
+		public static string findSims3Root(string epSuffix, string fullBuild, bool showManualPath)
+		{
+			//string path32 = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
+			//string path64 = "Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}"
 
-                //Console.WriteLine("Attempting to get path from registry...");
-                string path32 = "Software\\Sims\\The Sims 3";
-                string path64 = "Software\\Wow6432Node\\Sims\\The Sims 3";
+			if (sims3folders.ContainsKey(epSuffix))
+			//if (sims3root != "")
+			{
+				if (sims3folders[epSuffix] != "")
+				{
+					//Console.WriteLine("Returning already stored path");
+					return sims3folders[epSuffix];
+				}
+				//return sims3root;
+			}
 
-                string path32Alt = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
-                string path64Alt = "Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
+			string installLocation = "";
+			try
+			{
 
-                RegistryKey key;
-                key = Registry.LocalMachine.OpenSubKey(path32, false);
-                if (key == null)
-                {
-                    // Try Alt location
-                    key = Registry.LocalMachine.OpenSubKey(path32Alt, false);
-                    if (key == null)
-                    {
+				//Console.WriteLine("Attempting to get path from common registry...");
+				installLocation = Helpers.getCommonRegistryValue("sims3root" + epSuffix);
+				if (!String.IsNullOrEmpty(installLocation))
+				{
+					// Check install location just in case...
+					try
+					{
+						if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
+						{
+							//Helpers.saveCommonRegistryValue("sims3root", installLocation);
+							sims3folders[epSuffix] = installLocation;
+							//sims3root = installLocation;
+							return installLocation;
+						}
+					}
+					catch (DirectoryNotFoundException dex)
+					{
+					}
+					catch (FileNotFoundException fex)
+					{
+					}
+				}
 
-                        // No Key exists... check 64 bit location
-                        key = Registry.LocalMachine.OpenSubKey(path64, false);
-                        if (key == null)
-                        {
-                            key = Registry.LocalMachine.OpenSubKey(path64Alt, false);
-                            if (key == null)
-                            {
-                                // Can't find Sims 3 root - uh oh!
-                                key.Close();
-                                return "";
-                            }
-                        }
-                    }
-                }
-                installLocation = key.GetValue("Install Dir").ToString();
-                key.Close();
-            }
-            catch (Exception)
-            {
-                //MessageBox.Show(e.Message);
-            }
+				//Console.WriteLine("Attempting to get path from registry...");
+				string path32 = "Software\\Sims\\The Sims 3" + epSuffix;
+				string path64 = "Software\\Wow6432Node\\Sims\\The Sims 3" + epSuffix;
 
-            // Check to see if FullBuild0.package exists within this root
-            bool getManualPath = false;
-            if (!String.IsNullOrEmpty(installLocation))
-            {
-                try
-                {
-                    if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
-                    {
-                        Helpers.saveCommonRegistryValue("sims3root", installLocation);
-                        sims3root = installLocation;
-                        return installLocation;
-                    }
-                    else
-                    {
-                        // No FullBuild0 found, have to get a manual path
-                        getManualPath = true;
-                    }
-                }
-                catch (DirectoryNotFoundException dex)
-                {
-                    getManualPath = true;
-                }
-                catch (FileNotFoundException fex)
-                {
-                    getManualPath = true;
-                }
-            }
-            else
-            {
-                getManualPath = true;
-            }
+				string path32Alt = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
+				string path64Alt = "Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{C05D8CDB-417D-4335-A38C-A0659EDFD6B8}";
 
-            if (getManualPath)
-            {
-                getManualPath = false;
+				RegistryKey key;
+				key = Registry.LocalMachine.OpenSubKey(path32, false);
+				if (key == null)
+				{
+					// Try Alt location
+					key = Registry.LocalMachine.OpenSubKey(path32Alt, false);
+					if (key == null)
+					{
 
-                // Check for existance of XML file in the Application.Startup folder - this can be used to override
-                // paths where none can be found (ie on Macs)
-                if (File.Exists(Path.Combine(Application.StartupPath, "pathOverrides.xml")))
-                {
-                    Stream xmlStream = File.OpenRead(Path.Combine(Application.StartupPath, "pathOverrides.xml"));
-                    XmlTextReader xtr = new XmlTextReader(xmlStream);
+						// No Key exists... check 64 bit location
+						key = Registry.LocalMachine.OpenSubKey(path64, false);
+						if (key == null)
+						{
+							key = Registry.LocalMachine.OpenSubKey(path64Alt, false);
+							if (key == null)
+							{
+								// Can't find Sims 3 root - uh oh!
+								key.Close();
+								return "";
+							}
+						}
+					}
+				}
+				installLocation = key.GetValue("Install Dir").ToString();
+				key.Close();
+			}
+			catch (Exception)
+			{
+				//MessageBox.Show(e.Message);
+			}
 
-                    while (xtr.Read())
-                    {
-                        if (xtr.NodeType == XmlNodeType.Element)
-                        {
-                            switch (xtr.Name)
-                            {
-                                case "path":
-                                    xtr.MoveToAttribute("name");
-                                    switch (xtr.Value)
-                                    {
-                                        case "sims3root":
-                                            installLocation = xtr.GetAttribute("location");
-                                            break;
-                                    }
-                                    break;
-                            }
-                        }
-                    }
+			// Check to see if FullBuild0.package exists within this root
+			bool getManualPath = false;
+			if (!String.IsNullOrEmpty(installLocation))
+			{
+				try
+				{
+					if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
+					{
+						Helpers.saveCommonRegistryValue("sims3root" + epSuffix, installLocation);
+						sims3folders[epSuffix] = installLocation;
+						//sims3root = installLocation;
+						return installLocation;
+					}
+					else
+					{
+						// No FullBuild0 found, have to get a manual path
+						getManualPath = true;
+					}
+				}
+				catch (DirectoryNotFoundException dex)
+				{
+					getManualPath = true;
+				}
+				catch (FileNotFoundException fex)
+				{
+					getManualPath = true;
+				}
+			}
+			else
+			{
+				getManualPath = true;
+			}
 
-                    xtr.Close();
-                    xmlStream.Close();
+			if (showManualPath && getManualPath)
+			{
+				getManualPath = false;
 
-                    if (!String.IsNullOrEmpty(installLocation))
-                    {
-                        try
-                        {
-                            if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
-                            {
-                                Helpers.saveCommonRegistryValue("sims3root", installLocation);
-                                sims3root = installLocation;
-                                return installLocation;
-                            }
-                        }
-                        catch (DirectoryNotFoundException dex)
-                        {
-                            getManualPath = true;
-                        }
-                        catch (FileNotFoundException fex)
-                        {
-                            getManualPath = true;
-                        }
-                    }
+				// Check for existance of XML file in the Application.Startup folder - this can be used to override
+				// paths where none can be found (ie on Macs)
+				if (File.Exists(Path.Combine(Application.StartupPath, "pathOverrides.xml")))
+				{
+					Stream xmlStream = File.OpenRead(Path.Combine(Application.StartupPath, "pathOverrides.xml"));
+					XmlTextReader xtr = new XmlTextReader(xmlStream);
 
-                }
+					while (xtr.Read())
+					{
+						if (xtr.NodeType == XmlNodeType.Element)
+						{
+							switch (xtr.Name)
+							{
+								case "path":
+									xtr.MoveToAttribute("name");
+									if (xtr.Value == "sims3root" + epSuffix)
+									{
+										installLocation = xtr.GetAttribute("location");
+									}
+									break;
+							}
+						}
+					}
 
-                // If we got to this point we have to show a dialog to the user asking them where to find the sims3root
+					xtr.Close();
+					xmlStream.Close();
 
-                System.Windows.Forms.FolderBrowserDialog fBrowse = new System.Windows.Forms.FolderBrowserDialog();
-                fBrowse.Description = @"Please find your Sims 3 root (usually C:\Program Files\Electronic Arts\The Sims 3\)";
-                if (fBrowse.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    if (fBrowse.SelectedPath != "")
-                    {
-                        try
-                        {
-                            if (File.Exists(Path.Combine(fBrowse.SelectedPath, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package"))))
-                            {
-                                Helpers.saveCommonRegistryValue("sims3root", fBrowse.SelectedPath);
-                                sims3root = fBrowse.SelectedPath;
-                                return fBrowse.SelectedPath;
-                            }
-                            else
-                            {
-                                return "";
-                            }
-                        }
-                        catch (DirectoryNotFoundException dex)
-                        {
-                            getManualPath = true;
-                        }
-                        catch (FileNotFoundException fex)
-                        {
-                            getManualPath = true;
-                        }
-                    }
+					if (!String.IsNullOrEmpty(installLocation))
+					{
+						try
+						{
+							if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
+							{
+								Helpers.saveCommonRegistryValue("sims3root" + epSuffix, installLocation);
+								sims3folders[epSuffix] = installLocation;
+								//sims3root = installLocation;
+								return installLocation;
+							}
+						}
+						catch (DirectoryNotFoundException dex)
+						{
+							getManualPath = true;
+						}
+						catch (FileNotFoundException fex)
+						{
+							getManualPath = true;
+						}
+					}
 
-                }
+				}
 
-            }
+				// If we got to this point we have to show a dialog to the user asking them where to find the sims3root
 
-            sims3root = installLocation;
-            return installLocation;
-        }
+				System.Windows.Forms.FolderBrowserDialog fBrowse = new System.Windows.Forms.FolderBrowserDialog();
+				fBrowse.Description = @"Please find your Sims 3" + epSuffix + @" root (usually C:\Program Files\Electronic Arts\The Sims 3" + epSuffix + "\\) ";
+				fBrowse.Description += "NOTE: This is NOT where your Sims3.exe file is!";
+				if (fBrowse.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				{
+					if (fBrowse.SelectedPath != "")
+					{
+						try
+						{
+							if (File.Exists(Path.Combine(fBrowse.SelectedPath, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
+							{
+								Helpers.saveCommonRegistryValue("sims3root" + epSuffix, fBrowse.SelectedPath);
+								sims3folders[epSuffix] = fBrowse.SelectedPath;
+								//sims3root = fBrowse.SelectedPath;
+								return fBrowse.SelectedPath;
+							}
+							else
+							{
+								return "";
+							}
+						}
+						catch (DirectoryNotFoundException dex)
+						{
+							getManualPath = true;
+						}
+						catch (FileNotFoundException fex)
+						{
+							getManualPath = true;
+						}
+					}
 
-        #endregion
+				}
+
+			}
+
+			//sims3root = installLocation;
+			//sims3folders[epSuffix] = installLocation;
+			return installLocation;
+		}
+
+		#endregion
+
 
         #region License and other functions
         public static void checkAndShowLicense(string productName)
