@@ -432,21 +432,10 @@ namespace CASSliderTemplate
             Stream packageFile = File.Create(folderBrowserDialog1.SelectedPath + "\\" + txtSliderName.Text + ".package");
             Database db = new Database(packageFile, false);
 
-            for (int i = 0; i < 22; i++)
+            for (int i = 0; i < 23; i++)
             {
                 ulong actualKey = (ulong)(i * 72057594037927936) + instance32;
-                switch (i)
-                {
-                    case 1:
-                    case 2:
-                    case 12:
-                    case 13:
-                    case 20:
-                        break;
-                    default:
-                        db.SetResourceStream(new ResourceKey(0x220557DA, 0, actualKey), stblFile);
-                        break;
-                }
+                db.SetResourceStream(new ResourceKey(0x220557DA, 0, actualKey), stblFile);
             }
 
             //db.SetResourceStream(stblKey, stblFile);
