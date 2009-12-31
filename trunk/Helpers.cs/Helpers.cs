@@ -346,6 +346,12 @@ namespace MadScience
 				getManualPath = true;
 			}
 
+			// Show Manual Path is not set, but we can't find a valid install... so return nothing
+			if (!showManualPath && getManualPath)
+			{
+				return "";
+			}
+
 			if (showManualPath && getManualPath)
 			{
 				getManualPath = false;

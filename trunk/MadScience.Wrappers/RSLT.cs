@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Globalization;
 
 namespace MadScience.Wrappers
 {
@@ -127,6 +128,10 @@ namespace MadScience.Wrappers
 			for (int i = 0; i < count2; i++)
 			{
 				this.Containers[i].boneName = StreamHelpers.ReadValueU32(input);
+			}
+			for (int i = 0; i < count2; i++)
+			{
+				this.Containers[i].flags = StreamHelpers.ReadValueU32(input);
 			}
 			for (int i = 0; i < count2; i++)
 			{
