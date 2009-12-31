@@ -43,8 +43,8 @@
 			this.lstRoutes = new System.Windows.Forms.ListView();
 			this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
 			this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-			this.button1 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
+			this.btnRouteAdd = new System.Windows.Forms.Button();
+			this.btnRouteDelete = new System.Windows.Forms.Button();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.txtMatrix34 = new System.Windows.Forms.TextBox();
 			this.txtMatrix33 = new System.Windows.Forms.TextBox();
@@ -66,21 +66,21 @@
 			this.lstContainers = new System.Windows.Forms.ListView();
 			this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
 			this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-			this.button3 = new System.Windows.Forms.Button();
-			this.button4 = new System.Windows.Forms.Button();
+			this.btnContainerAdd = new System.Windows.Forms.Button();
+			this.btnContainerDelete = new System.Windows.Forms.Button();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.lstEffects = new System.Windows.Forms.ListView();
 			this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
 			this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
-			this.button5 = new System.Windows.Forms.Button();
-			this.button6 = new System.Windows.Forms.Button();
+			this.btnEffectAdd = new System.Windows.Forms.Button();
+			this.btnEffectDelete = new System.Windows.Forms.Button();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
 			this.lstIKTargets = new System.Windows.Forms.ListView();
 			this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
 			this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
-			this.button7 = new System.Windows.Forms.Button();
-			this.button8 = new System.Windows.Forms.Button();
-			this.button9 = new System.Windows.Forms.Button();
+			this.btnIKTargetAdd = new System.Windows.Forms.Button();
+			this.btnIKTargetDelete = new System.Windows.Forms.Button();
+			this.btnCommit = new System.Windows.Forms.Button();
 			this.txtSlotName = new System.Windows.Forms.TextBox();
 			this.txtBoneName = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
@@ -206,26 +206,27 @@
 			this.columnHeader4.Text = "Slot Name";
 			this.columnHeader4.Width = 150;
 			// 
-			// button1
+			// btnRouteAdd
 			// 
-			this.button1.Location = new System.Drawing.Point(150, 275);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 23);
-			this.button1.TabIndex = 44;
-			this.button1.Text = "Add Item";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.btnRouteAdd.Enabled = false;
+			this.btnRouteAdd.Location = new System.Drawing.Point(150, 275);
+			this.btnRouteAdd.Name = "btnRouteAdd";
+			this.btnRouteAdd.Size = new System.Drawing.Size(75, 23);
+			this.btnRouteAdd.TabIndex = 44;
+			this.btnRouteAdd.Text = "Add Item";
+			this.btnRouteAdd.UseVisualStyleBackColor = true;
+			this.btnRouteAdd.Click += new System.EventHandler(this.btnRouteAdd_Click);
 			// 
-			// button2
+			// btnRouteDelete
 			// 
-			this.button2.Enabled = false;
-			this.button2.Location = new System.Drawing.Point(8, 275);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(91, 23);
-			this.button2.TabIndex = 45;
-			this.button2.Text = "Delete Item";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click_1);
+			this.btnRouteDelete.Enabled = false;
+			this.btnRouteDelete.Location = new System.Drawing.Point(8, 275);
+			this.btnRouteDelete.Name = "btnRouteDelete";
+			this.btnRouteDelete.Size = new System.Drawing.Size(91, 23);
+			this.btnRouteDelete.TabIndex = 45;
+			this.btnRouteDelete.Text = "Delete Item";
+			this.btnRouteDelete.UseVisualStyleBackColor = true;
+			this.btnRouteDelete.Click += new System.EventHandler(this.btnRouteDelete_Click);
 			// 
 			// groupBox3
 			// 
@@ -378,8 +379,8 @@
 			// tabPage1
 			// 
 			this.tabPage1.Controls.Add(this.lstRoutes);
-			this.tabPage1.Controls.Add(this.button1);
-			this.tabPage1.Controls.Add(this.button2);
+			this.tabPage1.Controls.Add(this.btnRouteAdd);
+			this.tabPage1.Controls.Add(this.btnRouteDelete);
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -391,8 +392,8 @@
 			// tabPage2
 			// 
 			this.tabPage2.Controls.Add(this.lstContainers);
-			this.tabPage2.Controls.Add(this.button3);
-			this.tabPage2.Controls.Add(this.button4);
+			this.tabPage2.Controls.Add(this.btnContainerAdd);
+			this.tabPage2.Controls.Add(this.btnContainerDelete);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -427,30 +428,33 @@
 			this.columnHeader2.Text = "Slot Name";
 			this.columnHeader2.Width = 150;
 			// 
-			// button3
+			// btnContainerAdd
 			// 
-			this.button3.Location = new System.Drawing.Point(150, 275);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(75, 23);
-			this.button3.TabIndex = 47;
-			this.button3.Text = "Add Item";
-			this.button3.UseVisualStyleBackColor = true;
+			this.btnContainerAdd.Enabled = false;
+			this.btnContainerAdd.Location = new System.Drawing.Point(150, 275);
+			this.btnContainerAdd.Name = "btnContainerAdd";
+			this.btnContainerAdd.Size = new System.Drawing.Size(75, 23);
+			this.btnContainerAdd.TabIndex = 47;
+			this.btnContainerAdd.Text = "Add Item";
+			this.btnContainerAdd.UseVisualStyleBackColor = true;
+			this.btnContainerAdd.Click += new System.EventHandler(this.btnContainerAdd_Click);
 			// 
-			// button4
+			// btnContainerDelete
 			// 
-			this.button4.Enabled = false;
-			this.button4.Location = new System.Drawing.Point(8, 275);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(91, 23);
-			this.button4.TabIndex = 48;
-			this.button4.Text = "Delete Item";
-			this.button4.UseVisualStyleBackColor = true;
+			this.btnContainerDelete.Enabled = false;
+			this.btnContainerDelete.Location = new System.Drawing.Point(8, 275);
+			this.btnContainerDelete.Name = "btnContainerDelete";
+			this.btnContainerDelete.Size = new System.Drawing.Size(91, 23);
+			this.btnContainerDelete.TabIndex = 48;
+			this.btnContainerDelete.Text = "Delete Item";
+			this.btnContainerDelete.UseVisualStyleBackColor = true;
+			this.btnContainerDelete.Click += new System.EventHandler(this.btnContainerDelete_Click);
 			// 
 			// tabPage3
 			// 
 			this.tabPage3.Controls.Add(this.lstEffects);
-			this.tabPage3.Controls.Add(this.button5);
-			this.tabPage3.Controls.Add(this.button6);
+			this.tabPage3.Controls.Add(this.btnEffectAdd);
+			this.tabPage3.Controls.Add(this.btnEffectDelete);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -485,30 +489,33 @@
 			this.columnHeader6.Text = "Slot Name";
 			this.columnHeader6.Width = 150;
 			// 
-			// button5
+			// btnEffectAdd
 			// 
-			this.button5.Location = new System.Drawing.Point(150, 275);
-			this.button5.Name = "button5";
-			this.button5.Size = new System.Drawing.Size(75, 23);
-			this.button5.TabIndex = 47;
-			this.button5.Text = "Add Item";
-			this.button5.UseVisualStyleBackColor = true;
+			this.btnEffectAdd.Enabled = false;
+			this.btnEffectAdd.Location = new System.Drawing.Point(150, 275);
+			this.btnEffectAdd.Name = "btnEffectAdd";
+			this.btnEffectAdd.Size = new System.Drawing.Size(75, 23);
+			this.btnEffectAdd.TabIndex = 47;
+			this.btnEffectAdd.Text = "Add Item";
+			this.btnEffectAdd.UseVisualStyleBackColor = true;
+			this.btnEffectAdd.Click += new System.EventHandler(this.btnEffectAdd_Click);
 			// 
-			// button6
+			// btnEffectDelete
 			// 
-			this.button6.Enabled = false;
-			this.button6.Location = new System.Drawing.Point(8, 275);
-			this.button6.Name = "button6";
-			this.button6.Size = new System.Drawing.Size(91, 23);
-			this.button6.TabIndex = 48;
-			this.button6.Text = "Delete Item";
-			this.button6.UseVisualStyleBackColor = true;
+			this.btnEffectDelete.Enabled = false;
+			this.btnEffectDelete.Location = new System.Drawing.Point(8, 275);
+			this.btnEffectDelete.Name = "btnEffectDelete";
+			this.btnEffectDelete.Size = new System.Drawing.Size(91, 23);
+			this.btnEffectDelete.TabIndex = 48;
+			this.btnEffectDelete.Text = "Delete Item";
+			this.btnEffectDelete.UseVisualStyleBackColor = true;
+			this.btnEffectDelete.Click += new System.EventHandler(this.btnEffectDelete_Click);
 			// 
 			// tabPage4
 			// 
 			this.tabPage4.Controls.Add(this.lstIKTargets);
-			this.tabPage4.Controls.Add(this.button7);
-			this.tabPage4.Controls.Add(this.button8);
+			this.tabPage4.Controls.Add(this.btnIKTargetAdd);
+			this.tabPage4.Controls.Add(this.btnIKTargetDelete);
 			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Name = "tabPage4";
 			this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -543,35 +550,37 @@
 			this.columnHeader8.Text = "Slot Name";
 			this.columnHeader8.Width = 150;
 			// 
-			// button7
+			// btnIKTargetAdd
 			// 
-			this.button7.Enabled = false;
-			this.button7.Location = new System.Drawing.Point(150, 275);
-			this.button7.Name = "button7";
-			this.button7.Size = new System.Drawing.Size(75, 23);
-			this.button7.TabIndex = 47;
-			this.button7.Text = "Add Item";
-			this.button7.UseVisualStyleBackColor = true;
+			this.btnIKTargetAdd.Enabled = false;
+			this.btnIKTargetAdd.Location = new System.Drawing.Point(150, 275);
+			this.btnIKTargetAdd.Name = "btnIKTargetAdd";
+			this.btnIKTargetAdd.Size = new System.Drawing.Size(75, 23);
+			this.btnIKTargetAdd.TabIndex = 47;
+			this.btnIKTargetAdd.Text = "Add Item";
+			this.btnIKTargetAdd.UseVisualStyleBackColor = true;
+			this.btnIKTargetAdd.Click += new System.EventHandler(this.btnIKTargetAdd_Click);
 			// 
-			// button8
+			// btnIKTargetDelete
 			// 
-			this.button8.Enabled = false;
-			this.button8.Location = new System.Drawing.Point(8, 275);
-			this.button8.Name = "button8";
-			this.button8.Size = new System.Drawing.Size(91, 23);
-			this.button8.TabIndex = 48;
-			this.button8.Text = "Delete Item";
-			this.button8.UseVisualStyleBackColor = true;
+			this.btnIKTargetDelete.Enabled = false;
+			this.btnIKTargetDelete.Location = new System.Drawing.Point(8, 275);
+			this.btnIKTargetDelete.Name = "btnIKTargetDelete";
+			this.btnIKTargetDelete.Size = new System.Drawing.Size(91, 23);
+			this.btnIKTargetDelete.TabIndex = 48;
+			this.btnIKTargetDelete.Text = "Delete Item";
+			this.btnIKTargetDelete.UseVisualStyleBackColor = true;
+			this.btnIKTargetDelete.Click += new System.EventHandler(this.btnIKTargetDelete_Click);
 			// 
-			// button9
+			// btnCommit
 			// 
-			this.button9.Enabled = false;
-			this.button9.Location = new System.Drawing.Point(605, 229);
-			this.button9.Name = "button9";
-			this.button9.Size = new System.Drawing.Size(75, 23);
-			this.button9.TabIndex = 51;
-			this.button9.Text = "Commit";
-			this.button9.UseVisualStyleBackColor = true;
+			this.btnCommit.Enabled = false;
+			this.btnCommit.Location = new System.Drawing.Point(605, 229);
+			this.btnCommit.Name = "btnCommit";
+			this.btnCommit.Size = new System.Drawing.Size(75, 23);
+			this.btnCommit.TabIndex = 51;
+			this.btnCommit.Text = "Commit";
+			this.btnCommit.UseVisualStyleBackColor = true;
 			// 
 			// txtSlotName
 			// 
@@ -632,7 +641,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.txtBoneName);
 			this.Controls.Add(this.txtSlotName);
-			this.Controls.Add(this.button9);
+			this.Controls.Add(this.btnCommit);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.groupBox3);
@@ -674,8 +683,8 @@
 		private System.Windows.Forms.ListView lstRoutes;
         private System.Windows.Forms.ColumnHeader columnHeader3;
 		private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnRouteAdd;
+		private System.Windows.Forms.Button btnRouteDelete;
 		private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox txtMatrix23;
         private System.Windows.Forms.TextBox txtMatrix22;
@@ -701,19 +710,19 @@
 		private System.Windows.Forms.ListView lstContainers;
 		private System.Windows.Forms.ColumnHeader columnHeader1;
 		private System.Windows.Forms.ColumnHeader columnHeader2;
-		private System.Windows.Forms.Button button3;
-		private System.Windows.Forms.Button button4;
+		private System.Windows.Forms.Button btnContainerAdd;
+		private System.Windows.Forms.Button btnContainerDelete;
 		private System.Windows.Forms.ListView lstEffects;
 		private System.Windows.Forms.ColumnHeader columnHeader5;
 		private System.Windows.Forms.ColumnHeader columnHeader6;
-		private System.Windows.Forms.Button button5;
-		private System.Windows.Forms.Button button6;
+		private System.Windows.Forms.Button btnEffectAdd;
+		private System.Windows.Forms.Button btnEffectDelete;
 		private System.Windows.Forms.ListView lstIKTargets;
 		private System.Windows.Forms.ColumnHeader columnHeader7;
 		private System.Windows.Forms.ColumnHeader columnHeader8;
-		private System.Windows.Forms.Button button7;
-		private System.Windows.Forms.Button button8;
-		private System.Windows.Forms.Button button9;
+		private System.Windows.Forms.Button btnIKTargetAdd;
+		private System.Windows.Forms.Button btnIKTargetDelete;
+		private System.Windows.Forms.Button btnCommit;
 		private System.Windows.Forms.TextBox txtSlotName;
 		private System.Windows.Forms.TextBox txtBoneName;
 		private System.Windows.Forms.Label label1;

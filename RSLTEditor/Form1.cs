@@ -2,6 +2,7 @@
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Globalization;
 
 namespace RSLTEditor
 {
@@ -13,6 +14,7 @@ namespace RSLTEditor
         }
 
         private string filename = "";
+		private int clickedTab = 0;
 
 		private MadScience.Wrappers.RSLTFile rsltFile = new MadScience.Wrappers.RSLTFile();
 
@@ -40,6 +42,25 @@ namespace RSLTEditor
 			txtMatrix34.Text = matrix.rc34.ToString();
         }
 
+		private MadScience.Wrappers.Matrix4by3 getMatrix()
+		{
+			MadScience.Wrappers.Matrix4by3 matrix = new MadScience.Wrappers.Matrix4by3();
+			matrix.rc11 = Convert.ToSingle(txtMatrix11.Text, CultureInfo.InvariantCulture);
+			matrix.rc12 = Convert.ToSingle(txtMatrix12.Text, CultureInfo.InvariantCulture);
+			matrix.rc13 = Convert.ToSingle(txtMatrix13.Text, CultureInfo.InvariantCulture);
+			matrix.rc14 = Convert.ToSingle(txtMatrix14.Text, CultureInfo.InvariantCulture);
+			matrix.rc21 = Convert.ToSingle(txtMatrix21.Text, CultureInfo.InvariantCulture);
+			matrix.rc22 = Convert.ToSingle(txtMatrix22.Text, CultureInfo.InvariantCulture);
+			matrix.rc23 = Convert.ToSingle(txtMatrix23.Text, CultureInfo.InvariantCulture);
+			matrix.rc24 = Convert.ToSingle(txtMatrix24.Text, CultureInfo.InvariantCulture);
+			matrix.rc31 = Convert.ToSingle(txtMatrix31.Text, CultureInfo.InvariantCulture);
+			matrix.rc32 = Convert.ToSingle(txtMatrix32.Text, CultureInfo.InvariantCulture);
+			matrix.rc33 = Convert.ToSingle(txtMatrix33.Text, CultureInfo.InvariantCulture);
+			matrix.rc34 = Convert.ToSingle(txtMatrix34.Text, CultureInfo.InvariantCulture);
+
+			return matrix;
+		}
+
         private void loadFile(string filename)
         {
 
@@ -54,6 +75,10 @@ namespace RSLTEditor
             input.Close();
 
 			// Add routes
+			lstRoutes.Items.Clear();
+			btnRouteAdd.Enabled = true;
+			if (this.rsltFile.rslt.Routes.Count > 0) { btnRouteDelete.Enabled = true; } else { btnRouteDelete.Enabled = false; }
+
 			for (int i = 0; i < this.rsltFile.rslt.Routes.Count; i++)
 			{
 				ListViewItem item = new ListViewItem();
@@ -63,7 +88,47 @@ namespace RSLTEditor
 				lstRoutes.Items.Add(item);
 			}
 
+			lstContainers.Items.Clear();
+			btnContainerAdd.Enabled = true;
+			if (this.rsltFile.rslt.Containers.Count > 0) { btnContainerDelete.Enabled = true; } else { btnContainerDelete.Enabled = false; }
+
+			for (int i = 0; i < this.rsltFile.rslt.Containers.Count; i++)
+			{
+				ListViewItem item = new ListViewItem();
+				item.Text = (i + 1).ToString();
+				item.SubItems.Add(this.rsltFile.rslt.Containers[i].slotName.ToString("X8"));
+
+				lstContainers.Items.Add(item);
+			}
+
+			lstEffects.Items.Clear();
+			btnEffectAdd.Enabled = true;
+			if (this.rsltFile.rslt.Effects.Count > 0) { btnEffectDelete.Enabled = true; } else { btnEffectDelete.Enabled = false; }
+
+			for (int i = 0; i < this.rsltFile.rslt.Effects.Count; i++)
+			{
+				ListViewItem item = new ListViewItem();
+				item.Text = (i + 1).ToString();
+				item.SubItems.Add(this.rsltFile.rslt.Effects[i].slotName.ToString("X8"));
+
+				lstEffects.Items.Add(item);
+			}
+
+			lstIKTargets.Items.Clear();
+			btnIKTargetAdd.Enabled = true;
+			if (this.rsltFile.rslt.IKTargets.Count > 0) { btnIKTargetDelete.Enabled = true; } else { btnIKTargetDelete.Enabled = false; }
+
+			for (int i = 0; i < this.rsltFile.rslt.IKTargets.Count; i++)
+			{
+				ListViewItem item = new ListViewItem();
+				item.Text = (i + 1).ToString();
+				item.SubItems.Add(this.rsltFile.rslt.IKTargets[i].slotName.ToString("X8"));
+
+				lstIKTargets.Items.Add(item);
+			}
+
             saveToolStripMenuItem.Enabled = true;
+			
 
             Console.WriteLine("Done loading");
         }
@@ -80,14 +145,17 @@ namespace RSLTEditor
             {
                 MadScienceSmall.Helpers.resetControl(control);
             }
-            button2.Enabled = false;
+            btnRouteDelete.Enabled = false;
+			btnEffectDelete.Enabled = false;
+			btnContainerDelete.Enabled = false;
+			btnIKTargetDelete.Enabled = false;
             saveToolStripMenuItem.Enabled = false;
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Stream saveFile = File.Open(this.filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-            saveVPXY(saveFile);
+            //saveVPXY(saveFile);
             saveFile.Close();
         }
 
@@ -99,32 +167,9 @@ namespace RSLTEditor
                 this.filename = saveFileDialog1.FileName;
                 toolStripStatusLabel1.Text = this.filename;
                 Stream saveFile = File.Open(this.filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-                saveVPXY(saveFile);
+                //saveVPXY(saveFile);
                 saveFile.Close();
             }
-        }
-
-        private void saveVPXY(Stream output)
-        {
-            // Populate bounding box
-            try
-            {
-				/*
-                this.vpxyFile.vpxy.boundingbox.min.x = Convert.ToSingle(txtMatrix11.Text);
-                this.vpxyFile.vpxy.boundingbox.min.y = Convert.ToSingle(txtMatrix12.Text);
-                this.vpxyFile.vpxy.boundingbox.min.z = Convert.ToSingle(txtMatrix13.Text);
-                this.vpxyFile.vpxy.boundingbox.max.x = Convert.ToSingle(txtMatrix21.Text);
-                this.vpxyFile.vpxy.boundingbox.max.y = Convert.ToSingle(txtMatrix22.Text);
-                this.vpxyFile.vpxy.boundingbox.max.z = Convert.ToSingle(txtMatrix23.Text);
-				 * */
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            //this.vpxyFile.Save(output);
-
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -134,130 +179,6 @@ namespace RSLTEditor
             {
                 loadFile(openFileDialog1.FileName);
             }
-
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-			/*
-            if (listView3.SelectedItems.Count > 0)
-            {
-                // Get the VPXYEntry
-                vpxyFile.vpxy.seprEntries.RemoveAt(listView3.SelectedIndices[0]);
-                showSeprList();
-
-                textBox1.Text = "";
-                //showGbEntry(cmbChooseGeomEntry.SelectedIndex);
-            }
-			 */
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-			/*
-            if (listView3.SelectedItems.Count > 0)
-            {
-                if (MadScienceSmall.Helpers.validateKey(textBox1.Text))
-                {
-                    vpxyFile.vpxy.seprEntries[listView3.SelectedIndices[0]].tgiList[0] = new MadScience.Wrappers.ResourceKey(textBox1.Text);
-                    listView3.SelectedItems[0].Text = vpxyFile.vpxy.seprEntries[listView3.SelectedIndices[0]].tgiList[0].ToString();
-                }
-            }
-			 * */
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-			/*
-            if (String.IsNullOrEmpty(textBox1.Text))
-            {
-                textBox1.Text = "key:00000000:00000000:0000000000000000";
-            }
-            if (MadScienceSmall.Helpers.validateKey(textBox1.Text))
-            {
-                MadScience.Wrappers.ResourceKey rKey = new MadScience.Wrappers.ResourceKey(textBox1.Text);
-                MadScience.Wrappers.VPXYEntry entry = new MadScience.Wrappers.VPXYEntry();
-                entry.type = 1;
-                entry.tgiList.Add(rKey);
-
-                vpxyFile.vpxy.seprEntries.Add(entry);
-                
-                
-                ListViewItem item = new ListViewItem();
-                item.Text = (listView3.Items.Count).ToString();
-                item.SubItems.Add(rKey.ToString());
-                listView3.Items.Add(item);
-                item = null;
-
-                entry = null;
-                //rKey = null;
-            }
-			 */
-        }
-
-        private void listView3_SelectedIndexChanged(object sender, EventArgs e)
-        {
-			/*
-            if (listView3.SelectedItems.Count > 0)
-            {
-                textBox1.Text = listView3.SelectedItems[0].SubItems[1].Text;
-                textBox1.Enabled = true;
-                button5.Enabled = true;
-                button4.Enabled = true;
-            }
-			 * */
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-			/*
-            if (listView2.SelectedItems.Count > 0)
-            {
-                //textBox2.Text = "";
-                //StringBuilder sb = new StringBuilder();
-
-                MadScience.Wrappers.VPXYEntry entry = this.vpxyFile.vpxy.linkEntries[listView2.SelectedIndices[0]];
-                entry.tgiList.Clear();
-
-                foreach (string line in textBox2.Lines)
-                {
-                    if (!String.IsNullOrEmpty(line.Trim()))
-                    {
-                        if (MadScienceSmall.Helpers.validateKey(line))
-                        {
-                            entry.tgiList.Add(new MadScience.Wrappers.ResourceKey(line));
-                        }
-                    }
-                }
-
-                listView2.SelectedItems[0].SubItems[1].Text = "List with " + entry.tgiList.Count.ToString() + " items";
-            }
-			 * */
-        }
-
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-			/*
-            if (listView2.SelectedItems.Count > 0)
-            {
-                this.vpxyFile.vpxy.linkEntries.RemoveAt(listView2.SelectedIndices[0]);
-                showLinkList();
-            }
-			 * */
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-			/*
-            MadScience.Wrappers.VPXYEntry entry = new MadScience.Wrappers.VPXYEntry();
-            this.vpxyFile.vpxy.linkEntries.Add(entry);
-
-            showLinkList();
-			 * */
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
 
         }
 
@@ -287,6 +208,8 @@ namespace RSLTEditor
 		{
 			if (lstRoutes.SelectedItems.Count > 0)
 			{
+				this.clickedTab = 0;
+
 				MadScience.Wrappers.RSLTRoute entry = this.rsltFile.rslt.Routes[lstRoutes.SelectedIndices[0]];
 				txtBoneName.Text = entry.boneName.ToString("X8");
 				txtSlotName.Text = entry.slotName.ToString("X8");
@@ -301,6 +224,8 @@ namespace RSLTEditor
 		{
 			if (lstContainers.SelectedItems.Count > 0)
 			{
+				this.clickedTab = 1;
+
 				MadScience.Wrappers.RSLTContainer entry = this.rsltFile.rslt.Containers[lstContainers.SelectedIndices[0]];
 				txtBoneName.Text = entry.boneName.ToString("X8");
 				txtSlotName.Text = entry.slotName.ToString("X8");
@@ -314,6 +239,8 @@ namespace RSLTEditor
 		{
 			if (lstEffects.SelectedItems.Count > 0)
 			{
+				this.clickedTab = 2;
+
 				MadScience.Wrappers.RSLTEffect entry = this.rsltFile.rslt.Effects[lstEffects.SelectedIndices[0]];
 				txtBoneName.Text = entry.boneName.ToString("X8");
 				txtSlotName.Text = entry.slotName.ToString("X8");
@@ -327,6 +254,8 @@ namespace RSLTEditor
 		{
 			if (lstIKTargets.SelectedItems.Count > 0)
 			{
+				this.clickedTab = 3;
+
 				MadScience.Wrappers.RSLTIKTarget entry = this.rsltFile.rslt.IKTargets[lstIKTargets.SelectedIndices[0]];
 				txtBoneName.Text = entry.boneName.ToString("X8");
 				txtSlotName.Text = entry.slotName.ToString("X8");
@@ -334,6 +263,62 @@ namespace RSLTEditor
 				txtFlags.Enabled = false;
 				showMatrix(entry.matrix);
 			}
+		}
+
+		private void btnRouteAdd_Click(object sender, EventArgs e)
+		{
+			MadScience.Wrappers.RSLTRoute route = new MadScience.Wrappers.RSLTRoute();
+			ListViewItem item = new ListViewItem();
+
+			item.Text = (lstRoutes.Items.Count + 1).ToString();
+			item.SubItems.Add(route.slotName.ToString("X8"));
+
+			// Setup default matrix
+			route.matrix.rc11 = 1f;
+			route.matrix.rc22 = 1f;
+			route.matrix.rc33 = 1f;
+
+			// Add to list
+			this.rsltFile.rslt.Routes.Add(route);
+
+			lstRoutes.Items.Add(item);
+
+
+		}
+
+		private void btnRouteDelete_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnContainerAdd_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnContainerDelete_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnEffectAdd_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnEffectDelete_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnIKTargetAdd_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnIKTargetDelete_Click(object sender, EventArgs e)
+		{
+
 		}
     }
 }
