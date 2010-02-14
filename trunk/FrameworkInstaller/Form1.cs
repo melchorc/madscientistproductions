@@ -22,7 +22,8 @@ namespace FrameworkInstaller
 			item.Text = message;
 			item.BackColor = backColor;
 			listView1.Items.Add(item);
-			message = null;
+			message = null; 
+
 		}
 
 		private void showMessage(string message)
@@ -30,95 +31,12 @@ namespace FrameworkInstaller
 			showMessage(message, Color.White);
 		}
 
-        private bool checkFileLocations(string checkPath, string fullBuild)
-        {
-
-			if (String.IsNullOrEmpty(checkPath)) return false;
-
-			ListViewItem item = new ListViewItem();
-
-
-
-			showMessage("Checking path " + checkPath);
-
-            // Check for resource.cfg presence
-            bool hasFoundResource = false;
-            if (File.Exists(checkPath + "\\resource.cfg"))
-            {
-                hasFoundResource = true;
-				showMessage("Found resource.cfg: Yes");
-            }
-            else
-            {
-				showMessage("Found resource.cfg: No", Color.Salmon);
-			}
-
-            // Check for Mods\\Packages folder
-            bool hasFoundModsPackages = false;
-            if (Directory.Exists(checkPath + "\\Mods\\Packages\\"))
-            {
-                hasFoundModsPackages = true;
-				showMessage(@"Found Mods\Packages folder: Yes");
-			}
-            else
-            {
-				showMessage(@"Found Mods\Packages folder: No", Color.Salmon);
-            }
-
-            if (File.Exists(Path.Combine(checkPath, MadScience.Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
-            {
-				showMessage(@"Found " + fullBuild + ": Yes");
-			}
-            else
-            {
-				showMessage(@"Found " + fullBuild + ": No", Color.Salmon);
-            }
-
-			bool hasFoundDLLFramework = false;
-			if (File.Exists(Path.Combine(checkPath, MadScience.Helpers.getGameSubPath("\\Game\\Bin\\d3dx9_31.dll"))))
-			{
-				showMessage(@"Found custom framework d3dx9_31.dll: Yes");
-				hasFoundDLLFramework = true;
-			}
-			else
-			{
-				showMessage(@"Found custom framework d3dx9_31.dll: No", Color.Salmon);
-			}
-
-            //textBox1.Text += Environment.NewLine;
-
-            if (!hasFoundModsPackages && !hasFoundResource)
-            {
-				showMessage(@"The Installer could not find either a Resource.cfg or a Mods\Packages folder! This means that your game WILL NOT currently accept custom content and installation via the Helper Monkey", Color.Salmon);
-				showMessage(@"Please install the Framework by clicking the Install button.");
-            }
-            if (!hasFoundModsPackages && hasFoundResource)
-            {
-				showMessage(@"The Installer found a Resource.cfg but not the Mods\Packages folder!  This means that your game WILL NOT currently accept custom content, and installation via the Helper Monkey will fail.", Color.Salmon);
-				showMessage(@"Please install the Framework by clicking the Install button.");
-            }
-            if (hasFoundModsPackages && !hasFoundResource)
-            {
-				showMessage(@"The Installer found a Mods\Packages folder but not Resource.cfg!  This means that your game WILL NOT currently accept custom content, and any custom packages will not show up in game.", Color.Salmon);
-				showMessage(@"Please install the Framework by clicking the Install button.");
-            }
-            if (hasFoundModsPackages && hasFoundResource && !hasFoundDLLFramework)
-            {
-				showMessage(@"The Installer found both a Mods\Packages folder and the Resource.cfg, but NOT a custom DLL.  This means that your game SHOULD accept basic custom content, but NOT core mods.", Color.Salmon);
-            }
-			if (hasFoundModsPackages && hasFoundResource && hasFoundDLLFramework)
-			{
-				showMessage(@"The Installer found all Framework components.  This means that your game SHOULD accept basic custom content, and also core mods.");
-				return true;
-			}
-
-			return false;
-
-        }
- 
-
         private void Form1_Load(object sender, EventArgs e)
         {
+
+			Version vrs = new Version(Application.ProductVersion);
+			this.Text = this.Text + " v" + vrs.Major + "." + vrs.Minor + "." + vrs.Build + "." + vrs.Revision;
+
 			this.Show();
 
 			checkLocations();
@@ -143,7 +61,9 @@ namespace FrameworkInstaller
 				textBox2.Text = sims3root;
 				chkHasTS3.Checked = true;
 
-				if (checkFileLocations(sims3root, "FullBuild0") == false)
+				MadScience.Helpers.messages.Clear();
+
+				if (MadScience.Helpers.hasFramework(sims3root, MadScience.Helpers.GameNumber.baseGame) == false)
 				{
 					chkFrameworkTS3.Checked = false;
 				}
@@ -152,7 +72,7 @@ namespace FrameworkInstaller
 					chkFrameworkTS3.Checked = true;
 				}
 
-				textBox3.Text = MadScience.Helpers.findSims3Root(" World Adventures", "FullBuildEP1", false);
+				textBox3.Text = MadScience.Helpers.findSims3Root(MadScience.Helpers.GameNumber.worldAdventures, false);
 				if (String.IsNullOrEmpty(textBox3.Text))
 				{
 					chkHasWA.Checked = false;
@@ -161,7 +81,7 @@ namespace FrameworkInstaller
 				{
 					chkHasWA.Checked = true;
 				}
-				if (checkFileLocations(textBox3.Text, "FullBuildEP1") == false)
+				if (MadScience.Helpers.hasFramework(textBox3.Text, MadScience.Helpers.GameNumber.worldAdventures) == false)
 				{
 					chkFrameworkWA.Checked = false;
 				}
@@ -170,38 +90,70 @@ namespace FrameworkInstaller
 					chkFrameworkWA.Checked = true;
 				}
 
+				textBox1.Text = MadScience.Helpers.findSims3Root(MadScience.Helpers.GameNumber.highEndLoftStuff, false);
+				if (String.IsNullOrEmpty(textBox1.Text))
+				{
+					chkHasHELS.Checked = false;
+				}
+				else
+				{
+					chkHasHELS.Checked = true;
+				}
+				if (MadScience.Helpers.hasFramework(textBox1.Text, MadScience.Helpers.GameNumber.highEndLoftStuff) == false)
+				{
+					chkFrameworkHELS.Checked = false;
+				}
+				else
+				{
+					chkFrameworkHELS.Checked = true;
+				}
+
+				if (MadScience.Helpers.messages.Count > 0)
+				{
+					listView1.Visible = false;
+					int numErrors = 0;
+					for (int i = 0; i < MadScience.Helpers.messages.Count; i++)
+					{
+						if (MadScience.Helpers.messages[i].BackColor == Color.Salmon)
+						{
+							numErrors++;
+						}
+						listView1.Items.Add(MadScience.Helpers.messages[i]);
+					}
+					if (numErrors > 0)
+					{
+						listView1.Columns[0].Text = "Diagnostics - " + numErrors + " errors found";
+					}
+					else
+					{
+						listView1.Columns[0].Text = "Diagnostics";
+					}
+					listView1.Visible = true;
+				}
+
 			}
 
-			if (chkHasTS3.Checked && chkHasWA.Checked)
-			{
-				if (chkFrameworkTS3.Checked && chkFrameworkWA.Checked)
-				{
-					picAccept.Visible = true;
-					picRemove.Visible = false;
-					disableFrameworkToolStripMenuItem.Enabled = true;
-				}
-				if (chkFrameworkTS3.Checked && !chkFrameworkWA.Checked)
-				{
-					picAccept.Visible = false;
-					picRemove.Visible = true;
-					disableFrameworkToolStripMenuItem.Enabled = false;
-				}
+			int gameCheck = 0;
+			if (chkHasTS3.Checked) gameCheck += 1;
+			if (chkHasWA.Checked) gameCheck += 2;
+			if (chkHasHELS.Checked) gameCheck += 4;
 
-			}
-			if (chkHasTS3.Checked && !chkHasWA.Checked)
+			int flagCheck = 0;
+			if (chkFrameworkTS3.Checked) flagCheck += 1;
+			if (chkFrameworkWA.Checked) flagCheck += 2;
+			if (chkFrameworkHELS.Checked) flagCheck += 4;
+
+			if (flagCheck == gameCheck)
 			{
-				if (chkFrameworkTS3.Checked)
-				{
-					picAccept.Visible = true;
-					picRemove.Visible = false;
-					disableFrameworkToolStripMenuItem.Enabled = true;
-				}
-				if (!chkFrameworkTS3.Checked)
-				{
-					picAccept.Visible = false;
-					picRemove.Visible = true;
-					disableFrameworkToolStripMenuItem.Enabled = false;
-				}
+				picAccept.Visible = true;
+				picRemove.Visible = false;
+				disableFrameworkToolStripMenuItem.Enabled = true;
+			}
+			else
+			{
+				picAccept.Visible = false;
+				picRemove.Visible = true;
+				disableFrameworkToolStripMenuItem.Enabled = true;
 			}
 
 			if (picRemove.Visible)
@@ -235,16 +187,20 @@ namespace FrameworkInstaller
         {
 			listView1.Items.Clear();
 			// Copy the DLL to each of the folders Game\Bin locations
-				if (!chkFrameworkTS3.Checked)
-				{
-					createFramework(textBox2.Text);
-				}
-				if (!chkFrameworkWA.Checked)
-				{
-					createFramework(textBox3.Text);
-				}
+			if (!chkFrameworkTS3.Checked)
+			{
+				createFramework(textBox2.Text);
+			}
+			if (!chkFrameworkWA.Checked)
+			{
+				createFramework(textBox3.Text);
+			}
+			if (!chkFrameworkHELS.Checked)
+			{
+				createFramework(textBox1.Text);
+			}
 
-				checkLocations();
+			checkLocations();
         }
 
 		private bool createFramework(string path)
@@ -362,8 +318,8 @@ namespace FrameworkInstaller
 
         private void button3_Click(object sender, EventArgs e)
         {
-            MadScience.Helpers.setSims3Root(" World Adventures", "FullBuildEp1");
-            textBox3.Text = MadScience.Helpers.findSims3Root(" World Adventures", "FullBuildEp1", true);
+            MadScience.Helpers.setSims3Root(MadScience.Helpers.GameNumber.worldAdventures);
+			textBox3.Text = MadScience.Helpers.findSims3Root(MadScience.Helpers.GameNumber.worldAdventures, true);
 
 			if (String.IsNullOrEmpty(textBox3.Text))
 			{
@@ -389,6 +345,10 @@ namespace FrameworkInstaller
 			if (chkFrameworkWA.Checked)
 			{
 				disableFramework(textBox3.Text);
+			}
+			if (chkFrameworkHELS.Checked)
+			{
+				disableFramework(textBox1.Text);
 			}
 
 			checkLocations();
@@ -421,6 +381,18 @@ namespace FrameworkInstaller
 				
 			}
 			return retValue;
+		}
+
+		private void button4_Click(object sender, EventArgs e)
+		{
+			MadScience.Helpers.setSims3Root(MadScience.Helpers.GameNumber.highEndLoftStuff);
+			textBox3.Text = MadScience.Helpers.findSims3Root(MadScience.Helpers.GameNumber.highEndLoftStuff);
+
+			if (String.IsNullOrEmpty(textBox3.Text))
+			{
+				MessageBox.Show("No valid High End Loft Stuff install could be found at that path");
+			}
+			checkLocations();
 		}
 
     }

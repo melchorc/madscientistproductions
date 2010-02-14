@@ -69,10 +69,10 @@ namespace MadScience.Wrappers
 		private string magic = "RSLT";
 		public uint version = 2;
 
-		public List<RSLTRoute> Routes = new List<RSLTRoute>();
-		public List<RSLTContainer> Containers = new List<RSLTContainer>();
-		public List<RSLTEffect> Effects = new List<RSLTEffect>();
-		public List<RSLTIKTarget> IKTargets = new List<RSLTIKTarget>();
+		public List<RSLTEntry> Routes = new List<RSLTEntry>();
+		public List<RSLTEntry> Containers = new List<RSLTEntry>();
+		public List<RSLTEntry> Effects = new List<RSLTEntry>();
+		public List<RSLTEntry> IKTargets = new List<RSLTEntry>();
 
 		public uint count5 = 0;
 
@@ -106,7 +106,7 @@ namespace MadScience.Wrappers
 			// Routes
 			for (int i = 0; i < count1; i++)
 			{
-				this.Routes.Add(new RSLTRoute());
+				this.Routes.Add(new RSLTEntry());
 				this.Routes[i].slotName = StreamHelpers.ReadValueU32(input);
 			}
 			for (int i = 0; i < count1; i++)
@@ -122,7 +122,7 @@ namespace MadScience.Wrappers
 			// Containers
 			for (int i = 0; i < count2; i++)
 			{
-				this.Containers.Add(new RSLTContainer());
+				this.Containers.Add(new RSLTEntry());
 				this.Containers[i].slotName = StreamHelpers.ReadValueU32(input);
 			}
 			for (int i = 0; i < count2; i++)
@@ -142,7 +142,7 @@ namespace MadScience.Wrappers
 			// Effects
 			for (int i = 0; i < count3; i++)
 			{
-				this.Effects.Add(new RSLTEffect());
+				this.Effects.Add(new RSLTEntry());
 				this.Effects[i].slotName = StreamHelpers.ReadValueU32(input);
 			}
 			for (int i = 0; i < count3; i++)
@@ -158,7 +158,7 @@ namespace MadScience.Wrappers
 			// IK Targets
 			for (int i = 0; i < count4; i++)
 			{
-				this.IKTargets.Add(new RSLTIKTarget());
+				this.IKTargets.Add(new RSLTEntry());
 				this.IKTargets[i].slotName = StreamHelpers.ReadValueU32(input);
 			}
 			for (int i = 0; i < count4; i++)
@@ -175,8 +175,83 @@ namespace MadScience.Wrappers
 
 		public void Save(Stream output)
 		{
+			long startOfChunk = output.Position;
+			this.offsize.offset = (uint)startOfChunk;
+
 			StreamHelpers.WriteStringASCII(output, this.magic);
 			StreamHelpers.WriteValueU32(output, this.version);
+
+			StreamHelpers.WriteValueU32(output, (uint)this.Routes.Count);
+			StreamHelpers.WriteValueU32(output, (uint)this.Containers.Count);
+			StreamHelpers.WriteValueU32(output, (uint)this.Effects.Count);
+			StreamHelpers.WriteValueU32(output, (uint)this.IKTargets.Count);
+			StreamHelpers.WriteValueU32(output, this.count5);
+
+			for (int i = 0; i < this.Routes.Count; i++)
+			{
+				StreamHelpers.WriteValueU32(output, this.Routes[i].slotName);
+			}
+			for (int i = 0; i < this.Routes.Count; i++)
+			{
+				StreamHelpers.WriteValueU32(output, this.Routes[i].boneName);
+			}
+			for (int i = 0; i < this.Routes.Count; i++)
+			{
+				this.Routes[i].matrix.Save(output);
+			}
+			if (this.Routes.Count > 0) StreamHelpers.WriteValueU32(output, 0);
+
+			// Containers
+			for (int i = 0; i < this.Containers.Count; i++)
+			{
+				StreamHelpers.WriteValueU32(output, this.Containers[i].slotName);
+			}
+			for (int i = 0; i < this.Containers.Count; i++)
+			{
+				StreamHelpers.WriteValueU32(output, this.Containers[i].boneName);
+			}
+			for (int i = 0; i < this.Containers.Count; i++)
+			{
+				StreamHelpers.WriteValueU32(output, this.Containers[i].flags);
+			}
+			for (int i = 0; i < this.Containers.Count; i++)
+			{
+				this.Containers[i].matrix.Save(output);
+			}
+			if (this.Containers.Count > 0) StreamHelpers.WriteValueU32(output, 0);
+
+			// Effects
+			for (int i = 0; i < this.Effects.Count; i++)
+			{
+				StreamHelpers.WriteValueU32(output, this.Effects[i].slotName);
+			}
+			for (int i = 0; i < this.Effects.Count; i++)
+			{
+				StreamHelpers.WriteValueU32(output, this.Effects[i].boneName);
+			}
+			for (int i = 0; i < this.Effects.Count; i++)
+			{
+				this.Effects[i].matrix.Save(output);
+			}
+			if (this.Effects.Count > 0) StreamHelpers.WriteValueU32(output, 0);
+
+			// IK Targets
+			for (int i = 0; i < this.IKTargets.Count; i++)
+			{
+				StreamHelpers.WriteValueU32(output, this.IKTargets[i].slotName);
+			}
+			for (int i = 0; i < this.IKTargets.Count; i++)
+			{
+				StreamHelpers.WriteValueU32(output, this.IKTargets[i].boneName);
+			}
+			for (int i = 0; i < this.IKTargets.Count; i++)
+			{
+				this.IKTargets[i].matrix.Save(output);
+			}
+			if (this.IKTargets.Count > 0) StreamHelpers.WriteValueU32(output, 0);
+
+			long chunkSize = output.Position - startOfChunk;
+			this.offsize.size = (uint)chunkSize;
 
 		}
 
@@ -261,34 +336,12 @@ namespace MadScience.Wrappers
 
 	}
 
-	public class RSLTRoute
+	public class RSLTEntry
 	{
 		public uint slotName = 0;
 		public uint boneName = 0;
-		public MadScience.Wrappers.Matrix4by3 matrix = new Matrix4by3();
-	}
-
-	public class RSLTContainer
-	{
-		public uint slotName = 0;
-		public uint boneName = 0;
-		public uint flags = 0;
+		public uint flags = 0;  // Flags is only used for Containers
 		public MadScience.Wrappers.Matrix4by3 matrix = new MadScience.Wrappers.Matrix4by3();
 	}
-
-	public class RSLTEffect
-	{
-		public uint slotName = 0;
-		public uint boneName = 0;
-		public MadScience.Wrappers.Matrix4by3 matrix = new MadScience.Wrappers.Matrix4by3();
-	}
-
-	public class RSLTIKTarget
-	{
-		public uint slotName = 0;
-		public uint boneName = 0;
-		public MadScience.Wrappers.Matrix4by3 matrix = new MadScience.Wrappers.Matrix4by3();
-	}
-
 
 }

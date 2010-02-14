@@ -11,6 +11,60 @@ namespace MadScience
 {
     public static class Patterns
     {
+		public class patternDetails
+		{
+
+			public string type = "";
+
+			public string name = "";
+			public string key = "";
+			public string category = "";
+
+			public bool isCustom = false;
+			public string customFilename = "";
+
+			public string nameHigh = "";
+
+			public string material = "";
+			public string Enabled = "";
+			public string Linked = "";
+			public string Tiling = "";
+			public string assetRoot = "";
+			public string filename = "";
+
+			public string Color = "";
+			public string[] ColorP = new string[5];
+
+			public string BackgroundImage = "";
+
+			public string[] Channel = new string[3];
+			public string[] ChannelEnabled = new string[3];
+
+			public string HBg = "";
+			public string[] H = new string[3];
+
+			public string SBg = "";
+			public string[] S = new string[3];
+
+			public string VBg = "";
+			public string[] V = new string[3];
+
+			public string BaseHBg = "";
+			public string[] BaseH = new string[3];
+
+			public string BaseSBg = "";
+			public string[] BaseS = new string[3];
+
+			public string BaseVBg = "";
+			public string[] BaseV = new string[3];
+
+			public string HSVShiftBg = "";
+			public string[] HSVShift = new string[3];
+
+			public string rgbmask = "";
+			public string specmap = "";
+		}
+
 
         public static Stream findPattern(patternDetails pattern)
         {
@@ -25,6 +79,25 @@ namespace MadScience
         {
             return makePatternThumb(pattern, null);
         }
+
+		public static Image makePatternThumb(Stream input)
+		{
+			Wrappers.Database db = new MadScience.Wrappers.Database(input, true);
+			patternDetails pattern = parsePatternComplate(MadScience.Package.Search.getStream(db, 0x0333406C, -1, -1));
+
+			Image img = makePatternThumb(pattern, db);
+			return img;
+		}
+
+		public static Image makePatternThumb(string filename)
+		{
+			Stream input = File.OpenRead(filename);
+			Image img = makePatternThumb(input);
+			input.Close();
+
+			return img;
+		}
+		
 
         public static Image makePatternThumb(patternDetails pattern, Wrappers.Database db)
         {
@@ -94,11 +167,11 @@ namespace MadScience
                         if (File.Exists(pattern.customFilename))
                         {
                             Stream patternThumb = KeyUtils.searchForKey(pattern.rgbmask, pattern.customFilename);
-                            if (!Helpers.isValidStream(patternThumb))
+                            if (!StreamHelpers.isValidStream(patternThumb))
                             {
                                 patternThumb = KeyUtils.searchForKey(pattern.BackgroundImage, pattern.customFilename);
                             }
-                            if (Helpers.isValidStream(patternThumb))
+                            if (StreamHelpers.isValidStream(patternThumb))
                             {
                                 ddsP.Load(patternThumb);
                             }

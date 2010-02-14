@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MadScience.Helpers, Version=1.1.3653.28217, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Helpers.cs\bin\Debug\MadScience.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="OX.Copyable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Helpers.cs\bin\Debug\OX.Copyable.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -42,12 +51,20 @@
     <Compile Include="BlendGeom.cs" />
     <Compile Include="BlendUnit.cs" />
     <Compile Include="BoneDelta.cs" />
+    <Compile Include="casPartFile.cs" />
+    <Compile Include="CatalogResource.cs" />
     <Compile Include="CommonFunctions.cs" />
+    <Compile Include="Database.cs" />
+    <Compile Include="DatabasePackedFile.cs" />
+    <Compile Include="Detective.cs" />
     <Compile Include="FacialBlend.cs" />
+    <Compile Include="Fixers.cs" />
     <Compile Include="KeyUtils.cs" />
     <Compile Include="MadScienceHelpers.cs" />
     <Compile Include="NameMap.cs" />
-    <Compile Include="NumberHelpers.cs" />
+    <Compile Include="OBJD.cs" />
+    <Compile Include="PackageUtils.cs" />
+    <Compile Include="Patterns.cs" />
     <Compile Include="RCOLHeader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RCOLHeaderEditor.cs">
@@ -59,9 +76,8 @@
     <Compile Include="RSLT.cs" />
     <Compile Include="SimGeom.cs" />
     <Compile Include="STBL.cs" />
-    <Compile Include="StreamHelpers.cs" />
-    <Compile Include="StringHelpers.cs" />
     <Compile Include="VPXY.cs" />
+    <Compile Include="RIG.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="RCOLHeaderEditor.resx">

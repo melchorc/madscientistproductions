@@ -36,6 +36,21 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
+namespace MadScience
+{
+	public class DDS
+	{
+		private static DdsFileTypePlugin.DdsFile ddsFile = new DdsFileTypePlugin.DdsFile();
+
+		public static Image Load(Stream input)
+		{
+			ddsFile.Load(input);
+			return ddsFile.Image();
+		}
+	}
+
+}
+
 namespace DdsFileTypePlugin
 {
 	public enum DdsFileFormat

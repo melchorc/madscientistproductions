@@ -39,6 +39,7 @@
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.findKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateThumbnailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.useAlternativeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.debugModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
@@ -213,6 +214,7 @@
 			this.chkLogoEnabled = new System.Windows.Forms.CheckBox();
 			this.label102 = new System.Windows.Forms.Label();
 			this.tabPage6 = new System.Windows.Forms.TabPage();
+			this.picCustomThumbnail = new System.Windows.Forms.PictureBox();
 			this.label108 = new System.Windows.Forms.Label();
 			this.button11 = new System.Windows.Forms.Button();
 			this.txtCustomThumbnailPath = new System.Windows.Forms.TextBox();
@@ -350,6 +352,7 @@
 			this.grpLogo.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picLogoColour)).BeginInit();
 			this.tabPage6.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picCustomThumbnail)).BeginInit();
 			this.tabPage11.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			this.groupBox2.SuspendLayout();
@@ -382,6 +385,7 @@
             this.toolStripMenuItem2,
             this.findKeyToolStripMenuItem,
             this.generateThumbnailsToolStripMenuItem,
+            this.useAlternativeToolStripMenuItem,
             this.debugModeToolStripMenuItem,
             this.optionsToolStripMenuItem,
             this.toolStripMenuItem1,
@@ -393,14 +397,14 @@
 			// newToolStripMenuItem
 			// 
 			this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-			this.newToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.newToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
 			this.newToolStripMenuItem.Text = "New";
 			this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
 			// 
 			// loadToolStripMenuItem
 			// 
 			this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-			this.loadToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.loadToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
 			this.loadToolStripMenuItem.Text = "Open";
 			this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
 			// 
@@ -408,7 +412,7 @@
 			// 
 			this.saveToolStripMenuItem.Enabled = false;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
 			this.saveToolStripMenuItem.Text = "Save";
 			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
@@ -416,33 +420,40 @@
 			// 
 			this.saveAsToolStripMenuItem.Enabled = false;
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
 			this.saveAsToolStripMenuItem.Text = "Save As...";
 			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem2
 			// 
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(172, 6);
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 6);
 			// 
 			// findKeyToolStripMenuItem
 			// 
 			this.findKeyToolStripMenuItem.Name = "findKeyToolStripMenuItem";
-			this.findKeyToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.findKeyToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
 			this.findKeyToolStripMenuItem.Text = "Find Key";
 			this.findKeyToolStripMenuItem.Click += new System.EventHandler(this.findKeyToolStripMenuItem_Click);
 			// 
 			// generateThumbnailsToolStripMenuItem
 			// 
 			this.generateThumbnailsToolStripMenuItem.Name = "generateThumbnailsToolStripMenuItem";
-			this.generateThumbnailsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.generateThumbnailsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
 			this.generateThumbnailsToolStripMenuItem.Text = "Generate Thumbnails";
 			this.generateThumbnailsToolStripMenuItem.Click += new System.EventHandler(this.generateThumbnailsToolStripMenuItem_Click);
+			// 
+			// useAlternativeToolStripMenuItem
+			// 
+			this.useAlternativeToolStripMenuItem.Name = "useAlternativeToolStripMenuItem";
+			this.useAlternativeToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+			this.useAlternativeToolStripMenuItem.Text = "Use Alternative Thumb";
+			this.useAlternativeToolStripMenuItem.Click += new System.EventHandler(this.useAlternativeToolStripMenuItem_Click);
 			// 
 			// debugModeToolStripMenuItem
 			// 
 			this.debugModeToolStripMenuItem.Name = "debugModeToolStripMenuItem";
-			this.debugModeToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.debugModeToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
 			this.debugModeToolStripMenuItem.Text = "Debug Mode";
 			this.debugModeToolStripMenuItem.CheckedChanged += new System.EventHandler(this.debugModeToolStripMenuItem_CheckedChanged);
 			this.debugModeToolStripMenuItem.Click += new System.EventHandler(this.debugModeToolStripMenuItem_Click);
@@ -450,19 +461,19 @@
 			// optionsToolStripMenuItem
 			// 
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
 			this.optionsToolStripMenuItem.Text = "Options";
 			this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(172, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
@@ -2466,6 +2477,7 @@
 			// 
 			// tabPage6
 			// 
+			this.tabPage6.Controls.Add(this.picCustomThumbnail);
 			this.tabPage6.Controls.Add(this.label108);
 			this.tabPage6.Controls.Add(this.button11);
 			this.tabPage6.Controls.Add(this.txtCustomThumbnailPath);
@@ -2478,6 +2490,15 @@
 			this.tabPage6.TabIndex = 4;
 			this.tabPage6.Text = "Thumbnail";
 			this.tabPage6.UseVisualStyleBackColor = true;
+			// 
+			// picCustomThumbnail
+			// 
+			this.picCustomThumbnail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.picCustomThumbnail.Location = new System.Drawing.Point(22, 101);
+			this.picCustomThumbnail.Name = "picCustomThumbnail";
+			this.picCustomThumbnail.Size = new System.Drawing.Size(256, 256);
+			this.picCustomThumbnail.TabIndex = 5;
+			this.picCustomThumbnail.TabStop = false;
 			// 
 			// label108
 			// 
@@ -2522,7 +2543,7 @@
 			this.chkUseCustomThumbnail.Name = "chkUseCustomThumbnail";
 			this.chkUseCustomThumbnail.Size = new System.Drawing.Size(135, 17);
 			this.chkUseCustomThumbnail.TabIndex = 0;
-			this.chkUseCustomThumbnail.Text = "Use Custom Thumbnail";
+			this.chkUseCustomThumbnail.Text = "Has Custom Thumbnail";
 			this.chkUseCustomThumbnail.UseVisualStyleBackColor = true;
 			// 
 			// listView1
@@ -3516,6 +3537,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.picLogoColour)).EndInit();
 			this.tabPage6.ResumeLayout(false);
 			this.tabPage6.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picCustomThumbnail)).EndInit();
 			this.tabPage11.ResumeLayout(false);
 			this.groupBox4.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
@@ -3817,6 +3839,8 @@
 		private System.Windows.Forms.Button button22;
 		private System.Windows.Forms.TextBox txtMeshLod3_1;
 		private System.Windows.Forms.Label label36;
+		private System.Windows.Forms.PictureBox picCustomThumbnail;
+		private System.Windows.Forms.ToolStripMenuItem useAlternativeToolStripMenuItem;
     }
 }
 

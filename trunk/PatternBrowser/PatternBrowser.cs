@@ -63,7 +63,7 @@ namespace PatternBrowser
 
                 cPattern.key = rKey.ToString();
 
-                if (!Helpers.isValidStream(KeyUtils.findKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.name.Substring(pDetails.name.LastIndexOf("\\") + 1)).ToString("X16"))))
+                if (!StreamHelpers.isValidStream(KeyUtils.findKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.name.Substring(pDetails.name.LastIndexOf("\\") + 1)).ToString("X16"))))
                 {
                     cPattern.texturename = pDetails.BackgroundImage;
                 }
@@ -333,7 +333,7 @@ namespace PatternBrowser
                                 //if (pattern.instanceid.StartsWith("0x")) pattern.instanceid = pattern.instanceid.Remove(0, 2);
 
                                 Stream patternXml = KeyUtils.searchForKey(pattern.key, pattern.subcategory);
-                                if (Helpers.isValidStream(patternXml))
+								if (StreamHelpers.isValidStream(patternXml))
                                 {
                                     patternDetails pDetails = Patterns.parsePatternComplate(patternXml);
                                     //Stream patternThumb = KeyUtils.searchForKey(pattern.texturename, pattern.subcategory);
@@ -408,7 +408,7 @@ namespace PatternBrowser
                             //Console.WriteLine(pattern.casPart);
 
                             Stream patternXml = KeyUtils.findKey(new MadScience.Wrappers.ResourceKey(pattern.key), 0, xmldb);
-                            if (Helpers.isValidStream(patternXml))
+							if (StreamHelpers.isValidStream(patternXml))
                             {
                                 patternDetails pDetails2 = Patterns.parsePatternComplate(patternXml);
                                 //Stream patternThumb = KeyUtils.findKey(new MadScience.Wrappers.ResourceKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails2.name).ToString("X16")), 0, castdb);
@@ -660,7 +660,7 @@ namespace PatternBrowser
 
                         cPattern.key = pDetails.key;
 
-                        if (!Helpers.isValidStream(KeyUtils.findKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.name.Substring(pDetails.name.LastIndexOf("\\") + 1)).ToString("X16"))))
+						if (!StreamHelpers.isValidStream(KeyUtils.findKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails.name.Substring(pDetails.name.LastIndexOf("\\") + 1)).ToString("X16"))))
                         {
                             if (String.IsNullOrEmpty(pDetails.BackgroundImage))
                             {

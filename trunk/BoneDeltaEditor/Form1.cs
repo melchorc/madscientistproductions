@@ -242,7 +242,7 @@ namespace BoneDeltaEditor
                     //lstEntries.SelectedItems[0].SubItems[1].Text = lstBones.SelectedItems[0].Text;
                     lstEntries.SelectedItems[0].SubItems[1].Text = listBox1.Text;
 
-                    entry.boneHash = MadScience.StringHelpers.ParseHex32("0x" + txtBoneHash.Text);
+					entry.boneHash = MadScience.StringHelpers.ParseHex32("0x" + txtBoneHash.Text);
                     entry.offset.x = Convert.ToSingle(txtMinX.Text, CultureInfo.InvariantCulture);
                     entry.offset.y = Convert.ToSingle(txtMinY.Text, CultureInfo.InvariantCulture);
                     entry.offset.z = Convert.ToSingle(txtMinZ.Text, CultureInfo.InvariantCulture);

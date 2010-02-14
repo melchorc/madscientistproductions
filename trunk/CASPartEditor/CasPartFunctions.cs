@@ -156,7 +156,7 @@ namespace CASPartEditor
             // Use the VPXY to get the mesh lod
             Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY], 0);
 
-            if (Helpers.isValidStream(vpxyStream))
+			if (StreamHelpers.isValidStream(vpxyStream))
             {
                 VPXYFile vpxyFile = new VPXYFile(vpxyStream);
                 // Get the first VPXY internal link
@@ -167,7 +167,7 @@ namespace CASPartEditor
                 vpxyStream.Close();
             }
 
-            if (Helpers.isValidStream(meshStream))
+			if (StreamHelpers.isValidStream(meshStream))
             {
                 lstMeshTGILinks.Items.Clear();
                 SimGeomFile simgeomfile = new SimGeomFile(meshStream);
@@ -599,7 +599,21 @@ namespace CASPartEditor
             if (chunk.hasCustomThumbnail)
             {
                 chkUseCustomThumbnail.Checked = true;
-                txtCustomThumbnailPath.Text = newPNGfiles[chunkNo];
+				if (newPNGfiles.Count > 0)
+				{
+					txtCustomThumbnailPath.Text = newPNGfiles[chunkNo];
+				}
+				else
+				{
+					ResourceKey customThumb = MadScience.Package.Search.getKey(Helpers.currentPackageFile, 0x626F60CE, chunkNo, (long)this.loadedCasPart.instanceId);
+					if (customThumb.ToString() == "00000000:00000000:0000000000000000")
+					{
+						customThumb = MadScience.Package.Search.getKey(this.filename, 0x626F60CE, (chunkNo + 1), (long)this.loadedCasPart.instanceId);
+					}
+
+					//Console.WriteLine(customThumb.ToString());
+					picCustomThumbnail.Image = Image.FromStream(MadScience.Package.Search.getStream(Helpers.currentPackageFile, customThumb.ToString()));
+				}
             }
 
             //ListViewItem item;

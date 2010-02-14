@@ -209,7 +209,7 @@ namespace CASPartEditor
                 // Load in the VPXY - we need to modify it.
                 //keyName oldVpxyKey = new keyName((tgi64)casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY]);
                 Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY].ToString(), 0);
-                if (Helpers.isValidStream(vpxyStream))
+                if (StreamHelpers.isValidStream(vpxyStream))
                 {
 
                     namemap.entries.Add(meshLod0.instanceId, meshName + "_lod0");
@@ -470,7 +470,10 @@ namespace CASPartEditor
                     if (newPNGfiles.ContainsKey(i))
                     {
                         Stream newPNG = File.Open(newPNGfiles[i], FileMode.Open, FileAccess.Read, FileShare.Read);
-                        ResourceKey keyPNG = new ResourceKey(0x626F60CE, (uint)(i + 1), instanceId, (uint)ResourceKeyOrder.ITG);
+						uint thumbGroup = (uint)i;
+						if (useAlternativeToolStripMenuItem.Checked == true) thumbGroup++;
+
+                        ResourceKey keyPNG = new ResourceKey(0x626F60CE, thumbGroup, instanceId, (uint)ResourceKeyOrder.ITG);
                         db.SetResourceStream(keyPNG, newPNG);
                         newPNG.Close();
                     }
