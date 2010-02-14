@@ -824,7 +824,7 @@ namespace PatternCreator
                     MadScience.StreamHelpers.WriteValueU32(sims3pack, (uint)s3p_xml.Length);
                     MadScience.StreamHelpers.WriteStringUTF8(sims3pack, s3p_xml);
 
-                    MadScience.Helpers.CopyStream(output, sims3pack, true);
+					MadScience.StreamHelpers.CopyStream(output, sims3pack, true);
                     //ReadWriteStream(pngFile, sims3pack, true);
 
                     sims3pack.Close();

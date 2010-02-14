@@ -304,15 +304,30 @@ namespace CASPartEditor
             }
             else if (f.Extension.ToLower() == ".package")
             {
-                inputCasPart = searchInPackage(f.FullName, (int)0x034AEECB, -1, -1);
+				
+				this.loadedCasPart = MadScience.Package.Search.getKey(f.FullName, (int)0x034AEECB, -1, -1);
+                //inputCasPart = searchInPackage(f.FullName, (int)0x034AEECB, -1, -1);
+				if (this.loadedCasPart.ToString() != "00000000:00000000:0000000000000000") {
 
-                if (inputCasPart != null)
-                {
+					inputCasPart = MadScience.Package.Search.getStream(f.FullName, "key:" + this.loadedCasPart.ToString());
+
                     cPartFile = new casPartFile();
                     this.casPartSrc = cPartFile.Load(inputCasPart);
                     inputCasPart.Close();
                     this.isNew = false;
                     this.fromPackage = true;
+
+					for (int i = 0; i < this.casPartSrc.numParts; i++)
+					{
+						//ResourceKey keyPNG = new ResourceKey(0x626F60CE, thumbGroup, instanceId, (uint)ResourceKeyOrder.ITG);
+						if (MadScience.Package.Search.getKey(f.FullName, 0x626F60CE, 0x0, (long)loadedCasPart.instanceId).ToString() != "00000000:00000000:0000000000000000")
+						{
+							xmlChunkDetails chunk = (xmlChunkDetails)this.casPartSrc.xmlChunk[i];
+							chunk.hasCustomThumbnail = true;
+						}
+
+					}
+
                     Helpers.currentPackageFile = f.FullName;
                     this.stencilPool.Clear();
                     //this.stencilPool.TrimExcess();
@@ -335,114 +350,7 @@ namespace CASPartEditor
 
         }
 
-        public Stream searchInPackage(string filename, string keyString)
-        {
-            keyString = keyString.Replace("key:", "");
-            string[] temp = keyString.Split(":".ToCharArray());
-
-            int typeID = (int)MadScience.StringHelpers.ParseHex32("0x" + temp[0]);
-            int groupID = (int)MadScience.StringHelpers.ParseHex32("0x" + temp[1]);
-            long instanceID = (long)MadScience.StringHelpers.ParseHex64("0x" + temp[2]);
-
-            return searchInPackage(filename, typeID, groupID, instanceID);
-        }
-
         ResourceKey loadedCasPart = new ResourceKey();
-        public Stream searchInPackage(string filename, int typeID, int groupID, long instanceID)
-        {
-
-            Stream matchChunk = null;
-
-            if (String.IsNullOrEmpty(filename)) { return matchChunk; }
-
-            // Open the package file and search
-            Stream package = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
-            MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(package, true);
-
-            int searchType = 0;
-            if (typeID != -1) { searchType += 1; }
-            if (groupID != -1) { searchType += 2; }
-            if (instanceID != -1) { searchType += 4; }
-
-            bool foundMatch = false;
-
-            foreach (MadScience.Wrappers.ResourceKey entry in db._Entries.Keys) 
-            {
-                //ResourceKey key = db.Entries.Keys[i];
-                //DatabasePackedFile.Entry entry = db.Entries.Keys[i];
-                //DatabasePackedFile.Entry entry = db.dbpfEntries[i];
-                //MadScience.Wrappers.ResourceKey entry = new MadScience.Wrappers.ResourceKey(keyString);
-
-                switch (searchType)
-                {
-                    case 7:
-                        if (entry.typeId == typeID && entry.groupId == groupID && entry.instanceId == (ulong)instanceID)
-                        {
-                            loadedCasPart = entry;
-                            matchChunk = db.GetResourceStream(entry);
-                            foundMatch = true;
-                        }
-                        break;
-                    case 6:
-                        if (entry.groupId == groupID && entry.instanceId == (ulong)instanceID)
-                        {
-                            loadedCasPart = entry;
-                            matchChunk = db.GetResourceStream(entry);
-                            foundMatch = true;
-                        }
-                        break;
-                    case 5:
-                        if (entry.typeId == typeID && entry.instanceId == (ulong)instanceID)
-                        {
-                            loadedCasPart = entry;
-                            matchChunk = db.GetResourceStream(entry);
-                            foundMatch = true;
-                        }
-                        break;
-                    case 4:
-                        if (entry.instanceId == (ulong)instanceID)
-                        {
-                            loadedCasPart = entry;
-                            matchChunk = db.GetResourceStream(entry);
-                            foundMatch = true;
-                        }
-                        break;
-                    case 3:
-                        if (entry.typeId == typeID && entry.groupId == groupID)
-                        {
-                            loadedCasPart = entry;
-                            matchChunk = db.GetResourceStream(entry);
-                            foundMatch = true;
-                        }
-                        break;
-                    case 2:
-                        if (entry.groupId == groupID)
-                        {
-                            loadedCasPart = entry;
-                            matchChunk = db.GetResourceStream(entry);
-                            foundMatch = true;
-                        }
-                        break;
-                    case 1:
-                        if (entry.typeId == typeID)
-                        {
-                            loadedCasPart = entry;
-                            matchChunk = db.GetResourceStream(entry);
-                            foundMatch = true;
-                        }
-                        break;
-                }
-                if (foundMatch)
-                {
-                    break;
-                }
-
-            }
-            package.Close();
-
-            return matchChunk;
-
-        }
 
 
         private void cmbSimGender_SelectedIndexChanged(object sender, EventArgs e)
@@ -1004,7 +912,7 @@ namespace CASPartEditor
 
 
                                                 FileStream saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
-                                                Helpers.CopyStream(KeyUtils.findKey(entry, 2, db), saveFile);
+                                                StreamHelpers.CopyStream(KeyUtils.findKey(entry, 2, db), saveFile);
                                                 saveFile.Close();
                                             }
                                         }
@@ -1048,7 +956,7 @@ namespace CASPartEditor
 
                                 Stream output = db.GetResourceStream(tgi);
                                 FileStream saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + ".dds"), FileMode.Create, FileAccess.Write);
-                                Helpers.CopyStream(output, saveFile);
+                                StreamHelpers.CopyStream(output, saveFile);
                                 saveFile.Close();
                                 output.Close();
                                 numFound++;
@@ -1617,7 +1525,7 @@ namespace CASPartEditor
                                     }
 
                                     FileStream saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
-                                    Helpers.CopyStream(output, saveFile);
+                                    StreamHelpers.CopyStream(output, saveFile);
                                     saveFile.Close();
                                     numFound++;
                                 }
@@ -1642,7 +1550,7 @@ namespace CASPartEditor
                         }
 
                         FileStream saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave2) + ".vpxy", FileMode.Create, FileAccess.Write);
-                        Helpers.CopyStream(vpxyStream, saveFile, true);
+                        StreamHelpers.CopyStream(vpxyStream, saveFile, true);
                         saveFile.Close();
 
                     }
@@ -1671,22 +1579,22 @@ namespace CASPartEditor
                         string fileNameToSave = "";
                         fileNameToSave = txtMeshName.Text + "_fit";
                         FileStream saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
-                        Helpers.CopyStream(bodyBlendFitStream, saveFile);
+                        StreamHelpers.CopyStream(bodyBlendFitStream, saveFile);
                         saveFile.Close();
 
                         fileNameToSave = txtMeshName.Text + "_fat";
                         saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
-                        Helpers.CopyStream(bodyBlendFatStream, saveFile);
+                        StreamHelpers.CopyStream(bodyBlendFatStream, saveFile);
                         saveFile.Close();
 
                         fileNameToSave = txtMeshName.Text + "_thin";
                         saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
-                        Helpers.CopyStream(bodyBlendThinStream, saveFile);
+                        StreamHelpers.CopyStream(bodyBlendThinStream, saveFile);
                         saveFile.Close();
 
                         fileNameToSave = txtMeshName.Text + "_special";
                         saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
-                        Helpers.CopyStream(bodyBlendSpecialStream, saveFile);
+                        StreamHelpers.CopyStream(bodyBlendSpecialStream, saveFile);
                         saveFile.Close();
 
                         // Just grab the one BGEO for now
@@ -1697,7 +1605,7 @@ namespace CASPartEditor
                         extension = ".blendgeom";
                         fileNameToSave = txtMeshName.Text + "_fat";
                         saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
-                        Helpers.CopyStream(bgeoStream, saveFile);
+                        StreamHelpers.CopyStream(bgeoStream, saveFile);
                         saveFile.Close();
 
                         bodyBlendFitStream.Seek(0, SeekOrigin.Begin);
@@ -1706,7 +1614,7 @@ namespace CASPartEditor
                         bgeoStream.Seek(0, SeekOrigin.Begin);
                         fileNameToSave = txtMeshName.Text + "_fit";
                         saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
-                        Helpers.CopyStream(bgeoStream, saveFile);
+                        StreamHelpers.CopyStream(bgeoStream, saveFile);
                         saveFile.Close();
 
                         bodyBlendThinStream.Seek(0, SeekOrigin.Begin);
@@ -1716,7 +1624,7 @@ namespace CASPartEditor
                         extension = ".blendgeom";
                         fileNameToSave = txtMeshName.Text + "_thin";
                         saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
-                        Helpers.CopyStream(bgeoStream, saveFile);
+                        StreamHelpers.CopyStream(bgeoStream, saveFile);
                         saveFile.Close();
 
                         bodyBlendSpecialStream.Seek(0, SeekOrigin.Begin);
@@ -1726,7 +1634,7 @@ namespace CASPartEditor
                         extension = ".blendgeom";
                         fileNameToSave = txtMeshName.Text + "_special";
                         saveFile = new FileStream(Path.Combine(folderBrowserDialog1.SelectedPath, fileNameToSave + extension), FileMode.Create, FileAccess.Write);
-                        Helpers.CopyStream(bgeoStream, saveFile);
+                        StreamHelpers.CopyStream(bgeoStream, saveFile);
                         saveFile.Close();
 
 
@@ -1793,6 +1701,7 @@ namespace CASPartEditor
             if (openFileDialog1.ShowDialog() == DialogResult.OK && openFileDialog1.FileName.Trim() != "")
             {
                 txtCustomThumbnailPath.Text = openFileDialog1.FileName;
+				picCustomThumbnail.Image = Image.FromFile(txtCustomThumbnailPath.Text);
             }
         }
 
@@ -1867,7 +1776,7 @@ namespace CASPartEditor
 
                     Stream saveFile = File.OpenRead(Helpers.currentPackageFile);
                     MemoryStream tempSave = new MemoryStream();
-                    Helpers.CopyStream(saveFile, tempSave, true);
+                    StreamHelpers.CopyStream(saveFile, tempSave, true);
                     saveFile.Close();
 
                     tempSave.Seek(0, SeekOrigin.Begin);
@@ -1881,7 +1790,7 @@ namespace CASPartEditor
                     db.Commit(true);
 
                     saveFile = File.Open(Helpers.currentPackageFile, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-                    Helpers.CopyStream(tempSave, saveFile, true);
+                    StreamHelpers.CopyStream(tempSave, saveFile, true);
                     saveFile.Close();
 
                     tempSave.Close();
@@ -3234,6 +3143,11 @@ namespace CASPartEditor
 		private void button22_Click(object sender, EventArgs e)
 		{
 			txtMeshLod3_1.Text = selectLodFile();
+		}
+
+		private void useAlternativeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			useAlternativeToolStripMenuItem.Checked = !useAlternativeToolStripMenuItem.Checked;
 		}
 
     }

@@ -28,19 +28,30 @@ namespace MadScience.Wrappers
             public byte[] Data;
         }
 
-        private Stream Stream;
+        public Stream Stream;
         private long BaseOffset;
         private long EndOfDataOffset;
 
         public Dictionary<MadScience.Wrappers.ResourceKey, Entry> _Entries;
         private Dictionary<MadScience.Wrappers.ResourceKey, StreamEntry> OriginalEntries;
+		public DatabasePackedFile dbpf;
 
         public Database(Stream stream)
             : this(stream, true)
         {
         }
 
-        public Database(Stream stream, bool readExisting)
+		public Database(Stream stream, bool readExisting)
+		{
+			readDatabase(stream, readExisting, true);
+		}
+
+		public Database(Stream stream, bool readExisting, bool throwError)
+		{
+			readDatabase(stream, readExisting, throwError);
+		}
+
+        public void readDatabase(Stream stream, bool readExisting, bool throwError)
         {
             if (stream.CanSeek == false || stream.CanRead == false)
             {
@@ -57,28 +68,37 @@ namespace MadScience.Wrappers
 
             if (readExisting == true)
             {
-                MadScience.Wrappers.DatabasePackedFile dbpf = new MadScience.Wrappers.DatabasePackedFile();
-                dbpf.Read(stream);
+                this.dbpf = new MadScience.Wrappers.DatabasePackedFile();
+                dbpf.Read(stream, throwError);
 
                 this.EndOfDataOffset = dbpf.EndOfDataOffset;
-                
-                foreach (MadScience.Wrappers.DatabasePackedFile.Entry entry in dbpf.Entries)
-                {
-                    this._Entries.Add(entry.Key, new StreamEntry()
-                        {
-                            Compressed = entry.Compressed,
-                            Offset = entry.Offset,
-                            CompressedSize = entry.CompressedSize,
-                            DecompressedSize = entry.DecompressedSize,
-                            CompressedFlags = entry.CompressionFlags,
-                            Flags = entry.Flags,
-                        });
 
-                    //if (entry.Offset + entry.CompressedSize > this.EndOfDataOffset)
-                    //{
-                    //    this.EndOfDataOffset = entry.Offset + entry.CompressedSize;
-                    //}
-                }
+				if (dbpf.Entries.Count > 0)
+				{
+					foreach (MadScience.Wrappers.DatabasePackedFile.Entry entry in dbpf.Entries)
+					{
+						try
+						{
+							this._Entries.Add(entry.Key, new StreamEntry()
+								{
+									Compressed = entry.Compressed,
+									Offset = entry.Offset,
+									CompressedSize = entry.CompressedSize,
+									DecompressedSize = entry.DecompressedSize,
+									CompressedFlags = entry.CompressionFlags,
+									Flags = entry.Flags,
+								});
+						}
+						catch (Exception ex)
+						{
+							Console.WriteLine(ex.Message);
+						}
+						//if (entry.Offset + entry.CompressedSize > this.EndOfDataOffset)
+						//{
+						//    this.EndOfDataOffset = entry.Offset + entry.CompressedSize;
+						//}
+					}
+				}
 
             }
             else

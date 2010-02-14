@@ -8,37 +8,7 @@ namespace MadScienceSmall
 {
     public partial class Helpers
     {
-        public static void resetControl(System.Windows.Forms.Control control)
-        {
-            if (control is System.Windows.Forms.TextBox)
-            {
-                control.Text = "";
-            }
-            if (control is System.Windows.Forms.ComboBox)
-            {
-                System.Windows.Forms.ComboBox cmb = (System.Windows.Forms.ComboBox)control;
-                if (cmb.Items.Count > 0) cmb.SelectedIndex = 0;
-            }
-            if (control is System.Windows.Forms.CheckBox)
-            {
-                System.Windows.Forms.CheckBox chk = (System.Windows.Forms.CheckBox)control;
-                chk.Checked = false;
-            }
-            if (control is System.Windows.Forms.CheckedListBox)
-            {
-                System.Windows.Forms.CheckedListBox chkList = (System.Windows.Forms.CheckedListBox)control;
-                for (int i = 0; i < chkList.Items.Count; i++)
-                {
-                    chkList.SetItemChecked(i, false);
-                }
-            }
-            if (control is System.Windows.Forms.ListView)
-            {
-                System.Windows.Forms.ListView lstView = (System.Windows.Forms.ListView)control;
-                lstView.Items.Clear();
-            }
 
-        }
 
         public static bool validateKey(string keyString)
         {

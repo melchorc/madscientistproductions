@@ -33,8 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MadScience.Wrappers, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86" />
-    <Reference Include="OX.Copyable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -42,12 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="casPartFile.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Colours.cs" />
-    <Compile Include="Database.cs" />
-    <Compile Include="DatabasePackedFile.cs" />
     <Compile Include="DdsFile.cs" />
     <Compile Include="DDSPreview.cs">
       <SubType>Form</SubType>
@@ -57,7 +50,6 @@
     </Compile>
     <Compile Include="Exceptions.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="keyUtils.cs" />
     <Compile Include="licenseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,7 +57,7 @@
       <DependentUpon>licenseForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ListViewSorter.cs" />
-    <Compile Include="Patterns.cs" />
+    <Compile Include="NumberHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -73,6 +65,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RefPack.cs" />
+    <Compile Include="Shortcut.cs" />
+    <Compile Include="StreamHelpers.cs" />
+    <Compile Include="StringHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DDSPreview.resx">

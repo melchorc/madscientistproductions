@@ -28,80 +28,238 @@ namespace MadScience.Wrappers
             public ushort Flags;
         }
 
+		public Header smallHeader;
+		public BigHeader bigHeader;
+
         public bool Big;
 		public Version Version = new Version();
         public List<Entry> Entries = new List<Entry>();
         public long IndexOffset;
         public int IndexType;
         public long EndOfDataOffset;
+		public string magic;
+
+		public Detective.PackageTypes packageType = Detective.PackageTypes.genericPackage;
 
 		public void Read(Stream input)
+		{
+			Read(input, true);
+		}
+
+		public void Read(Stream input, bool throwError)
 		{
 			Int64 indexCount;
 			Int64 indexSize;
 			Int64 indexOffset;
 
-			string magic = MadScience.StreamHelpers.ReadStringASCII(input, 4);
-            if (magic != "DBPF" && magic != "DBBF") // DBPF & DBBF
+			bool hasError = false;
+
+			this.magic = MadScience.StreamHelpers.ReadStringASCII(input, 4);
+			if (this.magic != "DBPF" && this.magic != "DBBF") // DBPF & DBBF
 			{
-				throw new MadScience.Exceptions.NotAPackageException();
+				if (this.magic == "DBPP")
+				{
+					if (throwError)
+					{
+						throw new MadScience.Exceptions.UnsupportedPackageVersionException("protected store content");
+					}
+					else
+					{
+						// We don't do anything with Store files, so just return
+						this.packageType = Detective.PackageTypes.sims3Store;
+						return;
+					}
+				}
+				else
+				{
+					if (magic.EndsWith("PNG"))
+					{
+						this.packageType = Detective.PackageTypes.pngThumbnail;
+						return;
+					}
+
+					if (throwError)
+					{
+						throw new MadScience.Exceptions.NotAPackageException("not a valid package file");
+					}
+					else
+					{
+						hasError = true;
+					}
+				}
 			}
 
-            this.Big = magic == "DBBF";
+			// If we have an error already then it's not a DBPF file, so no point in going on
+			if (hasError && !throwError)
+			{
+				this.packageType = Detective.PackageTypes.corruptNotADBPF;
+				return;
+			}
+
+			this.Big = this.magic == "DBBF";
 
             if (this.Big == true)
 			{
                 BigHeader header = MadScience.StreamHelpers.ReadStructure<BigHeader>(input);
-
-				if (header.IndexVersion != 3)
-				{
-                    throw new MadScience.Exceptions.DatabasePackedFileException("index version was not 3");
-				}
+				this.bigHeader = header;
 
 				// Nab useful stuff
 				this.Version = new Version(header.MajorVersion, header.MinorVersion);
 				indexCount = header.IndexCount;
 				indexOffset = header.IndexOffset;
 				indexSize = header.IndexSize;
+
+				if (header.MajorVersion == 2 && header.MinorVersion == 0)
+				{
+					if (header.IndexVersion < 2)
+					{
+						if (throwError)
+						{
+							throw new MadScience.Exceptions.UnsupportedPackageVersionException("index version was not 2 or 3");
+						}
+						else
+						{
+							hasError = true;
+						}
+					}
+				}
+				else
+				{
+					if (throwError)
+					{
+						throw new MadScience.Exceptions.UnsupportedPackageVersionException("package version was not 2.0 - possibly TS2 content?");
+					}
+					else
+					{
+						hasError = true;
+					}
+				}
+
 			}
 			else
 			{
                 Header header = MadScience.StreamHelpers.ReadStructure<Header>(input);
-
-				if (header.IndexVersion != 3)
-				{
-                    throw new MadScience.Exceptions.DatabasePackedFileException("index version was not 3");
-				}
+				this.smallHeader = header;
 
 				// Nab useful stuff
 				this.Version = new Version(header.MajorVersion, header.MinorVersion);
 				indexCount = header.IndexCount;
 				indexOffset = header.IndexOffset;
 				indexSize = header.IndexSize;
+
+				if (header.MajorVersion == 2 && header.MinorVersion == 0)
+				{
+					if (header.IndexVersion < 2)
+					{
+						if (throwError)
+						{
+							throw new MadScience.Exceptions.DatabasePackedFileException("index version was not 2 or 3");
+						}
+						else
+						{
+							hasError = true;
+						}
+					}
+				}
+				else
+				{
+					if (throwError)
+					{
+						throw new MadScience.Exceptions.DatabasePackedFileException("package version was not 2.0 - possibly TS2 content?");
+					}
+					else
+					{
+						this.packageType = Detective.PackageTypes.sims2Package;
+						hasError = true;
+					}
+				}
+
 			}
 
-            this.IndexOffset = indexOffset;
+			this.IndexOffset = indexOffset;
+
+			// Check for invalid indexOffsets
+			if (indexOffset > input.Length)
+			{
+				// This is a corrupted file.  We can do nothing.
+				this.packageType = Detective.PackageTypes.corruptBadDownload;
+				return;
+			}
+
             this.Entries.Clear();
+
+			// Do some stuff for TS2
+			if (this.Version.Major == 1)
+			{
+				if (this.IndexOffset == 0) 
+				{
+					this.IndexOffset = this.smallHeader.IndexOffsetTS2;
+				}
+			}
+
+			if (this.Version.Major == 538976258)
+			{
+				// This is seen in some of Chaavik's packages - spaces in the header.  
+				// We can do nothing with these, so just give up
+				this.packageType = Detective.PackageTypes.corruptChaavik;
+				return;
+			}
+
+			// If we get this far, DONT have throw errors on, and have an error, then just plain exit.
+			//if (!throwError && hasError) return;
 
 			if (indexCount > 0)
 			{
 				// Read index
-				input.Seek(indexOffset, SeekOrigin.Begin);
+				int presentPackageValues = 0;
 
-                int presentPackageValues = MadScience.StreamHelpers.ReadValueS32(input);
-                this.IndexType = presentPackageValues;
-				if ((presentPackageValues & ~7) != 0)
+				bool hasPackageTypeId = false;
+				bool hasPackageGroupId = false;
+				bool hasPackageHiInstanceId = false;
+
+				uint packageTypeId = 0;
+				uint packageGroupId = 0;
+				uint packageHiInstanceId = 0;
+
+				input.Seek(this.IndexOffset, SeekOrigin.Begin);
+
+			// Do some stuff for TS2
+				if (this.Version.Major == 2)
 				{
-					throw new InvalidDataException("don't know how to handle this index data");
-				}
 
-                bool hasPackageTypeId = (presentPackageValues & (1 << 0)) == 1 << 0;
-                bool hasPackageGroupId = (presentPackageValues & (1 << 1)) == 1 << 1;
-                bool hasPackageHiInstanceId = (presentPackageValues & (1 << 2)) == 1 << 2;
+					presentPackageValues = MadScience.StreamHelpers.ReadValueS32(input);
+					this.IndexType = presentPackageValues;
+					if ((presentPackageValues & ~7) != 0)
+					{
+						this.packageType = Detective.PackageTypes.corruptIndex;
 
-                uint packageTypeId = hasPackageTypeId ? MadScience.StreamHelpers.ReadValueU32(input) : 0xFFFFFFFF;
-                uint packageGroupId = hasPackageGroupId ? MadScience.StreamHelpers.ReadValueU32(input) : 0xFFFFFFFF;
-                uint packageHiInstanceId = hasPackageHiInstanceId ? MadScience.StreamHelpers.ReadValueU32(input) : 0xFFFFFFFF;
+						// Check backwards 3 bytes (some files from peggy have invalid 
+						input.Seek(this.IndexOffset - 3, SeekOrigin.Begin);
+						presentPackageValues = MadScience.StreamHelpers.ReadValueS32(input);
+						this.IndexType = presentPackageValues;
+						if ((presentPackageValues & ~7) != 0)
+						{
+
+							if (throwError)
+							{
+								throw new InvalidDataException("don't know how to handle this index data");
+							}
+							else
+							{
+								this.packageType = Detective.PackageTypes.corruptPeggy;
+								return;
+							}
+						}
+					}
+
+					hasPackageTypeId = (presentPackageValues & (1 << 0)) == 1 << 0;
+					hasPackageGroupId = (presentPackageValues & (1 << 1)) == 1 << 1;
+					hasPackageHiInstanceId = (presentPackageValues & (1 << 2)) == 1 << 2;
+
+					packageTypeId = hasPackageTypeId ? MadScience.StreamHelpers.ReadValueU32(input) : 0xFFFFFFFF;
+					packageGroupId = hasPackageGroupId ? MadScience.StreamHelpers.ReadValueU32(input) : 0xFFFFFFFF;
+					packageHiInstanceId = hasPackageHiInstanceId ? MadScience.StreamHelpers.ReadValueU32(input) : 0xFFFFFFFF;
+				} 
 
 				for (int i = 0; i < indexCount; i++)
 				{
@@ -119,36 +277,47 @@ namespace MadScience.Wrappers
 
                     entry.Offset = (this.Big == true) ? MadScience.StreamHelpers.ReadValueS64(input) : MadScience.StreamHelpers.ReadValueS32(input);
                     entry.CompressedSize = MadScience.StreamHelpers.ReadValueU32(input);
-                    entry.DecompressedSize = MadScience.StreamHelpers.ReadValueU32(input);
 
-                    // compressed bit
-                    if ((entry.CompressedSize & 0x80000000) == 0x80000000)
-                    {
-                        entry.CompressedSize &= ~0x80000000;
-                        entry.CompressionFlags = MadScience.StreamHelpers.ReadValueS16(input);
-                        entry.Flags = MadScience.StreamHelpers.ReadValueU16(input);
-                    }
-                    else
-                    {
-                        if (entry.CompressedSize != entry.DecompressedSize)
-                        {
-                            entry.CompressionFlags = -1;
-                        }
-                        else
-                        {
-                            entry.CompressionFlags = 0;
-                        }
+					if (this.Version.Major == 2)
+					{
+						entry.DecompressedSize = MadScience.StreamHelpers.ReadValueU32(input);
 
-                        entry.Flags = 0;
+						// compressed bit
+						if ((entry.CompressedSize & 0x80000000) == 0x80000000)
+						{
+							entry.CompressedSize &= ~0x80000000;
+							entry.CompressionFlags = MadScience.StreamHelpers.ReadValueS16(input);
+							entry.Flags = MadScience.StreamHelpers.ReadValueU16(input);
+						}
+						else
+						{
+							if (entry.CompressedSize != entry.DecompressedSize)
+							{
+								entry.CompressionFlags = -1;
+							}
+							else
+							{
+								entry.CompressionFlags = 0;
+							}
 
-                        throw new MadScience.Exceptions.DatabasePackedFileException("strange index data");
-                    }
+							entry.Flags = 0;
 
-                    if (entry.CompressionFlags != 0 && entry.CompressionFlags != -1)
-                    {
-                        throw new MadScience.Exceptions.DatabasePackedFileException("bad compression flags");
-                    }
+							if (throwError)
+							{
+								throw new MadScience.Exceptions.DatabasePackedFileException("strange index data");
+							}
+							else
+							{
+								this.packageType = Detective.PackageTypes.corruptIndex;
+								return;
+							}
+						}
 
+						if (entry.CompressionFlags != 0 && entry.CompressionFlags != -1)
+						{
+							throw new MadScience.Exceptions.DatabasePackedFileException("bad compression flags");
+						}
+					}
                     if (entry.Offset + entry.CompressedSize > this.EndOfDataOffset)
                     {
                         this.EndOfDataOffset = entry.Offset + entry.CompressedSize;
@@ -274,7 +443,7 @@ namespace MadScience.Wrappers
 		}
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        private struct Header
+        public struct Header
         {
             //public uint Magic;		// 00
             public int MajorVersion;	// 04
@@ -282,17 +451,17 @@ namespace MadScience.Wrappers
             public uint Unknown0C;		// 0C
             public uint Unknown10;		// 10
             public uint Unknown14;		// 14 - always 0?
-            public uint Unknown18;		// 18 - always 0?
-            public uint Unknown1C;		// 1C - always 0?
-            public uint Unknown20;		// 20
+			public uint DateCreated;		// 18 - For Sims 2
+			public uint DateModified;		// 1C - For Sims 2
+			public uint IndexVersionMajor;		// 20 - For Sims 2
             public int IndexCount;		// 24 - Number of index entries in the package.
-            public uint Unknown28;		// 28
+            public uint IndexOffsetTS2;		// 28 - Used to be index Offset in The Sims 2
             public int IndexSize;		// 2C - The total size in bytes of index entries.
-            public uint Unknown30;		// 30
-            public uint Unknown34;		// 34
-            public uint Unknown38;		// 38
-            public uint IndexVersion;	// 3C - Always 3?
-            public int IndexOffset;		// 40 - Absolute offset in package to the index header.
+            public uint HolesCount;		// 30 - Holes Count - TS2
+            public uint HolesOffset;		// 34 - Holes Offset - TS2
+            public uint HolesSize;		// 38 - Holes Size - TS2
+            public uint IndexVersion;	// 3C - Always 3? (Listed as MinorVersion for TS2)
+            public int IndexOffset;		// 40 - Absolute offset in package to the index header. (TS3)
             public uint Unknown44;		// 44
             public uint Unknown48;		// 48
             public uint Unknown4C;		// 4C
@@ -303,7 +472,7 @@ namespace MadScience.Wrappers
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        private struct BigHeader
+        public struct BigHeader
         {
             //public uint Magic;		// 00
             public int MajorVersion;	// 04
@@ -311,9 +480,9 @@ namespace MadScience.Wrappers
             public uint Unknown0C;		// 0C
             public uint Unknown10;		// 10
             public uint Unknown14;		// 14 - always 0?
-            public uint Unknown18;		// 18 - always 0?
-            public uint Unknown1C;		// 1C - always 0?
-            public uint Unknown20;		// 20
+            public uint dateCreated;		// 18 - For Sims 2
+            public uint dateModified;		// 1C - For Sims 2
+            public uint IndexMajor;		// 20 - For Sims 2
             public int IndexCount;		// 24 - Number of index entries in the package.
             public Int64 IndexSize;		// 28 - The total size in bytes of index entries.
             public uint Unknown30;		// 30

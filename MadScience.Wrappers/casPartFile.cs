@@ -61,6 +61,106 @@ namespace MadScience
             
         }
 
+		public string ageGender()
+		{
+			return ageGender(this.cFile.ageGenderFlag);
+		}
+
+		public string ageGender(uint ageGenderFlag)
+		{
+			string retString = "";
+			if ((ageGenderFlag & 0x1) == 0x1) retString += "b";
+			if ((ageGenderFlag & 0x2) == 0x2) retString += "p";
+			if ((ageGenderFlag & 0x4) == 0x4) retString += "c";
+			if ((ageGenderFlag & 0x8) == 0x8) retString += "t";
+			if ((ageGenderFlag & 0x10) == 0x10) retString += "y";
+			if ((ageGenderFlag & 0x20) == 0x20) retString += "a";
+			if ((ageGenderFlag & 0x40) == 0x40) retString += "e";
+			if ((ageGenderFlag & 0x1000) == 0x1000) retString += "m";
+			if ((ageGenderFlag & 0x2000) == 0x2000) retString += "f";
+
+			return retString;
+		}
+
+		public string casType()
+		{
+			return casType(this.cFile.typeFlag);
+		}
+
+		public string casType(uint typeFlag)
+		{
+			string retString = "";
+			if ((typeFlag & 0x1) == 0x1) retString = "Hair";
+			if ((typeFlag & 0x2) == 0x2) retString = "Scalp";
+			if ((typeFlag & 0x4) == 0x4) retString = "Face Overlay";
+			if ((typeFlag & 0x8) == 0x8) retString = "Body";
+			if ((typeFlag & 0x10) == 0x10) retString = "Accessory";
+			return retString;
+		}
+
+		public string clothingType()
+		{
+			return clothingType(this.cFile.clothingType);
+		}
+
+		public string clothingType(uint clothingType)
+		{
+			string retString = "";
+
+			switch (clothingType)
+			{
+				case 1: retString = "Hair"; break;
+				case 2: retString = "Scalp"; break;
+				case 3: retString = "Face"; break;
+				case 4: retString = "Body"; break;
+				case 5: retString = "Top"; break;
+				case 6: retString = "Bottom"; break;
+				case 7: retString = "Shoes"; break;
+				case 11: retString = "Earrings"; break;
+				case 12: retString = "Glasses (F)"; break;
+				case 13: retString = "Bracelets"; break;
+				case 14: retString = "Ring (Left)"; break;
+				case 15: retString = "Ring (Right)"; break;
+				case 16: retString = "Beard"; break;
+				case 17: retString = "Lipstick"; break;
+				case 18: retString = "Eyeshadow"; break;
+				case 19: retString = "Eyeliner"; break;
+				case 20: retString = "Blush"; break;
+				case 21: retString = "Makeup"; break;
+				case 22: retString = "Eyebrow"; break;
+				case 24: retString = "Glove"; break;
+				case 25: retString = "Socks"; break;
+				case 26: retString = "Mascara"; break;
+				case 29: retString = "Weathering"; break;
+				case 30: retString = "Earring (Left)"; break;
+				case 31: retString = "Earring (Right)"; break;
+			}
+
+			return retString;
+		}
+
+		public string clothingCategory()
+		{
+			return clothingCategory(this.cFile.clothingCategory);	
+		}
+
+		public string clothingCategory(uint clothingCategory)
+		{
+
+			string retString = "";
+			if ((clothingCategory & 0x1) == 0x1) retString += "Naked ";
+			if ((clothingCategory & 0x2) == 0x2) retString += "Everyday ";
+			if ((clothingCategory & 0x4) == 0x4) retString += "Formalwear ";
+			if ((clothingCategory & 0x8) == 0x8) retString += "Sleepwear ";
+			if ((clothingCategory & 0x10) == 0x10) retString += "Swimwear ";
+			if ((clothingCategory & 0x20) == 0x20) retString += "Athletic ";
+			if ((clothingCategory & 0x40) == 0x40) retString += "Singed ";
+			if ((clothingCategory & 0x100) == 0x100) retString += "Career ";
+			if ((clothingCategory & 0xFFFF) == 0xFFFF) retString += "All ";
+			return retString;
+
+		}
+
         public string generateXMLChunk(casPart casP, int chunkNo, bool addComments)
         {
             sb = new StringBuilder();
@@ -542,8 +642,14 @@ namespace MadScience
             return temp;
         }
 
-        public casPart Load(Stream casFile)
+		public casPart Load(Stream casFile)
+		{
+			return Load(casFile, true);
+		}
+
+		public casPart Load(Stream casFile, bool parseXML)
         {
+
             BinaryReader reader = new BinaryReader(casFile);
 
             cFile.version = reader.ReadUInt32();
@@ -555,7 +661,7 @@ namespace MadScience
             {
                 uint xmlSize = reader.ReadUInt32();
                 cFile.xmlChunkRaw.Add(MadScience.StreamHelpers.ReadStringUTF16(casFile, (xmlSize * 2)));
-                this.parseRawXML(cFile.xmlChunkRaw.Count);
+				if (parseXML) this.parseRawXML(cFile.xmlChunkRaw.Count);
                 uint xmlNum = reader.ReadUInt32();
             }
 
@@ -661,7 +767,7 @@ namespace MadScience
             xmlChunkDetails xcd = new xmlChunkDetails();
             for (int i = 0; i < 4; i++)
             {
-                xcd.pattern[i] = new patternDetails();
+				xcd.pattern[i] = new Patterns.patternDetails();
             }
 
             while (xtr.Read())
@@ -1078,7 +1184,7 @@ namespace MadScience
                                 xtr.MoveToNextAttribute();
                                 bool isLogo = false;
 
-                                patternDetails pDetail = new patternDetails();
+								Patterns.patternDetails pDetail = new Patterns.patternDetails();
                                 logoDetails lDetail = new logoDetails();
 
                                 switch (curPattern)
@@ -1469,60 +1575,6 @@ namespace MadScience
         public stencilDetails F = new stencilDetails();
     }
     
-    public class patternDetails
-    {
-
-        public string type = "";
-
-        public string name = "";
-        public string key = "";
-        public string category = "";
-
-        public bool isCustom = false;
-        public string customFilename = "";
-
-        public string nameHigh = "";
-
-        public string material = "";
-        public string Enabled = "";
-        public string Linked = "";
-        public string Tiling = "";
-        public string assetRoot = "";
-        public string filename = "";
-
-        public string Color = "";
-        public string[] ColorP = new string[5];
-
-        public string BackgroundImage = "";
-
-        public string[] Channel = new string[3];
-        public string[] ChannelEnabled = new string[3];
-
-        public string HBg = "";
-        public string[] H = new string[3];
-
-        public string SBg = "";
-        public string[] S = new string[3];
-
-        public string VBg = "";
-        public string[] V = new string[3];
-
-        public string BaseHBg = "";
-        public string[] BaseH = new string[3];
-
-        public string BaseSBg = "";
-        public string[] BaseS = new string[3];
-
-        public string BaseVBg = "";
-        public string[] BaseV = new string[3];
-
-        public string HSVShiftBg = "";
-        public string[] HSVShift = new string[3];
-
-        public string rgbmask = "";
-        public string specmap = "";
-    }
-
     public class logoDetails
     {
 
@@ -1582,7 +1634,7 @@ namespace MadScience
 
         public bool hasCustomThumbnail = false;
 
-        public patternDetails[] pattern = new patternDetails[4];
+        public Patterns.patternDetails[] pattern = new Patterns.patternDetails[4];
         //public stencilList stencil = new stencilList();
         // Index into the stencilPool list
         //public int[] stencilIndex = new int[6];

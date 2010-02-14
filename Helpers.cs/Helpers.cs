@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Globalization;
 using Microsoft.Win32;
@@ -10,8 +9,6 @@ using System.Xml.Serialization;
 //using System.Linq;
 using System.IO;
 //using Gibbed.Helpers;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
@@ -64,6 +61,16 @@ namespace MadScience
                 }
             }
         }
+
+		public static void OpenWindow(string path)
+		{
+			if (!String.IsNullOrEmpty(path) && Directory.Exists(path) )
+			{
+				System.Diagnostics.Process.Start(path);
+			}
+			//If the above doesn't work try
+			//System.Diagnostics.Process.Start("explorer.exe", path);
+		}
 
         public static metaEntries metaEntryList;
 
@@ -147,6 +154,128 @@ namespace MadScience
             key.Close();
 
         }
+
+		public static List<ListViewItem> messages = new List<ListViewItem>();
+
+		public static void showMessage(string message)
+		{
+			showMessage(message, Color.White);
+			//messages.AppendLine(message);
+		}
+
+		public static void showMessage(string message, Color backColor)
+		{
+			//messages.AppendLine(message);
+			ListViewItem item = new ListViewItem();
+			item.Text = message;
+			item.BackColor = backColor;
+			messages.Add(item);
+		}
+
+		public static bool hasFramework(string checkPath, GameNumber epNumber)
+		{
+			bool retVal = false;
+
+			if (String.IsNullOrEmpty(checkPath)) return false;
+
+			switch (epNumber)
+			{
+				case GameNumber.highEndLoftStuff:
+					retVal = hasFramework(checkPath, "FullBuild_p03");
+					break;
+				case GameNumber.worldAdventures:
+					retVal = hasFramework(checkPath, "FullBuildEP1");
+					break;
+				case GameNumber.baseGame:
+				default:
+					retVal = hasFramework(checkPath, "FullBuild0");
+					break;
+			}
+			return retVal;
+		}
+
+		public static bool hasFramework(string checkPath, string fullBuild)
+		{
+
+			if (String.IsNullOrEmpty(checkPath)) return false;
+
+			showMessage("Checking path " + checkPath);
+
+			// Check for resource.cfg presence
+			bool hasFoundResource = false;
+			if (File.Exists(checkPath + "\\resource.cfg"))
+			{
+				hasFoundResource = true;
+				showMessage("Found resource.cfg: Yes");
+			}
+			else
+			{
+				showMessage("Found resource.cfg: No", Color.Salmon);
+			}
+
+			// Check for Mods\\Packages folder
+			bool hasFoundModsPackages = false;
+			if (Directory.Exists(checkPath + "\\Mods\\Packages\\"))
+			{
+				hasFoundModsPackages = true;
+				showMessage(@"Found Mods\Packages folder: Yes");
+			}
+			else
+			{
+				showMessage(@"Found Mods\Packages folder: No", Color.Salmon);
+			}
+
+			if (File.Exists(Path.Combine(checkPath, MadScience.Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
+			{
+				showMessage(@"Found " + fullBuild + ": Yes");
+			}
+			else
+			{
+				showMessage(@"Found " + fullBuild + ": No", Color.Salmon);
+			}
+
+			bool hasFoundDLLFramework = false;
+			if (File.Exists(Path.Combine(checkPath, MadScience.Helpers.getGameSubPath("\\Game\\Bin\\d3dx9_31.dll"))))
+			{
+				showMessage(@"Found custom framework d3dx9_31.dll: Yes");
+				hasFoundDLLFramework = true;
+			}
+			else
+			{
+				showMessage(@"Found custom framework d3dx9_31.dll: No", Color.Salmon);
+			}
+
+			//textBox1.Text += Environment.NewLine;
+
+			if (!hasFoundModsPackages && !hasFoundResource)
+			{
+				showMessage(@"The Installer could not find either a Resource.cfg or a Mods\Packages folder! This means that your game WILL NOT currently accept custom content and installation via the Helper Monkey", Color.Salmon);
+				showMessage(@"Please install the Framework by clicking the Install button.");
+			}
+			if (!hasFoundModsPackages && hasFoundResource)
+			{
+				showMessage(@"The Installer found a Resource.cfg but not the Mods\Packages folder!  This means that your game WILL NOT currently accept custom content, and installation via the Helper Monkey will fail.", Color.Salmon);
+				showMessage(@"Please install the Framework by clicking the Install button.");
+			}
+			if (hasFoundModsPackages && !hasFoundResource)
+			{
+				showMessage(@"The Installer found a Mods\Packages folder but not Resource.cfg!  This means that your game WILL NOT currently accept custom content, and any custom packages will not show up in game.", Color.Salmon);
+				showMessage(@"Please install the Framework by clicking the Install button.");
+			}
+			if (hasFoundModsPackages && hasFoundResource && !hasFoundDLLFramework)
+			{
+				showMessage(@"The Installer found both a Mods\Packages folder and the Resource.cfg, but NOT a custom DLL.  This means that your game SHOULD accept basic custom content, but NOT core mods.", Color.Salmon);
+			}
+			if (hasFoundModsPackages && hasFoundResource && hasFoundDLLFramework)
+			{
+				showMessage(@"The Installer found all Framework components.  This means that your game SHOULD accept basic custom content, and also core mods.");
+				return true;
+			}
+
+			return false;
+
+}
+
         public static string findMyDocs()
         {
             string myDocuments = "";
@@ -176,6 +305,11 @@ namespace MadScience
                 //MessageBox.Show(e.Message);
             }
 
+			if (myDocuments == "")
+			{
+				myDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+			}
+
             return myDocuments;
         }
 
@@ -183,6 +317,138 @@ namespace MadScience
         {
 			setSims3Root("", "FullBuild0");
         }
+
+		private static Version getSKUVersion(string gamePath)
+		{
+			Version skuVersion = new Version();
+
+			string skuPath = Path.Combine(Path.Combine(gamePath, Path.Combine("Game", "Bin")), "skuversion.txt");
+
+			if (File.Exists(skuPath))
+			{
+				StreamReader reader = new StreamReader(skuPath);
+				string input = "";
+				input = reader.ReadLine();
+				if (!String.IsNullOrEmpty(input))
+				{
+					if (input.StartsWith("GameVersion"))
+					{
+						input = input.Replace("GameVersion = ", "").Trim();
+						skuVersion = new Version(input);
+					}
+				}
+				reader.Close();
+			}
+
+			return skuVersion;
+		}
+
+		public static void findInstalledGames()
+		{
+			string sims3root = findSims3Root();
+			if (sims3root == "")
+			{
+				return;
+			}
+
+			GameInfo gameInfo = new GameInfo();
+
+			gameInfo.gameName = "Sims 3";
+			gameInfo.path = sims3root;
+			gameInfo.isInstalled = true;
+			gameInfo.version = getSKUVersion(sims3root);
+
+			gamesInstalled.gameCheck += 1;
+
+			if (hasFramework(sims3root, GameNumber.baseGame))
+			{
+				gameInfo.hasFramework = true;
+				gamesInstalled.flagCheck += 1;
+			}
+			
+			gamesInstalled.Items.Add(gameInfo);
+
+			gameInfo = new GameInfo();
+			gameInfo.gameName = "World Adventures";
+
+			string waLocation = findSims3Root(GameNumber.worldAdventures, false);
+			if (!String.IsNullOrEmpty(waLocation))
+			{
+				gameInfo.path = waLocation;
+				gameInfo.isInstalled = true;
+				gameInfo.version = getSKUVersion(waLocation);
+				gamesInstalled.gameCheck += 2;
+
+				if (hasFramework(waLocation, GameNumber.worldAdventures))
+				{
+					gameInfo.hasFramework = true;
+					gamesInstalled.flagCheck += 2;
+				}
+			}
+			gamesInstalled.Items.Add(gameInfo);
+
+			gameInfo = new GameInfo();
+			gameInfo.gameName = "High End Loft Stuff";
+
+			string helsLocation = findSims3Root(GameNumber.highEndLoftStuff, false);
+			if (!String.IsNullOrEmpty(helsLocation))
+			{
+				gameInfo.path = helsLocation;
+				gameInfo.isInstalled = true;
+				gameInfo.version = getSKUVersion(helsLocation);
+				gamesInstalled.gameCheck += 4;
+
+				if (hasFramework(helsLocation, GameNumber.highEndLoftStuff))
+				{
+					gameInfo.hasFramework = true;
+					gamesInstalled.flagCheck += 4;
+				}
+			}
+			gamesInstalled.Items.Add(gameInfo);
+
+			return;
+		}
+
+		public class GameInfo
+		{
+			public string gameName = "";
+			public string path = "";
+			public Version version = new Version();
+			public bool isInstalled = false;
+			public bool hasFramework = false;
+		}
+
+		public class gamesInstalled
+		{
+			public static List<GameInfo> Items = new List<GameInfo>();
+			public static int gameCheck = 0;
+			public static int flagCheck = 0;
+		}
+
+		public enum GameNumber : uint
+		{
+			baseGame = 0,
+			worldAdventures = 1,
+			highEndLoftStuff = 2,
+		}
+
+		public static void setSims3Root(GameNumber epNumber)
+		{
+			switch (epNumber)
+			{
+				case GameNumber.highEndLoftStuff:
+					setSims3Root(" High End Loft Stuff", "FullBuild_p03");
+					break;
+				case GameNumber.worldAdventures:
+					setSims3Root(" World Adventures", "FullBuildEP1");
+					break;
+				case GameNumber.baseGame:
+				default:
+					setSims3Root("", "FullBuild0");
+					break;
+			}
+			
+		}
 
 		public static void setSims3Root(string epSuffix, string fullBuild)
 		{
@@ -227,10 +493,38 @@ namespace MadScience
 
 		//private static string sims3root = "";
 
+
+
 		public static string findSims3Root()
 		{
 			return findSims3Root("", "FullBuild0", true);
 		}
+
+		public static string findSims3Root(GameNumber epNumber)
+		{
+			return findSims3Root(epNumber, true);
+		}
+
+		public static string findSims3Root(GameNumber epNumber, bool showManualPath)
+		{
+			string retVal = "";
+			switch (epNumber)
+			{
+				case GameNumber.highEndLoftStuff:
+					retVal = findSims3Root(" High-End Loft Stuff", "FullBuild_p03", showManualPath);
+					break;
+				case GameNumber.worldAdventures:
+					retVal = findSims3Root(" World Adventures", "FullBuildEP1", showManualPath);
+					break;
+				case GameNumber.baseGame:
+				default:
+					retVal = findSims3Root("", "FullBuild0", showManualPath);
+					break;
+			}
+			return retVal;
+		}
+
+
 
 		public static string findSims3Root(string epSuffix, string fullBuild, bool showManualPath)
 		{
@@ -349,62 +643,19 @@ namespace MadScience
 			// Show Manual Path is not set, but we can't find a valid install... so return nothing
 			if (!showManualPath && getManualPath)
 			{
-				return "";
+
+				return checkPathOverrides(epSuffix, fullBuild);
+				//return "";
 			}
 
 			if (showManualPath && getManualPath)
 			{
 				getManualPath = false;
 
-				// Check for existance of XML file in the Application.Startup folder - this can be used to override
-				// paths where none can be found (ie on Macs)
-				if (File.Exists(Path.Combine(Application.StartupPath, "pathOverrides.xml")))
+				string overridePath = checkPathOverrides(epSuffix, fullBuild);
+				if (String.IsNullOrEmpty(overridePath))
 				{
-					Stream xmlStream = File.OpenRead(Path.Combine(Application.StartupPath, "pathOverrides.xml"));
-					XmlTextReader xtr = new XmlTextReader(xmlStream);
-
-					while (xtr.Read())
-					{
-						if (xtr.NodeType == XmlNodeType.Element)
-						{
-							switch (xtr.Name)
-							{
-								case "path":
-									xtr.MoveToAttribute("name");
-									if (xtr.Value == "sims3root" + epSuffix)
-									{
-										installLocation = xtr.GetAttribute("location");
-									}
-									break;
-							}
-						}
-					}
-
-					xtr.Close();
-					xmlStream.Close();
-
-					if (!String.IsNullOrEmpty(installLocation))
-					{
-						try
-						{
-							if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
-							{
-								Helpers.saveCommonRegistryValue("sims3root" + epSuffix, installLocation);
-								sims3folders[epSuffix] = installLocation;
-								//sims3root = installLocation;
-								return installLocation;
-							}
-						}
-						catch (DirectoryNotFoundException dex)
-						{
-							getManualPath = true;
-						}
-						catch (FileNotFoundException fex)
-						{
-							getManualPath = true;
-						}
-					}
-
+					getManualPath = true;
 				}
 
 				// If we got to this point we have to show a dialog to the user asking them where to find the sims3root
@@ -447,6 +698,88 @@ namespace MadScience
 			//sims3root = installLocation;
 			//sims3folders[epSuffix] = installLocation;
 			return installLocation;
+		}
+
+		private static string checkPathOverrides(string epSuffix, string fullBuild)
+		{
+			// Check for existance of XML file in the Application.Startup folder - this can be used to override
+			// paths where none can be found (ie on Macs)
+
+			bool hasOverrides = false;
+			string overridePath = "";
+			string installLocation = "";
+
+			if (File.Exists(Path.Combine(Application.StartupPath, "pathOverrides.xml")))
+			{
+				hasOverrides = true;
+				overridePath = Path.Combine(Application.StartupPath, "pathOverrides.xml");
+			}
+
+			if (!hasOverrides)
+			{
+				string myDocs = findMyDocs();
+				if (!String.IsNullOrEmpty(myDocs))
+				{
+					if (File.Exists(Path.Combine(myDocs, "pathOverrides.xml")))
+					{
+						hasOverrides = true;
+						overridePath = Path.Combine(Application.StartupPath, "pathOverrides.xml");
+					}
+				}
+			}
+
+			if (hasOverrides)
+			{
+
+				Stream xmlStream = File.OpenRead(overridePath);
+				XmlTextReader xtr = new XmlTextReader(xmlStream);
+
+				while (xtr.Read())
+				{
+					if (xtr.NodeType == XmlNodeType.Element)
+					{
+						switch (xtr.Name)
+						{
+							case "path":
+								xtr.MoveToAttribute("name");
+								if (xtr.Value == "sims3root" + epSuffix)
+								{
+									installLocation = xtr.GetAttribute("location");
+								}
+								break;
+						}
+					}
+				}
+
+				xtr.Close();
+				xmlStream.Close();
+
+				if (!String.IsNullOrEmpty(installLocation))
+				{
+					try
+					{
+						if (File.Exists(Path.Combine(installLocation, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
+						{
+							Helpers.saveCommonRegistryValue("sims3root" + epSuffix, installLocation);
+							sims3folders[epSuffix] = installLocation;
+							//sims3root = installLocation;
+							return installLocation;
+						}
+					}
+					catch (DirectoryNotFoundException dex)
+					{
+						return "";
+					}
+					catch (FileNotFoundException fex)
+					{
+						return "";
+					}
+				}
+
+			}
+
+			return installLocation;
+
 		}
 
 		#endregion
@@ -811,39 +1144,37 @@ namespace MadScience
          */
         #endregion
 
-        #region Stream functions
-        public static bool isValidStream(Stream input)
-        {
-            if (input == null) return false;
-            if (input == Stream.Null) return false;
-            if (input.Length == 0) return false;
+		public static void resetControl(System.Windows.Forms.Control control)
+		{
+			if (control is System.Windows.Forms.TextBox)
+			{
+				control.Text = "";
+			}
+			if (control is System.Windows.Forms.ComboBox)
+			{
+				System.Windows.Forms.ComboBox cmb = (System.Windows.Forms.ComboBox)control;
+				if (cmb.Items.Count > 0) cmb.SelectedIndex = 0;
+			}
+			if (control is System.Windows.Forms.CheckBox)
+			{
+				System.Windows.Forms.CheckBox chk = (System.Windows.Forms.CheckBox)control;
+				chk.Checked = false;
+			}
+			if (control is System.Windows.Forms.CheckedListBox)
+			{
+				System.Windows.Forms.CheckedListBox chkList = (System.Windows.Forms.CheckedListBox)control;
+				for (int i = 0; i < chkList.Items.Count; i++)
+				{
+					chkList.SetItemChecked(i, false);
+				}
+			}
+			if (control is System.Windows.Forms.ListView)
+			{
+				System.Windows.Forms.ListView lstView = (System.Windows.Forms.ListView)control;
+				lstView.Items.Clear();
+			}
 
-            return true;
-        }
-
-        public static void CopyStream(Stream readStream, Stream writeStream)
-        {
-            CopyStream(readStream, writeStream, false);
-        }
-        public static void CopyStream(Stream readStream, Stream writeStream, bool fromStart)
-        {
-
-            if (fromStart)
-            {
-                readStream.Seek(0, SeekOrigin.Begin);
-            }
-
-            int Length = 256;
-            Byte[] buffer = new Byte[Length];
-            int bytesRead = readStream.Read(buffer, 0, Length);
-            // write the required bytes
-            while (bytesRead > 0)
-            {
-                writeStream.Write(buffer, 0, bytesRead);
-                bytesRead = readStream.Read(buffer, 0, Length);
-            }
-        }
-        #endregion
+		}
 
         #region String functions
         public static string sanitiseString(string input)
@@ -854,6 +1185,19 @@ namespace MadScience
             //var s = from ch in input where char.IsLetterOrDigit(ch) select ch;
             //return UnicodeEncoding.ASCII.GetString(UnicodeEncoding.ASCII.GetBytes(s.ToArray()));
         }
+		public static string stripControlFromString(string input)
+		{
+			string temp = "";
+			for (int i = 0; i < input.Length; i++)
+			{
+				if (!Char.IsControl(input[i])) temp += input[i];
+			}
+			//string temp = Regex.Replace(input, "[^a-zA-Z0-9]", "");
+			return temp;
+
+			//var s = from ch in input where char.IsLetterOrDigit(ch) select ch;
+			//return UnicodeEncoding.ASCII.GetString(UnicodeEncoding.ASCII.GetBytes(s.ToArray()));
+		}
         #endregion
 
 
@@ -864,185 +1208,4 @@ namespace MadScience
 
 
     }
-
-    /*
-    internal class FastPixel
-    {
-        // Fields
-        private Bitmap _bitmap;
-        private int _height;
-        private bool _isAlpha;
-        private int _width;
-        private BitmapData bmpData;
-        private IntPtr bmpPtr;
-        private bool locked;
-        private byte[] rgbValues;
-
-        // Methods
-        public FastPixel(Bitmap bitmap)
-        {
-            if (bitmap.PixelFormat == (bitmap.PixelFormat | PixelFormat.Indexed))
-            {
-                throw new Exception("Cannot lock an Indexed image.");
-            }
-            this._bitmap = bitmap;
-            this._isAlpha = this.Bitmap.PixelFormat == (this.Bitmap.PixelFormat | PixelFormat.Alpha);
-            this._width = bitmap.Width;
-            this._height = bitmap.Height;
-        }
-
-        public void Clear(Color colour)
-        {
-            if (!this.locked)
-            {
-                throw new Exception("Bitmap not locked.");
-            }
-            if (this.IsAlphaBitmap)
-            {
-                for (int i = 0; i < this.rgbValues.Length; i += 4)
-                {
-                    this.rgbValues[i] = colour.B;
-                    this.rgbValues[i + 1] = colour.G;
-                    this.rgbValues[i + 2] = colour.R;
-                    this.rgbValues[i + 3] = colour.A;
-                }
-            }
-            else
-            {
-                for (int j = 0; j < this.rgbValues.Length; j += 3)
-                {
-                    this.rgbValues[j] = colour.B;
-                    this.rgbValues[j + 1] = colour.G;
-                    this.rgbValues[j + 2] = colour.R;
-                }
-            }
-        }
-
-        public Color GetPixel(Point location)
-        {
-            return this.GetPixel(location.X, location.Y);
-        }
-
-        public Color GetPixel(int x, int y)
-        {
-            if (!this.locked)
-            {
-                throw new Exception("Bitmap not locked.");
-            }
-            if (this.IsAlphaBitmap)
-            {
-                int num = ((y * this.Width) + x) * 4;
-                int num2 = this.rgbValues[num];
-                int num3 = this.rgbValues[num + 1];
-                int num4 = this.rgbValues[num + 2];
-                int alpha = this.rgbValues[num + 3];
-                return Color.FromArgb(alpha, num4, num3, num2);
-            }
-            int index = ((y * this.Width) + x) * 3;
-            int blue = this.rgbValues[index];
-            int green = this.rgbValues[index + 1];
-            int red = this.rgbValues[index + 2];
-            return Color.FromArgb(red, green, blue);
-        }
-
-        public void Lock()
-        {
-            if (this.locked)
-            {
-                throw new Exception("Bitmap already locked.");
-            }
-            Rectangle rect = new Rectangle(0, 0, this.Width, this.Height);
-            this.bmpData = this.Bitmap.LockBits(rect, ImageLockMode.ReadWrite, this.Bitmap.PixelFormat);
-            this.bmpPtr = this.bmpData.Scan0;
-            if (this.IsAlphaBitmap)
-            {
-                int num = (this.Width * this.Height) * 4;
-                this.rgbValues = new byte[num];
-                Marshal.Copy(this.bmpPtr, this.rgbValues, 0, this.rgbValues.Length);
-            }
-            else
-            {
-                int num2 = (this.Width * this.Height) * 3;
-                this.rgbValues = new byte[num2];
-                Marshal.Copy(this.bmpPtr, this.rgbValues, 0, this.rgbValues.Length);
-            }
-            this.locked = true;
-        }
-
-        public void SetPixel(Point location, Color colour)
-        {
-            this.SetPixel(location.X, location.Y, colour);
-        }
-
-        public void SetPixel(int x, int y, Color colour)
-        {
-            if (!this.locked)
-            {
-                throw new Exception("Bitmap not locked.");
-            }
-            if (this.IsAlphaBitmap)
-            {
-                int index = ((y * this.Width) + x) * 4;
-                this.rgbValues[index] = colour.B;
-                this.rgbValues[index + 1] = colour.G;
-                this.rgbValues[index + 2] = colour.R;
-                this.rgbValues[index + 3] = colour.A;
-            }
-            else
-            {
-                int num2 = ((y * this.Width) + x) * 3;
-                this.rgbValues[num2] = colour.B;
-                this.rgbValues[num2 + 1] = colour.G;
-                this.rgbValues[num2 + 2] = colour.R;
-            }
-        }
-
-        public void Unlock(bool setPixels)
-        {
-            if (!this.locked)
-            {
-                throw new Exception("Bitmap not locked.");
-            }
-            if (setPixels)
-            {
-                Marshal.Copy(this.rgbValues, 0, this.bmpPtr, this.rgbValues.Length);
-            }
-            this.Bitmap.UnlockBits(this.bmpData);
-            this.locked = false;
-        }
-
-        // Properties
-        public Bitmap Bitmap
-        {
-            get
-            {
-                return this._bitmap;
-            }
-        }
-
-        public int Height
-        {
-            get
-            {
-                return this._height;
-            }
-        }
-
-        public bool IsAlphaBitmap
-        {
-            get
-            {
-                return this._isAlpha;
-            }
-        }
-
-        public int Width
-        {
-            get
-            {
-                return this._width;
-            }
-        }
-    }
-     */
 }

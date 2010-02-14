@@ -9,29 +9,39 @@ namespace MadScience
     public class StreamHelpers
     {
 
-        public static void CopyStream(Stream readStream, Stream writeStream)
-        {
-            CopyStream(readStream, writeStream, false);
-        }
+		#region Stream functions
+		public static bool isValidStream(Stream input)
+		{
+			if (input == null) return false;
+			if (input == Stream.Null) return false;
+			if (input.Length == 0) return false;
 
-        public static void CopyStream(Stream readStream, Stream writeStream, bool fromStart)
-        {
+			return true;
+		}
 
-            if (fromStart)
-            {
-                readStream.Seek(0, SeekOrigin.Begin);
-            }
+		public static void CopyStream(Stream readStream, Stream writeStream)
+		{
+			CopyStream(readStream, writeStream, false);
+		}
+		public static void CopyStream(Stream readStream, Stream writeStream, bool fromStart)
+		{
 
-            int Length = 256;
-            Byte[] buffer = new Byte[Length];
-            int bytesRead = readStream.Read(buffer, 0, Length);
-            // write the required bytes
-            while (bytesRead > 0)
-            {
-                writeStream.Write(buffer, 0, bytesRead);
-                bytesRead = readStream.Read(buffer, 0, Length);
-            }
-        }
+			if (fromStart)
+			{
+				readStream.Seek(0, SeekOrigin.Begin);
+			}
+
+			int Length = 256;
+			Byte[] buffer = new Byte[Length];
+			int bytesRead = readStream.Read(buffer, 0, Length);
+			// write the required bytes
+			while (bytesRead > 0)
+			{
+				writeStream.Write(buffer, 0, bytesRead);
+				bytesRead = readStream.Read(buffer, 0, Length);
+			}
+		}
+		#endregion
 
         public static Single ReadValueF32(Stream stream)
         {

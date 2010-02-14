@@ -133,7 +133,7 @@ namespace CASPartEditor
                 // Use the VPXY to get the mesh lod
                 Stream vpxyStream = KeyUtils.findKey(casPartSrc.tgi64list[casPartSrc.tgiIndexVPXY], 0);
 
-                if (Helpers.isValidStream(vpxyStream))
+                if (StreamHelpers.isValidStream(vpxyStream))
                 {
                     VPXYFile vpxyFile = new VPXYFile(vpxyStream);
                     // Get the first VPXY internal link

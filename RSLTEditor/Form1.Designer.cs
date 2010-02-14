@@ -203,12 +203,11 @@
 			// 
 			// columnHeader4
 			// 
-			this.columnHeader4.Text = "Slot Name";
+			this.columnHeader4.Text = "Slot Hash";
 			this.columnHeader4.Width = 150;
 			// 
 			// btnRouteAdd
 			// 
-			this.btnRouteAdd.Enabled = false;
 			this.btnRouteAdd.Location = new System.Drawing.Point(150, 275);
 			this.btnRouteAdd.Name = "btnRouteAdd";
 			this.btnRouteAdd.Size = new System.Drawing.Size(75, 23);
@@ -425,12 +424,11 @@
 			// 
 			// columnHeader2
 			// 
-			this.columnHeader2.Text = "Slot Name";
+			this.columnHeader2.Text = "Slot Hash";
 			this.columnHeader2.Width = 150;
 			// 
 			// btnContainerAdd
 			// 
-			this.btnContainerAdd.Enabled = false;
 			this.btnContainerAdd.Location = new System.Drawing.Point(150, 275);
 			this.btnContainerAdd.Name = "btnContainerAdd";
 			this.btnContainerAdd.Size = new System.Drawing.Size(75, 23);
@@ -486,12 +484,11 @@
 			// 
 			// columnHeader6
 			// 
-			this.columnHeader6.Text = "Slot Name";
+			this.columnHeader6.Text = "Slot Hash";
 			this.columnHeader6.Width = 150;
 			// 
 			// btnEffectAdd
 			// 
-			this.btnEffectAdd.Enabled = false;
 			this.btnEffectAdd.Location = new System.Drawing.Point(150, 275);
 			this.btnEffectAdd.Name = "btnEffectAdd";
 			this.btnEffectAdd.Size = new System.Drawing.Size(75, 23);
@@ -547,12 +544,11 @@
 			// 
 			// columnHeader8
 			// 
-			this.columnHeader8.Text = "Slot Name";
+			this.columnHeader8.Text = "Slot Hash";
 			this.columnHeader8.Width = 150;
 			// 
 			// btnIKTargetAdd
 			// 
-			this.btnIKTargetAdd.Enabled = false;
 			this.btnIKTargetAdd.Location = new System.Drawing.Point(150, 275);
 			this.btnIKTargetAdd.Name = "btnIKTargetAdd";
 			this.btnIKTargetAdd.Size = new System.Drawing.Size(75, 23);
@@ -581,6 +577,7 @@
 			this.btnCommit.TabIndex = 51;
 			this.btnCommit.Text = "Commit";
 			this.btnCommit.UseVisualStyleBackColor = true;
+			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
 			// 
 			// txtSlotName
 			// 
@@ -599,20 +596,20 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(255, 49);
+			this.label1.Location = new System.Drawing.Point(258, 49);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(59, 13);
+			this.label1.Size = new System.Drawing.Size(56, 13);
 			this.label1.TabIndex = 54;
-			this.label1.Text = "Slot Name:";
+			this.label1.Text = "Slot Hash:";
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(248, 75);
+			this.label2.Location = new System.Drawing.Point(251, 75);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(66, 13);
+			this.label2.Size = new System.Drawing.Size(63, 13);
 			this.label2.TabIndex = 55;
-			this.label2.Text = "Bone Name:";
+			this.label2.Text = "Bone Hash:";
 			// 
 			// label3
 			// 

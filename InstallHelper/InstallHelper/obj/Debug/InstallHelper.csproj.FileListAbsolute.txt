@@ -1,0 +1,13 @@
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\obj\Debug\ResolveAssemblyReference.cache
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\obj\Debug\InstallHelper.Form1.resources
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\obj\Debug\InstallHelper.InstallHelper.exe.resources
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\obj\Debug\InstallHelper.Properties.Resources.resources
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\obj\Debug\InstallHelper.csproj.GenerateResource.Cache
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\obj\Debug\InstallHelper.exe
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\obj\Debug\InstallHelper.pdb
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\bin\Debug\InstallHelper.exe
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\bin\Debug\InstallHelper.pdb
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\bin\Debug\MadScience.Helpers.dll
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\bin\Debug\MadScience.Helpers.pdb
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\bin\Debug\MadScience.Wrappers.dll
+C:\Programming\Projects\Sims 3\InstallHelper\InstallHelper\bin\Debug\MadScience.Wrappers.pdb
