@@ -223,7 +223,7 @@ namespace Sims3Dashboard
 				}
 			}
 
-			getCacheDetails();
+			
 		}
 
 		public void ProcessFiles()
@@ -594,25 +594,29 @@ namespace Sims3Dashboard
 
 			if (String.IsNullOrEmpty(folderBrowserDialog1.SelectedPath))
 			{
-
-				string sims3root = MadScience.Helpers.findSims3Root();
-				if (String.IsNullOrEmpty(sims3root)) return;
-
-				if (Directory.Exists(Path.Combine(Path.Combine(sims3root, "Mods"), "Packages")))
+				for (int i = 0; i < MadScience.Helpers.gamesInstalled.Items.Count; i++)
 				{
-					this.masterDir = Path.Combine(Path.Combine(sims3root, "Mods"), "Packages");
-					CountFiles(Path.Combine(Path.Combine(sims3root, "Mods"), "Packages"));
-				}
-
-				string waLocation = MadScience.Helpers.findSims3Root(" World Adventures", "FullBuildEP1", false);
-				if (!String.IsNullOrEmpty(waLocation))
-				{
-					if (Directory.Exists(Path.Combine(Path.Combine(waLocation, "Mods"), "Packages")))
+					MadScience.Helpers.GameInfo gameInfo = MadScience.Helpers.gamesInstalled.Items[i];
+					if (gameInfo.isInstalled)
 					{
-						this.masterDir = Path.Combine(Path.Combine(waLocation, "Mods"), "Packages");
-						CountFiles(Path.Combine(Path.Combine(waLocation, "Mods"), "Packages"));
+						if (gameInfo.hasFramework)
+						{
+							this.masterDir = Path.Combine(gameInfo.path, Path.Combine("Mods", "Packages"));
+							CountFiles(this.masterDir);
+						}
+						else
+						{
+							// Check for explicit Mods\Packages folder
+							if (Directory.Exists(Path.Combine(gameInfo.path, Path.Combine("Mods", "Packages"))))
+							{
+								this.masterDir = Path.Combine(gameInfo.path, Path.Combine("Mods", "Packages"));
+								CountFiles(this.masterDir);
+							}
+						}
 					}
+
 				}
+
 			}
 			else
 			{
@@ -706,6 +710,8 @@ namespace Sims3Dashboard
 					try
 					{
 						File.Move(filename, filename + ".disabled");
+						listView1.CheckedItems[i].SubItems[1].Text = listView1.CheckedItems[i].SubItems[1].Text + ".disabled";
+						listView1.CheckedItems[i].BackColor = detective.pType.ToColor(MadScience.Detective.PackageTypes.disabledPackage);
 					}
 					catch (Exception ex)
 					{
@@ -789,6 +795,7 @@ namespace Sims3Dashboard
 		private void button7_Click(object sender, EventArgs e)
 		{
 			clearCache("", "");
+			getCacheDetails();
 		}
 
 		private void button6_Click(object sender, EventArgs e)
@@ -797,6 +804,7 @@ namespace Sims3Dashboard
 			{
 				if (listView2.Items[i].Checked) clearCache(listView2.Items[i].SubItems[1].Text, listView2.Items[i].Text);
 			}
+			getCacheDetails();
 		}
 
 		private void listView2_ItemChecked(object sender, ItemCheckedEventArgs e)
@@ -853,13 +861,26 @@ namespace Sims3Dashboard
 			Stream input = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
 			MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(input, true, false);
 
-			if (filename.Contains(".dbc"))
+			try
 			{
-				MadScience.Detective.PackageType packageType = detective.getType(db, true);
+				if (filename.Contains(".dbc"))
+				{
+					MadScience.Detective.PackageType packageType = detective.getType(db, true);
+				}
+				else
+				{
+					MadScience.Detective.PackageType packageType = detective.getType(db, false);
+				}
 			}
-			else
+			catch (System.Exception excpt)
 			{
-				MadScience.Detective.PackageType packageType = detective.getType(db, false);
+				MessageBox.Show(excpt.Message + " " + excpt.StackTrace, f.Name);
+				detective.pType.MainType = MadScience.Detective.PackageTypes.corruptBadDownload;
+				detective.isCorrupt = true;
+				item.BackColor = detective.pType.ToColor();
+				item.SubItems[2].Text = detective.pType.ToString();
+				input.Close();
+				return;
 			}
 
 			if (detective.pType.MainType == MadScience.Detective.PackageTypes.sims2Package)
@@ -1315,6 +1336,7 @@ namespace Sims3Dashboard
 							try
 							{
 								File.Delete(filename);
+								listView1.CheckedItems[i].Remove();
 							}
 							catch (Exception ex)
 							{
@@ -1351,7 +1373,20 @@ namespace Sims3Dashboard
 				{
 					button1.Enabled = false;
 				}
+				if (listView3.SelectedItems[0].SubItems[2].Text == "Yes")
+				{
+					linkLabel1.Visible = false;
+				}
+				else
+				{
+					linkLabel1.Visible = true;
+				}
 			}
+		}
+
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			System.Diagnostics.Process.Start("http://www.modthesims.info/d/384014");
 		}
 
 
