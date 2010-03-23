@@ -69,12 +69,12 @@ namespace CASPartEditor
             }
         }
 
-        private void showPatternDetails(patternDetails pDetails)
+        private void showPatternDetails(Patterns.patternDetails pDetails)
         {
             showPatternDetails(pDetails, true);
         }
 
-        private void showPatternDetails(patternDetails pDetails, bool doEnable)
+        private void showPatternDetails(Patterns.patternDetails pDetails, bool doEnable)
         {
             txtPatternAFilename.Text = pDetails.filename;
             txtPatternAKey.Text = pDetails.key;
@@ -268,7 +268,7 @@ namespace CASPartEditor
             {
                 int patternNo = cmbPatternSelect.SelectedIndex;
                 xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-                patternDetails pDetail = chunk.pattern[patternNo];
+               Patterns.patternDetails pDetail = chunk.pattern[patternNo];
                 switch (param)
                 {
                     case "enabled":

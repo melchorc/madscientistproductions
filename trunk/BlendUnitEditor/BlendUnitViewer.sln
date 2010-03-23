@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+# Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlendUnitViewer", "BlendUnitViewer.csproj", "{BD2F5393-3AB2-4269-9119-136D17E7FBC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadScience.Wrappers", "..\MadScience.Wrappers\MadScience.Wrappers.csproj", "{82597921-C98E-4D1C-B32E-6BB2164B89AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,10 @@ Global
 		{BD2F5393-3AB2-4269-9119-136D17E7FBC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD2F5393-3AB2-4269-9119-136D17E7FBC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD2F5393-3AB2-4269-9119-136D17E7FBC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82597921-C98E-4D1C-B32E-6BB2164B89AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82597921-C98E-4D1C-B32E-6BB2164B89AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82597921-C98E-4D1C-B32E-6BB2164B89AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82597921-C98E-4D1C-B32E-6BB2164B89AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

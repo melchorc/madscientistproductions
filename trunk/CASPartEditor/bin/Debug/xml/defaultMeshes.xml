@@ -1,46 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <meshesFile>
-
-  <mesh flags="pfBody" value="key:015A1849:" />
   <mesh flags="pfFace" value="key:015A1849:00270A29:00000000E5329BB6" />
-
-  <mesh flags="pmBody" value="key:015A1849:" />
   <mesh flags="pmFace" value="key:015A1849:00270A29:00000000E5329BB6" />
-
-  <mesh flags="pmfBody" value="key:015A1849:" />
-  <mesh flags="pmfFace" value="key:015A1849:00270A29:00000000E5329BB6" />
-  
-  <mesh flags="cfBody" value="key:015A1849:" />
   <mesh flags="cfFace" value="key:015A1849:0082FEFB:0000000048529D89" />
-  
-  <mesh flags="cmBody" value="key:015A1849:" />
   <mesh flags="cmFace" value="key:015A1849:0082FEFB:0000000048529D89" />
-  
-  <mesh flags="cmfBody" value="key:015A1849:" />
-  <mesh flags="cmfFace" value="key:015A1849:0082FEFB:0000000048529D89" />
-
-  <mesh flags="tfBody" value="key:015A1849:" />
   <mesh flags="tfFace" value="key:015A1849:00E85121:00000000A6E27BB3" />
-
-  <mesh flags="tmBody" value="key:015A1849:" /> 
   <mesh flags="tmFace" value="key:015A1849:003A81FE:000000003D3137EA" /> 
-  
-  <mesh flags="yfBody" value="key:015A1849:" />
   <mesh flags="yfFace" value="key:015A1849:0072FE76:000000004F1A3EB2" />
-
-  <mesh flags="ymBody" value="key:015A1849:" /> 
   <mesh flags="ymFace" value="key:015A1849:00117A4F:0000000090BF60AB" /> 
-  
-  <mesh flags="afBody" value="key:015A1849:" />
   <mesh flags="afFace" value="key:015A1849:00BEE823:00000000ECC7C68A" />
-
-  <mesh flags="amBody" value="key:015A1849:" />
   <mesh flags="amFace" value="key:015A1849:0020033C:00000000AF383E53" />
-  
-  <mesh flags="efBody" value="key:015A1849:" />
   <mesh flags="efFace" value="key:015A1849:00CFFECB:000000003D6953D6" />
-
-  <mesh flags="emBody" value="key:015A1849:" />
   <mesh flags="emFace" value="key:015A1849:007DCE35:000000005A29A93F" />
+  
+  
+  
+  <mesh flags="pfFeet" value="puShoesNude" />
+  <mesh flags="pmFeet" value="puShoesNude" />
+  <mesh flags="cfFeet" value="cuShoesNude" />
+  <mesh flags="cmFeet" value="cuShoesNude" />
+  <mesh flags="tfFeet" value="tfShoesNude" />
+  <mesh flags="tmFeet" value="tmShoesNude" /> 
+  <mesh flags="yfFeet" value="afShoesNude" />
+  <mesh flags="ymFeet" value="amShoesNude" /> 
+  <mesh flags="afFeet" value="afShoesNude" />
+  <mesh flags="amFeet" value="amShoesNude" />
+  <mesh flags="efFeet" value="efShoesNude" />
+  <mesh flags="emFeet" value="emShoesNude" />  
+  
+  <mesh flags="pfBottom" value="puBottomNude" />
+  <mesh flags="pmBottom" value="puBottomNude" />
+  <mesh flags="cfBottom" value="cuBottomNude" />
+  <mesh flags="cmBottom" value="cuBottomNude" />
+  <mesh flags="tfBottom" value="tfBottomNude" />
+  <mesh flags="tmBottom" value="tmBottomNude" /> 
+  <mesh flags="yfBottom" value="afBottomNude" />
+  <mesh flags="ymBottom" value="amBottomNude" /> 
+  <mesh flags="afBottom" value="afBottomNude" />
+  <mesh flags="amBottom" value="amBottomNude" />
+  <mesh flags="efBottom" value="efBottomNude" />
+  <mesh flags="emBottom" value="emBottomNude" /> 
+  
+  <mesh flags="pfTop" value="puTopNude" />
+  <mesh flags="pmTop" value="puTopNude" />
+  <mesh flags="cfTop" value="cfTopNude" />
+  <mesh flags="cmTop" value="cmTopNude" />
+  <mesh flags="tfTop" value="tfTopNude" />
+  <mesh flags="tmTop" value="tmTopNude" /> 
+  <mesh flags="yfTop" value="afTopNude" />
+  <mesh flags="ymTop" value="amTopNude" /> 
+  <mesh flags="afTop" value="afTopNude" />
+  <mesh flags="amTop" value="amTopNude" />
+  <mesh flags="efTop" value="efTopNude" />
+  <mesh flags="emTop" value="emTopNude" /> 
+
     
 </meshesFile>

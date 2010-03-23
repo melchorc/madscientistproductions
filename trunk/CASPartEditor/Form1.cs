@@ -95,7 +95,7 @@ namespace CASPartEditor
         public bool isNew = false;
         public bool fromPackage = false;
 
-        string logPath = Helpers.logPath(Path.Combine(Application.StartupPath , Application.ProductName + ".log"), true);
+        string logPath = Helpers.logPath(Path.Combine(Application.StartupPath, Application.ProductName + ".log"), true);
 
         //public string filename;
 
@@ -528,7 +528,7 @@ namespace CASPartEditor
             if (String.IsNullOrEmpty(sims3root))
             {
                 sims3root = MadScience.Helpers.findSims3Root();
-            } 
+            }
 
             string thumbnailPackage = Helpers.getGameSubPath(@"\Thumbnails\CasThumbnails.package");
             Helpers.logMessageToFile(Path.Combine(sims3root, thumbnailPackage));
@@ -762,7 +762,7 @@ namespace CASPartEditor
             {
                 addNewCopyLastToolStripMenuItem.Enabled = false;
             }
-            contextMenuStrip1.Show(PointToScreen(new Point(btnAddNewDesign.Left + btnAddNewDesign.Width + 3, (btnAddNewDesign.Top - btnAddNewDesign.Height) + contextMenuStrip1.Height )));
+            contextMenuStrip1.Show(PointToScreen(new Point(btnAddNewDesign.Left + btnAddNewDesign.Width + 3, (btnAddNewDesign.Top - btnAddNewDesign.Height) + contextMenuStrip1.Height)));
 
         }
 
@@ -777,7 +777,7 @@ namespace CASPartEditor
                     showCasPart(lastSelected);
                 }
             }
-                       
+
         }
 
         private void btnPreviewTexture_Click(object sender, EventArgs e)
@@ -1105,11 +1105,13 @@ namespace CASPartEditor
                     Stream saveFile = File.Open(saveFileDialog1.FileName, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 
                     ulong instanceId;
-                    //if (sender != saveAsDefaultToolStripMenuItem)
-                        instanceId = MadScience.StringHelpers.HashFNV64("CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name));
-                    //else
-                    //    instanceId = MadScience.StringHelpers.ParseHex64(txtCasPartInstance.Text);
 
+                    using (SaveForm sf = new SaveForm("", "CTU_" + DateTime.Now.Ticks + "_" + MadScience.Helpers.sanitiseString(f.Name), loadedCasPart.instanceId))
+                    {
+                        sf.ShowDialog(this);
+
+                        instanceId = sf.Instance;
+                    }
                     Database db = new Database(saveFile, false);
 
                     saveToDBPF(db, instanceId, true);
@@ -1145,7 +1147,7 @@ namespace CASPartEditor
 
         private string replaceImageKey(string keyString)
         {
-            
+
 
             openFileDialog1.FileName = "";
             openFileDialog1.Filter = "Sims 3 Texture File|*.dds";
@@ -1311,7 +1313,7 @@ namespace CASPartEditor
                 picLstOtherColour.BackColor = cpd.Color;
 
                 ListViewItem item = lstOtherDetails.SelectedItems[0];
-                
+
                 item.SubItems[0].Text = MadScience.Colours.convertColour(picLstOtherColour.BackColor);
                 item.Text = item.SubItems[0].Text;
             }
@@ -1433,7 +1435,7 @@ namespace CASPartEditor
 
                 reloadTextures();
             }
-        
+
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -1454,7 +1456,7 @@ namespace CASPartEditor
                 toolStripStatusLabel1.Text = "Searching for meshes... please wait";
                 statusStrip1.Refresh();
 
-                Stream fbuild0 = File.Open(Path.Combine(s3root,  Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package")), FileMode.Open, FileAccess.Read, FileShare.Read);
+                Stream fbuild0 = File.Open(Path.Combine(s3root, Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild0.package")), FileMode.Open, FileAccess.Read, FileShare.Read);
                 MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(fbuild0, true);
 
                 toolStripProgressBar1.Maximum = db._Entries.Count;
@@ -2162,7 +2164,7 @@ namespace CASPartEditor
 
         }
 
-        #region Pattern tab 
+        #region Pattern tab
 
         private void btnPatternAReplaceRGBMask_Click(object sender, EventArgs e)
         {
@@ -2371,7 +2373,7 @@ namespace CASPartEditor
                     showPatternDetails(pBrowser.selectedPattern, false);
 
                     //chunk.pattern[patternNo] = (patternDetails)pBrowser.selectedPattern.Copy();
-                    chunk.pattern[patternNo] = (patternDetails)OX.Copyable.ObjectExtensions.Copy(pBrowser.selectedPattern);
+                    chunk.pattern[patternNo] = (Patterns.patternDetails)OX.Copyable.ObjectExtensions.Copy(pBrowser.selectedPattern);
                     //pBrowser.selectedPattern.Enabled = chunk.pattern[patternNo].Enabled;
 
                     generate3DTexture();
@@ -2553,7 +2555,7 @@ namespace CASPartEditor
                 }
             }
 
-            
+
         }
 
         private void addNewBlankToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2756,7 +2758,7 @@ namespace CASPartEditor
                     case "truefalse":
                         if (item.Text.ToLower() == "true") item.Text = "False";
                         else item.Text = "True";
-                        item.Font = new Font(item.Font.FontFamily, item.Font.Size, FontStyle.Bold); 
+                        item.Font = new Font(item.Font.FontFamily, item.Font.Size, FontStyle.Bold);
                         break;
                     case "texture":
                         if (!String.IsNullOrEmpty(item.Text)) btnListTextureFind_Click(sender, null);
@@ -2914,7 +2916,7 @@ namespace CASPartEditor
         {
             int patternNo = cmbPatternSelect.SelectedIndex;
             xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-            patternDetails pDetail = chunk.pattern[patternNo];
+            Patterns.patternDetails pDetail = chunk.pattern[patternNo];
             picHSVColorBG.BackColor = showColourDialog(picHSVColorBG.BackColor);
 
             Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorBG.BackColor);
@@ -2933,7 +2935,7 @@ namespace CASPartEditor
         {
             int patternNo = cmbPatternSelect.SelectedIndex;
             xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-            patternDetails pDetail = chunk.pattern[patternNo];
+            Patterns.patternDetails pDetail = chunk.pattern[patternNo];
             picHSVColorChannel1.BackColor = showColourDialog(picHSVColorChannel1.BackColor);
 
             Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorChannel1.BackColor);
@@ -2952,7 +2954,7 @@ namespace CASPartEditor
         {
             int patternNo = cmbPatternSelect.SelectedIndex;
             xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-            patternDetails pDetail = chunk.pattern[patternNo];
+            Patterns.patternDetails pDetail = chunk.pattern[patternNo];
             picHSVColorChannel2.BackColor = showColourDialog(picHSVColorChannel2.BackColor);
 
             Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorChannel2.BackColor);
@@ -2971,7 +2973,7 @@ namespace CASPartEditor
         {
             int patternNo = cmbPatternSelect.SelectedIndex;
             xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-            patternDetails pDetail = chunk.pattern[patternNo];
+            Patterns.patternDetails pDetail = chunk.pattern[patternNo];
             picHSVColorChannel3.BackColor = showColourDialog(picHSVColorChannel3.BackColor);
 
             Colours.HSVColor hsv = new Colours.HSVColor(picHSVColorChannel3.BackColor);
@@ -3150,8 +3152,21 @@ namespace CASPartEditor
 			useAlternativeToolStripMenuItem.Checked = !useAlternativeToolStripMenuItem.Checked;
 		}
 
+        private void button23_Click(object sender, EventArgs e)
+        {
+            Bitmap b = Render3DTexture();
+            if (b == null)
+                return;
+            SaveFileDialog s = new SaveFileDialog();
+            s.Filter = "PNG Image|*.png";
+            if (s.ShowDialog() == DialogResult.OK)
+            {
+                b.Save(s.FileName);
+            }
+        }
+
     }
-    
+
     /// <remarks/>
     [System.Xml.Serialization.XmlRootAttribute()]
     public class files
@@ -3198,7 +3213,7 @@ namespace CASPartEditor
         public string cType;
 
         /// <remarks/>
-        public string fullCasPartname; 
+        public string fullCasPartname;
 
         private string _casPart;
         [System.Xml.Serialization.XmlTextAttribute()]

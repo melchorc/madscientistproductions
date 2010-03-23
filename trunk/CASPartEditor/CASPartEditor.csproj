@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{73078060-AB22-467A-BA1A-FC40E2F4DF64}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -108,6 +108,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="SaveForm.resx">
+      <DependentUpon>SaveForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Skintone.resx">
+      <DependentUpon>Skintone.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -123,6 +129,18 @@
     </Compile>
     <Compile Include="RenderUtils.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveForm.Designer.cs">
+      <DependentUpon>SaveForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Skintone.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Skintone.Designer.cs">
+      <DependentUpon>Skintone.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

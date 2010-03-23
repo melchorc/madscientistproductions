@@ -9,12 +9,15 @@ using System.Globalization;
 
 using MadScience;
 using MadScience.Wrappers;
+using System.Drawing.Imaging;
 
 
 namespace CASPartEditor
 {
     public partial class Form1 : Form
     {
+
+        private Color skintone = Color.White; //Color.FromArgb(247, 224, 200);
 
         public void reloadTextures()
         {
@@ -47,6 +50,18 @@ namespace CASPartEditor
             }
         }
 
+        public Bitmap Render3DTexture()
+        {
+
+            if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
+            {
+                xmlChunkDetails details = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
+
+                return Render3DTexture(details);
+            }
+            return null;
+        }
+
         public void reloadTextures(xmlChunkDetails details)
         {
             if (listView1.SelectedItems.Count == 1 && cEnable3DPreview.Checked == true)
@@ -54,7 +69,10 @@ namespace CASPartEditor
 
                 List<string> textures = findDefaultTextures(casPartNew.ageGenderFlag, casPartNew.typeFlag);
 
-                renderWindow1.loadTexture(KeyUtils.findKey(textures[0]), "skinTexture");
+                if (skintone == Color.White)
+                    renderWindow1.loadTexture(KeyUtils.findKey(textures[0]), "skinTexture");
+                else
+                    renderWindow1.loadTextureFromBitmap(getSkinTone(KeyUtils.findKey(textures[0])), "skinTexture");
                 renderWindow1.loadTexture(KeyUtils.findKey(textures[1]), "skinSpecular");
                 //renderWindow1.loadTexture(KeyUtils.findKey(textures[2]), "normalMap");
 
@@ -157,6 +175,32 @@ namespace CASPartEditor
                     }
                 }
 
+                const uint cBody = 4;
+                const uint cTop = 5;
+                const uint cBottom = 6;
+                const uint cFeet = 7;
+
+                //Load missing meshes. For example if we show a bottom, load a nude top and nude feet
+                switch(casPartNew.clothingType)
+                {
+                    case cBody :
+                        meshStreams.Add(findMesh(casPartNew.ageGenderFlag, "Feet"));
+                    break;
+                    case cTop:
+                        meshStreams.Add(findMesh(casPartNew.ageGenderFlag, "Feet"));
+                        meshStreams.Add(findMesh(casPartNew.ageGenderFlag, "Bottom"));
+                    break;
+                    case cBottom:
+                        meshStreams.Add(findMesh(casPartNew.ageGenderFlag, "Feet"));
+                        meshStreams.Add(findMesh(casPartNew.ageGenderFlag, "Top"));
+                    break;
+                    case cFeet:
+                        meshStreams.Add(findMesh(casPartNew.ageGenderFlag, "Top"));
+                        meshStreams.Add(findMesh(casPartNew.ageGenderFlag, "Bottom"));
+                    break;
+                }
+
+
                 if (meshStreams.Count > 0)
                 {
                     renderWindow1.BackgroundColour = MadScience.Colours.convertColour(MadScience.Helpers.getRegistryValue("renderBackgroundColour"));
@@ -203,6 +247,15 @@ namespace CASPartEditor
         private void bwGenTexture_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             xmlChunkDetails details = (xmlChunkDetails)e.Argument;
+
+            Object[] a = new Object[2];
+            a[0] = details;
+            a[1] = Render3DTexture(details);
+            e.Result = a;
+        }
+
+        private Bitmap Render3DTexture(xmlChunkDetails details)
+        {
             Bitmap b;
 
             if ((casPartNew.typeFlag & 0x4) == 0x4)
@@ -219,10 +272,7 @@ namespace CASPartEditor
             {
                 b = composeMultiplier(details);
             }
-            Object[] a = new Object[2];
-            a[0] = details;
-            a[1] = b;
-            e.Result = a;
+            return b;
         }
 
         private void bwGenTexture_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
@@ -266,7 +316,7 @@ namespace CASPartEditor
             List<Stream> stencils = new List<Stream>();
 
             //Stream[] stencils = new Stream[6];
-            if (details.Overlay != null && ! MadScience.Patterns.isEmptyTexture(details.Overlay))
+            if (details.Overlay != null && !MadScience.Patterns.isEmptyTexture(details.Overlay))
                 stencils.Add(KeyUtils.findKey(details.Overlay));
             if (details.stencil.A.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.A.key));
             if (details.stencil.B.Enabled == "True") stencils.Add(KeyUtils.findKey(details.stencil.B.key));
@@ -278,7 +328,7 @@ namespace CASPartEditor
             if (stencils.Count == 0)
                 return;
             if (stencils.Count == 1)
-                renderWindow1.loadTexture(stencils[0],"stencilA");
+                renderWindow1.loadTexture(stencils[0], "stencilA");
             if (stencils.Count > 1)
                 renderWindow1.loadTextureFromBitmap(MadScience.Patterns.mergeStencils(stencils), "stencilA");
         }
@@ -308,7 +358,7 @@ namespace CASPartEditor
                 }
                 else if (MadScience.Patterns.isEmptyMask(details.Mask) || String.IsNullOrEmpty(details.Mask))
                 {
-//                    output = new Bitmap(16, 16);
+                    //                    output = new Bitmap(16, 16);
                     output = PatternProcessor.ProcessMakeupTexture(textures, Color.White);
                 }
                 else
@@ -356,7 +406,7 @@ namespace CASPartEditor
 
             PointF[] tilings = new PointF[myPatterns.Length];
 
-            for(int i = 0; i < myPatterns.Length;i++)
+            for (int i = 0; i < myPatterns.Length; i++)
                 if (details.pattern[i].Enabled.ToLower() == "true")
                 {
                     myPatterns[i] = (Bitmap)Patterns.makePatternThumb(details.pattern[i]); ;
@@ -389,11 +439,11 @@ namespace CASPartEditor
 
             Bitmap output;
             if (MadScience.Patterns.isEmptyMask(details.Mask))
-               output = PatternProcessor.ProcessSingleChannelTexture(
-               textures,
-               myPatterns[0],
-               tilings[0]);           
-            else 
+                output = PatternProcessor.ProcessSingleChannelTexture(
+                textures,
+                myPatterns[0],
+                tilings[0]);
+            else
                 output = PatternProcessor.ProcessClothingTexture(
                 textures,
                 myPatterns,
@@ -405,10 +455,39 @@ namespace CASPartEditor
             return output;
         }
 
+        private Bitmap getSkinTone(Stream s)
+        {
+            Bitmap input, output;
+            input = MadScience.Patterns.LoadBitmapFromStream(s);
+            output = new Bitmap(input.Width, input.Height);
+            using (Graphics g = Graphics.FromImage(output))
+            {
+                float[][] ptsArrayCopyRGB =
+                {
+                    new float[] {skintone.R/255f, 0, 0, 0, 0},
+                    new float[] {0, skintone.G/255f, 0, 0, 0},
+                    new float[] {0, 0, skintone.B/255f, 0, 0},
+                    new float[] {0, 0, 0, skintone.A/255f, 0},
+                    new float[] {0, 0, 0, 0, 1}
+                };
+                // Create a ColorMatrix object
+                ColorMatrix clrMatrixCopyRGB = new ColorMatrix(ptsArrayCopyRGB);
+                // Create image attributes
+                ImageAttributes imgAttribsCopyRGB = new ImageAttributes();
+                // Set color matrix
+                imgAttribsCopyRGB.SetColorMatrix(clrMatrixCopyRGB,
+                    ColorMatrixFlag.Default,
+                    ColorAdjustType.Default);
+                g.DrawImage(input, new Rectangle(new Point(), output.Size), 0, 0, output.Width, output.Height, GraphicsUnit.Pixel, imgAttribsCopyRGB);
+            }
+            return output;
+        }
+
+
         private Bitmap composeHair(xmlChunkDetails details)
         {
             Bitmap patterns = composeMultiplier(details);
- 
+
             List<MadScience.Wrappers.ResourceKey> tempList = new List<MadScience.Wrappers.ResourceKey>();
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.DiffuseMap));
             tempList.Add(new MadScience.Wrappers.ResourceKey(details.ControlMap));
@@ -492,6 +571,58 @@ namespace CASPartEditor
             }
 
             return ret;
+        }
+
+
+        public static Stream findMesh(uint ageGenderFlag, string Type)
+        {
+            ResourceKey ret = new ResourceKey();
+
+            // Load in XML
+            if (defaultMeshes.Count == 0)
+            {
+                // Load in XML
+                TextReader r = new StreamReader(Path.Combine(Application.StartupPath, Path.Combine("xml", "defaultMeshes.xml")));
+                XmlSerializer s = new XmlSerializer(typeof(meshesFile));
+                DeserializeMeshes(r, defaultMeshes);
+                r.Close();
+            }
+
+            string flags = "";
+            string highestAge = "";
+
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Baby) == (uint)AgeGenderFlags.Baby) highestAge = "b";
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Toddler) == (uint)AgeGenderFlags.Toddler) highestAge = "p";
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Child) == (uint)AgeGenderFlags.Child) highestAge = "c";
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Teen) == (uint)AgeGenderFlags.Teen) highestAge = "t";
+            if ((ageGenderFlag & (uint)AgeGenderFlags.YoungAdult) == (uint)AgeGenderFlags.YoungAdult) highestAge = "y";
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Adult) == (uint)AgeGenderFlags.Adult) highestAge = "a";
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Elder) == (uint)AgeGenderFlags.Elder) highestAge = "e";
+
+            flags = highestAge;
+
+            //just default to male for now
+            if ((ageGenderFlag & (uint)AgeGenderFlags.Male) == (uint)AgeGenderFlags.Male) flags += "m";
+            else if ((ageGenderFlag & (uint)AgeGenderFlags.Female) == (uint)AgeGenderFlags.Female) flags += "f";
+
+            flags += Type;
+
+            if (defaultMeshes.ContainsKey(flags))
+            {
+                ret = new ResourceKey(0x015A1849,GetMeshGroup(defaultMeshes[flags]),GetMeshInstance(defaultMeshes[flags]));
+            }
+
+            return KeyUtils.findKey(ret,0);
+        }
+
+        private static ulong GetMeshInstance(string p)
+        {
+            return MadScience.StringHelpers.HashFNV32(p + "_lod1");
+        }
+
+        private static uint GetMeshGroup(string p)
+        {
+            return MadScience.StringHelpers.HashFNV24(p);
         }
 
         public static Dictionary<string, string> defaultTextures = new Dictionary<string, string>();

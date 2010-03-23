@@ -364,19 +364,7 @@ namespace DdsFileTypePlugin
 
         public Image Image()
         {
-            return this.Image(true, true, true, false, true);
-        }
-        public Image Image(bool red)
-        {
-            return this.Image(true, false, false, false, true);
-        }
-        public Image Image(bool red, bool green)
-        {
-            return this.Image(true, true, false, false, true);
-        }
-        public Image Image(bool red, bool green, bool blue)
-        {
-            return this.Image(true, true, true, false, true);
+            return this.Image(true, true, true, true, false);
         }
 
         private MemoryStream _rawDDS = new MemoryStream();
@@ -891,6 +879,7 @@ namespace DdsFileTypePlugin
                                     pixels[pixloc] =
                                         pixels[pixloc + 1] =
                                         pixels[pixloc + 2] = (byte)c;
+                                    pixels[pixloc + 3] = 0xff;
                                 }
                             }
                         }
@@ -975,6 +964,7 @@ namespace DdsFileTypePlugin
                                         pixels[pixloc + 2] = (byte)(uint)r;
                                         pixels[pixloc + 1] = (byte)(uint)g;
                                         pixels[pixloc] = (byte)b;
+                                        pixels[pixloc + 3] = 0xff;
                                     }
                                 }
                             }
@@ -1033,26 +1023,26 @@ namespace DdsFileTypePlugin
                         colors[3] = 255 << 1;
                     }
                      */
-                    colors[0] = (b1 << 16) | (g1 << 8) | r1;
-                    colors[1] = (b2 << 16) | (g2 << 8) | r2;
+                    colors[0] = (b1 << 16) | (g1 << 8) | r1 | 0xff000000;
+                    colors[1] = (b2 << 16) | (g2 << 8) | r2 | 0xff000000;
                     if (c1 > c2)
                     {
                         colors[2] =
                             (((2 * b1 + b2) / 3) << 16) |
                             (((2 * g1 + g2) / 3) << 8) |
-                            ((2 * r1 + r2) / 3);
+                            ((2 * r1 + r2) / 3) | 0xff000000;
                         colors[3] =
                             (((b1 + 2 * b2) / 3) << 16) |
                             (((g1 + 2 * g2) / 3) << 8) |
-                            ((r1 + 2 * r2) / 3);
+                            ((r1 + 2 * r2) / 3) | 0xff000000;
                     }
                     else
                     {
                         colors[2] =
                             (((b1 + b2) >> 1) << 16) |
                             (((g1 + g2) >> 1) << 8) |
-                            ((r1 + r2) >> 1);
-                        colors[3] = 255 << 1;
+                            ((r1 + r2) >> 1) | 0xff000000;
+                        colors[3] = 0x00000000;
                     }
 
 
@@ -1207,6 +1197,7 @@ namespace DdsFileTypePlugin
 
 		public	void	Load( System.IO.Stream input )
 		{
+            if (input == null) return;
             if (input.Length == 0) return;
 
             ReadWriteStream(input, this._rawDDS);
