@@ -37,12 +37,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.picRenderBackground = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lstGlobalPackages = new System.Windows.Forms.ListBox();
-            this.btnAddFiles = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.btnAddFiles = new System.Windows.Forms.Button();
+            this.lstGlobalPackages = new System.Windows.Forms.ListBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picRenderBackground)).BeginInit();
@@ -145,42 +145,15 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Custom Packages";
             // 
-            // label3
+            // button4
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 16);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(408, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Here you can add custom packages the program should use as source for resources:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 29);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(288, 13);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "(for example skintone replacements, texture packages, etc.)";
-            // 
-            // lstGlobalPackages
-            // 
-            this.lstGlobalPackages.AllowDrop = true;
-            this.lstGlobalPackages.FormattingEnabled = true;
-            this.lstGlobalPackages.Location = new System.Drawing.Point(12, 45);
-            this.lstGlobalPackages.Name = "lstGlobalPackages";
-            this.lstGlobalPackages.Size = new System.Drawing.Size(438, 134);
-            this.lstGlobalPackages.TabIndex = 2;
-            // 
-            // btnAddFiles
-            // 
-            this.btnAddFiles.Location = new System.Drawing.Point(456, 45);
-            this.btnAddFiles.Name = "btnAddFiles";
-            this.btnAddFiles.Size = new System.Drawing.Size(88, 23);
-            this.btnAddFiles.TabIndex = 3;
-            this.btnAddFiles.Text = "Add...";
-            this.btnAddFiles.UseVisualStyleBackColor = true;
-            this.btnAddFiles.Click += new System.EventHandler(this.btnAddFiles_Click);
+            this.button4.Location = new System.Drawing.Point(456, 103);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(88, 23);
+            this.button4.TabIndex = 5;
+            this.button4.Text = "Clear";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
@@ -192,15 +165,42 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button4
+            // btnAddFiles
             // 
-            this.button4.Location = new System.Drawing.Point(456, 103);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(88, 23);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "Clear";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnAddFiles.Location = new System.Drawing.Point(456, 45);
+            this.btnAddFiles.Name = "btnAddFiles";
+            this.btnAddFiles.Size = new System.Drawing.Size(88, 23);
+            this.btnAddFiles.TabIndex = 3;
+            this.btnAddFiles.Text = "Add...";
+            this.btnAddFiles.UseVisualStyleBackColor = true;
+            this.btnAddFiles.Click += new System.EventHandler(this.btnAddFiles_Click);
+            // 
+            // lstGlobalPackages
+            // 
+            this.lstGlobalPackages.AllowDrop = true;
+            this.lstGlobalPackages.FormattingEnabled = true;
+            this.lstGlobalPackages.Location = new System.Drawing.Point(12, 45);
+            this.lstGlobalPackages.Name = "lstGlobalPackages";
+            this.lstGlobalPackages.Size = new System.Drawing.Size(438, 134);
+            this.lstGlobalPackages.TabIndex = 2;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 29);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(288, 13);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "(for example skintone replacements, texture packages, etc.)";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(9, 16);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(408, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Here you can add custom packages the program should use as source for resources:";
             // 
             // Form3
             // 

@@ -252,7 +252,7 @@ namespace MadScience
             int level = 0;
             string curPattern = "";
 
-            patternDetails pDetail = new patternDetails();
+           Patterns.patternDetails pDetail = new patternDetails();
 
             if (xmlStream == null) return pDetail;
             string patternTexture = "";
@@ -730,10 +730,7 @@ namespace MadScience
             if (source != null && source.Length != 0)
             {
                 d.Load(source);
-                if (isAlphaFormat(d.m_header.fileFormat))
-                    output = (Bitmap)d.Image(true, true, true, true);
-                else
-                    output = (Bitmap)d.Image(true, true, true);
+                output = (Bitmap)d.Image(true, true, true, true);
                 source.Close();
                 if (output.Width != width || output.Height != height)
                 {
@@ -757,10 +754,7 @@ namespace MadScience
             if (source != null && source.Length != 0)
             {
                 d.Load(source);
-                if (isAlphaFormat(d.m_header.fileFormat))
-                    output = (Bitmap)d.Image(true, true, true, true);
-                else
-                    output = (Bitmap)d.Image(true, true, true);
+                output = (Bitmap)d.Image(true, true, true, true);
                 source.Close();
                 if (output.Width != width || output.Height != height)
                 {
@@ -784,10 +778,7 @@ namespace MadScience
             if (source != null && source.Length != 0)
             {
                 d.Load(source);
-                if (isAlphaFormat(d.m_header.fileFormat))
-                    output = (Bitmap)d.Image(true, true, true, true);
-                else
-                    output = (Bitmap)d.Image(true, true, true);
+                output = (Bitmap)d.Image();
                 source.Close();
             }
             else
@@ -799,11 +790,6 @@ namespace MadScience
 
         private static bool isAlphaFormat(String format)
         {
-            switch (format)
-            {
-                case "DXT1":
-                    return false;
-            }
             return true;
         }
 

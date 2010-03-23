@@ -101,6 +101,7 @@ float4x4 gWorldViewXf : WorldView <string UIWidget="none";>;
 
 bool gUseStencil = false;
 bool gUseBumpMap = false;
+bool gHideSkin = false;
 
 float3 gLamp0Pos : POSITION <
     string Object = "PointLight0";
@@ -279,7 +280,8 @@ float4 normal_mapPS(VertexOutput IN,
 		    uniform float3 SpecColor,
 		    uniform float3 AmbiColor,
 			uniform bool UseStencil,
-			uniform bool UseBumpMap
+			uniform bool UseBumpMap,
+			uniform bool HideSkin
 ) : COLOR
 {
 	////////////////// Texture compositing
@@ -303,11 +305,14 @@ float4 normal_mapPS(VertexOutput IN,
 	if (UseStencil)
 	{
 		// Alpha blending of the stencil
-		diffuseColor = texCol2 * texCol2.a + diffuseColor * (1 - texCol2.a);
+		diffuseColor = float4(texCol2.rgb * texCol2.a, texCol2.a) + diffuseColor * (1 - texCol2.a);
 	}
 	// Alpha blend the shirt onto the skin texture
     float3 texCol = texCol3 * (1 - diffuseColor.a) + diffuseColor.xyz * diffuseColor.a;
-    
+      if(HideSkin)
+      {
+         texCol = diffuseColor * diffuseColor.a;
+      }
     // Specular map influence - alpha blend the shirt specular onto the skin specular
     float specular = tex2D(SkinSpecularSampler,IN.UV).b * (1 - diffuseColor.a) + tex2D(SpecularSampler,IN.UV).b * texCol1.b * 2 * diffuseColor.a;
 
@@ -318,6 +323,7 @@ float4 normal_mapPS(VertexOutput IN,
 		  if (UseBumpMap)
 	   {
     tNorm = (tex2D(ReliefSampler,IN.UV).agg) * -2.0 + float3(1.0,1.0,1.0);
+    tNorm = tNorm * texCol1.a;
     }
     // Calculate the missing component of the normal map, care of Pythagorean theorem
     // If the answer to the sqrt should be negative, the surface will have been culled anyway
@@ -341,7 +347,11 @@ float4 normal_mapPS(VertexOutput IN,
     // compute final color
     float3 finalcolor = AmbiColor*texCol +
 	    att*(texCol*SurfaceColor.xyz*diff+SpecColor*spec*specular);
-    return float4(finalcolor.rgb,1.0);
+      if(!HideSkin)
+      {
+         diffuseColor.a = 1;
+      }
+    return float4(finalcolor.rgb,diffuseColor.a);
 }
 
 ///////////////////////////////////////
@@ -360,11 +370,18 @@ technique normal_mapping <
 					    gViewXf,gWorldViewXf,
 					    gTileCount,
 					    gLamp0Pos);
-		ZEnable = true;
-		ZWriteEnable = true;
+					    
+		ZEnable=true;
+		ZWriteEnable=true;
+		AlphaTestEnable = true;
+		AlphaFunc = greaterequal;
+		AlphaRef = 240;
 		ZFunc = LessEqual;
 		AlphaBlendEnable = true;
 		CullMode = None;
+    SrcBlend = SrcAlpha; 
+    DestBlend = InvSrcAlpha;
+    	
         PixelShader = compile ps_2_0 normal_mapPS(gSurfaceColor,
 						gSkinSampler,
 						gSkinSpecularSampler,
@@ -376,8 +393,42 @@ technique normal_mapping <
 						gSpecColor,
 						gAmbiColor,
 						gUseStencil,
-						gUseBumpMap);
+						gUseBumpMap,
+            gHideSkin);
     }
+    
+    pass p1 <
+	string Script = "Draw=geometry;";
+    > {
+        VertexShader = compile vs_2_0 view_spaceVS(gWorldITXf,gWorldXf,
+				gViewIXf,gWvpXf,
+					    gViewXf,gWorldViewXf,
+					    gTileCount,
+					    gLamp0Pos);
+					    
+		ZEnable=true;
+		ZWriteEnable=false;
+		ZFunc = LessEqual;
+		AlphaBlendEnable = true;
+		AlphaTestEnable = false;
+		CullMode = None;
+    SrcBlend = SrcAlpha; 
+    DestBlend = InvSrcAlpha;
+    	
+        PixelShader = compile ps_2_0 normal_mapPS(gSurfaceColor,
+						gSkinSampler,
+						gSkinSpecularSampler,
+						gMultiplySampler,
+						gSpecularSampler,
+						gStencilSampler,
+						gReliefSampler,
+						gPhongExp,
+						gSpecColor,
+						gAmbiColor,
+						gUseStencil,
+						gUseBumpMap,
+            gHideSkin);
+    }    
 }
 
 

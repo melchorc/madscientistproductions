@@ -612,7 +612,7 @@ namespace CASPartEditor
 					}
 
 					//Console.WriteLine(customThumb.ToString());
-					picCustomThumbnail.Image = Image.FromStream(MadScience.Package.Search.getStream(Helpers.currentPackageFile, customThumb.ToString()));
+					//picCustomThumbnail.Image = Image.FromStream(MadScience.Package.Search.getStream(Helpers.currentPackageFile, customThumb.ToString()));
 				}
             }
 

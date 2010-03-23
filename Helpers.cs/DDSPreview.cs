@@ -37,7 +37,7 @@ namespace MadScience
             chkShowRed.Checked = true;
             chkShowGreen.Checked = true;
             chkShowBlue.Checked = true;
-            chkShowAlpha.Checked = false;
+            chkShowAlpha.Checked = true;
 
             input.Close();
 
