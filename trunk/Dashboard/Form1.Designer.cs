@@ -116,6 +116,7 @@
 			this.picThumb = new System.Windows.Forms.PictureBox();
 			this.button1 = new System.Windows.Forms.Button();
 			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+			this.noAutoScanOnStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.groupBox3.SuspendLayout();
 			this.contextMenuStrip4.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
@@ -538,6 +539,7 @@
             this.toolStripMenuItem12,
             this.alwaysUseFastScanToolStripMenuItem,
             this.includedisabledInScanToolStripMenuItem,
+            this.noAutoScanOnStartupToolStripMenuItem,
             this.toolStripMenuItem2,
             this.findGameCacheFolderToolStripMenuItem,
             this.toolStripMenuItem10,
@@ -878,6 +880,13 @@
 			this.linkLabel1.Visible = false;
 			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
 			// 
+			// noAutoScanOnStartupToolStripMenuItem
+			// 
+			this.noAutoScanOnStartupToolStripMenuItem.Name = "noAutoScanOnStartupToolStripMenuItem";
+			this.noAutoScanOnStartupToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+			this.noAutoScanOnStartupToolStripMenuItem.Text = "No Auto Scan on Startup";
+			this.noAutoScanOnStartupToolStripMenuItem.Click += new System.EventHandler(this.noAutoScanOnStartupToolStripMenuItem_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1021,6 +1030,7 @@
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.ColumnHeader columnHeader16;
 		private System.Windows.Forms.LinkLabel linkLabel1;
+		private System.Windows.Forms.ToolStripMenuItem noAutoScanOnStartupToolStripMenuItem;
 	}
 }
 
