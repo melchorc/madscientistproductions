@@ -28,6 +28,12 @@ namespace Sims3Dashboard
 				if (scanDisabled == "true") includedisabledInScanToolStripMenuItem.Checked = true;
 			}
 
+			string noAutoScan = MadScience.Helpers.getRegistryValue("noAutoScanOnStartup");
+			if (!String.IsNullOrEmpty(noAutoScan))
+			{
+				if (noAutoScan == "true") noAutoScanOnStartupToolStripMenuItem.Checked = true;
+			}
+
 		}
 
 		private Stack fileList = new Stack();
@@ -71,7 +77,10 @@ namespace Sims3Dashboard
 
 			this.Show();
 
-			showCustomContent();
+			if (!noAutoScanOnStartupToolStripMenuItem.Checked)
+			{
+				showCustomContent();
+			}
 	
 		}
 
@@ -1387,6 +1396,20 @@ namespace Sims3Dashboard
 		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			System.Diagnostics.Process.Start("http://www.modthesims.info/d/384014");
+		}
+
+		private void noAutoScanOnStartupToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			noAutoScanOnStartupToolStripMenuItem.Checked = !noAutoScanOnStartupToolStripMenuItem.Checked;
+			if (noAutoScanOnStartupToolStripMenuItem.Checked)
+			{
+				MadScience.Helpers.saveRegistryValue("noAutoScanOnStartup", "true");
+			}
+			else
+			{
+				MadScience.Helpers.saveRegistryValue("NoAutoScanOnStartup", "false");
+			}
+
 		}
 
 
