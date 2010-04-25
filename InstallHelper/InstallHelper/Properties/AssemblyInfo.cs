@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("InstallHelper")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A tool to install package files to the Sims 3 games")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("InstallHelper")]
-[assembly: AssemblyCopyright("Copyright ©  2009")]
+[assembly: AssemblyCompany("Mad Scientist Productions, in association with ModTheSims.info")]
+[assembly: AssemblyProduct("TS3 Install Helper Monkey")]
+[assembly: AssemblyCopyright("Copyright ©  2009-2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
