@@ -100,6 +100,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="StudioShieldButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
@@ -122,11 +125,11 @@
     <Content Include="MonkeyIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\madscientistproductions\Helpers.cs\MadScience.Helpers.csproj">
+    <ProjectReference Include="..\..\Helpers.cs\MadScience.Helpers.csproj">
       <Project>{EA40DDB1-1C28-4323-90B3-5B99071F0B78}</Project>
       <Name>MadScience.Helpers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\madscientistproductions\MadScience.Wrappers\MadScience.Wrappers.csproj">
+    <ProjectReference Include="..\..\MadScience.Wrappers\MadScience.Wrappers.csproj">
       <Project>{82597921-C98E-4D1C-B32E-6BB2164B89AD}</Project>
       <Name>MadScience.Wrappers</Name>
     </ProjectReference>

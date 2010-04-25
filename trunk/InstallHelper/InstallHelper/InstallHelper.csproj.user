@@ -13,7 +13,6 @@
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <StartArguments>
-    </StartArguments>
+    <StartArguments>"C:\Program Files (x86)\Electronic Arts\The Sims 3\Mods\Packages\Eye Stretch.package"</StartArguments>
   </PropertyGroup>
 </Project>
