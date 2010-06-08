@@ -1213,284 +1213,285 @@ namespace DdsFileTypePlugin
 			// Read everything in.. for now assume it worked like a charm..
 			m_header.Read( input );
 
-			if ( ( m_header.m_pixelFormat.m_flags & ( int )DdsPixelFormat.PixelFormatFlags.DDS_FOURCC ) != 0 )
+			if ((m_header.m_pixelFormat.m_flags & (int)DdsPixelFormat.PixelFormatFlags.DDS_FOURCC) != 0)
 			{
 				//int	squishFlags = 0;
-                DdsFileFormat ddsFormat = new DdsFileFormat();
+				DdsFileFormat ddsFormat = new DdsFileFormat();
 
-				switch ( m_header.m_pixelFormat.m_fourCC )
+				switch (m_header.m_pixelFormat.m_fourCC)
 				{
-					case	0x31545844:
+					case 0x31545844:
 						//squishFlags = ( int )DdsSquish.SquishFlags.kDxt1;
-                        ddsFormat = DdsFileFormat.DDS_FORMAT_DXT1;
-                        m_header.fileFormat = "DXT1";
+						ddsFormat = DdsFileFormat.DDS_FORMAT_DXT1;
+						m_header.fileFormat = "DXT1";
 						break;
 
-					case	0x33545844:
+					case 0x33545844:
 						//squishFlags = ( int )DdsSquish.SquishFlags.kDxt3;
-                        ddsFormat = DdsFileFormat.DDS_FORMAT_DXT3;
-                        m_header.fileFormat = "DXT3";
+						ddsFormat = DdsFileFormat.DDS_FORMAT_DXT3;
+						m_header.fileFormat = "DXT3";
 						break;
 
-					case	0x35545844:
+					case 0x35545844:
 						//squishFlags = ( int )DdsSquish.SquishFlags.kDxt5;
-                        ddsFormat = DdsFileFormat.DDS_FORMAT_DXT5;
-                        m_header.fileFormat = "DXT5";
+						ddsFormat = DdsFileFormat.DDS_FORMAT_DXT5;
+						m_header.fileFormat = "DXT5";
 						break;
-                    case    0x31495441:
-                        ddsFormat = DdsFileFormat.DDS_FORMAT_ATI1;
-                        m_header.fileFormat = "ATI1";
-                        break;
-                    case    0x32495441:
-                        ddsFormat = DdsFileFormat.DDS_FORMAT_ATI2;
-                        m_header.fileFormat = "ATI2";
-                        break;
+					case 0x31495441:
+						ddsFormat = DdsFileFormat.DDS_FORMAT_ATI1;
+						m_header.fileFormat = "ATI1";
+						break;
+					case 0x32495441:
+						ddsFormat = DdsFileFormat.DDS_FORMAT_ATI2;
+						m_header.fileFormat = "ATI2";
+						break;
 
 					default:
-						throw new FormatException( "File is not a supported DDS format" );
+						throw new FormatException("File is not a supported DDS format");
 				}
 
 				// Compute size of compressed block area
 				//int blockCount = ( ( GetWidth() + 3 )/4 ) * ( ( GetHeight() + 3 )/4 );
-                //int blockSize = 0;
-                //((squishFlags & (int)DdsSquish.SquishFlags.kDxt1) != 0) ? 8 : 16;
-                //if ((squishFlags & (int)DdsFileFormat.DDS_FORMAT_DXT1) != 0)
-                //{
-                    //blockSize = 8;
-                //}
-                //else
-                //{
-                    //blockSize = 16;
-                //}
-				
+				//int blockSize = 0;
+				//((squishFlags & (int)DdsSquish.SquishFlags.kDxt1) != 0) ? 8 : 16;
+				//if ((squishFlags & (int)DdsFileFormat.DDS_FORMAT_DXT1) != 0)
+				//{
+				//blockSize = 8;
+				//}
+				//else
+				//{
+				//blockSize = 16;
+				//}
+
 				// Allocate room for compressed blocks, and read data into it.
 				//byte[] compressedBlocks = new byte[ blockCount * blockSize ];
 				//input.Read( compressedBlocks, 0, compressedBlocks.GetLength( 0 ) );
 
 				// Now decompress..
 				//m_pixelData = DdsSquish.DecompressImage( input, GetWidth(), GetHeight(), squishFlags );
-                this.m_pixelData = DecodeTextureData(input, ddsFormat, GetWidth(), GetHeight(), 0, 0, false);
+				this.m_pixelData = DecodeTextureData(input, ddsFormat, GetWidth(), GetHeight(), 0, 0, false);
 			}
 			else
 			{
 				// We can only deal with the non-DXT formats we know about..  this is a bit of a mess..
 				// Sorry..
-				DdsFileFormat	fileFormat = DdsFileFormat.DDS_FORMAT_INVALID;
+				DdsFileFormat fileFormat = DdsFileFormat.DDS_FORMAT_INVALID;
 
-				if (	( m_header.m_pixelFormat.m_flags == ( int )DdsPixelFormat.PixelFormatFlags.DDS_RGB + (int)DdsPixelFormat.PixelFormatFlags.DDS_ALPHAPIXELS) && 
-						( m_header.m_pixelFormat.m_rgbBitCount == 32 ) && 
-						( m_header.m_pixelFormat.m_rBitMask == 0x00ff0000 ) && ( m_header.m_pixelFormat.m_gBitMask == 0x0000ff00 ) &&
-						( m_header.m_pixelFormat.m_bBitMask == 0x000000ff ) && ( m_header.m_pixelFormat.m_aBitMask == 0xff000000 ) )
-                { fileFormat = DdsFileFormat.DDS_FORMAT_A8R8G8B8; m_header.fileFormat = "ARGB8"; }
+				if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB + (int)DdsPixelFormat.PixelFormatFlags.DDS_ALPHAPIXELS) &&
+						(m_header.m_pixelFormat.m_rgbBitCount == 32) &&
+						(m_header.m_pixelFormat.m_rBitMask == 0x00ff0000) && (m_header.m_pixelFormat.m_gBitMask == 0x0000ff00) &&
+						(m_header.m_pixelFormat.m_bBitMask == 0x000000ff) && (m_header.m_pixelFormat.m_aBitMask == 0xff000000))
+				{ fileFormat = DdsFileFormat.DDS_FORMAT_A8R8G8B8; m_header.fileFormat = "ARGB8"; }
 				else
-				if (	( m_header.m_pixelFormat.m_flags == ( int )DdsPixelFormat.PixelFormatFlags.DDS_RGB ) && 
-						( m_header.m_pixelFormat.m_rgbBitCount == 32 ) && 
-						( m_header.m_pixelFormat.m_rBitMask == 0x00ff0000 ) && ( m_header.m_pixelFormat.m_gBitMask == 0x0000ff00 ) &&
-						( m_header.m_pixelFormat.m_bBitMask == 0x000000ff ) && ( m_header.m_pixelFormat.m_aBitMask == 0x00000000 ) )
-                { fileFormat = DdsFileFormat.DDS_FORMAT_X8R8G8B8; m_header.fileFormat = "X8RGB8"; }
-				else
-                    if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB + (int)DdsPixelFormat.PixelFormatFlags.DDS_ALPHAPIXELS) &&
-                            (m_header.m_pixelFormat.m_rgbBitCount == 32) &&
-                            (m_header.m_pixelFormat.m_rBitMask == 0x000000ff) && (m_header.m_pixelFormat.m_gBitMask == 0x0000ff00) &&
-                            (m_header.m_pixelFormat.m_bBitMask == 0x00ff0000) && (m_header.m_pixelFormat.m_aBitMask == 0xff000000))
-                    { fileFormat = DdsFileFormat.DDS_FORMAT_A8B8G8R8; m_header.fileFormat = "ABGR8"; }
-                    else
-                        if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB) &&
-                                (m_header.m_pixelFormat.m_rgbBitCount == 32) &&
-                                (m_header.m_pixelFormat.m_rBitMask == 0x000000ff) && (m_header.m_pixelFormat.m_gBitMask == 0x0000ff00) &&
-                                (m_header.m_pixelFormat.m_bBitMask == 0x00ff0000) && (m_header.m_pixelFormat.m_aBitMask == 0x00000000))
-                        { fileFormat = DdsFileFormat.DDS_FORMAT_X8B8G8R8; m_header.fileFormat = "XBGR8"; }
-                        else
-                            if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB + (int)DdsPixelFormat.PixelFormatFlags.DDS_ALPHAPIXELS) &&
-                                    (m_header.m_pixelFormat.m_rgbBitCount == 16) &&
-                                    (m_header.m_pixelFormat.m_rBitMask == 0x00007c00) && (m_header.m_pixelFormat.m_gBitMask == 0x000003e0) &&
-                                    (m_header.m_pixelFormat.m_bBitMask == 0x0000001f) && (m_header.m_pixelFormat.m_aBitMask == 0x00008000))
-                            { fileFormat = DdsFileFormat.DDS_FORMAT_A1R5G5B5; m_header.fileFormat = "ARGB"; }
-                            else
-                                if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB + (int)DdsPixelFormat.PixelFormatFlags.DDS_ALPHAPIXELS) &&
-                                        (m_header.m_pixelFormat.m_rgbBitCount == 16) &&
-                                        (m_header.m_pixelFormat.m_rBitMask == 0x00000f00) && (m_header.m_pixelFormat.m_gBitMask == 0x000000f0) &&
-                                        (m_header.m_pixelFormat.m_bBitMask == 0x0000000f) && (m_header.m_pixelFormat.m_aBitMask == 0x0000f000))
-                                {
-                                    fileFormat = DdsFileFormat.DDS_FORMAT_A4R4G4B4;
-                                    m_header.fileFormat = "ARGB4";
-                                }
-                                else
-                                    if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB) &&
-                                            (m_header.m_pixelFormat.m_rgbBitCount == 24) &&
-                                            (m_header.m_pixelFormat.m_rBitMask == 0x00ff0000) && (m_header.m_pixelFormat.m_gBitMask == 0x0000ff00) &&
-                                            (m_header.m_pixelFormat.m_bBitMask == 0x000000ff) && (m_header.m_pixelFormat.m_aBitMask == 0x00000000))
-                                    { fileFormat = DdsFileFormat.DDS_FORMAT_R8G8B8; m_header.fileFormat = "RGB8"; }
-                                    else
-                                        if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB) &&
-                                                (m_header.m_pixelFormat.m_rgbBitCount == 16) &&
-                                                (m_header.m_pixelFormat.m_rBitMask == 0x0000f800) && (m_header.m_pixelFormat.m_gBitMask == 0x000007e0) &&
-                                                (m_header.m_pixelFormat.m_bBitMask == 0x0000001f) && (m_header.m_pixelFormat.m_aBitMask == 0x00000000))
-                                        { fileFormat = DdsFileFormat.DDS_FORMAT_R5G6B5; m_header.fileFormat = "RGB5"; }
-                                        else
-                                            if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_LUMINANCE + (int)DdsPixelFormat.PixelFormatFlags.DDS_ALPHAPIXELS) &&
-                                                (m_header.m_pixelFormat.m_rgbBitCount == 16) &&
-                                                (m_header.m_pixelFormat.m_rBitMask == 0x000000ff) && (m_header.m_pixelFormat.m_gBitMask == 0x00000000) &&
-                                                (m_header.m_pixelFormat.m_bBitMask == 0x00000000) && (m_header.m_pixelFormat.m_aBitMask == 0x0000ff00))
-                                            { fileFormat = DdsFileFormat.DDS_FORMAT_A8L8; m_header.fileFormat = "A8L8"; }
+					if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB) &&
+							(m_header.m_pixelFormat.m_rgbBitCount == 32) &&
+							(m_header.m_pixelFormat.m_rBitMask == 0x00ff0000) && (m_header.m_pixelFormat.m_gBitMask == 0x0000ff00) &&
+							(m_header.m_pixelFormat.m_bBitMask == 0x000000ff) && (m_header.m_pixelFormat.m_aBitMask == 0x00000000))
+					{ fileFormat = DdsFileFormat.DDS_FORMAT_X8R8G8B8; m_header.fileFormat = "X8RGB8"; }
+					else
+						if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB + (int)DdsPixelFormat.PixelFormatFlags.DDS_ALPHAPIXELS) &&
+								(m_header.m_pixelFormat.m_rgbBitCount == 32) &&
+								(m_header.m_pixelFormat.m_rBitMask == 0x000000ff) && (m_header.m_pixelFormat.m_gBitMask == 0x0000ff00) &&
+								(m_header.m_pixelFormat.m_bBitMask == 0x00ff0000) && (m_header.m_pixelFormat.m_aBitMask == 0xff000000))
+						{ fileFormat = DdsFileFormat.DDS_FORMAT_A8B8G8R8; m_header.fileFormat = "ABGR8"; }
+						else
+							if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB) &&
+									(m_header.m_pixelFormat.m_rgbBitCount == 32) &&
+									(m_header.m_pixelFormat.m_rBitMask == 0x000000ff) && (m_header.m_pixelFormat.m_gBitMask == 0x0000ff00) &&
+									(m_header.m_pixelFormat.m_bBitMask == 0x00ff0000) && (m_header.m_pixelFormat.m_aBitMask == 0x00000000))
+							{ fileFormat = DdsFileFormat.DDS_FORMAT_X8B8G8R8; m_header.fileFormat = "XBGR8"; }
+							else
+								if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB + (int)DdsPixelFormat.PixelFormatFlags.DDS_ALPHAPIXELS) &&
+										(m_header.m_pixelFormat.m_rgbBitCount == 16) &&
+										(m_header.m_pixelFormat.m_rBitMask == 0x00007c00) && (m_header.m_pixelFormat.m_gBitMask == 0x000003e0) &&
+										(m_header.m_pixelFormat.m_bBitMask == 0x0000001f) && (m_header.m_pixelFormat.m_aBitMask == 0x00008000))
+								{ fileFormat = DdsFileFormat.DDS_FORMAT_A1R5G5B5; m_header.fileFormat = "ARGB"; }
+								else
+									if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB + (int)DdsPixelFormat.PixelFormatFlags.DDS_ALPHAPIXELS) &&
+											(m_header.m_pixelFormat.m_rgbBitCount == 16) &&
+											(m_header.m_pixelFormat.m_rBitMask == 0x00000f00) && (m_header.m_pixelFormat.m_gBitMask == 0x000000f0) &&
+											(m_header.m_pixelFormat.m_bBitMask == 0x0000000f) && (m_header.m_pixelFormat.m_aBitMask == 0x0000f000))
+									{
+										fileFormat = DdsFileFormat.DDS_FORMAT_A4R4G4B4;
+										m_header.fileFormat = "ARGB4";
+									}
+									else
+										if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB) &&
+												(m_header.m_pixelFormat.m_rgbBitCount == 24) &&
+												(m_header.m_pixelFormat.m_rBitMask == 0x00ff0000) && (m_header.m_pixelFormat.m_gBitMask == 0x0000ff00) &&
+												(m_header.m_pixelFormat.m_bBitMask == 0x000000ff) && (m_header.m_pixelFormat.m_aBitMask == 0x00000000))
+										{ fileFormat = DdsFileFormat.DDS_FORMAT_R8G8B8; m_header.fileFormat = "RGB8"; }
+										else
+											if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_RGB) &&
+													(m_header.m_pixelFormat.m_rgbBitCount == 16) &&
+													(m_header.m_pixelFormat.m_rBitMask == 0x0000f800) && (m_header.m_pixelFormat.m_gBitMask == 0x000007e0) &&
+													(m_header.m_pixelFormat.m_bBitMask == 0x0000001f) && (m_header.m_pixelFormat.m_aBitMask == 0x00000000))
+											{ fileFormat = DdsFileFormat.DDS_FORMAT_R5G6B5; m_header.fileFormat = "RGB5"; }
+											else
+												if ((m_header.m_pixelFormat.m_flags == (int)DdsPixelFormat.PixelFormatFlags.DDS_LUMINANCE + (int)DdsPixelFormat.PixelFormatFlags.DDS_ALPHAPIXELS) &&
+													(m_header.m_pixelFormat.m_rgbBitCount == 16) &&
+													(m_header.m_pixelFormat.m_rBitMask == 0x000000ff) && (m_header.m_pixelFormat.m_gBitMask == 0x00000000) &&
+													(m_header.m_pixelFormat.m_bBitMask == 0x00000000) && (m_header.m_pixelFormat.m_aBitMask == 0x0000ff00))
+												{ fileFormat = DdsFileFormat.DDS_FORMAT_A8L8; m_header.fileFormat = "A8L8"; }
 
 
 				// If fileFormat is still invalid, then it's an unsupported format.
-                if (fileFormat == DdsFileFormat.DDS_FORMAT_INVALID)
-                {
-                    System.Windows.Forms.MessageBox.Show("File is not a supported DDS format");
-                    return;
+				if (fileFormat == DdsFileFormat.DDS_FORMAT_INVALID)
+				{
+					System.Windows.Forms.MessageBox.Show("File is not a supported DDS format");
+					return;
 
-                }
+				}
 
 				// Size of a source pixel, in bytes
-				int srcPixelSize = ( ( int )m_header.m_pixelFormat.m_rgbBitCount / 8 );
+				int srcPixelSize = ((int)m_header.m_pixelFormat.m_rgbBitCount / 8);
 
 				// We need the pitch for a row, so we can allocate enough memory for the load.
 				int rowPitch = 0;
 
-				if ( ( m_header.m_headerFlags & ( int )DdsHeader.HeaderFlags.DDS_HEADER_FLAGS_PITCH ) != 0 )	
+				if ((m_header.m_headerFlags & (int)DdsHeader.HeaderFlags.DDS_HEADER_FLAGS_PITCH) != 0)
 				{
 					// Pitch specified.. so we can use directly
-					rowPitch = ( int )m_header.m_pitchOrLinearSize;
+					rowPitch = (int)m_header.m_pitchOrLinearSize;
 				}
 				else
-				if ( ( m_header.m_headerFlags & ( int )DdsHeader.HeaderFlags.DDS_HEADER_FLAGS_LINEARSIZE ) != 0 )
-				{
-					// Linear size specified.. compute row pitch. Of course, this should never happen
-					// as linear size is *supposed* to be for compressed textures. But Microsoft don't 
-					// always play by the rules when it comes to DDS output. 
-					rowPitch = ( int )m_header.m_pitchOrLinearSize / ( int )m_header.m_height;
-				}
-				else
-				{
-					// Another case of Microsoft not obeying their standard is the 'Convert to..' shell extension
-					// that ships in the DirectX SDK. Seems to always leave flags empty..so no indication of pitch
-					// or linear size. And - to cap it all off - they leave pitchOrLinearSize as *zero*. Zero??? If
-					// we get this bizarre set of inputs, we just go 'screw it' and compute row pitch ourselves, 
-					// making sure we DWORD align it (if that code path is enabled).
-					rowPitch = ( ( int )m_header.m_width * srcPixelSize );
+					if ((m_header.m_headerFlags & (int)DdsHeader.HeaderFlags.DDS_HEADER_FLAGS_LINEARSIZE) != 0)
+					{
+						// Linear size specified.. compute row pitch. Of course, this should never happen
+						// as linear size is *supposed* to be for compressed textures. But Microsoft don't 
+						// always play by the rules when it comes to DDS output. 
+						rowPitch = (int)m_header.m_pitchOrLinearSize / (int)m_header.m_height;
+					}
+					else
+					{
+						// Another case of Microsoft not obeying their standard is the 'Convert to..' shell extension
+						// that ships in the DirectX SDK. Seems to always leave flags empty..so no indication of pitch
+						// or linear size. And - to cap it all off - they leave pitchOrLinearSize as *zero*. Zero??? If
+						// we get this bizarre set of inputs, we just go 'screw it' and compute row pitch ourselves, 
+						// making sure we DWORD align it (if that code path is enabled).
+						rowPitch = ((int)m_header.m_width * srcPixelSize);
 
 #if	APPLY_PITCH_ALIGNMENT
 					rowPitch = ( ( ( int )rowPitch + 3 ) & ( ~3 ) );
 #endif	// APPLY_PITCH_ALIGNMENT
-				}
+					}
 
-//				System.Diagnostics.Debug.WriteLine( "Image width : " + m_header.m_width + ", rowPitch = " + rowPitch );
+				//				System.Diagnostics.Debug.WriteLine( "Image width : " + m_header.m_width + ", rowPitch = " + rowPitch );
 
 				// Ok.. now, we need to allocate room for the bytes to read in from.. it's rowPitch bytes * height
-				byte[] readPixelData = new byte[ rowPitch * m_header.m_height ];
-				input.Read( readPixelData, 0, readPixelData.GetLength( 0 ) );
+				byte[] readPixelData = new byte[rowPitch * m_header.m_height];
+				input.Read(readPixelData, 0, readPixelData.GetLength(0));
 
 				// We now need space for the real pixel data.. that's width * height * 4..
-				m_pixelData = new byte[ m_header.m_width * m_header.m_height * 4 ];
+				m_pixelData = new byte[m_header.m_width * m_header.m_height * 4];
 
 				// And now we have the arduous task of filling that up with stuff..
-				for ( int destY = 0; destY < ( int )m_header.m_height; destY++ )	
+				for (int destY = 0; destY < (int)m_header.m_height; destY++)
 				{
-					for ( int destX = 0; destX < ( int )m_header.m_width; destX++ )	
+					for (int destX = 0; destX < (int)m_header.m_width; destX++)
 					{
 						// Compute source pixel offset
-						int	srcPixelOffset = ( destY * rowPitch ) + ( destX * srcPixelSize );
+						int srcPixelOffset = (destY * rowPitch) + (destX * srcPixelSize);
 
 						// Read our pixel
-						uint	pixelColour = 0;
-						uint	pixelRed	= 0;
-						uint	pixelGreen	= 0;	
-						uint	pixelBlue	= 0;
-						uint	pixelAlpha	= 0;
+						uint pixelColour = 0;
+						uint pixelRed = 0;
+						uint pixelGreen = 0;
+						uint pixelBlue = 0;
+						uint pixelAlpha = 0;
 
 						// Build our pixel colour as a DWORD	
-						for ( int loop = 0; loop < srcPixelSize; loop++ )
+						for (int loop = 0; loop < srcPixelSize; loop++)
 						{
-							pixelColour |= ( uint )( readPixelData[ srcPixelOffset + loop ] << ( 8 * loop ) );
+							pixelColour |= (uint)(readPixelData[srcPixelOffset + loop] << (8 * loop));
 						}
 
-						if ( fileFormat == DdsFileFormat.DDS_FORMAT_A8R8G8B8 )
+						if (fileFormat == DdsFileFormat.DDS_FORMAT_A8R8G8B8)
 						{
-							pixelAlpha	= ( pixelColour >> 24 ) & 0xff;
-							pixelRed	= ( pixelColour >> 16 ) & 0xff;
-							pixelGreen	= ( pixelColour >> 8  ) & 0xff;
-							pixelBlue	= ( pixelColour >> 0  ) & 0xff;
+							pixelAlpha = (pixelColour >> 24) & 0xff;
+							pixelRed = (pixelColour >> 16) & 0xff;
+							pixelGreen = (pixelColour >> 8) & 0xff;
+							pixelBlue = (pixelColour >> 0) & 0xff;
 						}
 						else
-						if ( fileFormat == DdsFileFormat.DDS_FORMAT_X8R8G8B8 )
-						{
-							pixelAlpha	= 0xff;
-							pixelRed	= ( pixelColour >> 16 ) & 0xff;
-							pixelGreen	= ( pixelColour >> 8  ) & 0xff;
-							pixelBlue	= ( pixelColour >> 0  ) & 0xff;
-						}
-						else
-						if ( fileFormat == DdsFileFormat.DDS_FORMAT_A8B8G8R8 )
-						{
-							pixelAlpha	= ( pixelColour >> 24 ) & 0xff;
-							pixelRed	= ( pixelColour >> 0  ) & 0xff;
-							pixelGreen	= ( pixelColour >> 8  ) & 0xff;
-							pixelBlue	= ( pixelColour >> 16 ) & 0xff;
-						}
-						else
-						if ( fileFormat == DdsFileFormat.DDS_FORMAT_X8B8G8R8 )
-						{
-							pixelAlpha	= 0xff;
-							pixelRed	= ( pixelColour >> 0  ) & 0xff;
-							pixelGreen	= ( pixelColour >> 8  ) & 0xff;
-							pixelBlue	= ( pixelColour >> 16 ) & 0xff;
-						}
-						else
-						if ( fileFormat == DdsFileFormat.DDS_FORMAT_A1R5G5B5 )
-						{
-							pixelAlpha	= ( pixelColour >> 15 ) * 0xff;
-							pixelRed	= ( pixelColour >> 10 ) & 0x1f;
-							pixelGreen	= ( pixelColour >> 5  ) & 0x1f;
-							pixelBlue	= ( pixelColour >> 0  ) & 0x1f;
+							if (fileFormat == DdsFileFormat.DDS_FORMAT_X8R8G8B8)
+							{
+								pixelAlpha = 0xff;
+								pixelRed = (pixelColour >> 16) & 0xff;
+								pixelGreen = (pixelColour >> 8) & 0xff;
+								pixelBlue = (pixelColour >> 0) & 0xff;
+							}
+							else
+								if (fileFormat == DdsFileFormat.DDS_FORMAT_A8B8G8R8)
+								{
+									pixelAlpha = (pixelColour >> 24) & 0xff;
+									pixelRed = (pixelColour >> 0) & 0xff;
+									pixelGreen = (pixelColour >> 8) & 0xff;
+									pixelBlue = (pixelColour >> 16) & 0xff;
+								}
+								else
+									if (fileFormat == DdsFileFormat.DDS_FORMAT_X8B8G8R8)
+									{
+										pixelAlpha = 0xff;
+										pixelRed = (pixelColour >> 0) & 0xff;
+										pixelGreen = (pixelColour >> 8) & 0xff;
+										pixelBlue = (pixelColour >> 16) & 0xff;
+									}
+									else
+										if (fileFormat == DdsFileFormat.DDS_FORMAT_A1R5G5B5)
+										{
+											pixelAlpha = (pixelColour >> 15) * 0xff;
+											pixelRed = (pixelColour >> 10) & 0x1f;
+											pixelGreen = (pixelColour >> 5) & 0x1f;
+											pixelBlue = (pixelColour >> 0) & 0x1f;
 
-							pixelRed	= ( pixelRed   << 3 ) | ( pixelRed   >> 2 );
-							pixelGreen	= ( pixelGreen << 3 ) | ( pixelGreen >> 2 );
-							pixelBlue	= ( pixelBlue  << 3 ) | ( pixelBlue  >> 2 );
-						}
-						else
-						if ( fileFormat == DdsFileFormat.DDS_FORMAT_A4R4G4B4 )
-						{
-							pixelAlpha	= ( pixelColour >> 12 ) & 0xff;
-							pixelRed	= ( pixelColour >> 8  ) & 0x0f;
-							pixelGreen	= ( pixelColour >> 4  ) & 0x0f;
-							pixelBlue	= ( pixelColour >> 0  ) & 0x0f;
+											pixelRed = (pixelRed << 3) | (pixelRed >> 2);
+											pixelGreen = (pixelGreen << 3) | (pixelGreen >> 2);
+											pixelBlue = (pixelBlue << 3) | (pixelBlue >> 2);
+										}
+										else
+											if (fileFormat == DdsFileFormat.DDS_FORMAT_A4R4G4B4)
+											{
+												pixelAlpha = (pixelColour >> 12) & 0xff;
+												pixelRed = (pixelColour >> 8) & 0x0f;
+												pixelGreen = (pixelColour >> 4) & 0x0f;
+												pixelBlue = (pixelColour >> 0) & 0x0f;
 
-							pixelAlpha	= ( pixelAlpha << 4 ) | ( pixelAlpha >> 0 );
-							pixelRed	= ( pixelRed   << 4 ) | ( pixelRed   >> 0 );
-							pixelGreen	= ( pixelGreen << 4 ) | ( pixelGreen >> 0 );
-							pixelBlue	= ( pixelBlue  << 4 ) | ( pixelBlue  >> 0 );
-						}
-						else
-						if ( fileFormat == DdsFileFormat.DDS_FORMAT_R8G8B8 )
-						{
-							pixelAlpha	= 0xff;
-							pixelRed	= ( pixelColour >> 16 ) & 0xff;
-							pixelGreen	= ( pixelColour >> 8  ) & 0xff;
-							pixelBlue	= ( pixelColour >> 0  ) & 0xff;
-						}
-						else
-						if ( fileFormat == DdsFileFormat.DDS_FORMAT_R5G6B5 )
-						{
-							pixelAlpha	= 0xff;
-							pixelRed	= ( pixelColour >> 11 ) & 0x1f;
-							pixelGreen	= ( pixelColour >> 5  ) & 0x3f;
-							pixelBlue	= ( pixelColour >> 0  ) & 0x1f;
+												pixelAlpha = (pixelAlpha << 4) | (pixelAlpha >> 0);
+												pixelRed = (pixelRed << 4) | (pixelRed >> 0);
+												pixelGreen = (pixelGreen << 4) | (pixelGreen >> 0);
+												pixelBlue = (pixelBlue << 4) | (pixelBlue >> 0);
+											}
+											else
+												if (fileFormat == DdsFileFormat.DDS_FORMAT_R8G8B8)
+												{
+													pixelAlpha = 0xff;
+													pixelRed = (pixelColour >> 16) & 0xff;
+													pixelGreen = (pixelColour >> 8) & 0xff;
+													pixelBlue = (pixelColour >> 0) & 0xff;
+												}
+												else
+													if (fileFormat == DdsFileFormat.DDS_FORMAT_R5G6B5)
+													{
+														pixelAlpha = 0xff;
+														pixelRed = (pixelColour >> 11) & 0x1f;
+														pixelGreen = (pixelColour >> 5) & 0x3f;
+														pixelBlue = (pixelColour >> 0) & 0x1f;
 
-							pixelRed	= ( pixelRed   << 3 ) | ( pixelRed   >> 2 );
-							pixelGreen	= ( pixelGreen << 2 ) | ( pixelGreen >> 4 );
-							pixelBlue	= ( pixelBlue  << 3 ) | ( pixelBlue  >> 2 );
-						}
-															
+														pixelRed = (pixelRed << 3) | (pixelRed >> 2);
+														pixelGreen = (pixelGreen << 2) | (pixelGreen >> 4);
+														pixelBlue = (pixelBlue << 3) | (pixelBlue >> 2);
+													}
+
 						// Write the colours away..
-						int	destPixelOffset	= ( destY * ( int )m_header.m_width * 4 ) + ( destX * 4 );
-						m_pixelData[ destPixelOffset + 0 ]	= ( byte )pixelRed;
-						m_pixelData[ destPixelOffset + 1 ]	= ( byte )pixelGreen;
-						m_pixelData[ destPixelOffset + 2 ]	= ( byte )pixelBlue;
-						m_pixelData[ destPixelOffset + 3 ]	= ( byte )pixelAlpha;
+						int destPixelOffset = (destY * (int)m_header.m_width * 4) + (destX * 4);
+						m_pixelData[destPixelOffset + 0] = (byte)pixelRed;
+						m_pixelData[destPixelOffset + 1] = (byte)pixelGreen;
+						m_pixelData[destPixelOffset + 2] = (byte)pixelBlue;
+						m_pixelData[destPixelOffset + 3] = (byte)pixelAlpha;
 					}
-				}	
+				}
+
 			}
 		}
 	

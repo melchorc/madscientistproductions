@@ -53,7 +53,7 @@ namespace PatternBrowser
 
                 Stream mem = File.OpenRead(@"P:\Stuart\Desktop\FullBuild0\config\xml\root\" + lookupList.Items[i].fullCasPartname + ".xml");
 
-                patternDetails pDetails = Patterns.parsePatternComplate(mem);
+				Patterns.patternDetails pDetails = Patterns.parsePatternComplate(mem);
 
                 if (String.IsNullOrEmpty(pDetails.category)) continue;
 
@@ -146,7 +146,7 @@ namespace PatternBrowser
         int horizontal = 0;
 
         private patternsFile _selectedPattern = new patternsFile();
-        public patternDetails selectedPattern = new patternDetails();
+		public MadScience.Patterns.patternDetails selectedPattern = new Patterns.patternDetails();
 
         public int curCategory = 0;
 
@@ -335,7 +335,7 @@ namespace PatternBrowser
                                 Stream patternXml = KeyUtils.searchForKey(pattern.key, pattern.subcategory);
 								if (StreamHelpers.isValidStream(patternXml))
                                 {
-                                    patternDetails pDetails = Patterns.parsePatternComplate(patternXml);
+									Patterns.patternDetails pDetails = Patterns.parsePatternComplate(patternXml);
                                     //Stream patternThumb = KeyUtils.searchForKey(pattern.texturename, pattern.subcategory);
                                     //if (Helpers.isValidStream(patternThumb))
                                     //{
@@ -410,7 +410,7 @@ namespace PatternBrowser
                             Stream patternXml = KeyUtils.findKey(new MadScience.Wrappers.ResourceKey(pattern.key), 0, xmldb);
 							if (StreamHelpers.isValidStream(patternXml))
                             {
-                                patternDetails pDetails2 = Patterns.parsePatternComplate(patternXml);
+								Patterns.patternDetails pDetails2 = Patterns.parsePatternComplate(patternXml);
                                 //Stream patternThumb = KeyUtils.findKey(new MadScience.Wrappers.ResourceKey("key:00B2D882:00000000:" + StringHelpers.HashFNV64(pDetails2.name).ToString("X16")), 0, castdb);
                                 //if (!Helpers.isValidStream(patternThumb))
                                 //{
@@ -643,7 +643,7 @@ namespace PatternBrowser
 
                 // Open XML file 
                 //patternsFile cPattern = new patternsFile();
-                patternDetails pDetails = new patternDetails();
+				Patterns.patternDetails pDetails = new Patterns.patternDetails();
 
                 foreach (MadScience.Wrappers.ResourceKey key in castdb._Entries.Keys)
                 {

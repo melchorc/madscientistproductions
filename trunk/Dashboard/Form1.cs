@@ -272,6 +272,7 @@ namespace Sims3Dashboard
 					string folder = f.DirectoryName.Replace(fi.foldername, "");
 					item.SubItems.Add(folder);
 					item.SubItems.Add("");
+					item.SubItems.Add("");
 					item.Tag = i;
 
 					checkPackage(fi.filename, item);
@@ -899,6 +900,24 @@ namespace Sims3Dashboard
 				input.Close();
 				return;
 			}
+
+			// Game number
+			switch (db.dbpf.gameNumber)
+			{
+				case MadScience.Helpers.GameNumber.baseGame:
+					item.SubItems[7].Text = "Base";
+					break;
+				case MadScience.Helpers.GameNumber.worldAdventures:
+					item.SubItems[7].Text = "WA";
+					break;
+				case MadScience.Helpers.GameNumber.highEndLoftStuff:
+					item.SubItems[7].Text = "HELS";
+					break;
+				case MadScience.Helpers.GameNumber.ambitions:
+					item.SubItems[7].Text = "AMB";
+					break;
+			}
+
 			if (detective.isCorrupt)
 			{
 				item.SubItems[2].Text = detective.pType.ToString();

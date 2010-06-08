@@ -269,6 +269,10 @@ namespace InstallHelper
 						{
 							// Copied ok!
 							retVal = "";
+							if (File.Exists(copyTo + ".backup"))
+							{
+								File.Delete(copyTo + ".backup");
+							}
 						}
 						else
 						{

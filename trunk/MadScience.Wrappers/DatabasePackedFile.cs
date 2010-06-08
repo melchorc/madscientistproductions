@@ -40,6 +40,7 @@ namespace MadScience.Wrappers
 		public string magic;
 
 		public Detective.PackageTypes packageType = Detective.PackageTypes.genericPackage;
+		public MadScience.Helpers.GameNumber gameNumber = MadScience.Helpers.GameNumber.baseGame;
 
 		public void Read(Stream input)
 		{
@@ -278,6 +279,47 @@ namespace MadScience.Wrappers
                     entry.Offset = (this.Big == true) ? MadScience.StreamHelpers.ReadValueS64(input) : MadScience.StreamHelpers.ReadValueS32(input);
                     entry.CompressedSize = MadScience.StreamHelpers.ReadValueU32(input);
 
+					// Detect game type
+					/*
+					if (entry.Key.groupId != 0xDEADBEEF)
+					{
+						switch (this.gameNumber)
+						{
+							case MadScience.Helpers.GameNumber.ambitions:
+								break;
+							case MadScience.Helpers.GameNumber.highEndLoftStuff:
+								if ((entry.Key.groupId & (uint)MadScience.Helpers.ContentCategory.kEP2Content) == (uint)MadScience.Helpers.ContentCategory.kEP2Content)
+								{
+									this.gameNumber = MadScience.Helpers.GameNumber.ambitions;
+								}
+								break;
+							case MadScience.Helpers.GameNumber.worldAdventures:
+								if ((entry.Key.groupId & (uint)MadScience.Helpers.ContentCategory.kSP1Content) == (uint)MadScience.Helpers.ContentCategory.kSP1Content)
+								{
+									this.gameNumber = MadScience.Helpers.GameNumber.highEndLoftStuff;
+								}
+								if ((entry.Key.groupId & (uint)MadScience.Helpers.ContentCategory.kEP2Content) == (uint)MadScience.Helpers.ContentCategory.kEP2Content)
+								{
+									this.gameNumber = MadScience.Helpers.GameNumber.ambitions;
+								}
+								break;
+							case MadScience.Helpers.GameNumber.baseGame:
+								if ((entry.Key.groupId & (uint)MadScience.Helpers.ContentCategory.kEP1Content) == (uint)MadScience.Helpers.ContentCategory.kEP1Content)
+								{
+									this.gameNumber = MadScience.Helpers.GameNumber.worldAdventures;
+								}
+								if ((entry.Key.groupId & (uint)MadScience.Helpers.ContentCategory.kSP1Content) == (uint)MadScience.Helpers.ContentCategory.kSP1Content)
+								{
+									this.gameNumber = MadScience.Helpers.GameNumber.highEndLoftStuff;
+								}
+								if ((entry.Key.groupId & (uint)MadScience.Helpers.ContentCategory.kEP2Content) == (uint)MadScience.Helpers.ContentCategory.kEP2Content)
+								{
+									this.gameNumber = MadScience.Helpers.GameNumber.ambitions;
+								}
+								break;
+						}
+					}
+					*/
 					if (this.Version.Major == 2)
 					{
 						entry.DecompressedSize = MadScience.StreamHelpers.ReadValueU32(input);

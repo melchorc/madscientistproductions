@@ -38,6 +38,10 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.picRemove = new System.Windows.Forms.PictureBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.button5 = new System.Windows.Forms.Button();
+			this.textBox4 = new System.Windows.Forms.TextBox();
+			this.chkFrameworkAmb = new System.Windows.Forms.CheckBox();
+			this.chkHasAmb = new System.Windows.Forms.CheckBox();
 			this.chkFrameworkHELS = new System.Windows.Forms.CheckBox();
 			this.chkHasHELS = new System.Windows.Forms.CheckBox();
 			this.button4 = new System.Windows.Forms.Button();
@@ -61,7 +65,7 @@
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(383, 40);
+			this.button1.Location = new System.Drawing.Point(598, 15);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 23);
 			this.button1.TabIndex = 2;
@@ -72,7 +76,7 @@
 			// textBox2
 			// 
 			this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.textBox2.Location = new System.Drawing.Point(32, 42);
+			this.textBox2.Location = new System.Drawing.Point(248, 41);
 			this.textBox2.Name = "textBox2";
 			this.textBox2.ReadOnly = true;
 			this.textBox2.Size = new System.Drawing.Size(344, 20);
@@ -81,7 +85,7 @@
 			// button2
 			// 
 			this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.button2.Location = new System.Drawing.Point(379, 409);
+			this.button2.Location = new System.Drawing.Point(580, 346);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(103, 39);
 			this.button2.TabIndex = 6;
@@ -92,7 +96,7 @@
 			// textBox3
 			// 
 			this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.textBox3.Location = new System.Drawing.Point(32, 94);
+			this.textBox3.Location = new System.Drawing.Point(248, 64);
 			this.textBox3.Name = "textBox3";
 			this.textBox3.ReadOnly = true;
 			this.textBox3.Size = new System.Drawing.Size(344, 20);
@@ -100,7 +104,7 @@
 			// 
 			// button3
 			// 
-			this.button3.Location = new System.Drawing.Point(383, 93);
+			this.button3.Location = new System.Drawing.Point(598, 38);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(75, 23);
 			this.button3.TabIndex = 7;
@@ -111,7 +115,7 @@
 			// picAccept
 			// 
 			this.picAccept.Image = ((System.Drawing.Image)(resources.GetObject("picAccept.Image")));
-			this.picAccept.Location = new System.Drawing.Point(18, 406);
+			this.picAccept.Location = new System.Drawing.Point(19, 336);
 			this.picAccept.Name = "picAccept";
 			this.picAccept.Size = new System.Drawing.Size(51, 50);
 			this.picAccept.TabIndex = 11;
@@ -121,16 +125,16 @@
 			// label1
 			// 
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(75, 399);
+			this.label1.Location = new System.Drawing.Point(73, 336);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(296, 63);
+			this.label1.Size = new System.Drawing.Size(501, 63);
 			this.label1.TabIndex = 12;
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// picRemove
 			// 
 			this.picRemove.Image = ((System.Drawing.Image)(resources.GetObject("picRemove.Image")));
-			this.picRemove.Location = new System.Drawing.Point(19, 406);
+			this.picRemove.Location = new System.Drawing.Point(19, 336);
 			this.picRemove.Name = "picRemove";
 			this.picRemove.Size = new System.Drawing.Size(50, 50);
 			this.picRemove.TabIndex = 13;
@@ -139,6 +143,10 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.button5);
+			this.groupBox1.Controls.Add(this.textBox4);
+			this.groupBox1.Controls.Add(this.chkFrameworkAmb);
+			this.groupBox1.Controls.Add(this.chkHasAmb);
 			this.groupBox1.Controls.Add(this.chkFrameworkHELS);
 			this.groupBox1.Controls.Add(this.chkHasHELS);
 			this.groupBox1.Controls.Add(this.button4);
@@ -153,15 +161,54 @@
 			this.groupBox1.Controls.Add(this.textBox3);
 			this.groupBox1.Location = new System.Drawing.Point(10, 32);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(469, 188);
+			this.groupBox1.Size = new System.Drawing.Size(679, 121);
 			this.groupBox1.TabIndex = 14;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "The Sims 3 Games I have:";
 			// 
+			// button5
+			// 
+			this.button5.Location = new System.Drawing.Point(598, 86);
+			this.button5.Name = "button5";
+			this.button5.Size = new System.Drawing.Size(75, 23);
+			this.button5.TabIndex = 21;
+			this.button5.Text = "Change";
+			this.button5.UseVisualStyleBackColor = true;
+			this.button5.Click += new System.EventHandler(this.button5_Click);
+			// 
+			// textBox4
+			// 
+			this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.textBox4.Location = new System.Drawing.Point(248, 87);
+			this.textBox4.Name = "textBox4";
+			this.textBox4.ReadOnly = true;
+			this.textBox4.Size = new System.Drawing.Size(344, 20);
+			this.textBox4.TabIndex = 20;
+			// 
+			// chkFrameworkAmb
+			// 
+			this.chkFrameworkAmb.AutoSize = true;
+			this.chkFrameworkAmb.Location = new System.Drawing.Point(142, 88);
+			this.chkFrameworkAmb.Name = "chkFrameworkAmb";
+			this.chkFrameworkAmb.Size = new System.Drawing.Size(100, 17);
+			this.chkFrameworkAmb.TabIndex = 19;
+			this.chkFrameworkAmb.Text = "Has Framework";
+			this.chkFrameworkAmb.UseVisualStyleBackColor = true;
+			// 
+			// chkHasAmb
+			// 
+			this.chkHasAmb.AutoSize = true;
+			this.chkHasAmb.Location = new System.Drawing.Point(9, 88);
+			this.chkHasAmb.Name = "chkHasAmb";
+			this.chkHasAmb.Size = new System.Drawing.Size(112, 17);
+			this.chkHasAmb.TabIndex = 18;
+			this.chkHasAmb.Text = "Ambitions / Global";
+			this.chkHasAmb.UseVisualStyleBackColor = true;
+			// 
 			// chkFrameworkHELS
 			// 
 			this.chkFrameworkHELS.AutoSize = true;
-			this.chkFrameworkHELS.Location = new System.Drawing.Point(276, 124);
+			this.chkFrameworkHELS.Location = new System.Drawing.Point(142, 65);
 			this.chkFrameworkHELS.Name = "chkFrameworkHELS";
 			this.chkFrameworkHELS.Size = new System.Drawing.Size(100, 17);
 			this.chkFrameworkHELS.TabIndex = 17;
@@ -171,7 +218,7 @@
 			// chkHasHELS
 			// 
 			this.chkHasHELS.AutoSize = true;
-			this.chkHasHELS.Location = new System.Drawing.Point(9, 124);
+			this.chkHasHELS.Location = new System.Drawing.Point(9, 65);
 			this.chkHasHELS.Name = "chkHasHELS";
 			this.chkHasHELS.Size = new System.Drawing.Size(116, 17);
 			this.chkHasHELS.TabIndex = 16;
@@ -180,7 +227,7 @@
 			// 
 			// button4
 			// 
-			this.button4.Location = new System.Drawing.Point(383, 146);
+			this.button4.Location = new System.Drawing.Point(598, 62);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(75, 23);
 			this.button4.TabIndex = 14;
@@ -191,7 +238,7 @@
 			// textBox1
 			// 
 			this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.textBox1.Location = new System.Drawing.Point(32, 147);
+			this.textBox1.Location = new System.Drawing.Point(248, 18);
 			this.textBox1.Name = "textBox1";
 			this.textBox1.ReadOnly = true;
 			this.textBox1.Size = new System.Drawing.Size(344, 20);
@@ -200,7 +247,7 @@
 			// chkFrameworkWA
 			// 
 			this.chkFrameworkWA.AutoSize = true;
-			this.chkFrameworkWA.Location = new System.Drawing.Point(276, 71);
+			this.chkFrameworkWA.Location = new System.Drawing.Point(142, 42);
 			this.chkFrameworkWA.Name = "chkFrameworkWA";
 			this.chkFrameworkWA.Size = new System.Drawing.Size(100, 17);
 			this.chkFrameworkWA.TabIndex = 13;
@@ -210,7 +257,7 @@
 			// chkFrameworkTS3
 			// 
 			this.chkFrameworkTS3.AutoSize = true;
-			this.chkFrameworkTS3.Location = new System.Drawing.Point(276, 19);
+			this.chkFrameworkTS3.Location = new System.Drawing.Point(142, 21);
 			this.chkFrameworkTS3.Name = "chkFrameworkTS3";
 			this.chkFrameworkTS3.Size = new System.Drawing.Size(100, 17);
 			this.chkFrameworkTS3.TabIndex = 12;
@@ -230,7 +277,7 @@
 			// chkHasWA
 			// 
 			this.chkHasWA.AutoSize = true;
-			this.chkHasWA.Location = new System.Drawing.Point(9, 71);
+			this.chkHasWA.Location = new System.Drawing.Point(9, 42);
 			this.chkHasWA.Name = "chkHasWA";
 			this.chkHasWA.Size = new System.Drawing.Size(111, 17);
 			this.chkHasWA.TabIndex = 10;
@@ -243,11 +290,11 @@
             this.columnHeader1});
 			this.listView1.FullRowSelect = true;
 			this.listView1.GridLines = true;
-			this.listView1.Location = new System.Drawing.Point(10, 226);
+			this.listView1.Location = new System.Drawing.Point(10, 159);
 			this.listView1.MultiSelect = false;
 			this.listView1.Name = "listView1";
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(469, 170);
+			this.listView1.Size = new System.Drawing.Size(673, 170);
 			this.listView1.TabIndex = 15;
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.Details;
@@ -255,7 +302,7 @@
 			// columnHeader1
 			// 
 			this.columnHeader1.Text = "Diagnostics";
-			this.columnHeader1.Width = 440;
+			this.columnHeader1.Width = 650;
 			// 
 			// menuStrip1
 			// 
@@ -264,7 +311,7 @@
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.menuStrip1.Size = new System.Drawing.Size(492, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(698, 24);
 			this.menuStrip1.TabIndex = 16;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -275,25 +322,25 @@
             this.toolStripMenuItem1,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-			this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
 			// 
 			// disableFrameworkToolStripMenuItem
 			// 
 			this.disableFrameworkToolStripMenuItem.Name = "disableFrameworkToolStripMenuItem";
-			this.disableFrameworkToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+			this.disableFrameworkToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
 			this.disableFrameworkToolStripMenuItem.Text = "Disable Framework";
 			this.disableFrameworkToolStripMenuItem.Click += new System.EventHandler(this.disableFrameworkToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(161, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(171, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
@@ -301,7 +348,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(492, 465);
+			this.ClientSize = new System.Drawing.Size(698, 406);
 			this.Controls.Add(this.listView1);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.picRemove);
@@ -354,6 +401,10 @@
 		private System.Windows.Forms.CheckBox chkHasHELS;
 		private System.Windows.Forms.Button button4;
 		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.Button button5;
+		private System.Windows.Forms.TextBox textBox4;
+		private System.Windows.Forms.CheckBox chkFrameworkAmb;
+		private System.Windows.Forms.CheckBox chkHasAmb;
     }
 }
 

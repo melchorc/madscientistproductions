@@ -236,7 +236,7 @@ namespace MadScience
 
 		public PackageType getType(string filename)
 		{
-			Stream input = File.Open(filename, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+			Stream input = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
 			this.pType = getType(input);
 			input.Close();
 
@@ -274,6 +274,8 @@ namespace MadScience
 
 			rc.Clear();
 			this.pType = new PackageType();
+
+			MadScience.Helpers.GameNumber gameNumber = new Helpers.GameNumber();		
 
 			//print(db.dbpf.Entries.Count + " entries found");
 			for (int i = 0; i < db.dbpf.Entries.Count; i++)
