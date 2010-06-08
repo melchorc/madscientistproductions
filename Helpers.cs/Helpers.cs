@@ -178,18 +178,138 @@ namespace MadScience
 
 			if (String.IsNullOrEmpty(checkPath)) return false;
 
+			bool oldStyleCheck = true;
+			string fullBuild = "";
+
+
 			switch (epNumber)
 			{
+				case GameNumber.ambitions:
+					oldStyleCheck = false;
+					break;
 				case GameNumber.highEndLoftStuff:
-					retVal = hasFramework(checkPath, "FullBuild_p03");
+					fullBuild = "FullBuild_p03";
 					break;
 				case GameNumber.worldAdventures:
-					retVal = hasFramework(checkPath, "FullBuildEP1");
+					fullBuild = "FullBuildEP1";
 					break;
 				case GameNumber.baseGame:
 				default:
-					retVal = hasFramework(checkPath, "FullBuild0");
+					fullBuild = "FullBuild0";
 					break;
+			}
+
+			showMessage("Checking path " + checkPath);
+
+			// Check for resource.cfg presence
+			bool hasFoundResource = false;
+			if (oldStyleCheck)
+			{
+				if (File.Exists(checkPath + "\\resource.cfg"))
+				{
+					hasFoundResource = true;
+					showMessage("Found resource.cfg: Yes");
+				}
+				else
+				{
+					showMessage("Found resource.cfg: No", Color.Salmon);
+				}
+			}
+			else
+			{
+				if (Directory.Exists(Path.Combine(checkPath, "Mods")))
+				{
+					if (File.Exists(Path.Combine(checkPath, Path.Combine("Mods", "resource.cfg"))))
+					{
+						hasFoundResource = true;
+						showMessage("Found resource.cfg: Yes");
+					}
+					else
+					{
+						showMessage("Found resource.cfg: No", Color.Salmon);
+					}
+				}
+				else
+				{
+					showMessage("Found resource.cfg: No", Color.Salmon);
+				}
+				
+			}
+
+			// Check for Mods\\Packages folder
+			bool hasFoundModsPackages = false;
+			if (Directory.Exists(checkPath + "\\Mods\\Packages\\"))
+			{
+				hasFoundModsPackages = true;
+				showMessage(@"Found Mods\Packages folder: Yes");
+			}
+			else
+			{
+				showMessage(@"Found Mods\Packages folder: No", Color.Salmon);
+			}
+
+			if (oldStyleCheck)
+			{
+				if (File.Exists(Path.Combine(checkPath, MadScience.Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
+				{
+					showMessage(@"Found " + fullBuild + ": Yes");
+				}
+				else
+				{
+					showMessage(@"Found " + fullBuild + ": No", Color.Salmon);
+				}
+			}
+
+			bool hasFoundDLLFramework = false;
+			if (oldStyleCheck)
+			{
+
+				if (File.Exists(Path.Combine(checkPath, MadScience.Helpers.getGameSubPath("\\Game\\Bin\\d3dx9_31.dll"))))
+				{
+					showMessage(@"Found custom framework d3dx9_31.dll: Yes");
+					hasFoundDLLFramework = true;
+				}
+				else
+				{
+					showMessage(@"Found custom framework d3dx9_31.dll: No", Color.Salmon);
+				}
+			}
+			//textBox1.Text += Environment.NewLine;
+
+			if (!hasFoundModsPackages && !hasFoundResource)
+			{
+				showMessage(@"The Installer could not find either a Resource.cfg or a Mods\Packages folder! This means that your game WILL NOT currently accept custom content and installation via the Helper Monkey", Color.Salmon);
+				showMessage(@"Please install the Framework by clicking the Install button.");
+			}
+			if (!hasFoundModsPackages && hasFoundResource)
+			{
+				showMessage(@"The Installer found a Resource.cfg but not the Mods\Packages folder!  This means that your game WILL NOT currently accept custom content, and installation via the Helper Monkey will fail.", Color.Salmon);
+				showMessage(@"Please install the Framework by clicking the Install button.");
+			}
+			if (hasFoundModsPackages && !hasFoundResource)
+			{
+				showMessage(@"The Installer found a Mods\Packages folder but not Resource.cfg!  This means that your game WILL NOT currently accept custom content, and any custom packages will not show up in game.", Color.Salmon);
+				showMessage(@"Please install the Framework by clicking the Install button.");
+			}
+			if (oldStyleCheck)
+			{
+				if (hasFoundModsPackages && hasFoundResource && !hasFoundDLLFramework)
+				{
+					showMessage(@"The Installer found both a Mods\Packages folder and the Resource.cfg, but NOT a custom DLL.  This means that your game SHOULD accept basic custom content, but NOT core mods.", Color.Salmon);
+				}
+				if (hasFoundModsPackages && hasFoundResource && hasFoundDLLFramework)
+				{
+					showMessage(@"The Installer found all Framework components.  This means that your game SHOULD accept basic custom content, and also core mods.");
+					retVal = true;
+				}
+			}
+			else
+			{
+				if (hasFoundResource && hasFoundModsPackages)
+				{
+					showMessage(@"The Installer found all Framework components.  This means that your game SHOULD accept basic custom content, and also core mods.");
+					retVal = true;
+				}
 			}
 			return retVal;
 		}
@@ -225,13 +345,16 @@ namespace MadScience
 				showMessage(@"Found Mods\Packages folder: No", Color.Salmon);
 			}
 
-			if (File.Exists(Path.Combine(checkPath, MadScience.Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
+			if (!String.IsNullOrEmpty(fullBuild))
 			{
-				showMessage(@"Found " + fullBuild + ": Yes");
-			}
-			else
-			{
-				showMessage(@"Found " + fullBuild + ": No", Color.Salmon);
+				if (File.Exists(Path.Combine(checkPath, MadScience.Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\" + fullBuild + ".package"))))
+				{
+					showMessage(@"Found " + fullBuild + ": Yes");
+				}
+				else
+				{
+					showMessage(@"Found " + fullBuild + ": No", Color.Salmon);
+				}
 			}
 
 			bool hasFoundDLLFramework = false;
@@ -358,6 +481,10 @@ namespace MadScience
 			gameInfo.isInstalled = true;
 			gameInfo.version = getSKUVersion(sims3root);
 
+			DirectoryInfo d = new DirectoryInfo(sims3root);
+
+			gamesInstalled.baseName = d.Name;
+
 			gamesInstalled.gameCheck += 1;
 
 			if (hasFramework(sims3root, GameNumber.baseGame))
@@ -388,7 +515,7 @@ namespace MadScience
 			gamesInstalled.Items.Add(gameInfo);
 
 			gameInfo = new GameInfo();
-			gameInfo.gameName = "High End Loft Stuff";
+			gameInfo.gameName = "High-End Loft Stuff";
 
 			string helsLocation = findSims3Root(GameNumber.highEndLoftStuff, false);
 			if (!String.IsNullOrEmpty(helsLocation))
@@ -402,6 +529,28 @@ namespace MadScience
 				{
 					gameInfo.hasFramework = true;
 					gamesInstalled.flagCheck += 4;
+				}
+			}
+			gamesInstalled.Items.Add(gameInfo);
+
+			gameInfo = new GameInfo();
+			gameInfo.gameName = "Ambitions";
+
+			string ambLocation = findSims3Root(GameNumber.ambitions, false);
+			if (!String.IsNullOrEmpty(ambLocation))
+			{
+				gameInfo.path = ambLocation;
+				gameInfo.isInstalled = true;
+				gameInfo.version = getSKUVersion(ambLocation);
+				gamesInstalled.gameCheck += 8;
+
+				// Find My Documents path
+
+
+				if (hasFramework(ambLocation, GameNumber.ambitions))
+				{
+					gameInfo.hasFramework = true;
+					gamesInstalled.flagCheck += 8;
 				}
 			}
 			gamesInstalled.Items.Add(gameInfo);
@@ -423,6 +572,7 @@ namespace MadScience
 			public static List<GameInfo> Items = new List<GameInfo>();
 			public static int gameCheck = 0;
 			public static int flagCheck = 0;
+			public static string baseName = "The Sims 3";
 		}
 
 		public enum GameNumber : uint
@@ -430,14 +580,33 @@ namespace MadScience
 			baseGame = 0,
 			worldAdventures = 1,
 			highEndLoftStuff = 2,
+			ambitions = 3,
+			paidContent = 90,
+			localContent = 91,
+			customContent = 92,
+		}
+
+		public enum ContentCategory : uint
+		{
+			kAllFlagsMask = 0xff000000,
+			kCustomContent = 0x2000000,
+			kEP1Content = 0x8000000,
+			kEP2Content = 0x18000000,
+			kLocalContent = 0x4000000,
+			kNone = 0,
+			kPaidContent = 0x1000000,
+			kSP1Content = 0x10000000
 		}
 
 		public static void setSims3Root(GameNumber epNumber)
 		{
 			switch (epNumber)
 			{
+				case GameNumber.ambitions:
+					setSims3Root(" Ambitions", "FullBuild_p04");
+					break;
 				case GameNumber.highEndLoftStuff:
-					setSims3Root(" High End Loft Stuff", "FullBuild_p03");
+					setSims3Root(" High-End Loft Stuff", "FullBuild_p03");
 					break;
 				case GameNumber.worldAdventures:
 					setSims3Root(" World Adventures", "FullBuildEP1");
@@ -493,11 +662,31 @@ namespace MadScience
 
 		//private static string sims3root = "";
 
-
+		public static string getGameName(GameNumber epNumber)
+		{
+			string retVal = "";
+			switch (epNumber)
+			{
+				case GameNumber.ambitions:
+					retVal = "Ambitions";
+					break;
+				case GameNumber.highEndLoftStuff:
+					retVal = "High-End Loft Stuff";
+					break;
+				case GameNumber.worldAdventures:
+					retVal = "World Adventures";
+					break;
+				case GameNumber.baseGame:
+				default:
+					retVal = "Sims 3";
+					break;
+			}
+			return retVal;
+		}
 
 		public static string findSims3Root()
 		{
-			return findSims3Root("", "FullBuild0", true);
+			return findSims3Root(GameNumber.baseGame, true);
 		}
 
 		public static string findSims3Root(GameNumber epNumber)
@@ -510,6 +699,9 @@ namespace MadScience
 			string retVal = "";
 			switch (epNumber)
 			{
+				case GameNumber.ambitions:
+					retVal = findSims3Root(" Ambitions", "FullBuild_p04", showManualPath);
+					break;
 				case GameNumber.highEndLoftStuff:
 					retVal = findSims3Root(" High-End Loft Stuff", "FullBuild_p03", showManualPath);
 					break;
@@ -519,6 +711,10 @@ namespace MadScience
 				case GameNumber.baseGame:
 				default:
 					retVal = findSims3Root("", "FullBuild0", showManualPath);
+					if (!String.IsNullOrEmpty(retVal))
+					{
+
+					}
 					break;
 			}
 			return retVal;

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{426F090C-DEA6-412E-8107-1DEEA538F595}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -59,10 +59,6 @@
     <Reference Include="ColorPicker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\CASPartEditor\bin\Debug\ColorPicker.dll</HintPath>
-    </Reference>
-    <Reference Include="MadScience.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Helpers.cs\bin\Debug\MadScience.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="MadScience.Wrappers, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -140,6 +136,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="3_sunshine_patternpackager.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Helpers.cs\MadScience.Helpers.csproj">
+      <Project>{EA40DDB1-1C28-4323-90B3-5B99071F0B78}</Project>
+      <Name>MadScience.Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

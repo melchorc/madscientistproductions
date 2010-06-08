@@ -72,6 +72,7 @@ namespace CASPartEditor
         private void button4_Click(object sender, EventArgs e)
         {
             MadScience.Helpers.globalPackageFiles.Clear();
+			lstGlobalPackages.Items.Clear();
         }
     }
 }

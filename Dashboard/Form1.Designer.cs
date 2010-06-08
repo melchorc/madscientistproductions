@@ -51,6 +51,7 @@
 			this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
 			this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
 			this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeader17 = new System.Windows.Forms.ColumnHeader();
 			this.contextMenuStrip4 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.openFileLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openWithS3PEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,6 +84,7 @@
 			this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripSeparator();
 			this.alwaysUseFastScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.includedisabledInScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.noAutoScanOnStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.findGameCacheFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripSeparator();
@@ -116,7 +118,6 @@
 			this.picThumb = new System.Windows.Forms.PictureBox();
 			this.button1 = new System.Windows.Forms.Button();
 			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-			this.noAutoScanOnStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.groupBox3.SuspendLayout();
 			this.contextMenuStrip4.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
@@ -188,7 +189,7 @@
 			this.listView2.GridLines = true;
 			this.listView2.Location = new System.Drawing.Point(314, 27);
 			this.listView2.Name = "listView2";
-			this.listView2.Size = new System.Drawing.Size(352, 141);
+			this.listView2.Size = new System.Drawing.Size(382, 141);
 			this.listView2.TabIndex = 5;
 			this.listView2.UseCompatibleStateImageBehavior = false;
 			this.listView2.View = System.Windows.Forms.View.Details;
@@ -198,7 +199,7 @@
 			// columnHeader6
 			// 
 			this.columnHeader6.Text = "Cache Name";
-			this.columnHeader6.Width = 200;
+			this.columnHeader6.Width = 220;
 			// 
 			// columnHeader7
 			// 
@@ -218,7 +219,7 @@
 			// 
 			// button7
 			// 
-			this.button7.Location = new System.Drawing.Point(591, 174);
+			this.button7.Location = new System.Drawing.Point(621, 174);
 			this.button7.Name = "button7";
 			this.button7.Size = new System.Drawing.Size(75, 23);
 			this.button7.TabIndex = 4;
@@ -245,7 +246,7 @@
 			this.groupBox3.Controls.Add(this.listView1);
 			this.groupBox3.Location = new System.Drawing.Point(12, 203);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(793, 231);
+			this.groupBox3.Size = new System.Drawing.Size(821, 231);
 			this.groupBox3.TabIndex = 2;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Installed .package files:";
@@ -260,7 +261,8 @@
             this.columnHeader4,
             this.columnHeader5,
             this.columnHeader10,
-            this.columnHeader11});
+            this.columnHeader11,
+            this.columnHeader17});
 			this.listView1.ContextMenuStrip = this.contextMenuStrip4;
 			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listView1.FullRowSelect = true;
@@ -269,7 +271,7 @@
 			this.listView1.Location = new System.Drawing.Point(3, 16);
 			this.listView1.Name = "listView1";
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(787, 212);
+			this.listView1.Size = new System.Drawing.Size(815, 212);
 			this.listView1.TabIndex = 4;
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.Details;
@@ -280,7 +282,7 @@
 			// columnHeader1
 			// 
 			this.columnHeader1.Text = "Filename";
-			this.columnHeader1.Width = 200;
+			this.columnHeader1.Width = 220;
 			// 
 			// columnHeader2
 			// 
@@ -289,20 +291,20 @@
 			// 
 			// columnHeader3
 			// 
-			this.columnHeader3.DisplayIndex = 3;
+			this.columnHeader3.DisplayIndex = 4;
 			this.columnHeader3.Text = "Type";
 			this.columnHeader3.Width = 120;
 			// 
 			// columnHeader4
 			// 
-			this.columnHeader4.DisplayIndex = 5;
+			this.columnHeader4.DisplayIndex = 6;
 			this.columnHeader4.Text = "Size";
 			this.columnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.columnHeader4.Width = 70;
 			// 
 			// columnHeader5
 			// 
-			this.columnHeader5.DisplayIndex = 6;
+			this.columnHeader5.DisplayIndex = 7;
 			this.columnHeader5.Tag = "DateTime";
 			this.columnHeader5.Text = "Date";
 			this.columnHeader5.Width = 120;
@@ -311,13 +313,19 @@
 			// 
 			this.columnHeader10.DisplayIndex = 2;
 			this.columnHeader10.Text = "Sub-Folder";
-			this.columnHeader10.Width = 110;
+			this.columnHeader10.Width = 140;
 			// 
 			// columnHeader11
 			// 
-			this.columnHeader11.DisplayIndex = 4;
+			this.columnHeader11.DisplayIndex = 5;
 			this.columnHeader11.Text = "Description";
 			this.columnHeader11.Width = 120;
+			// 
+			// columnHeader17
+			// 
+			this.columnHeader17.DisplayIndex = 3;
+			this.columnHeader17.Text = "Game";
+			this.columnHeader17.Width = 0;
 			// 
 			// contextMenuStrip4
 			// 
@@ -368,7 +376,7 @@
 			// button2
 			// 
 			this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button2.Location = new System.Drawing.Point(724, 437);
+			this.button2.Location = new System.Drawing.Point(752, 437);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(75, 23);
 			this.button2.TabIndex = 0;
@@ -504,14 +512,14 @@
             this.toolStripProgressBar1});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 494);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(812, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(840, 22);
 			this.statusStrip1.TabIndex = 3;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
 			// toolStripStatusLabel1
 			// 
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(595, 17);
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(623, 17);
 			this.toolStripStatusLabel1.Spring = true;
 			this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
@@ -527,7 +535,7 @@
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.menuStrip1.Size = new System.Drawing.Size(812, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(840, 24);
 			this.menuStrip1.TabIndex = 6;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -580,6 +588,13 @@
 			this.includedisabledInScanToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
 			this.includedisabledInScanToolStripMenuItem.Text = "Include *.disabled in Scan";
 			this.includedisabledInScanToolStripMenuItem.Click += new System.EventHandler(this.includedisabledInScanToolStripMenuItem_Click);
+			// 
+			// noAutoScanOnStartupToolStripMenuItem
+			// 
+			this.noAutoScanOnStartupToolStripMenuItem.Name = "noAutoScanOnStartupToolStripMenuItem";
+			this.noAutoScanOnStartupToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+			this.noAutoScanOnStartupToolStripMenuItem.Text = "No Auto Scan on Startup";
+			this.noAutoScanOnStartupToolStripMenuItem.Click += new System.EventHandler(this.noAutoScanOnStartupToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem2
 			// 
@@ -815,7 +830,7 @@
 			// button9
 			// 
 			this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button9.Location = new System.Drawing.Point(625, 437);
+			this.button9.Location = new System.Drawing.Point(653, 437);
 			this.button9.Name = "button9";
 			this.button9.Size = new System.Drawing.Size(93, 23);
 			this.button9.TabIndex = 17;
@@ -849,7 +864,7 @@
 			// picThumb
 			// 
 			this.picThumb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.picThumb.Location = new System.Drawing.Point(672, 50);
+			this.picThumb.Location = new System.Drawing.Point(702, 51);
 			this.picThumb.Name = "picThumb";
 			this.picThumb.Size = new System.Drawing.Size(128, 128);
 			this.picThumb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -880,27 +895,20 @@
 			this.linkLabel1.Visible = false;
 			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
 			// 
-			// noAutoScanOnStartupToolStripMenuItem
-			// 
-			this.noAutoScanOnStartupToolStripMenuItem.Name = "noAutoScanOnStartupToolStripMenuItem";
-			this.noAutoScanOnStartupToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
-			this.noAutoScanOnStartupToolStripMenuItem.Text = "No Auto Scan on Startup";
-			this.noAutoScanOnStartupToolStripMenuItem.Click += new System.EventHandler(this.noAutoScanOnStartupToolStripMenuItem_Click);
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(812, 516);
+			this.ClientSize = new System.Drawing.Size(840, 516);
 			this.Controls.Add(this.linkLabel1);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.listView3);
 			this.Controls.Add(this.button6);
-			this.Controls.Add(this.button7);
 			this.Controls.Add(this.listView2);
 			this.Controls.Add(this.pictureBox5);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.button9);
+			this.Controls.Add(this.button7);
 			this.Controls.Add(this.button8);
 			this.Controls.Add(this.lblFilterActive);
 			this.Controls.Add(this.pictureBox4);
@@ -910,11 +918,11 @@
 			this.Controls.Add(this.pictureBox2);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.pictureBox1);
-			this.Controls.Add(this.picThumb);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.menuStrip1);
 			this.Controls.Add(this.groupBox3);
+			this.Controls.Add(this.picThumb);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.button5);
 			this.Controls.Add(this.button4);
@@ -1031,6 +1039,7 @@
 		private System.Windows.Forms.ColumnHeader columnHeader16;
 		private System.Windows.Forms.LinkLabel linkLabel1;
 		private System.Windows.Forms.ToolStripMenuItem noAutoScanOnStartupToolStripMenuItem;
+		private System.Windows.Forms.ColumnHeader columnHeader17;
 	}
 }
 

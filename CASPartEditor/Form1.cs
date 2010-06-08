@@ -2359,7 +2359,6 @@ namespace CASPartEditor
 
                     int patternNo = cmbPatternSelect.SelectedIndex;
                     xmlChunkDetails chunk = (xmlChunkDetails)casPartNew.xmlChunk[listView1.SelectedIndices[0]];
-
                     pBrowser.selectedPattern.Tiling = chunk.pattern[patternNo].Tiling;
                     pBrowser.selectedPattern.Enabled = chunk.pattern[patternNo].Enabled;
                     if (chkPatternALinked.Checked)
