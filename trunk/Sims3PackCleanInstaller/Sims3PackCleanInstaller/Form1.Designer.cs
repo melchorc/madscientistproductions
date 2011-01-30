@@ -63,6 +63,9 @@
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.picThumb = new System.Windows.Forms.PictureBox();
 			this.button1 = new System.Windows.Forms.Button();
+			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+			this.extractToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
 			this.menuStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
@@ -90,6 +93,8 @@
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
             this.toolStripMenuItem2,
+            this.extractToolStripMenuItem,
+            this.toolStripMenuItem3,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -147,7 +152,7 @@
 			// 
 			this.corruptedToolStripMenuItem.Enabled = false;
 			this.corruptedToolStripMenuItem.Name = "corruptedToolStripMenuItem";
-			this.corruptedToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.corruptedToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
 			this.corruptedToolStripMenuItem.Text = "Corrupted";
 			this.corruptedToolStripMenuItem.Click += new System.EventHandler(this.corruptedToolStripMenuItem_Click);
 			// 
@@ -163,7 +168,7 @@
 			// 
 			this.dumpXMLToolStripMenuItem.Enabled = false;
 			this.dumpXMLToolStripMenuItem.Name = "dumpXMLToolStripMenuItem";
-			this.dumpXMLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.dumpXMLToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
 			this.dumpXMLToolStripMenuItem.Text = "Dump XML";
 			this.dumpXMLToolStripMenuItem.Click += new System.EventHandler(this.dumpXMLToolStripMenuItem_Click);
 			// 
@@ -261,7 +266,7 @@
 			// 
 			this.txtDesc.Location = new System.Drawing.Point(59, 45);
 			this.txtDesc.Name = "txtDesc";
-			this.txtDesc.Size = new System.Drawing.Size(394, 20);
+			this.txtDesc.Size = new System.Drawing.Size(531, 20);
 			this.txtDesc.TabIndex = 1;
 			// 
 			// txtName
@@ -353,6 +358,7 @@
 			// 
 			// button1
 			// 
+			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.button1.Enabled = false;
 			this.button1.Location = new System.Drawing.Point(12, 245);
 			this.button1.Name = "button1";
@@ -361,6 +367,23 @@
 			this.button1.Text = "Uncheck all Images";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click_1);
+			// 
+			// toolStripMenuItem3
+			// 
+			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
+			// 
+			// extractToolStripMenuItem
+			// 
+			this.extractToolStripMenuItem.Enabled = false;
+			this.extractToolStripMenuItem.Name = "extractToolStripMenuItem";
+			this.extractToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.extractToolStripMenuItem.Text = "Extract All...";
+			this.extractToolStripMenuItem.Click += new System.EventHandler(this.extractToolStripMenuItem_Click);
+			// 
+			// folderBrowserDialog1
+			// 
+			this.folderBrowserDialog1.Description = "Select the folder to extract the Sims3Pack contents to";
 			// 
 			// Form1
 			// 
@@ -426,6 +449,9 @@
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.TextBox txtMinReqV;
 		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.ToolStripMenuItem extractToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
 	}
 }
 

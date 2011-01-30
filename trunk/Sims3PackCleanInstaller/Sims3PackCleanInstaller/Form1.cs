@@ -16,6 +16,15 @@ namespace Sims3PackCleanInstaller
 		{
 			Version vrs = new Version(Application.ProductVersion);
 			this.Text = this.Text + " v" + vrs.Major + "." + vrs.Minor + "." + vrs.Build + "." + vrs.Revision;
+
+			if (Environment.GetCommandLineArgs().Length > 1)
+			{
+				for (int i = 1; i < Environment.GetCommandLineArgs().Length; i++)
+				{
+					loadFile(Environment.GetCommandLineArgs().GetValue(i).ToString());
+				}
+			}
+
 		}
 
 		MadScience.Detective detective = new MadScience.Detective();
@@ -33,6 +42,7 @@ namespace Sims3PackCleanInstaller
 				button1.Enabled = true;
 				dumpXMLToolStripMenuItem.Enabled = true;
 				corruptedToolStripMenuItem.Enabled = true;
+				extractToolStripMenuItem.Enabled = true;
 			}
 		}
 
@@ -64,10 +74,10 @@ namespace Sims3PackCleanInstaller
 			ListViewItem item = new ListViewItem();
 			item.Checked = true;
 			item.Text = packagedFile.Name;
-			item.SubItems.Add(""); // Size
-			item.SubItems.Add(""); // Description
-			item.SubItems.Add(""); // Type
-			item.SubItems.Add(""); // Sub-Type
+			item.SubItems.Add(""); // 1 - Size
+			item.SubItems.Add(""); // 2 - Description
+			item.SubItems.Add(""); // 3 - Type
+			item.SubItems.Add(""); // 4 - Sub-Type
 
 			item.SubItems[1].Text = packagedFile.Length.ToString();
 
@@ -79,9 +89,8 @@ namespace Sims3PackCleanInstaller
 			else
 			{
 				MadScience.Detective.PackageType packageType = detective.getType(packagedFile.DBPF);
+				item.BackColor = detective.pType.ToColor();
 			}
-
-			item.BackColor = detective.pType.ToColor();
 
 			if (!String.IsNullOrEmpty(packagedFile.MetaTags.description))
 			{
@@ -108,6 +117,13 @@ namespace Sims3PackCleanInstaller
 				
 			}
 
+			// Do some sanity checks...
+
+			// If the description so far is empty, use the metatags name
+			if (String.IsNullOrEmpty(item.SubItems[2].Text) && !String.IsNullOrEmpty(packagedFile.MetaTags.name))
+			{
+				item.SubItems[2].Text = packagedFile.MetaTags.name;
+			}
 
 			listView1.Items.Add(item);
 		}
@@ -223,6 +239,11 @@ namespace Sims3PackCleanInstaller
 									dbpf.Position = 0;
 									checkPackage(dbpf, listView1.Items[i]);
 									break;
+								case MadScience.Detective.PackageTypes.corruptRecursive:
+									if (MadScience.Fixers.fixRecursive(dbpf, false) == true) numFixed++;
+									dbpf.Position = 0;
+									checkPackage(dbpf, listView1.Items[i]);
+									break;
 							}
 
 							//checkPackage(filename, listView1.CheckedItems[i]);
@@ -250,6 +271,7 @@ namespace Sims3PackCleanInstaller
 			}
 			else
 			{
+
 				MadScience.Detective.PackageType packageType = detective.getType(input);
 
 
@@ -306,6 +328,24 @@ namespace Sims3PackCleanInstaller
 					listView1.Items[i].Checked = false;
 				}
 			}
+		}
+
+		private void extractToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			DialogResult result = folderBrowserDialog1.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				for (int i = 0; i < Sims3PackFile.PackagedFiles.Count; i++)
+				{
+					string filename = Sims3PackFile.PackagedFiles[i].Name;
+					Sims3PackFile.PackagedFiles[i].DBPF.Seek(0, SeekOrigin.Begin);
+					Stream output = File.Create(Path.Combine(folderBrowserDialog1.SelectedPath, filename));
+					MadScience.StreamHelpers.CopyStream(Sims3PackFile.PackagedFiles[i].DBPF, output);
+					output.Close();
+				}
+
+			}
+
 		}
 
 
