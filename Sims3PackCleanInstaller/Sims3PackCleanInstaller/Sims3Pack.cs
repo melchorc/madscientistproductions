@@ -50,6 +50,7 @@ namespace MadScience
 					public string description = "";
 					public string bio = "";
 					public int numOfThumbs = -999999;
+					// Lots
 					public int worldNoLots = -999999;
 					public int maxLevel = -999999;
 					public int minLevel = -999999;
@@ -61,6 +62,31 @@ namespace MadScience
 					public string lotName = "";
 					public int lotResSubType = -999999;
 					public int lotComSubType = -999999;
+					// Sims
+					public string age = "";
+					public string species = "";
+					public string gender = "";
+					public List<string> traits = new List<string>();
+					public string fitness = "";
+					public string weight = "";
+					public string favcolor = "";
+					public int favmusic = -999999;
+					public int favfood = -999999;
+					public string skintoneindex = "";
+					public string handedness = "";
+					public Outfits outfits = new Outfits();
+
+					public class Outfits
+					{
+						public int numOutfits = 0;
+						public string athletic = "";
+						public string everyday = "";
+						public string formalwear = "";
+						public string naked = "";
+						public string sleepwear = "";
+						public string swimwear = "";
+					}
+
 
 				}
 			}
@@ -407,9 +433,12 @@ namespace MadScience
 			{
 				for (int i = 0; i < s3p.PackagedFiles.Count; i++)
 				{
-					s3p.PackagedFiles[i].Offset = curOffset;
-					sb.Append(WritePackagedFileXml(s3p.PackagedFiles[i], "  "));
-					curOffset += s3p.PackagedFiles[i].Length;
+					if (!s3p.PackagedFiles[i].isDisabled)
+					{
+						//s3p.PackagedFiles[i].Offset = curOffset;
+						sb.Append(WritePackagedFileXml(s3p.PackagedFiles[i], "  "));
+						//curOffset += s3p.PackagedFiles[i].Length;
+					}
 				}
 			}
 			
@@ -548,6 +577,95 @@ namespace MadScience
 							}
 						}
 					}
+					if (curName.ToLower() == "traits")
+					{
+						if (!xtr.IsEmptyElement)
+						{
+							// Read the traits structure
+							while (xtr.Read())
+							{
+								if (xtr.NodeType == XmlNodeType.Element)
+								{
+									switch (xtr.Name.ToLower())
+									{
+										case "trait":
+											xtr.Read();
+											if (xtr.NodeType == XmlNodeType.Whitespace) xtr.Read();
+											metatag.traits.Add(xtr.Value);
+											break;
+									}
+								}
+								if (xtr.NodeType == XmlNodeType.EndElement && xtr.Name.ToLower() == "traits")
+								{
+									break;
+								}
+							}
+						}
+					}
+					if (curName.ToLower() == "outfits")
+					{
+						if (!xtr.IsEmptyElement)
+						{
+							// Read the outfits structure
+							while (xtr.Read())
+							{
+								if (xtr.NodeType == XmlNodeType.Element)
+								{
+									switch (xtr.Name)
+									{
+										case "outfitAthletic":
+											xtr.Read();
+											if (xtr.NodeType == XmlNodeType.Whitespace) xtr.Read();
+											xtr.Read();
+											metatag.outfits.athletic = xtr.Value;
+											metatag.outfits.numOutfits++;
+											break;
+										case "outfitEveryday":
+											xtr.Read();
+											if (xtr.NodeType == XmlNodeType.Whitespace) xtr.Read();
+											xtr.Read();
+											metatag.outfits.everyday = xtr.Value;
+											metatag.outfits.numOutfits++;
+											break;
+										case "outfitFormalwear":
+											xtr.Read();
+											if (xtr.NodeType == XmlNodeType.Whitespace) xtr.Read();
+											xtr.Read();
+											metatag.outfits.formalwear = xtr.Value;
+											metatag.outfits.numOutfits++;
+											break;
+										case "outfitNaked":
+											xtr.Read();
+											if (xtr.NodeType == XmlNodeType.Whitespace) xtr.Read();
+											xtr.Read();
+											metatag.outfits.naked = xtr.Value;
+											metatag.outfits.numOutfits++;
+											break;
+										case "outfitSleepwear":
+											xtr.Read();
+											if (xtr.NodeType == XmlNodeType.Whitespace) xtr.Read();
+											xtr.Read();
+											metatag.outfits.sleepwear = xtr.Value;
+											metatag.outfits.numOutfits++;
+											break;
+										case "outfitSwimwear":
+											xtr.Read();
+											if (xtr.NodeType == XmlNodeType.Whitespace) xtr.Read();
+											xtr.Read();
+											metatag.outfits.swimwear = xtr.Value;
+											metatag.outfits.numOutfits++;
+											break;
+
+									}
+								}
+								if (xtr.NodeType == XmlNodeType.EndElement && xtr.Name.ToLower() == "outfits")
+								{
+									break;
+								}
+							}
+						}
+					}
+
 				}
 				if (xtr.NodeType == XmlNodeType.Text)
 				{
@@ -592,6 +710,37 @@ namespace MadScience
 						case "lotcomsubtype":
 							metatag.lotComSubType = Convert.ToInt32(xtr.Value);
 							break;
+						// Sims:
+						case "age":
+							metatag.age = xtr.Value;
+							break;
+						case "species":
+							metatag.species = xtr.Value;
+							break;
+						case "gender":
+							metatag.gender = xtr.Value;
+							break;
+						case "fitness":
+							metatag.fitness = xtr.Value;
+							break;
+						case "weight":
+							metatag.weight = xtr.Value;
+							break;
+						case "favcolor":
+							metatag.favcolor = xtr.Value;
+							break;
+						case "favmusic":
+							metatag.favmusic = Convert.ToInt32(xtr.Value);
+							break;
+						case "favfood":
+							metatag.favfood = Convert.ToInt32(xtr.Value);
+							break;
+						case "skintoneindex":
+							metatag.skintoneindex = xtr.Value;
+							break;
+						case "handedness":
+							metatag.handedness = xtr.Value;
+							break;
 					}
 				}
 				if (xtr.NodeType == XmlNodeType.EndElement && xtr.Name.ToLower() == "metatags") break;
@@ -613,6 +762,8 @@ namespace MadScience
 			if (!String.IsNullOrEmpty(metatag.description)) sb.AppendLine(indent + "  <description>" + metatag.description + "</description>");
 			if (!String.IsNullOrEmpty(metatag.bio)) sb.AppendLine(indent + "  <bio>" + metatag.bio + "</bio>");
 			if (metatag.numOfThumbs > -999999) sb.AppendLine(indent + "  <numOfThumbs>" + metatag.numOfThumbs.ToString() + "</numOfThumbs>");
+
+			// Lot information
 			if (metatag.maxLevel > -999999) sb.AppendLine(indent + "  <maxlevel>" + metatag.maxLevel.ToString() + "</maxlevel>");
 			if (metatag.minLevel > -999999) sb.AppendLine(indent + "  <minlevel>" + metatag.minLevel.ToString() + "</minlevel>");
 			if (metatag.dimX > -999999) sb.AppendLine(indent + "  <dimX>" + metatag.dimX.ToString() + "</dimX>");
@@ -631,6 +782,68 @@ namespace MadScience
 			if (!String.IsNullOrEmpty(metatag.lotName)) sb.AppendLine(indent + "  <lotName>" + metatag.lotName + "</lotName>");
 			if (metatag.lotResSubType > -999999) sb.AppendLine(indent + "  <lotResSubType>" + metatag.lotResSubType.ToString() + "</lotResSubType>");
 			if (metatag.lotComSubType > -999999) sb.AppendLine(indent + "  <lotComSubType>" + metatag.lotComSubType.ToString() + "</lotComSubType>");
+
+			if (!String.IsNullOrEmpty(metatag.age)) sb.AppendLine(indent + "  <age>" + metatag.age + "</age>");
+			if (!String.IsNullOrEmpty(metatag.species)) sb.AppendLine(indent + "  <species>" + metatag.species + "</species>");
+			if (!String.IsNullOrEmpty(metatag.gender)) sb.AppendLine(indent + "  <gender>" + metatag.gender + "</gender>");
+			if (metatag.traits.Count > 0)
+			{
+				sb.AppendLine(indent + "  <traits>");
+				for (int i = 0; i < metatag.traits.Count; i++)
+				{
+					sb.AppendLine(indent + "    <trait>" + metatag.traits[i] + "</trait>");
+				}
+				sb.AppendLine(indent + "  </traits>");
+			}
+			if (!String.IsNullOrEmpty(metatag.fitness)) sb.AppendLine(indent + "  <fitness>" + metatag.fitness + "</fitness>");
+			if (!String.IsNullOrEmpty(metatag.weight)) sb.AppendLine(indent + "  <weight>" + metatag.weight + "</weight>");
+			if (!String.IsNullOrEmpty(metatag.favcolor)) sb.AppendLine(indent + "  <favcolor>" + metatag.age + "</favcolor>");
+			if (metatag.favmusic > -999999) sb.AppendLine(indent + "  <favmusic>" + metatag.favmusic.ToString() + "</favmusic>");
+			if (metatag.favfood > -999999) sb.AppendLine(indent + "  <favfood>" + metatag.favfood.ToString() + "</favfood>");
+			if (!String.IsNullOrEmpty(metatag.skintoneindex)) sb.AppendLine(indent + "  <skintoneindex>" + metatag.skintoneindex + "</skintoneindex>");
+			if (!String.IsNullOrEmpty(metatag.handedness)) sb.AppendLine(indent + "  <handedness>" + metatag.handedness + "</handedness>");
+
+			if (metatag.outfits.numOutfits > 0)
+			{
+				sb.AppendLine(indent + "  <outfits>");
+				if (!String.IsNullOrEmpty(metatag.outfits.athletic))
+				{
+					sb.AppendLine(indent + "    <outfitAthletic>");
+					sb.AppendLine(indent + "      <outfitId>" + metatag.outfits.athletic + "</outfitId>");
+					sb.AppendLine(indent + "    </outfitAthletic>");
+				}
+				if (!String.IsNullOrEmpty(metatag.outfits.everyday))
+				{
+					sb.AppendLine(indent + "    <outfitEveryday>");
+					sb.AppendLine(indent + "      <outfitId>" + metatag.outfits.everyday + "</outfitId>");
+					sb.AppendLine(indent + "    </outfitEveryday>");
+				}
+				if (!String.IsNullOrEmpty(metatag.outfits.formalwear))
+				{
+					sb.AppendLine(indent + "    <outfitFormalwear>");
+					sb.AppendLine(indent + "      <outfitId>" + metatag.outfits.formalwear + "</outfitId>");
+					sb.AppendLine(indent + "    </outfitFormalwear>");
+				}
+				if (!String.IsNullOrEmpty(metatag.outfits.naked))
+				{
+					sb.AppendLine(indent + "    <outfitNaked>");
+					sb.AppendLine(indent + "      <outfitId>" + metatag.outfits.naked + "</outfitId>");
+					sb.AppendLine(indent + "    </outfitNaked>");
+				}
+				if (!String.IsNullOrEmpty(metatag.outfits.sleepwear))
+				{
+					sb.AppendLine(indent + "    <outfitSleepwear>");
+					sb.AppendLine(indent + "      <outfitId>" + metatag.outfits.sleepwear + "</outfitId>");
+					sb.AppendLine(indent + "    </outfitSleepwear>");
+				}
+				if (!String.IsNullOrEmpty(metatag.outfits.swimwear))
+				{
+					sb.AppendLine(indent + "    <outfitSwimwear>");
+					sb.AppendLine(indent + "      <outfitId>" + metatag.outfits.swimwear + "</outfitId>");
+					sb.AppendLine(indent + "    </outfitSwimwear>");
+				}
+
+			}
 
 			sb.AppendLine(indent + "</metatags>");
 
