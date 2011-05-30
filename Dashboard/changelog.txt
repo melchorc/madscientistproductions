@@ -1,0 +1,121 @@
+﻿Changelog for v1.1.3715.37466:
+* Sims3Dashboard: Fixed bug where selecting multiple cache files to clear (but not all) and clicking "Clear Selected" only clears the first one
+* Sims3Dashboard: Renamed "Clear Selected" to "Clear Checked"
+* MadScience.Detective: Changed default file open to Read instead of ReadWrite.  We don't need to write stuff to figure out the type. :)
+* Sims3Dashboard: Fixed bug where Dashboard would stop scanning after first exception message shown
+* Sims3Dashboard: Fixed bug with not scanning HELS folder
+
+Changelog for v1.1.3697.36410
+* MadScience.Detective: Added detection of CAS Part type (Hair, etc)
+* MadScience.Detective: Added detection of OBJD type and description
+* Sims3Dashboard: Added Description to the listview
+* Sims3Dashboard: Added ability to check .dbc files
+* Sims3Dashboard: Added thumbnail preview of objects
+* MadScience.Detective: Added CAS Part (Hair)
+* MadScience.Detective: Added CAS Part (Makeup)
+* MadScience.Detective: Added CAS Part (Face Overlay)
+* MadScience.Detective: Added CAS Part (Accessory)
+* MadScience.Detective: Added makeup type to CAS Part (Makeup) detection
+* MadScience.Detective: Added check for Texture Replacement
+* Sims3Dashboard: Changed the list of games installed to a listview instead of multiple checkboxes
+* Sims3Dashboard: Added getting game version for each installed game
+* MadScience.Detective: Added detection of Neighbourhoods
+* Sims3Dashboard: Added disabling of Neighbourhoods to Fix All problems
+* Sims3Dashboard: Fixed "Filter active" label not moving to correct position when resizing window
+
+Changelog for v1.0.3679.14760
+* MadScience.Detective: Added "Corrupt (Bad download)" to Detective.  This identifies packages that are missing/corrupted and have data missing
+* MadScience.Detective: Added "Corrupt (Not a DBPF)" to Detective.  This identifies files called *.package that aren't actually .package
+* Sims3Dashboard: Fixed bug with some file handles not being closed properly, thus causing Fix All to fail
+* Sims3Dashboard: Added ability to Disable corrupted packages (Bad downloads, Not a DBPF, Chaavik) to Fix All Problems
+* MadScience.Detective: Optimised Detective somewhat to speed up package detection
+* MadScience.Detective: Changed "Corrupt TXTC" to "Corrupt (TXTC)"
+* MadScience.Detective: Changed "coremod" to "Core Mod"
+* MadScience.Detective: Changed "pattern" to "Pattern"
+* MadScience.Detective: Changed "caspart" to "CAS Part"
+* MadScience.Detective: Changed "caspart (clothing)" to "CAS Part (Clothing)"
+* MadScience.Detective: Changed "object" to "Object"
+* MadScience.Wrappers.DatabasePackedFile: Added check for files with completely corrupt sections
+* MadScience.Detective: Added "Corrupt (Peggy)" package type to detection for corrupt sections
+* MadScience.Wrappers.DatabasePackedFile: Added check for files with bad Index pointers
+* MadScience.Detective: Added "Corrupt (Bad Index)" package type for files with bad indexes
+* MadScience.Fixers: Added Fix for "Corrupt (Bad Index)" type
+* Sims3Dashboard: Added ability to fix corrupt some indexes
+
+
+
+Changelog for v1.0.3672.34790
+* Fixed bug with Select menu not re-enabling the Action button
+* Fixed bug where Fixing corrupted TXTCs would mark the fixed files as Duplicates of themselves
+* Fixed bug where a file could be in Corrupt state as well as Conflict - now Corrupt overrides all others
+* Added Application.DoEvents() to the main ProcessFile loop, so that it better updates the status bar, etc
+* Optimised the Conflict detection - should run a bit faster now
+* Fixed crash when encountering early-Chaavik style package files with completely corrupt headers
+* Changed "Done" to "Scanned" when finished processing files
+* Added number of files scanned and MB used to the custom content box
+* Fixed index out of range bug when Fixing Corrupt files and a filter is enabled
+* Changed checkPackage routine to now exit earlier when encountering Sims 2 or Corrupt files - this should speed up the scan somewhat
+* Added border to colour key legend boxes
+* Added File menu option to include *.disabled packages in scan
+* Added new colour type for disabled packages (Color.PowderBlue)
+* A note on Disabled packages:  They still show up with the normal Corrupt/Duplicate/Empty text, but the background colour is different.  Disabled files do NOT change the colour of originals.
+* Added Filter for Disabled files
+* Changed Filter -> All non-standard to exclude "originals" of Duplicate files - it now only shows the duplicate
+
+
+
+
+Changelog for v1.0.3669.40293
+* Changed DBPF library to not throw exception when key already exists (happens mostly on Peggy hairs since they have duplicate resources)
+
+
+Changelog for v1.0.3669.36463
+* Fixed Filter... button not moving when form is resized
+* Fixed bug with Filter... button not hiding when CC list is updated
+* Added click on legend colours automatically filters to that type
+
+
+Changelog for v1.0.3669.31644
+* Added legend underneath package list, to easily see which packages are which
+* Scan Folder now remembers the folder you selected
+* Added Reset Scan Folder, to remove the last Scan Folder and revert to normal Mods\Packages
+* Optimised (Somewhat) the list view
+* Fixed De-Select All not deselecting anything
+* Fixed error message dialog when a DBPP package is encountered and showError is off (now fails gracefully)
+* Changed default File Open to OpenRead instead of ReadWrite (this is not needed when just scanning) - should fix errors when scanning across network drives and other locations
+* Removed VPXY from conflict list
+* Removed _RIG from conflict list
+* Added JAZZ to conflict list
+* Added OBJK back to conflict list
+* Added ToolTip to cc list package name that shows full path
+* Changed "Conflict part of" text to "Conflicts with"
+* Fixed conflict detection not working properly (thanks jonha)
+* Added the ability to Filter the list to only show particular types
+
+
+Changelog for v1.0.3668.38309
+* Removed conflict detection for: TXTC, OBJK, VPXY, _RIG
+* Altered detection of duplicates to split between Duplicate and Conflict
+* Duplicates are now Yellow, Conflicts are Goldenrod
+* Added ability to de-select all checked items
+* Added right-click on a package in the list to Open folder where the package is
+* Added Sub-Folder name to list
+* Added menu option to Find Game Cache location for localised versions where the auto-find fails
+* Fixed bug with cache files showing as 0 byte 0 entries in list - now they are not shown
+* Changed colour of Sims 2 packages to SteelBlue
+
+
+Changelog for v1.0.3668.33966
+* Fixed bug with Clear All caches not working
+* Adding Maximise ability
+* Added status bar
+* Added current package file being processed to status bar
+* Added detection of Empty packages
+* Added detection of Conflict/Duplicate packages
+* Removed "Select Corrupt" button
+* Added ability to select only particular types of "bad" content - Corrupted, Duplicate, Sims 2 Packages or Empty files
+* Added ability to select all types of "bad" content
+* Renamed "Corrupt (BlueLot)" to "Corrupt TXTC" to better reflect the issue
+* Added automatic action to Fix Corrupted TXTCs
+* Removed some console output
+

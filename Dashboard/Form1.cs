@@ -36,6 +36,7 @@ namespace Sims3Dashboard
 
 		}
 
+        MadScience.ListViewSorter Sorter = new MadScience.ListViewSorter();
 		private Stack fileList = new Stack();
 		private int filesToProcess;
 
@@ -64,16 +65,11 @@ namespace Sims3Dashboard
 			JAZZ = 0x02D5DF13,
 		}
 
-		MadScience.ListViewSorter Sorter = new MadScience.ListViewSorter();
-
 		private void Form1_Load(object sender, EventArgs e)
 		{
 
 			Version vrs = new Version(Application.ProductVersion);
 			this.Text = this.Text + " v" + vrs.Major + "." + vrs.Minor + "." + vrs.Build + "." + vrs.Revision;
-
-			checkLocations();
-			getCacheDetails();
 
 			this.Show();
 
@@ -84,156 +80,6 @@ namespace Sims3Dashboard
 	
 		}
 
-		private void getCacheDetails()
-		{
-			string TS3MyDocs = MadScience.Helpers.getRegistryValue("cacheFolders");
-			if (String.IsNullOrEmpty(TS3MyDocs))
-			{
-
-				string myDocs = MadScience.Helpers.findMyDocs();
-				if (String.IsNullOrEmpty(myDocs)) return;
-
-				TS3MyDocs = Path.Combine(Path.Combine(myDocs, "Electronic Arts"), "The Sims 3");
-			}
-			listView2.Items.Clear();
-
-			showCacheInfo(Path.Combine(TS3MyDocs, "CASPartCache.package"), "CASPartCache");
-			showCacheInfo(Path.Combine(TS3MyDocs, "compositorCache.package"), "compositorCache");
-			showCacheInfo(Path.Combine(TS3MyDocs, "scriptCache.package"), "scriptCache");
-			showCacheInfo(Path.Combine(TS3MyDocs, "simCompositorCache.package"), "simCompositorCache");
-
-			DirectoryInfo dir;
-			FileInfo[] myFiles;
-
-			if (Directory.Exists(Path.Combine(TS3MyDocs, "WorldCaches")))
-			{
-				dir = new DirectoryInfo(Path.Combine(TS3MyDocs, "WorldCaches"));
-				myFiles = dir.GetFiles("*.package");
-				foreach (FileInfo f in myFiles)
-				{
-					showCacheInfo(f.FullName, "WorldCaches\\" + f.Name);
-				}
-			}
-
-			if (Directory.Exists(Path.Combine(TS3MyDocs, "Thumbnails")))
-			{
-				dir = new DirectoryInfo(Path.Combine(TS3MyDocs, "Thumbnails"));
-				myFiles = dir.GetFiles("*.package");
-				foreach (FileInfo f in myFiles)
-				{
-					showCacheInfo(f.FullName, "Thumbnails\\" + f.Name);
-				}
-			}
-
-			//showCacheInfo("", "");
-
-		}
-
-		private void showCacheInfo(string cachePath, string cacheName)
-		{
-			if (!String.IsNullOrEmpty(cachePath) && !File.Exists(cachePath)) return;
-
-
-			// CAS Part Cache
-			ListViewItem item = new ListViewItem();
-
-			item.Text = cacheName;
-			item.SubItems.Add(cachePath);
-
-			if (!String.IsNullOrEmpty(cachePath))
-			{
-				if (!File.Exists(cachePath))
-				{
-					item.SubItems.Add("0");
-					item.SubItems.Add("0");
-
-				}
-				else
-				{
-
-					FileInfo f = new FileInfo(cachePath);
-					if (f.Length > 0)
-					{
-						item.SubItems.Add(((f.Length / 1024) + 1).ToString());
-					}
-					else
-					{
-						item.SubItems.Add("0");
-					}
-
-					Stream casPartCache = File.OpenRead(cachePath);
-					MadScience.Wrappers.Database db = new MadScience.Wrappers.Database(casPartCache, true);
-					item.SubItems.Add(db.dbpf.Entries.Count.ToString());
-					casPartCache.Close();
-				}
-			}
-			else
-			{
-				item.SubItems.Add("");
-				item.SubItems.Add("");
-			}
-
-			listView2.Items.Add(item);
-		}
-
-		private void clearCache(string cachePath, string cacheName)
-		{
-			if (String.IsNullOrEmpty(cacheName))
-			{
-				// Clear ALL caches
-				if (MessageBox.Show("You are about to clear all caches.  Are you sure?", "Clear All Caches", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-				{
-					string myDocs = MadScience.Helpers.findMyDocs();
-					if (String.IsNullOrEmpty(myDocs)) return;
-
-					string TS3MyDocs = Path.Combine(Path.Combine(myDocs, "Electronic Arts"), "The Sims 3");
-
-					DirectoryInfo dir;
-					FileInfo[] myFiles;
-
-					if (Directory.Exists(Path.Combine(TS3MyDocs, "WorldCaches")))
-					{
-						dir = new DirectoryInfo(Path.Combine(TS3MyDocs, "WorldCaches"));
-						myFiles = dir.GetFiles("*.package");
-						foreach (FileInfo f in myFiles)
-						{
-							File.Delete(f.FullName);
-						}
-					}
-
-					if (Directory.Exists(Path.Combine(TS3MyDocs, "Thumbnails")))
-					{
-						dir = new DirectoryInfo(Path.Combine(TS3MyDocs, "Thumbnails"));
-						myFiles = dir.GetFiles("*.package");
-						foreach (FileInfo f in myFiles)
-						{
-							File.Delete(f.FullName);
-						}
-					}
-
-					try
-					{
-						File.Delete(Path.Combine(TS3MyDocs, "CASPartCache.package"));
-						File.Delete(Path.Combine(TS3MyDocs, "compositorCache.package"));
-						File.Delete(Path.Combine(TS3MyDocs, "scriptCache.package"));
-						File.Delete(Path.Combine(TS3MyDocs, "simCompositorCache.package"));
-					}
-					catch (Exception ex)
-					{
-					}
-				}
-
-			}
-			else
-			{
-				if (MessageBox.Show("You are about to delete the " + cacheName + " cache.  Are you sure?", "Clear " + cacheName, MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-				{
-					File.Delete(cachePath);
-				}
-			}
-
-			
-		}
 
 		public void ProcessFiles()
 		{
@@ -434,138 +280,7 @@ namespace Sims3Dashboard
 			}
 		}
 
-		private void checkLocations()
-		{
 
-			MadScience.Helpers.findInstalledGames();
-
-			for (int i = 0; i < MadScience.Helpers.gamesInstalled.Items.Count; i++)
-			{
-				ListViewItem item = new ListViewItem();
-				MadScience.Helpers.GameInfo gameInfo = MadScience.Helpers.gamesInstalled.Items[i];
-				item.Text = gameInfo.gameName;
-				if (gameInfo.isInstalled)
-				{
-					item.SubItems.Add("Yes");
-					if (gameInfo.hasFramework)
-					{
-						item.SubItems.Add("Yes");
-					}
-					else
-					{
-						item.SubItems.Add("No");
-					}
-				}
-				else
-				{
-					item.SubItems.Add("No");
-					item.SubItems.Add("");
-				}
-
-				if (gameInfo.version.Major > 0)
-				{
-					item.SubItems.Add(gameInfo.version.ToString());
-				}
-				else
-				{
-					item.SubItems.Add("");
-				}
-				item.SubItems.Add(gameInfo.path);
-
-				listView3.Items.Add(item);
-			}
-
-			/*
-			string sims3root = MadScience.Helpers.findSims3Root();
-			if (sims3root == "")
-			{
-				//showMessage("Error: Cannot find Sims 3 root.");
-				//showMessage("Custom content will NOT work correctly!");
-				//showMessage("Click Change to find the correct Sims 3 root folder");
-
-				chkHasTS3.Checked = false;
-				chkFrameworkTS3.Checked = false;
-				//button2.Enabled = false;
-				//disableFrameworkToolStripMenuItem.Enabled = false;
-			}
-			else
-			{
-				//textBox2.Text = sims3root;
-				chkHasTS3.Checked = true;
-
-				if (MadScience.Helpers.hasFramework(sims3root, MadScience.Helpers.GameNumber.baseGame) == false)
-				{
-					chkFrameworkTS3.Checked = false;
-				}
-				else
-				{
-					chkFrameworkTS3.Checked = true;
-				}
-
-				//textBox3.Text = MadScience.Helpers.findSims3Root(" World Adventures", "FullBuildEP1", false);
-				//string waLocation = MadScience.Helpers.findSims3Root(" World Adventures", "FullBuildEP1", false);
-				string waLocation = MadScience.Helpers.findSims3Root(MadScience.Helpers.GameNumber.worldAdventures, false);
-				if (String.IsNullOrEmpty(waLocation))
-				{
-					chkHasWA.Checked = false;
-					button3.Enabled = false;
-				}
-				else
-				{
-					chkHasWA.Checked = true;
-					button3.Enabled = true;
-				}
-				if (MadScience.Helpers.hasFramework(waLocation, MadScience.Helpers.GameNumber.worldAdventures) == false)
-				{
-					chkFrameworkWA.Checked = false;
-				}
-				else
-				{
-					chkFrameworkWA.Checked = true;
-				}
-
-				string helsLocation = MadScience.Helpers.findSims3Root(MadScience.Helpers.GameNumber.highEndLoftStuff, false);
-				if (String.IsNullOrEmpty(helsLocation))
-				{
-					chkHasHELS.Checked = false;
-					button10.Enabled = false;
-				}
-				else
-				{
-					chkHasHELS.Checked = true;
-					button10.Enabled = true;
-				}
-				if (MadScience.Helpers.hasFramework(helsLocation, MadScience.Helpers.GameNumber.highEndLoftStuff) == false)
-				{
-					chkFrameworkHELS.Checked = false;
-				}
-				else
-				{
-					chkFrameworkHELS.Checked = true;
-				}
-
-			}
-
-			int gameCheck = 0;
-			if (chkHasTS3.Checked) gameCheck += 1;
-			if (chkHasWA.Checked) gameCheck += 2;
-			if (chkHasHELS.Checked) gameCheck += 4;
-
-			int flagCheck = 0;
-			if (chkFrameworkTS3.Checked) flagCheck += 1;
-			if (chkFrameworkWA.Checked) flagCheck += 2;
-			if (chkFrameworkHELS.Checked) flagCheck += 4;
-			 */
-		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			if (listView3.SelectedItems.Count > 0)
-			{
-				string path = listView3.SelectedItems[0].SubItems[4].Text;
-				MadScience.Helpers.OpenWindow(path);
-			}
-		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
@@ -604,27 +319,36 @@ namespace Sims3Dashboard
 
 			if (String.IsNullOrEmpty(folderBrowserDialog1.SelectedPath))
 			{
-				for (int i = 0; i < MadScience.Helpers.gamesInstalled.Items.Count; i++)
+				if (MadScience.Helpers.gamesInstalled.globalFramework.isInstalled)
 				{
-					MadScience.Helpers.GameInfo gameInfo = MadScience.Helpers.gamesInstalled.Items[i];
-					if (gameInfo.isInstalled)
+					this.masterDir = Path.Combine(MadScience.Helpers.gamesInstalled.globalFramework.path, Path.Combine("Mods", "Packages"));
+					CountFiles(this.masterDir);
+				}
+				else
+				{
+
+					for (int i = 0; i < MadScience.Helpers.gamesInstalled.Items.Count; i++)
 					{
-						if (gameInfo.hasFramework)
+						MadScience.Helpers.GameInfo gameInfo = MadScience.Helpers.gamesInstalled.Items[i];
+						if (gameInfo.isInstalled)
 						{
-							this.masterDir = Path.Combine(gameInfo.path, Path.Combine("Mods", "Packages"));
-							CountFiles(this.masterDir);
-						}
-						else
-						{
-							// Check for explicit Mods\Packages folder
-							if (Directory.Exists(Path.Combine(gameInfo.path, Path.Combine("Mods", "Packages"))))
+							if (gameInfo.hasFramework)
 							{
 								this.masterDir = Path.Combine(gameInfo.path, Path.Combine("Mods", "Packages"));
 								CountFiles(this.masterDir);
 							}
+							else
+							{
+								// Check for explicit Mods\Packages folder
+								if (Directory.Exists(Path.Combine(gameInfo.path, Path.Combine("Mods", "Packages"))))
+								{
+									this.masterDir = Path.Combine(gameInfo.path, Path.Combine("Mods", "Packages"));
+									CountFiles(this.masterDir);
+								}
+							}
 						}
-					}
 
+					}
 				}
 
 			}
@@ -797,38 +521,6 @@ namespace Sims3Dashboard
 			MadScience.Helpers.OpenWindow(MadScience.Helpers.findSims3Root(MadScience.Helpers.GameNumber.worldAdventures));
 		}
 
-		private void listView2_ColumnClick(object sender, ColumnClickEventArgs e)
-		{
-			Sorter.Sort(listView2, e);
-		}
-
-		private void button7_Click(object sender, EventArgs e)
-		{
-			clearCache("", "");
-			getCacheDetails();
-		}
-
-		private void button6_Click(object sender, EventArgs e)
-		{
-			for (int i = 0; i < listView2.Items.Count; i++)
-			{
-				if (listView2.Items[i].Checked) clearCache(listView2.Items[i].SubItems[1].Text, listView2.Items[i].Text);
-			}
-			getCacheDetails();
-		}
-
-		private void listView2_ItemChecked(object sender, ItemCheckedEventArgs e)
-		{
-			int numChecked = listView2.CheckedItems.Count;
-			if (numChecked > 0)
-			{
-				button6.Enabled = true;
-			}
-			else
-			{
-				button6.Enabled = false;
-			}
-		}
 
 		private void disableSelectedToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -1201,7 +893,7 @@ namespace Sims3Dashboard
 			if (folderBrowserDialog2.ShowDialog() == DialogResult.OK)
 			{
 				MadScience.Helpers.saveRegistryValue("cacheFolders", folderBrowserDialog2.SelectedPath);
-				getCacheDetails();
+				//getCacheDetails();
 			}
 		}
 
@@ -1272,11 +964,21 @@ namespace Sims3Dashboard
 								case MadScience.Detective.PackageTypes.corruptBadDownload:
 								case MadScience.Detective.PackageTypes.corruptChaavik:
 								case MadScience.Detective.PackageTypes.corruptPeggy:
-								case MadScience.Detective.PackageTypes.neighbourhood:
 									// We can't fix these, so just disable them
-									File.Move(filename, filename + ".disabled");
+									File.Move(filename, filename + ".corrupt.disabled");
 									numDisabled++;
 									break;
+								case MadScience.Detective.PackageTypes.neighbourhood:
+									// We can't fix these, so just disable them
+									File.Move(filename, filename + ".nhood.disabled");
+									numDisabled++;
+									break;
+								case MadScience.Detective.PackageTypes.corruptBadAges:
+									// We can't fix these, so just disable them
+									File.Move(filename, filename + ".badage.disabled");
+									numDisabled++;
+									break;
+					
 							}
 
 							//checkPackage(filename, listView1.Items[i]);
@@ -1389,34 +1091,6 @@ namespace Sims3Dashboard
 			MadScience.Helpers.OpenWindow(MadScience.Helpers.findSims3Root(MadScience.Helpers.GameNumber.highEndLoftStuff));
 		}
 
-		private void listView3_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (listView3.SelectedItems.Count > 0)
-			{
-				if (listView3.SelectedItems[0].SubItems[1].Text == "Yes")
-				{
-					button1.Enabled = true;
-				}
-				else
-				{
-					button1.Enabled = false;
-				}
-				if (listView3.SelectedItems[0].SubItems[2].Text == "Yes")
-				{
-					linkLabel1.Visible = false;
-				}
-				else
-				{
-					linkLabel1.Visible = true;
-				}
-			}
-		}
-
-		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		{
-			System.Diagnostics.Process.Start("http://www.modthesims.info/d/384014");
-		}
-
 		private void noAutoScanOnStartupToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			noAutoScanOnStartupToolStripMenuItem.Checked = !noAutoScanOnStartupToolStripMenuItem.Checked;
@@ -1430,6 +1104,18 @@ namespace Sims3Dashboard
 			}
 
 		}
+
+        private void viewFrameworkStatusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form frameworkForm = new FrameworkInfo(packageList);
+            frameworkForm.ShowDialog();
+        }
+
+        private void viewCacheInfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form cacheInfoForm = new CacheInfo();
+            cacheInfoForm.ShowDialog();
+        }
 
 
 	}
