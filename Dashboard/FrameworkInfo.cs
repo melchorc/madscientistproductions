@@ -8,12 +8,14 @@ namespace Sims3Dashboard
 {
     public partial class FrameworkInfo : Form
     {
-        public FrameworkInfo(List<ListViewItem> curPackageList)
+        public FrameworkInfo(List<ListViewItem> curPackageList, string masterDir)
         {
             this.packageList = curPackageList;
+            this.masterDir = masterDir;
             InitializeComponent();
         }
 
+        private string masterDir = "";
         private List<ListViewItem> packageList = new List<ListViewItem>();
 
         private void FrameworkInfo_Load(object sender, EventArgs e)
@@ -24,6 +26,7 @@ namespace Sims3Dashboard
         private void checkLocations()
         {
 
+            listView3.Items.Clear();
             MadScience.Helpers.findInstalledGames();
 
             for (int i = 0; i < MadScience.Helpers.gamesInstalled.Items.Count; i++)
@@ -119,23 +122,58 @@ namespace Sims3Dashboard
             debugInfo += "CPUs: " + System.Environment.ProcessorCount.ToString() + System.Environment.NewLine;
             debugInfo += System.Environment.NewLine;
 
-            MadScience.Helpers.findInstalledGames();
+            //MadScience.Helpers.findInstalledGames();
 
-            debugInfo += MadScience.Helpers.gamesInstalled.Items.Count.ToString() + " games installed" + System.Environment.NewLine;
+            debugInfo += MadScience.Helpers.gamesInstalled.Items.Count.ToString() + " Sims 3 folders found:" + System.Environment.NewLine;
             debugInfo += System.Environment.NewLine;
 
             for (int i = 0; i < MadScience.Helpers.gamesInstalled.Items.Count; i++)
             {
+
+
                 ListViewItem item = new ListViewItem();
                 MadScience.Helpers.GameInfo gameInfo = MadScience.Helpers.gamesInstalled.Items[i];
 
                 debugInfo += "Game: " + gameInfo.gameName + System.Environment.NewLine;
                 debugInfo += "Version: " + gameInfo.version + System.Environment.NewLine;
                 debugInfo += "Path: " + gameInfo.path + System.Environment.NewLine;
-                debugInfo += "Has Framework: " + gameInfo.hasFramework + System.Environment.NewLine;
-                debugInfo += "Global Framework: " + gameInfo.useGlobalFramework + System.Environment.NewLine;
+                if (gameInfo.useGlobalFramework)
+                {
+                    debugInfo += "Framework: Yes (My Documents)" + System.Environment.NewLine;
+                }
+                else if (gameInfo.hasFramework)
+                {
+                    debugInfo += "Framework: Yes (Old-style Program Files)" + System.Environment.NewLine;
+                }
+                else
+                {
+                    debugInfo += "Framework: No" + System.Environment.NewLine;
+                }
+                
+                debugInfo += "Framework debug: " + gameInfo.hasFramework.ToString() + " / " + gameInfo.useGlobalFramework.ToString() + System.Environment.NewLine;
                 debugInfo += System.Environment.NewLine;
 
+            }
+
+            debugInfo += "Framework information: " + System.Environment.NewLine;
+            debugInfo += "Global framework: " + MadScience.Helpers.gamesInstalled.globalFramework.isInstalled.ToString() + System.Environment.NewLine;
+            debugInfo += "       Installed: " + MadScience.Helpers.gamesInstalled.globalFramework.hasFramework.ToString() + System.Environment.NewLine;
+            debugInfo += "            Path: " + MadScience.Helpers.gamesInstalled.globalFramework.path + System.Environment.NewLine;
+
+            if (MadScience.Helpers.gamesInstalled.globalFramework.hasFramework)
+            {
+                debugInfo += "Dumping contents of resource.cfg: " + System.Environment.NewLine;
+                debugInfo += File.ReadAllText(Path.Combine(MadScience.Helpers.gamesInstalled.globalFramework.path, Path.Combine("Mods", "resource.cfg")));
+                debugInfo += System.Environment.NewLine;
+            }
+
+            debugInfo += "There are " + packageList.Count + " packages in the scan location " + this.masterDir + System.Environment.NewLine;
+            if (packageList.Count < 10)
+            {
+                for (int i = 0; i < packageList.Count; i++)
+                {
+                    debugInfo += "Package: [ " + packageList[i].Text + " ] Type: [ " + packageList[i].SubItems[2].Text + " ] Size: [ " + packageList[i].SubItems[3].Text + System.Environment.NewLine;
+                }
             }
 
             debugInfo += "Checking for corrupt/broken/borked packages: " + System.Environment.NewLine;

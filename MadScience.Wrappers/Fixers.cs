@@ -57,6 +57,75 @@ namespace MadScience
 		}
 		#endregion
 
+		#region Fix recursive packages (ie DBPF within a DBPF)
+		public static bool fixRecursive(string filename)
+		{
+			return fixRecursive(filename, true);
+		}
+
+		public static bool fixRecursive(string filename, bool throwError)
+		{
+			Stream input = File.Open(filename, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+			bool retVal = fixRecursive(input, throwError);
+			input.Close();
+			return retVal;
+		}
+
+		public static bool fixRecursive(Stream input)
+		{
+			return fixRecursive(input, true);
+		}
+
+		public static bool fixRecursive(Stream input, bool throwError)
+		{
+			Database db = new Database(input, true, throwError);
+			return fixRecursive(db);
+		}
+
+		public static bool fixRecursive(Database db)
+		{
+			uint numFixed = 0;
+
+			// textBox1.Text += "Checking for corrupted TXTC entries... " + Environment.NewLine;
+			for (int i = 0; i < db.dbpf.Entries.Count; i++)
+			{
+				DatabasePackedFile.Entry entry = db.dbpf.Entries[i];
+				if ((entry.Key.typeId == 0x0) && (entry.Key.groupId == 0x0) && (entry.Key.instanceId == 0x0))
+				{
+					// Check the first 4 bytes of the stream
+					Stream checkDbpf = db.GetResourceStream(entry.Key);
+					string magic = MadScience.StreamHelpers.ReadStringASCII(checkDbpf, 4);
+					if (magic == "DBPF" || magic == "DBBF") // DBPF & DBBF
+					{
+						db.DeleteResource(entry.Key);
+						numFixed++;
+					}
+					checkDbpf.Close();
+				} 
+
+			}
+
+			if (numFixed == 0)
+			{
+				//textBox1.Text += Environment.NewLine;
+				//textBox1.Text += "This file appears OK!";
+				return false;
+			}
+			else
+			{
+				//this.filesFixed++;
+				//textBox1.Text += Environment.NewLine;
+				//textBox1.Text += "This file had some corrupted TXTCs! They are now fixed.";
+				//textBox1.Text += "Fixed " + filename + Environment.NewLine;
+				//saveToolStripMenuItem.Enabled = true;
+				db.Commit(true);
+			}
+
+			return true;
+		}
+
+		#endregion
+
 		#region Fix corrupted TXTR chunks
 
 		// Return TRUE if the file was corrupted and not fixed.  FALSE otherwise.

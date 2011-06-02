@@ -78,6 +78,7 @@
     <Compile Include="STBL.cs" />
     <Compile Include="VPXY.cs" />
     <Compile Include="RIG.cs" />
+    <Compile Include="WaterTable.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="RCOLHeaderEditor.resx">

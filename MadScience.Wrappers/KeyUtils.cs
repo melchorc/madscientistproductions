@@ -362,8 +362,15 @@ namespace MadScience
 			if (db == null)
 			{
 				closeDb = true;
-				input = File.OpenRead(Path.Combine(Helpers.findSims3Root(), Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package")));
-				db = new MadScience.Wrappers.Database(input, true);
+                try
+                {
+                    input = File.OpenRead(Path.Combine(Helpers.findSims3Root(), Helpers.getGameSubPath("\\GameData\\Shared\\Packages\\FullBuild" + fullBuildNum.ToString() + ".package")));
+                    db = new MadScience.Wrappers.Database(input, true);
+                }
+                catch (Exception)
+                {
+                    return tempChunks;
+                }
 			}
 
 			for (int i = 0; i < resourceKeys.Count; i++)

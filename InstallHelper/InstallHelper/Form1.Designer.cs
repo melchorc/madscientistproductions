@@ -288,7 +288,6 @@
 			// 
 			// linkLabel2
 			// 
-			this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.linkLabel2.AutoSize = true;
 			this.linkLabel2.Location = new System.Drawing.Point(205, 0);
 			this.linkLabel2.Name = "linkLabel2";
@@ -307,7 +306,7 @@
 			this.treeView1.HideSelection = false;
 			this.treeView1.Location = new System.Drawing.Point(186, 48);
 			this.treeView1.Name = "treeView1";
-			this.treeView1.Size = new System.Drawing.Size(333, 107);
+			this.treeView1.Size = new System.Drawing.Size(333, 104);
 			this.treeView1.TabIndex = 31;
 			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
 			this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);

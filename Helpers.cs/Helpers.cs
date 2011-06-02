@@ -180,22 +180,42 @@ namespace MadScience
 
 			bool oldStyleCheck = true;
 			string fullBuild = "";
-
+			string gameName = "";
 
 			switch (epNumber)
 			{
+                case GameNumber.generations:
+                    oldStyleCheck = false;
+                    gameName = "Generations";
+                    break;
+                case GameNumber.outdoorLivingStuff:
+                    oldStyleCheck = false;
+                    gameName = "Outdoor Living Stuff";
+                    break;
+				case GameNumber.lateNight:
+					oldStyleCheck = false;
+					gameName = "Late Night";
+					break;
+				case GameNumber.fastLaneStuff:
+					oldStyleCheck = false;
+					gameName = "Fast Lane Stuff";
+					break;
 				case GameNumber.ambitions:
 					oldStyleCheck = false;
+					gameName = "Ambitions";
 					break;
 				case GameNumber.highEndLoftStuff:
 					fullBuild = "FullBuild_p03";
+					gameName = "HELS";
 					break;
 				case GameNumber.worldAdventures:
 					fullBuild = "FullBuildEP1";
+					gameName = "World Adventures";
 					break;
 				case GameNumber.baseGame:
 				default:
 					fullBuild = "FullBuild0";
+					gameName = "Sims 3";
 					break;
 			}
 
@@ -278,28 +298,28 @@ namespace MadScience
 
 			if (!hasFoundModsPackages && !hasFoundResource)
 			{
-				showMessage(@"The Installer could not find either a Resource.cfg or a Mods\Packages folder! This means that your game WILL NOT currently accept custom content and installation via the Helper Monkey", Color.Salmon);
+				showMessage(@"The Installer could not find either a Resource.cfg or a Mods\Packages folder! This means that your " + gameName + " WILL NOT currently accept custom content and installation via the Helper Monkey", Color.Salmon);
 				showMessage(@"Please install the Framework by clicking the Install button.");
 			}
 			if (!hasFoundModsPackages && hasFoundResource)
 			{
-				showMessage(@"The Installer found a Resource.cfg but not the Mods\Packages folder!  This means that your game WILL NOT currently accept custom content, and installation via the Helper Monkey will fail.", Color.Salmon);
+				showMessage(@"The Installer found a Resource.cfg but not the Mods\Packages folder!  This means that your " + gameName + " WILL NOT currently accept custom content, and installation via the Helper Monkey will fail.", Color.Salmon);
 				showMessage(@"Please install the Framework by clicking the Install button.");
 			}
 			if (hasFoundModsPackages && !hasFoundResource)
 			{
-				showMessage(@"The Installer found a Mods\Packages folder but not Resource.cfg!  This means that your game WILL NOT currently accept custom content, and any custom packages will not show up in game.", Color.Salmon);
+				showMessage(@"The Installer found a Mods\Packages folder but not Resource.cfg!  This means that your " + gameName + " WILL NOT currently accept custom content, and any custom packages will not show up in game.", Color.Salmon);
 				showMessage(@"Please install the Framework by clicking the Install button.");
 			}
 			if (oldStyleCheck)
 			{
 				if (hasFoundModsPackages && hasFoundResource && !hasFoundDLLFramework)
 				{
-					showMessage(@"The Installer found both a Mods\Packages folder and the Resource.cfg, but NOT a custom DLL.  This means that your game SHOULD accept basic custom content, but NOT core mods.", Color.Salmon);
+					showMessage(@"The Installer found both a Mods\Packages folder and the Resource.cfg, but NOT a custom DLL.  This means that your " + gameName + " SHOULD accept basic custom content, but NOT core mods.", Color.Salmon);
 				}
 				if (hasFoundModsPackages && hasFoundResource && hasFoundDLLFramework)
 				{
-					showMessage(@"The Installer found all Framework components.  This means that your game SHOULD accept basic custom content, and also core mods.");
+					showMessage(@"The Installer found all Framework components.  This means that your " + gameName + " SHOULD accept basic custom content, and also core mods.", Color.LightGreen);
 					retVal = true;
 				}
 			}
@@ -307,13 +327,13 @@ namespace MadScience
 			{
 				if (hasFoundResource && hasFoundModsPackages)
 				{
-					showMessage(@"The Installer found all Framework components.  This means that your game SHOULD accept basic custom content, and also core mods.");
+					showMessage(@"The Installer found all Framework components.  This means that your " + gameName + " SHOULD accept basic custom content, and also core mods.", Color.LightGreen);
 					retVal = true;
 				}
 			}
 			return retVal;
 		}
-
+		/*
 		public static bool hasFramework(string checkPath, string fullBuild)
 		{
 
@@ -398,6 +418,7 @@ namespace MadScience
 			return false;
 
 }
+		*/
 
         public static string findMyDocs()
         {
@@ -466,6 +487,84 @@ namespace MadScience
 			return skuVersion;
 		}
 
+		public static string findBaseName()
+		{
+			string baseName = "The Sims 3";
+			string locale = "en-US";
+
+			//Console.WriteLine("Attempting to get path from registry...");
+			string path32 = "Software\\Sims\\The Sims 3";
+			string path64 = "Software\\Wow6432Node\\Sims\\The Sims 3";
+
+			RegistryKey key;
+			key = Registry.LocalMachine.OpenSubKey(path32, false);
+			if (key != null)
+			{
+				locale = key.GetValue("Locale").ToString();
+				key.Close();
+			}
+
+			key = Registry.LocalMachine.OpenSubKey(path64, false);
+			if (key != null)
+			{
+				locale = key.GetValue("Locale").ToString();
+				key.Close();
+
+			}
+
+			// Okay so now we have the locale we have to translate it into the actual base name
+			switch (locale.ToLower())
+			{
+				case "en-us":
+				case "cs-cz":
+				case "da-dk":
+				case "fi-fi":
+				case "el-gr":
+				case "hu-hu":
+				case "it-it":
+				case "no-no":
+				case "pl-pl":
+				case "pt-br":
+				case "ru-ru":
+				case "es-mx":
+				case "sv-se":
+					baseName = "The Sims 3";
+					break;
+				case "zh-cn":
+					baseName = "模拟人生3";
+					break;
+				case "zh-tw":
+					baseName = "模擬市民3";
+					break;
+				case "nl-nl":
+					baseName = "De Sims 3";
+					break;
+				case "fr-fr":
+					baseName = "Les Sims 3";
+					break;
+				case "de-de":
+					baseName = "Die Sims 3";
+					break;
+				case "ja-jp":
+					baseName = "ザ･シムズ３";
+					break;
+				case "ko-kr":
+					baseName = "심즈 3";
+					break;
+				case "pt-pt":
+					baseName = "Os Sims 3";
+					break;
+				case "es-es":
+					baseName = "Los Sims 3";
+					break;
+				case "th-th":
+					baseName = "เดอะซิมส์ 3";
+					break;
+			}
+
+			return baseName;
+		}
+
 		public static void findInstalledGames()
 		{
 			string sims3root = findSims3Root();
@@ -474,6 +573,10 @@ namespace MadScience
 				return;
 			}
 
+            gamesInstalled.Items.Clear();
+
+			bool checkGlobalFramework = false;
+
 			GameInfo gameInfo = new GameInfo();
 
 			gameInfo.gameName = "Sims 3";
@@ -481,18 +584,28 @@ namespace MadScience
 			gameInfo.isInstalled = true;
 			gameInfo.version = getSKUVersion(sims3root);
 
+			if (gameInfo.version.Major == 1 && gameInfo.version.Minor >= 12)
+			{
+				gameInfo.useGlobalFramework = true;
+				checkGlobalFramework = true;
+			}
+
 			DirectoryInfo d = new DirectoryInfo(sims3root);
 
-			gamesInstalled.baseName = d.Name;
+			//gamesInstalled.baseName = d.Name;
+
+			gamesInstalled.baseName = findBaseName();
 
 			gamesInstalled.gameCheck += 1;
 
-			if (hasFramework(sims3root, GameNumber.baseGame))
+			if (!checkGlobalFramework && hasFramework(sims3root, GameNumber.baseGame))
 			{
 				gameInfo.hasFramework = true;
 				gamesInstalled.flagCheck += 1;
 			}
 			
+			//gamesInstalled.Games.Add(gameInfo);
+			gamesInstalled.baseGame = gameInfo;
 			gamesInstalled.Items.Add(gameInfo);
 
 			gameInfo = new GameInfo();
@@ -506,12 +619,19 @@ namespace MadScience
 				gameInfo.version = getSKUVersion(waLocation);
 				gamesInstalled.gameCheck += 2;
 
-				if (hasFramework(waLocation, GameNumber.worldAdventures))
+				if (!checkGlobalFramework && hasFramework(waLocation, GameNumber.worldAdventures))
 				{
 					gameInfo.hasFramework = true;
 					gamesInstalled.flagCheck += 2;
 				}
+
+				if (gameInfo.version.Major == 2 && gameInfo.version.Minor >= 7)
+				{
+					gameInfo.useGlobalFramework = true;
+					checkGlobalFramework = true;
+				}
 			}
+			gamesInstalled.worldAdventures = gameInfo;
 			gamesInstalled.Items.Add(gameInfo);
 
 			gameInfo = new GameInfo();
@@ -525,13 +645,34 @@ namespace MadScience
 				gameInfo.version = getSKUVersion(helsLocation);
 				gamesInstalled.gameCheck += 4;
 
-				if (hasFramework(helsLocation, GameNumber.highEndLoftStuff))
+				if (!checkGlobalFramework && hasFramework(helsLocation, GameNumber.highEndLoftStuff))
 				{
 					gameInfo.hasFramework = true;
 					gamesInstalled.flagCheck += 4;
 				}
+
+				if (gameInfo.version.Major == 3 && gameInfo.version.Minor >= 3)
+				{
+					gameInfo.useGlobalFramework = true;
+					checkGlobalFramework = true;
+				}
 			}
+			//gamesInstalled.Games.Add(gameInfo);
+			gamesInstalled.highEndLoftStuff = gameInfo;
 			gamesInstalled.Items.Add(gameInfo);
+
+			if (checkGlobalFramework)
+			{
+				gameInfo = new GameInfo();
+				gameInfo.gameName = "Global (My Documents)";
+				gameInfo.path = Path.Combine(findMyDocs(), Path.Combine("Electronic Arts", gamesInstalled.baseName));
+				if (hasFramework(gameInfo.path, GameNumber.ambitions))
+				{
+					gameInfo.isInstalled = true;
+				}
+				gamesInstalled.globalFramework = gameInfo;
+			}
+			
 
 			gameInfo = new GameInfo();
 			gameInfo.gameName = "Ambitions";
@@ -544,16 +685,120 @@ namespace MadScience
 				gameInfo.version = getSKUVersion(ambLocation);
 				gamesInstalled.gameCheck += 8;
 
-				// Find My Documents path
-
-
-				if (hasFramework(ambLocation, GameNumber.ambitions))
+				if (gamesInstalled.globalFramework.isInstalled)
 				{
 					gameInfo.hasFramework = true;
 					gamesInstalled.flagCheck += 8;
 				}
+
+				gameInfo.useGlobalFramework = true;
+
 			}
+			//gamesInstalled.Games.Add(gameInfo);
+			gamesInstalled.ambitions = gameInfo;
 			gamesInstalled.Items.Add(gameInfo);
+
+			gameInfo = new GameInfo();
+			gameInfo.gameName = "Fast Lane Stuff";
+
+			string flLocation = findSims3Root(GameNumber.fastLaneStuff, false);
+			if (!String.IsNullOrEmpty(flLocation))
+			{
+				gameInfo.path = flLocation;
+				gameInfo.isInstalled = true;
+				gameInfo.version = getSKUVersion(flLocation);
+				gamesInstalled.gameCheck += 16;
+
+				if (gamesInstalled.globalFramework.isInstalled)
+				{
+					gameInfo.hasFramework = true;
+					gamesInstalled.flagCheck += 16;
+				}
+
+				gameInfo.useGlobalFramework = true;
+
+			}
+			//gamesInstalled.Games.Add(gameInfo);
+			gamesInstalled.fastLaneStuff = gameInfo;
+			gamesInstalled.Items.Add(gameInfo);
+
+
+			gameInfo = new GameInfo();
+			gameInfo.gameName = "Late Night";
+
+			string lnLocation = findSims3Root(GameNumber.lateNight, false);
+			if (!String.IsNullOrEmpty(lnLocation))
+			{
+				gameInfo.path = lnLocation;
+				gameInfo.isInstalled = true;
+				gameInfo.version = getSKUVersion(lnLocation);
+				gamesInstalled.gameCheck += 32;
+
+				if (gamesInstalled.globalFramework.isInstalled)
+				{
+					gameInfo.hasFramework = true;
+					gamesInstalled.flagCheck += 32;
+				}
+
+				gameInfo.useGlobalFramework = true;
+
+			}
+			//gamesInstalled.Games.Add(gameInfo);
+			gamesInstalled.lateNight = gameInfo;
+			gamesInstalled.Items.Add(gameInfo);
+
+            gameInfo = new GameInfo();
+            gameInfo.gameName = "Outdoor Living Stuff";
+
+            string olsLocation = findSims3Root(GameNumber.outdoorLivingStuff, false);
+            if (!String.IsNullOrEmpty(olsLocation))
+            {
+                gameInfo.path = olsLocation;
+                gameInfo.isInstalled = true;
+                gameInfo.version = getSKUVersion(olsLocation);
+                gamesInstalled.gameCheck += 64;
+
+                if (gamesInstalled.globalFramework.isInstalled)
+                {
+                    gameInfo.hasFramework = true;
+                    gamesInstalled.flagCheck += 64;
+                }
+
+                gameInfo.useGlobalFramework = true;
+
+            }
+            //gamesInstalled.Games.Add(gameInfo);
+            gamesInstalled.outdoorLivingStuff = gameInfo;
+            gamesInstalled.Items.Add(gameInfo);
+
+            gameInfo = new GameInfo();
+            gameInfo.gameName = "Generations";
+
+            string genLocation = findSims3Root(GameNumber.generations, false);
+            if (!String.IsNullOrEmpty(genLocation))
+            {
+                gameInfo.path = genLocation;
+                gameInfo.isInstalled = true;
+                gameInfo.version = getSKUVersion(genLocation);
+                gamesInstalled.gameCheck += 128;
+
+                if (gamesInstalled.globalFramework.isInstalled)
+                {
+                    gameInfo.hasFramework = true;
+                    gamesInstalled.flagCheck += 128;
+                }
+
+                gameInfo.useGlobalFramework = true;
+
+            }
+            //gamesInstalled.Games.Add(gameInfo);
+            gamesInstalled.generations = gameInfo;
+            gamesInstalled.Items.Add(gameInfo);
+
+			if (gamesInstalled.baseGame.useGlobalFramework || gamesInstalled.worldAdventures.useGlobalFramework || gamesInstalled.highEndLoftStuff.useGlobalFramework || gamesInstalled.ambitions.isInstalled || gamesInstalled.gameCheck > 8)
+			{
+				gamesInstalled.globalFramework.hasFramework = true;
+			}
 
 			return;
 		}
@@ -565,11 +810,21 @@ namespace MadScience
 			public Version version = new Version();
 			public bool isInstalled = false;
 			public bool hasFramework = false;
+			public bool useGlobalFramework = false;
 		}
 
 		public class gamesInstalled
 		{
 			public static List<GameInfo> Items = new List<GameInfo>();
+			public static GameInfo baseGame = new GameInfo();
+			public static GameInfo worldAdventures = new GameInfo();
+			public static GameInfo highEndLoftStuff = new GameInfo();
+			public static GameInfo ambitions = new GameInfo();
+			public static GameInfo fastLaneStuff = new GameInfo();
+			public static GameInfo lateNight = new GameInfo();
+            public static GameInfo outdoorLivingStuff = new GameInfo();
+            public static GameInfo generations = new GameInfo();
+			public static GameInfo globalFramework = new GameInfo();
 			public static int gameCheck = 0;
 			public static int flagCheck = 0;
 			public static string baseName = "The Sims 3";
@@ -581,6 +836,10 @@ namespace MadScience
 			worldAdventures = 1,
 			highEndLoftStuff = 2,
 			ambitions = 3,
+			fastLaneStuff = 4,
+			lateNight = 5,
+            outdoorLivingStuff = 6,
+            generations = 7,
 			paidContent = 90,
 			localContent = 91,
 			customContent = 92,
@@ -602,6 +861,18 @@ namespace MadScience
 		{
 			switch (epNumber)
 			{
+                case GameNumber.generations:
+                    setSims3Root(" Generations", "FullBuild_p08");
+                    break;
+                case GameNumber.outdoorLivingStuff:
+                    setSims3Root(" Outdoor Living Stuff", "FullBuild_p07");
+                    break;
+				case GameNumber.lateNight:
+					setSims3Root(" Late Night", "FullBuild_p06");
+					break;
+				case GameNumber.fastLaneStuff:
+					setSims3Root(" Fast Lane Stuff", "FullBuild_p05");
+					break;
 				case GameNumber.ambitions:
 					setSims3Root(" Ambitions", "FullBuild_p04");
 					break;
@@ -667,6 +938,18 @@ namespace MadScience
 			string retVal = "";
 			switch (epNumber)
 			{
+                case GameNumber.generations:
+                    retVal = "Generations";
+                    break;
+                case GameNumber.outdoorLivingStuff:
+                    retVal = "Outdoor Living Stuff";
+                    break;
+				case GameNumber.lateNight:
+					retVal = "Late Night";
+					break;
+				case GameNumber.fastLaneStuff:
+					retVal = "Fast Lane Stuff";
+					break;
 				case GameNumber.ambitions:
 					retVal = "Ambitions";
 					break;
@@ -699,6 +982,18 @@ namespace MadScience
 			string retVal = "";
 			switch (epNumber)
 			{
+                case GameNumber.generations:
+                    retVal = findSims3Root(" Generations", "FullBuild_p08", showManualPath);
+                    break;
+                case GameNumber.outdoorLivingStuff:
+                    retVal = findSims3Root(" Outdoor Living Stuff", "FullBuild_p07", showManualPath);
+                    break;
+				case GameNumber.lateNight:
+					retVal = findSims3Root(" Late Night", "FullBuild_p06", showManualPath);
+					break;
+				case GameNumber.fastLaneStuff:
+					retVal = findSims3Root(" Fast Lane Stuff", "FullBuild_p05", showManualPath);
+					break;
 				case GameNumber.ambitions:
 					retVal = findSims3Root(" Ambitions", "FullBuild_p04", showManualPath);
 					break;
@@ -1041,7 +1336,12 @@ namespace MadScience
             return logPath(newLogPath, false);
         }
 
-        public static void logMessageToFile(string msg)
+		public static void logMessageToFile(string msg)
+		{
+			logMessageToFile(msg, 0);
+		}
+
+        public static void logMessageToFile(string msg, int priority)
         {
             if (_logPath == "") { return; }
             
@@ -1049,7 +1349,7 @@ namespace MadScience
             try
             {
                 string logLine = System.String.Format(
-                    "{0:G}: {1}.", System.DateTime.Now, msg);
+                    "{0:G}: [{1}] {2}.", System.DateTime.Now, priority, msg);
                 sw.WriteLine(logLine);
             }
             finally
