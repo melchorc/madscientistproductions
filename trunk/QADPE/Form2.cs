@@ -136,6 +136,10 @@ namespace qadpe
                 }
                 else
                 {
+
+					//if (firstDb.Entries[key].
+
+
                     byte[] firstData = firstDb.GetResource(key);
                     byte[] secondData = secondDb.GetResource(key);
 

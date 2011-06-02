@@ -69,15 +69,15 @@ namespace MadScience
 		public string ageGender(uint ageGenderFlag)
 		{
 			string retString = "";
-			if ((ageGenderFlag & 0x1) == 0x1) retString += "b";
-			if ((ageGenderFlag & 0x2) == 0x2) retString += "p";
-			if ((ageGenderFlag & 0x4) == 0x4) retString += "c";
-			if ((ageGenderFlag & 0x8) == 0x8) retString += "t";
-			if ((ageGenderFlag & 0x10) == 0x10) retString += "y";
-			if ((ageGenderFlag & 0x20) == 0x20) retString += "a";
-			if ((ageGenderFlag & 0x40) == 0x40) retString += "e";
-			if ((ageGenderFlag & 0x1000) == 0x1000) retString += "m";
-			if ((ageGenderFlag & 0x2000) == 0x2000) retString += "f";
+			if ((ageGenderFlag & 0x1) == 0x1) { retString += "b"; this.cFile.ageGender.baby = true;  }
+			if ((ageGenderFlag & 0x2) == 0x2) { retString += "p"; this.cFile.ageGender.toddler = true; }
+			if ((ageGenderFlag & 0x4) == 0x4) { retString += "c"; this.cFile.ageGender.child = true; }
+			if ((ageGenderFlag & 0x8) == 0x8) { retString += "t"; this.cFile.ageGender.teen = true; }
+			if ((ageGenderFlag & 0x10) == 0x10) { retString += "y"; this.cFile.ageGender.youngAdult = true; }
+			if ((ageGenderFlag & 0x20) == 0x20) { retString += "a"; this.cFile.ageGender.adult = true; }
+			if ((ageGenderFlag & 0x40) == 0x40) { retString += "e"; this.cFile.ageGender.elder = true; }
+			if ((ageGenderFlag & 0x1000) == 0x1000) { retString += "m"; this.cFile.ageGender.male = true; }
+			if ((ageGenderFlag & 0x2000) == 0x2000) { retString += "f"; this.cFile.ageGender.female = true; }
 
 			return retString;
 		}
@@ -675,6 +675,9 @@ namespace MadScience
 
             cFile.typeFlag = reader.ReadUInt32();
             cFile.ageGenderFlag = reader.ReadUInt32();
+
+			// Pre-populate the age/gender values
+			this.ageGender(cFile.ageGenderFlag);
 
             cFile.clothingCategory = reader.ReadUInt32();
 
@@ -1501,6 +1504,7 @@ namespace MadScience
 
         public uint typeFlag = 0;
         public uint ageGenderFlag = 0;
+		public ageGender ageGender = new ageGender();
 
         public uint clothingCategory = 0;
 
@@ -1574,6 +1578,20 @@ namespace MadScience
         public stencilDetails E = new stencilDetails();
         public stencilDetails F = new stencilDetails();
     }
+
+	public class ageGender
+	{
+		public bool baby = false;
+		public bool toddler = false;
+		public bool child = false;
+		public bool teen = false;
+		public bool youngAdult = false;
+		public bool adult = false;
+		public bool elder = false;
+		public bool male = false;
+		public bool female = false;
+
+	}
     
     public class logoDetails
     {

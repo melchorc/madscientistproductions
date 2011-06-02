@@ -1107,7 +1107,7 @@ namespace Sims3Dashboard
 
         private void viewFrameworkStatusToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form frameworkForm = new FrameworkInfo(packageList);
+            Form frameworkForm = new FrameworkInfo(packageList, this.masterDir);
             frameworkForm.ShowDialog();
         }
 

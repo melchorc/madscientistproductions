@@ -5,11 +5,14 @@ using System.IO;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
+using System.Collections;
 
 namespace FrameworkInstaller
 {
     public partial class Form1 : Form
     {
+		bool needsUpgrade = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -18,11 +21,17 @@ namespace FrameworkInstaller
 
 		private void showMessage(string message, Color backColor)
 		{
+			int priority = 0;
+			if (backColor == Color.Salmon) priority = 3;
+
+			MadScience.Helpers.logMessageToFile(message, priority);
 			ListViewItem item = new ListViewItem();
 			item.Text = message;
 			item.BackColor = backColor;
 			listView1.Items.Add(item);
-			message = null; 
+			message = null;
+
+			listView1.EnsureVisible(listView1.Items.Count - 1);
 
 		}
 
@@ -39,15 +48,17 @@ namespace FrameworkInstaller
 
 			this.Show();
 
-			MadScience.Helpers.findInstalledGames();
-
+			MadScience.Helpers.logPath(Path.Combine(Application.StartupPath, "messages.log"), true);
+			showMessage(this.Text);
 			checkLocations();
         }
 
 		private void checkLocations()
 		{
-			string sims3root = MadScience.Helpers.findSims3Root();
-			if (sims3root == "")
+
+			MadScience.Helpers.findInstalledGames();
+
+			if (!MadScience.Helpers.gamesInstalled.baseGame.isInstalled)
 			{
 				showMessage("Error: Cannot find Sims 3 root.");
 				showMessage("Custom content will NOT work correctly!");
@@ -60,126 +71,218 @@ namespace FrameworkInstaller
 			}
 			else
 			{
-				textBox1.Text = sims3root;
+
+				if (MadScience.Helpers.gamesInstalled.globalFramework.hasFramework)
+				{
+					MadScience.Helpers.messages.Clear();
+					//textBox4.Text = MadScience.Helpers.gamesInstalled.globalFramework.path;
+				}
+				//listView1.Show();
+
+				textBox1.Text = MadScience.Helpers.gamesInstalled.baseGame.path;
+				textBox5.Text = MadScience.Helpers.gamesInstalled.baseGame.version.ToString(2);
 				chkHasTS3.Checked = true;
 
-				MadScience.Helpers.messages.Clear();
+				//MadScience.Helpers.messages.Clear();
 
-				if (MadScience.Helpers.hasFramework(sims3root, MadScience.Helpers.GameNumber.baseGame) == false)
+				if (!MadScience.Helpers.gamesInstalled.baseGame.useGlobalFramework)
 				{
-					chkFrameworkTS3.Checked = false;
+					showMessage("Checking framework for The Sims 3");
+
+					//if (MadScience.Helpers.hasFramework(sims3root, MadScience.Helpers.GameNumber.baseGame) == false)
+					if (MadScience.Helpers.gamesInstalled.baseGame.hasFramework == false)
+					{
+						chkFrameworkTS3.Checked = false;
+					}
+					else
+					{
+						chkFrameworkTS3.Checked = true;
+					}
 				}
-				else
+				if (MadScience.Helpers.gamesInstalled.baseGame.useGlobalFramework)
 				{
-					chkFrameworkTS3.Checked = true;
+					if (chkFrameworkTS3.Checked == true && !MadScience.Helpers.gamesInstalled.globalFramework.isInstalled)
+					{
+						this.needsUpgrade = true;
+						button2.Text = "Upgrade";
+					}
 				}
+				
+
+
 				#region World Adventures
-				textBox2.Text = MadScience.Helpers.findSims3Root(MadScience.Helpers.GameNumber.worldAdventures, false);
+				textBox2.Text = MadScience.Helpers.gamesInstalled.worldAdventures.path;
 				if (String.IsNullOrEmpty(textBox2.Text))
 				{
 					chkHasWA.Checked = false;
 				}
 				else
 				{
+					textBox6.Text = MadScience.Helpers.gamesInstalled.worldAdventures.version.ToString(2);
 					chkHasWA.Checked = true;
 				}
 				if (chkHasWA.Checked)
 				{
-					if (MadScience.Helpers.hasFramework(textBox2.Text, MadScience.Helpers.GameNumber.worldAdventures) == false)
+					if (!MadScience.Helpers.gamesInstalled.baseGame.useGlobalFramework)
 					{
-						chkFrameworkWA.Checked = false;
+						showMessage("Checking framework for World Adventures");
+						//if (MadScience.Helpers.hasFramework(textBox2.Text, MadScience.Helpers.GameNumber.worldAdventures) == false)
+						if (MadScience.Helpers.gamesInstalled.worldAdventures.hasFramework)
+						{
+							chkFrameworkWA.Checked = false;
+						}
+						else
+						{
+							chkFrameworkWA.Checked = true;
+						}
 					}
-					else
+					if (MadScience.Helpers.gamesInstalled.worldAdventures.useGlobalFramework)
 					{
-						chkFrameworkWA.Checked = true;
+						if (chkFrameworkWA.Checked == true && !MadScience.Helpers.gamesInstalled.globalFramework.isInstalled)
+						{
+							this.needsUpgrade = true;
+							button2.Text = "Upgrade";
+						}
+
 					}
 				}
 				#endregion
 
 				#region High End Loft Stuff
-				textBox3.Text = MadScience.Helpers.findSims3Root(MadScience.Helpers.GameNumber.highEndLoftStuff, false);
+				textBox3.Text = MadScience.Helpers.gamesInstalled.highEndLoftStuff.path;
 				if (String.IsNullOrEmpty(textBox3.Text))
 				{
 					chkHasHELS.Checked = false;
 				}
 				else
 				{
+					textBox7.Text = MadScience.Helpers.gamesInstalled.highEndLoftStuff.version.ToString(2);
 					chkHasHELS.Checked = true;
 				}
 				if (chkHasHELS.Checked)
 				{
-					if (MadScience.Helpers.hasFramework(textBox3.Text, MadScience.Helpers.GameNumber.highEndLoftStuff) == false)
+					if (!MadScience.Helpers.gamesInstalled.baseGame.useGlobalFramework)
 					{
-						chkFrameworkHELS.Checked = false;
+						showMessage("Checking framework for High End Loft Stuff");
+						//if (MadScience.Helpers.hasFramework(textBox3.Text, MadScience.Helpers.GameNumber.highEndLoftStuff) == false)
+						if (!MadScience.Helpers.gamesInstalled.highEndLoftStuff.hasFramework)
+						{
+							chkFrameworkHELS.Checked = false;
+						}
+						else
+						{
+							chkFrameworkHELS.Checked = true;
+						}
 					}
-					else
+
+					//if (MadScience.Helpers.gamesInstalled.highEndLoftStuff.version.Major == 3 && MadScience.Helpers.gamesInstalled.highEndLoftStuff.version.Minor >= 3)
+					if (MadScience.Helpers.gamesInstalled.highEndLoftStuff.useGlobalFramework)
 					{
-						chkFrameworkHELS.Checked = true;
+						if (chkFrameworkHELS.Checked == true && !MadScience.Helpers.gamesInstalled.globalFramework.isInstalled)
+						{
+							this.needsUpgrade = true;
+							button2.Text = "Upgrade";
+
+						}
 					}
 				}
 				#endregion
 
 				#region Ambitions
-				textBox4.Text = MadScience.Helpers.findSims3Root(MadScience.Helpers.GameNumber.ambitions, false);
-				if (String.IsNullOrEmpty(textBox4.Text))
+				textBox4.Text = MadScience.Helpers.gamesInstalled.globalFramework.path;
+				//if (String.IsNullOrEmpty(textBox4.Text))
+				if (MadScience.Helpers.gamesInstalled.ambitions.isInstalled)
 				{
 					chkHasAmb.Checked = false;
 				}
 				else
 				{
+					//showMessage("Checking framework for Ambitions");
+					textBox8.Text = MadScience.Helpers.gamesInstalled.ambitions.version.ToString(2);
+					//this.usesGlobalModsPackages = true;
 					chkHasAmb.Checked = true;
 				}
-				if (MadScience.Helpers.hasFramework(Path.Combine(MadScience.Helpers.findMyDocs(), @"Electronic Arts\The Sims 3"), MadScience.Helpers.GameNumber.ambitions) == false)
-				{
-					chkFrameworkAmb.Checked = false;
-				}
-				else
-				{
-					chkFrameworkAmb.Checked = true;
-				}
-				#endregion
 
-				if (MadScience.Helpers.messages.Count > 0)
+				//this.usesGlobalModsPackages = true;
+				//MadScience.Helpers.gamesInstalled.globalFramework.hasFramework = true;
+
+				//if (this.usesGlobalModsPackages && MadScience.Helpers.hasFramework(Path.Combine(MadScience.Helpers.findMyDocs(), Path.Combine(@"Electronic Arts", MadScience.Helpers.gamesInstalled.baseName)), MadScience.Helpers.GameNumber.ambitions) == false)
+				//if (MadScience.Helpers.gamesInstalled.baseGame.useGlobalFramework || MadScience.Helpers.gamesInstalled.worldAdventures.useGlobalFramework || MadScience.Helpers.gamesInstalled.highEndLoftStuff.useGlobalFramework || MadScience.Helpers.gamesInstalled.ambitions.isInstalled)
+				if (MadScience.Helpers.gamesInstalled.globalFramework.hasFramework)
 				{
-					listView1.Visible = false;
-					int numErrors = 0;
-					for (int i = 0; i < MadScience.Helpers.messages.Count; i++)
+					showMessage("Checking My Documents for global framework");
+
+					if (!MadScience.Helpers.gamesInstalled.globalFramework.isInstalled)
 					{
-						if (MadScience.Helpers.messages[i].BackColor == Color.Salmon)
-						{
-							numErrors++;
-						}
-						listView1.Items.Add(MadScience.Helpers.messages[i]);
-					}
-					if (numErrors > 0)
-					{
-						listView1.Columns[0].Text = "Diagnostics - " + numErrors + " errors found";
+						chkFrameworkAmb.Checked = false;
 					}
 					else
 					{
-						listView1.Columns[0].Text = "Diagnostics";
+						chkFrameworkAmb.Checked = true;
 					}
-					listView1.Visible = true;
 				}
-
+				#endregion
+			}
+			if (MadScience.Helpers.messages.Count > 0)
+			{
+				listView1.Visible = false;
+				int numErrors = 0;
+				int priority = 0;
+				for (int i = 0; i < MadScience.Helpers.messages.Count; i++)
+				{
+					priority = 0;
+					if (MadScience.Helpers.messages[i].BackColor == Color.Salmon)
+					{
+						priority = 3;
+						numErrors++;
+					}
+					MadScience.Helpers.logMessageToFile(MadScience.Helpers.messages[i].Text, priority);
+					listView1.Items.Add(MadScience.Helpers.messages[i]);
+				}
+				if (numErrors > 0)
+				{
+					listView1.Columns[0].Text = "Diagnostics - " + numErrors + " errors found";
+				}
+				else
+				{
+					listView1.Columns[0].Text = "Diagnostics";
+				}
+				listView1.Visible = true;
+				listView1.EnsureVisible(listView1.Items.Count - 1);
 			}
 
-			int gameCheck = 0;
-			if (chkHasTS3.Checked) gameCheck += 1;
-			if (chkHasWA.Checked) gameCheck += 2;
-			if (chkHasHELS.Checked) gameCheck += 4;
-			if (chkHasAmb.Checked) gameCheck += 8;
 
+
+			int gameCheck = 0;
 			int flagCheck = 0;
-			if (chkFrameworkTS3.Checked) flagCheck += 1;
-			if (chkFrameworkWA.Checked) flagCheck += 2;
-			if (chkFrameworkHELS.Checked) flagCheck += 4;
-			if (chkFrameworkAmb.Checked) flagCheck += 8;
+
+			if (!MadScience.Helpers.gamesInstalled.globalFramework.hasFramework)
+			{
+				if (chkHasTS3.Checked) gameCheck += 1;
+				if (chkHasWA.Checked) gameCheck += 2;
+				if (chkHasHELS.Checked) gameCheck += 4;
+				if (chkFrameworkTS3.Checked) flagCheck += 1;
+				if (chkFrameworkWA.Checked) flagCheck += 2;
+				if (chkFrameworkHELS.Checked) flagCheck += 4;
+			}
+			else
+			{
+				gameCheck += 8;
+				if (MadScience.Helpers.gamesInstalled.globalFramework.isInstalled) flagCheck += 8;
+
+				if (!this.needsUpgrade)
+				{
+					// Hide the other framework boxes
+					chkFrameworkTS3.Visible = false;
+					chkFrameworkWA.Visible = false;
+					chkFrameworkHELS.Visible = false;
+				}
+			}
 
 			if (flagCheck == gameCheck)
 			{
 				// Do we have a global framework?
-				if (!chkFrameworkAmb.Checked)
+				if ((MadScience.Helpers.gamesInstalled.globalFramework.hasFramework && !chkFrameworkAmb.Checked) || this.needsUpgrade)
 				{
 					picAccept.Visible = false;
 					picRemove.Visible = true;
@@ -201,14 +304,21 @@ namespace FrameworkInstaller
 
 			if (picRemove.Visible)
 			{
-				label1.Text = "You do not have the framework installed in one or more of your Sims 3 locations!";
+				if (button2.Text == "Upgrade")
+				{
+					label1.Text = "You need to upgrade your Framework to the latest version!";
+				}
+				else
+				{
+					label1.Text = "You do not have the framework installed in one or more of your Sims 3 locations!";
+				}
 				button2.Enabled = true;
 			}
 			if (picAccept.Visible)
 			{
 				label1.Text = "Framework installation appears OK";
 				button2.Enabled = false;
-				
+
 			}
 
 		}
@@ -226,27 +336,176 @@ namespace FrameworkInstaller
 			checkLocations();
         }
 
+		public void CountFiles(string sDir)
+		{
+			try
+			{
+
+				foreach (string d in Directory.GetDirectories(sDir))
+				{
+					CountFiles(d);
+				}
+
+
+				DirectoryInfo dir = new DirectoryInfo(sDir);
+				FileInfo[] myFiles = dir.GetFiles("*.package");
+				filesToProcess += myFiles.Length;
+				foreach (FileInfo f in myFiles)
+				{
+					fileInfo fi = new fileInfo();
+					fi.filename = f.FullName;
+					fi.foldername = this.masterDir;
+
+					this.fileList.Push(fi);
+
+					fi = null;
+				}
+
+				Application.DoEvents();
+
+			}
+			catch (System.Exception excpt)
+			{
+				Console.WriteLine(excpt.Message);
+			}
+		}
+
+		private Stack fileList = new Stack();
+		private int filesToProcess;
+		private string masterDir;
+		class fileInfo
+		{
+			public string filename = "";
+			public string foldername = "";
+
+		}
+
+
         private void button2_Click(object sender, EventArgs e)
         {
 			listView1.Items.Clear();
-			// Copy the DLL to each of the folders Game\Bin locations
-			if (!chkFrameworkTS3.Checked)
-			{
-				createFramework(textBox1.Text);
-			}
-			if (!chkFrameworkWA.Checked)
-			{
-				createFramework(textBox2.Text);
-			}
-			if (!chkFrameworkHELS.Checked)
-			{
-				createFramework(textBox3.Text);
-			}
-			if (!chkFrameworkAmb.Checked)
-			{
-				createFramework(Path.Combine(MadScience.Helpers.findMyDocs(), @"Electronic Arts\The Sims 3"), false);
-			}
 
+			if (this.needsUpgrade)
+			{
+				if (!chkFrameworkAmb.Checked)
+				{
+					showMessage("Since you have a patch that supports a Global My Documents path, we need to move everything from the old folders to the new");
+					showMessage("First though, lets disable the old framework since it's not needed anymore...");
+
+					if (chkFrameworkTS3.Checked)
+					{
+						disableFramework(textBox1.Text);
+					}
+					if (chkFrameworkWA.Checked)
+					{
+						disableFramework(textBox2.Text);
+					}
+					if (chkFrameworkHELS.Checked)
+					{
+						disableFramework(textBox3.Text);
+					}
+
+					showMessage("Now attempt to install framework in My Documents...");
+					string globalModPath = Path.Combine(MadScience.Helpers.findMyDocs(), Path.Combine(@"Electronic Arts", MadScience.Helpers.gamesInstalled.baseName));
+					createFramework(globalModPath, false);
+					globalModPath = Path.Combine(globalModPath, Path.Combine("Mods", "Packages"));
+
+					checkLocations();
+
+					// TODO:REMOVE
+					chkFrameworkAmb.Checked = true;
+
+					if (chkFrameworkAmb.Checked)
+					{
+						// Check for explicit Mods\Packages folder
+						if (Directory.Exists(Path.Combine(MadScience.Helpers.gamesInstalled.baseGame.path, Path.Combine("Mods", "Packages"))))
+						{
+							this.masterDir = Path.Combine(MadScience.Helpers.gamesInstalled.baseGame.path, Path.Combine("Mods", "Packages"));
+							CountFiles(this.masterDir);
+						}
+						// Check for explicit Mods\Packages folder
+						if (Directory.Exists(Path.Combine(MadScience.Helpers.gamesInstalled.worldAdventures.path, Path.Combine("Mods", "Packages"))))
+						{
+							this.masterDir = Path.Combine(MadScience.Helpers.gamesInstalled.worldAdventures.path, Path.Combine("Mods", "Packages"));
+							CountFiles(this.masterDir);
+						}
+						// Check for explicit Mods\Packages folder
+						if (Directory.Exists(Path.Combine(MadScience.Helpers.gamesInstalled.highEndLoftStuff.path, Path.Combine("Mods", "Packages"))))
+						{
+							this.masterDir = Path.Combine(MadScience.Helpers.gamesInstalled.highEndLoftStuff.path, Path.Combine("Mods", "Packages"));
+							CountFiles(this.masterDir);
+						}
+
+
+						if (this.fileList.Count > 0)
+						{
+							label1.Text = "Copying old files to new mods folder, please wait...";
+							label1.Refresh();
+
+							// Start the process....
+							progressBar1.Maximum = this.fileList.Count;
+							//string myDocs = MadScience.Helpers.findMyDocs();
+							try
+							{
+								for (int i = 0; i < progressBar1.Maximum; i++)
+								{
+									fileInfo fi = (fileInfo)this.fileList.Pop();
+									FileInfo f = new FileInfo(fi.filename);
+
+									string folder = f.DirectoryName.Replace(fi.foldername, "");
+									if (!String.IsNullOrEmpty(folder))
+									{
+										// create the directory
+										if (!Directory.Exists(globalModPath + folder))
+										{
+											Directory.CreateDirectory(globalModPath + folder);
+										}
+									}
+									//File.Move(f.filename, Path.Combine(globalModPath, fi.
+									if (!File.Exists(Path.Combine(globalModPath + folder, f.Name)))
+									{
+										File.Copy(fi.filename, Path.Combine(globalModPath + folder, f.Name));
+										//File.Move(fi.filename, Path.Combine(globalModPath + folder, f.Name));
+									}
+									progressBar1.Value++;
+									progressBar1.Refresh();
+								}
+							}
+							catch (Exception ex)
+							{
+								showMessage("An error occured while trying to copy files to your My Documents folder!", Color.Salmon);
+								showMessage(ex.Message, Color.Salmon);
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				if (!MadScience.Helpers.gamesInstalled.globalFramework.hasFramework)
+				{
+					// Copy the DLL to each of the folders Game\Bin locations
+					if (!chkFrameworkTS3.Checked)
+					{
+						createFramework(textBox1.Text);
+					}
+					if (!chkFrameworkWA.Checked)
+					{
+						createFramework(textBox2.Text);
+					}
+					if (!chkFrameworkHELS.Checked)
+					{
+						createFramework(textBox3.Text);
+					}
+				}
+				else
+				{
+					if (!chkFrameworkAmb.Checked)
+					{
+						createFramework(Path.Combine(MadScience.Helpers.findMyDocs(), Path.Combine(@"Electronic Arts", MadScience.Helpers.gamesInstalled.baseName)), false);
+					}
+				}
+			}
 			checkLocations();
         }
 
@@ -434,7 +693,7 @@ namespace FrameworkInstaller
 			}
 			if (chkFrameworkAmb.Checked)
 			{
-				disableFramework(Path.Combine(MadScience.Helpers.findMyDocs(), @"Electronic Arts\The Sims 3\Mods"));
+				disableFramework(Path.Combine(MadScience.Helpers.findMyDocs(), @"Electronic Arts\" + MadScience.Helpers.gamesInstalled.baseName + "\\Mods"));
 			}
 
 			checkLocations();
@@ -456,7 +715,7 @@ namespace FrameworkInstaller
 					try
 					{
 						File.Delete(Path.Combine(path, "resource.cfg.old"));
-						if (!File.Exists(Path.Combine(path, "resource.cfg.olf")))
+						if (!File.Exists(Path.Combine(path, "resource.cfg.old")))
 						{
 							showMessage("Old resource.cfg deleted successfully", Color.Green);
 						}
@@ -482,6 +741,28 @@ namespace FrameworkInstaller
 					showMessage("Attempting to rename resource.cfg file to resource.cfg.old...Failed!", Color.Salmon);
 					retValue = false;
 				}
+
+				if (File.Exists(Path.Combine(path, Path.Combine("Game", Path.Combine("Bin", "d3dx9_31.dll")))))
+				{
+					showMessage("Attempting to remove core mod dll file");
+					try
+					{
+						File.Delete(Path.Combine(path, Path.Combine("Game", Path.Combine("Bin", "d3dx9_31.dll"))));
+						if (!File.Exists(Path.Combine(path, Path.Combine("Game", Path.Combine("Bin", "d3dx9_31.dll")))))
+						{
+							showMessage("Core mod DLL removed successfully");
+						}
+						else
+						{
+							showMessage("An error occured while attempting to delete the core mod dll file", Color.Salmon);
+						}
+					}
+					catch (Exception ex)
+					{
+						showMessage("An error occured while attempting to delete the core mod dll file", Color.Salmon);
+					}
+				}
+
 
 			}
 			else
@@ -512,6 +793,11 @@ namespace FrameworkInstaller
 			{
 				MessageBox.Show("No valid Ambitions install could be found at that path");
 			}
+			checkLocations();
+		}
+
+		private void rescanFrameworkToolStripMenuItem_Click(object sender, EventArgs e)
+		{
 			checkLocations();
 		}
 

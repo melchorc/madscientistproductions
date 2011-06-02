@@ -1,4 +1,25 @@
-﻿Changelog for v1.1.3715.37466:
+﻿Changelog for v1.2.4167.38743:
+* Reworked GUI - Framework and Cache Info now live on seperate windows accessible via the File Menu
+* Made size of main list larger and moved picture preview to bottom
+* Changed colour for Empty packages from Salmon to Teal
+* Added label for Empty packages to bottom of main window
+* Added Dump Info button on Framework Info screen, to dump game/corrupt package info to notepad
+
+Changelog for v1.2.4004.40861:
+* Fixed bug with Late Night detection
+* Added Fast Lane detection
+* Added detection of clothing where Baby OR Toddler OR Child OR Teen is checked AND any one of Young Adult, Adult or Elder.  This is WRONG and creators should NOT be lazy and tick all boxes when they haven't made the mesh for that age.  Just Don't Do It.
+ 
+
+Changelog for v1.2.3928.16879:
+* Fixed bug with "global" location not defaulting to Mods\Packages, and thus scanning the entire My Documents\Electronic Arts\The Sims 3 folder.
+
+Changelog for v1.2.3914.26559:
+* Added support for Ambitions
+* Added support for "global" My Documents CC location
+* Added detection for non-standard Locales 
+
+Changelog for v1.1.3715.37466:
 * Sims3Dashboard: Fixed bug where selecting multiple cache files to clear (but not all) and clicking "Clear Selected" only clears the first one
 * Sims3Dashboard: Renamed "Clear Selected" to "Clear Checked"
 * MadScience.Detective: Changed default file open to Read instead of ReadWrite.  We don't need to write stuff to figure out the type. :)

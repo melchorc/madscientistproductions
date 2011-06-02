@@ -372,8 +372,8 @@ namespace MadScience
 			if (!String.IsNullOrEmpty(s3p.ArchiveVersion)) sb.AppendLine("  <ArchiveVersion>" + s3p.ArchiveVersion + "</ArchiveVersion>");
 			if (!String.IsNullOrEmpty(s3p.CodeVersion)) sb.AppendLine("  <CodeVersion>" + s3p.CodeVersion + "</CodeVersion>");
 			if (!String.IsNullOrEmpty(s3p.GameVersion)) sb.AppendLine("  <GameVersion>" + s3p.GameVersion + "</GameVersion>");
-			if (!String.IsNullOrEmpty(s3p.DisplayName)) sb.AppendLine("  <DisplayName>" + s3p.DisplayName + "</DisplayName>");
-			if (!String.IsNullOrEmpty(s3p.Description)) sb.AppendLine("  <Description>" + s3p.Description + "</Description>");
+			if (!String.IsNullOrEmpty(s3p.DisplayName)) sb.AppendLine("  <DisplayName>" + System.Web.HttpUtility.HtmlEncode(s3p.DisplayName) + "</DisplayName>");
+			if (!String.IsNullOrEmpty(s3p.Description)) sb.AppendLine("  <Description>" + System.Web.HttpUtility.HtmlEncode(s3p.Description) + "</Description>");
 			if (!String.IsNullOrEmpty(s3p.PackageId)) sb.AppendLine("  <PackageId>" + s3p.PackageId + "</PackageId>");
 			if (!String.IsNullOrEmpty(s3p.Date)) sb.AppendLine("  <Date>" + s3p.Date + "</Date>");
 			if (s3p.AssetVersion > -1) sb.AppendLine("  <AssetVersion>" + s3p.AssetVersion.ToString() + "</AssetVersion>");
@@ -759,8 +759,8 @@ namespace MadScience
 			sb.AppendLine(indent + "<metatags>");
 
 			sb.AppendLine(indent + "  <name>" + metatag.name + "</name>");
-			if (!String.IsNullOrEmpty(metatag.description)) sb.AppendLine(indent + "  <description>" + metatag.description + "</description>");
-			if (!String.IsNullOrEmpty(metatag.bio)) sb.AppendLine(indent + "  <bio>" + metatag.bio + "</bio>");
+			if (!String.IsNullOrEmpty(metatag.description)) sb.AppendLine(indent + "  <description>" + System.Web.HttpUtility.HtmlEncode(metatag.description) + "</description>");
+			if (!String.IsNullOrEmpty(metatag.bio)) sb.AppendLine(indent + "  <bio>" + System.Web.HttpUtility.HtmlEncode(metatag.bio) + "</bio>");
 			if (metatag.numOfThumbs > -999999) sb.AppendLine(indent + "  <numOfThumbs>" + metatag.numOfThumbs.ToString() + "</numOfThumbs>");
 
 			// Lot information

@@ -158,11 +158,20 @@ namespace InstallHelper
 			}
 			else
 			{
-				for (int i = 0; i < MadScience.Helpers.gamesInstalled.Items.Count; i++)
+
+				if (Helpers.gamesInstalled.globalFramework.isInstalled)
 				{
-					if (MadScience.Helpers.gamesInstalled.Items[i].isInstalled)
+					comboBox1.Items.Add(Helpers.gamesInstalled.globalFramework.gameName);
+				}
+				else
+				{
+
+					for (int i = 0; i < MadScience.Helpers.gamesInstalled.Items.Count; i++)
 					{
-						comboBox1.Items.Add(MadScience.Helpers.gamesInstalled.Items[i].gameName);
+						if (MadScience.Helpers.gamesInstalled.Items[i].isInstalled)
+						{
+							comboBox1.Items.Add(MadScience.Helpers.gamesInstalled.Items[i].gameName);
+						}
 					}
 				}
 
@@ -213,7 +222,16 @@ namespace InstallHelper
 				case "High-End Loft Stuff":
 					baseFolder = MadScience.Helpers.gamesInstalled.Items[2].path;
 					break;
+				case "Global (My Documents)":
+					baseFolder = MadScience.Helpers.gamesInstalled.globalFramework.path;
+					break;
 			}
+			if (MadScience.Helpers.gamesInstalled.globalFramework.isInstalled)
+			{
+				baseFolder = MadScience.Helpers.gamesInstalled.globalFramework.path;
+			}
+
+
 			if (String.IsNullOrEmpty(baseFolder)) return "";
 
 			baseFolder = Path.Combine(baseFolder, Path.Combine("Mods", "Packages"));
@@ -273,6 +291,14 @@ namespace InstallHelper
 							{
 								File.Delete(copyTo + ".backup");
 							}
+
+							// Now, update the Last Modified timestamp of the file... 
+							// This is done so that we can sort by when you INSTALL cc into your folders
+							DateTime dt = DateTime.Now;
+							FileInfo file = new FileInfo(copyTo);
+							file.LastWriteTime = dt;
+							file = null;
+
 						}
 						else
 						{
@@ -319,21 +345,24 @@ namespace InstallHelper
 			switch (comboBox1.SelectedItem.ToString())
 			{
 				case "Sims 3":
-					getRootFolders(Helpers.GameNumber.baseGame);
+					getRootFolders(Helpers.gamesInstalled.baseGame);
 					break;
 				case "World Adventures":
-					getRootFolders(Helpers.GameNumber.worldAdventures);
+					getRootFolders(Helpers.gamesInstalled.worldAdventures);
 					break;
 				case "High-End Loft Stuff":
-					getRootFolders(Helpers.GameNumber.highEndLoftStuff);
+					getRootFolders(Helpers.gamesInstalled.highEndLoftStuff);
+					break;
+				case "Global (My Documents)":
+					getRootFolders(Helpers.gamesInstalled.globalFramework);
 					break;
 			}
 		}
 
-		private void getRootFolders(Helpers.GameNumber epNumber)
+		private void getRootFolders(Helpers.GameInfo epNumber)
 		{
-
-			if (!MadScience.Helpers.hasFramework(MadScience.Helpers.findSims3Root(epNumber), epNumber))
+			
+			if (!epNumber.hasFramework)
 			{
 				picAccept.Visible = false;
 				picRemove.Visible = true;
@@ -358,8 +387,16 @@ namespace InstallHelper
 
 			treeView1.Nodes.Clear();
 
-			string basePath = Path.Combine(MadScience.Helpers.findSims3Root(epNumber), Path.Combine("Mods", "Packages"));
-			string gameName = Helpers.getGameName(epNumber);
+			//string basePath = Path.Combine(MadScience.Helpers.findSims3Root(epNumber), Path.Combine("Mods", "Packages"));
+			string basePath = Path.Combine(epNumber.path, Path.Combine("Mods", "Packages"));
+
+			if (MadScience.Helpers.gamesInstalled.globalFramework.hasFramework)
+			{
+				basePath = Path.Combine(Helpers.gamesInstalled.globalFramework.path, Path.Combine("Mods", "Packages"));
+			}
+
+			//string gameName = Helpers.getGameName(epNumber);
+			string gameName = epNumber.gameName;
 
 			TreeNode rootNode = new TreeNode("<" + gameName + "\\Mods\\Packages>");
 			rootNode.Tag = "";
@@ -493,11 +530,8 @@ namespace InstallHelper
 
 						return true;
 					}
-					else
-					{
-						File.Delete(filename);
-						return false;
-					}
+
+					File.Delete(filename);
 					return false;
 				}
 				else
@@ -562,25 +596,30 @@ namespace InstallHelper
 				}
 				else
 				{
-					listView1.Items[i].SubItems[3].Text = pType.ToString();
+					listView1.Items[i].SubItems[3].Text = "Cannot install corrupt file: " + pType.ToString();
 					listView1.Items[i].BackColor = Color.Salmon;
 				}
 			}
-			lblHeader.Text = numInstalled.ToString() + " of " + listView1.Items.Count.ToString() + " files installed";
 
 			if (numInstalled < listView1.Items.Count)
 			{
 				picAccept.Visible = false;
 				picRemove.Visible = true;
+
+				lblHeader.Text = numInstalled.ToString() + " of " + listView1.Items.Count.ToString() + " files installed";
+				toolStripStatusLabel1.Text = "Any files NOT in white in the list are not installed!";
 			}
 			else
 			{
 				picRemove.Visible = false;
 				picAccept.Visible = true;
+
+				lblHeader.Text = "All files installed ok!";
+				toolStripStatusLabel1.Text = "All files installed ok!";
+
 			}
 
 			toolStripProgressBar1.Value = toolStripProgressBar1.Minimum;
-			toolStripStatusLabel1.Text = "Any files NOT in white in the list are not installed!";
 
 		}
 
@@ -634,6 +673,7 @@ namespace InstallHelper
 		private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
 		{
 			button1.Enabled = true;
+
 		}
 
 	}

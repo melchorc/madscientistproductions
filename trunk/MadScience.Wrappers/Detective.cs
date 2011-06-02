@@ -30,6 +30,16 @@ namespace MadScience
 			BOND = 0x0355E0A6,
 			UNKW1 = 0x033B2B66,
 			WLOT = 0x03D86EA4,
+			WLTL = 0x04EE6ABB, // Lot terrain texture list
+			ARY2 = 0x05FF6BA4,
+			SIMO = 0x025ED6F4, // Sim Outfit
+			SIME = 0x04F88964, // Townie data
+			SNAPL = 0x0580A2CF, // Large image of Sims
+			SNAP = 0x0580A2CD,
+			_XML = 0x73E93EEB,
+			_XML2 = 0x0333406C,
+			NULL = 0x00000000,
+			COMP = 0x044AE110, // Complate
 
 		}
 
@@ -48,6 +58,8 @@ namespace MadScience
 			corruptTXTC = 13,
 			corruptIndex = 14,
 			corruptPeggy = 15,
+			corruptBadAges = 16,
+			corruptRecursive = 17,
 			patternGeneric = 20,
 			casPartGeneric = 30,
 			casPartClothing = 31,
@@ -56,10 +68,13 @@ namespace MadScience
 			casPartFaceOverlay = 34,
 			casPartAccessory = 35,
 			coremod = 40,
+			xmltuningmod = 41,
 			objectGeneric = 50,
 			casSlider = 90,
 			textureReplacement = 91,
 			neighbourhood = 99,
+			lot = 150,
+			sim = 160,
 			pngThumbnail = 200,
 			
 		}
@@ -87,6 +102,8 @@ namespace MadScience
 					case PackageTypes.corruptTXTC: return "Corrupt (TXTC)";
 					case PackageTypes.corruptPeggy: return "Corrupt (Peggy)";
 					case PackageTypes.corruptIndex: return "Corrupt (Bad Index)";
+					case PackageTypes.corruptBadAges: return "Corrupt (Bad Ages - Child + Adult)";
+					case PackageTypes.corruptRecursive: return "Corrupt (Contains another DBPF)";
 					case PackageTypes.patternGeneric: return "Pattern";
 					case PackageTypes.casPartGeneric: return "CAS Part";
 					case PackageTypes.casPartClothing: return "CAS Part (Clothing)";
@@ -95,10 +112,13 @@ namespace MadScience
 					case PackageTypes.casPartFaceOverlay: return "CAS Part (Face Overlay)";
 					case PackageTypes.casPartAccessory: return "CAS Part (Accessory)";
 					case PackageTypes.coremod: return "Core Mod";
+					case PackageTypes.xmltuningmod: return "XML Tuning Mod";
 					case PackageTypes.objectGeneric: return "Object";
 					case PackageTypes.casSlider: return "CAS Slider";
 					case PackageTypes.textureReplacement: return "Texture Replacement";
 					case PackageTypes.neighbourhood: return "Neighbourhood (World)";
+					case PackageTypes.lot: return "Lot";
+					case PackageTypes.sim: return "Sim";
 					case PackageTypes.pngThumbnail: return "Thumbnail";
 				}
 
@@ -118,6 +138,8 @@ namespace MadScience
 					case "Corrupt (TXTC)": return PackageTypes.corruptTXTC;
 					case "Corrupt (Peggy)": return PackageTypes.corruptPeggy;
 					case "Corrupt (Bad Index)": return PackageTypes.corruptIndex;
+					case "Corrupt (Bad Ages - Child + Adult)": return PackageTypes.corruptBadAges;
+					case "Corrupt (Contains another DBPF)": return PackageTypes.corruptRecursive;
 					case "Pattern": return PackageTypes.patternGeneric;
 					case "CAS Part": return PackageTypes.casPartGeneric;
 					case "CAS Part (Clothing)": return PackageTypes.casPartClothing;
@@ -126,10 +148,13 @@ namespace MadScience
 					case "CAS Part (Face Overlay)": return PackageTypes.casPartFaceOverlay;
 					case "CAS Part (Accessory)": return PackageTypes.casPartAccessory;
 					case "Core Mod": return PackageTypes.coremod;
+					case "XML Tuning Mod": return PackageTypes.xmltuningmod;
 					case "Object": return PackageTypes.objectGeneric;
 					case "CAS Slider": return PackageTypes.casSlider;
 					case "Texture Replacement": return PackageTypes.textureReplacement;
 					case "Neighbourhood (World)": return PackageTypes.neighbourhood;
+					case "Lot": return PackageTypes.lot;
+					case "Sim": return PackageTypes.sim;
 					case "Thumbnail": return PackageTypes.pngThumbnail;
 				}
 
@@ -145,7 +170,7 @@ namespace MadScience
 			{
 				switch (pType)
 				{
-					case PackageTypes.emptyPackage: return Color.Salmon;
+					case PackageTypes.emptyPackage: return Color.Teal;
 					case PackageTypes.disabledPackage: return Color.PowderBlue;
 					case PackageTypes.duplicatePackage: return Color.Yellow;
 					case PackageTypes.conflictPackage: return Color.Goldenrod;
@@ -158,6 +183,8 @@ namespace MadScience
 					case PackageTypes.corruptTXTC:
 					case PackageTypes.corruptIndex:
 					case PackageTypes.corruptPeggy:
+					case PackageTypes.corruptBadAges:
+					case PackageTypes.corruptRecursive:
 						return Color.Salmon;
 					//case PackageTypes.patternGeneric: return "Pattern";
 					//case PackageTypes.casPartGeneric: return "CAS Part";
@@ -251,7 +278,7 @@ namespace MadScience
 
 		public PackageType getType(Database db, bool loopAll)
 		{
-
+			// Do some quick sanity checks
 			switch (db.dbpf.packageType)
 			{
 				case PackageTypes.genericPackage:
@@ -263,11 +290,13 @@ namespace MadScience
 				case PackageTypes.corruptNotADBPF:
 				case PackageTypes.corruptTXTC:
 					this.isCorrupt = true;
+					this.pType.SubType = "";
 					this.pType.MainType = db.dbpf.packageType;
 					return this.pType;
 				case PackageTypes.sims3Store:
 				case PackageTypes.sims2Package:
 				case PackageTypes.pngThumbnail:
+					this.pType.SubType = "";
 					this.pType.MainType = db.dbpf.packageType;
 					return this.pType;
 			}
@@ -275,12 +304,25 @@ namespace MadScience
 			rc.Clear();
 			this.pType = new PackageType();
 
-			MadScience.Helpers.GameNumber gameNumber = new Helpers.GameNumber();		
-
 			//print(db.dbpf.Entries.Count + " entries found");
 			for (int i = 0; i < db.dbpf.Entries.Count; i++)
 			{
 				DatabasePackedFile.Entry entry = db.dbpf.Entries[i];
+
+				if ((entry.Key.typeId == (uint)ResourceTypes.NULL) && (entry.Key.groupId == (uint)ResourceTypes.NULL) && (entry.Key.instanceId == (uint)ResourceTypes.NULL))
+				{
+					// Check the first 4 bytes of the stream
+					Stream checkDbpf = db.GetResourceStream(entry.Key);
+					string magic = MadScience.StreamHelpers.ReadStringASCII(checkDbpf, 4);
+					if (magic == "DBPF" || magic == "DBBF") // DBPF & DBBF
+					{
+						this.isCorrupt = true;
+						this.pType.MainType = PackageTypes.corruptRecursive;
+						this.pType.SubType = "This package contains another package inside it.";
+						if (!loopAll) return this.pType;
+					}
+					checkDbpf.Close();
+				}
 
 				if (entry.Key.typeId == (uint)ResourceTypes.TXTC)
 				{
@@ -322,6 +364,18 @@ namespace MadScience
 			{
 				if (this.pType.MainType == PackageTypes.genericPackage) this.pType.MainType = PackageTypes.neighbourhood;
 				this.isCorrupt = true;
+				return this.pType;
+			}
+
+			if (rc.ContainsKey("WLTL") && rc.ContainsKey("ARY2"))
+			{
+				this.pType.MainType = PackageTypes.lot;
+				return this.pType;
+			}
+
+			if (rc.ContainsKey("SIMO") && rc.ContainsKey("SIME") && rc.ContainsKey("SNAP") && rc.ContainsKey("SNAPL"))
+			{
+				this.pType.MainType = PackageTypes.sim;
 				return this.pType;
 			}
 
@@ -383,6 +437,53 @@ namespace MadScience
 						case "Body":
 							this.pType.MainType = PackageTypes.casPartClothing;
 							this.pType.SubType = cFile.clothingCategory();
+
+							// Check the TYPE of clothing we have
+							switch (cFile.clothingType())
+							{
+								case "Body":
+								case "Top":
+								case "Bottom":
+								case "Shoes":
+									// Check the age too
+									// If we have Toddler OR Child OR Teen, plus other ages
+									bool ageCorrupt = false;
+									//if ((cFile.cFile.ageGender.baby || cFile.cFile.ageGender.toddler || cFile.cFile.ageGender.child || cFile.cFile.ageGender.teen) && (cFile.cFile.ageGender.youngAdult || cFile.cFile.ageGender.adult || cFile.cFile.ageGender.elder))
+									//{
+									//	ageCorrupt = true;
+									//}
+									// If we have Baby AND any other age...
+									if (cFile.cFile.ageGender.baby && (cFile.cFile.ageGender.toddler || cFile.cFile.ageGender.child || cFile.cFile.ageGender.teen || cFile.cFile.ageGender.youngAdult || cFile.cFile.ageGender.adult || cFile.cFile.ageGender.elder))
+									{
+										ageCorrupt = true;
+									}
+									// If we have Toddler AND any other age...
+									if (cFile.cFile.ageGender.toddler && (cFile.cFile.ageGender.child || cFile.cFile.ageGender.teen || cFile.cFile.ageGender.youngAdult || cFile.cFile.ageGender.adult || cFile.cFile.ageGender.elder))
+									{
+										ageCorrupt = true;
+									}
+									// If we have Child AND any other age
+									if (cFile.cFile.ageGender.child && (cFile.cFile.ageGender.teen || cFile.cFile.ageGender.youngAdult || cFile.cFile.ageGender.adult || cFile.cFile.ageGender.elder))
+									{
+										ageCorrupt = true;
+									}
+									// If we have Teen AND any other age
+									if (cFile.cFile.ageGender.teen && (cFile.cFile.ageGender.youngAdult || cFile.cFile.ageGender.adult || cFile.cFile.ageGender.elder))
+									{
+										ageCorrupt = true;
+									}
+
+									if (ageCorrupt)
+									{
+										this.isCorrupt = true;
+										this.pType.MainType = PackageTypes.corruptBadAges;
+										if (!loopAll) return this.pType;
+									}
+									break;
+								default:
+									break;
+							}
+
 							break;
 						case "Accessory":
 							this.pType.MainType = PackageTypes.casPartAccessory;
@@ -403,6 +504,11 @@ namespace MadScience
 			if (rc.ContainsKey("_IMG") && rc.Count == 1)
 			{
 				if (this.pType.MainType == PackageTypes.genericPackage) this.pType.MainType = PackageTypes.textureReplacement;
+			}
+
+			if (rc.Count == 1 && (rc.ContainsKey("_XML") || rc.ContainsKey("_XML2")))
+			{
+				if (this.pType.MainType == PackageTypes.genericPackage) this.pType.MainType = PackageTypes.xmltuningmod;
 			}
 
 			return this.pType;
