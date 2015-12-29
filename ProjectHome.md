@@ -1,0 +1,1 @@
+Usually code written by Delphy, for various game tools including the Sims 2 and Sims 3.
